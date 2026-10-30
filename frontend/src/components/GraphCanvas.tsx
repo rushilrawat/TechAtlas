@@ -71,6 +71,107 @@ const SCAN_DIM_EDGE = "rgba(120,130,150,0.0)";
  *  - label/edge visibility follows the camera ratio (semantic zoom);
  *  - camera animations cancel any in-flight animation before starting a new one.
  */
+// Frame the Stack View on its clustered nodes by handing Sigma a CUSTOM BOUNDING BOX in
+// graph-coordinate space and resetting the camera to fit it. All math stays in graph units;
+// Sigma converts to camera space internally, so there is no coordinate-system mixing and no
+// hardcoded pixel offsets. Framing is correct at any screen size. The right side of the box
+// is padded by the sidebar's *fraction of the viewport* so the clusters sit in the visible
+// area left of the open panel. Caller clears the custom bbox (setCustomBBox(null)) on exit.
+function fitStack(
+  renderer: Sigma,
+  positions: { x: number; y: number }[],
+  prefersReduced: boolean,
+): void {
+  if (positions.length === 0) return;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const p of positions) {
+    minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);
+  }
+  const gw = Math.max(maxX - minX, 1);
+  const gh = Math.max(maxY - minY, 1);
+
+  // Label-safe margin in graph units (headings sit above; labels extend sideways). Scale
+  // the margin to the stack size so small stacks are not over-zoomed into a few huge dots.
+  const marginX = Math.max(gw * 0.16, 220);
+  const marginYtop = Math.max(gh * 0.16, 200);
+  const marginYbot = Math.max(gh * 0.12, 140);
+  let bMinX = minX - marginX;
+  let bMaxX = maxX + marginX;
+  let bMinY = minY - marginYtop;
+  let bMaxY = maxY + marginYbot;
+
+  const el = renderer.getContainer();
+  const vw = el.clientWidth || window.innerWidth;
+  const vh = el.clientHeight || window.innerHeight;
+  const narrow = vw < 820;
+
+  // Enforce a MINIMUM framed span (canonical units) on wide screens so a tiny stack is not
+  // magnified until a few nodes fill the screen and the gaps look vast. Skipped on narrow
+  // (mobile) viewports where the usable band is small.
+  if (!narrow) {
+    const MIN_W = 1700, MIN_H = 1300;
+    const cxB = (bMinX + bMaxX) / 2, cyB = (bMinY + bMaxY) / 2;
+    if (bMaxX - bMinX < MIN_W) { bMinX = cxB - MIN_W / 2; bMaxX = cxB + MIN_W / 2; }
+    if (bMaxY - bMinY < MIN_H) { bMinY = cyB - MIN_H / 2; bMaxY = cyB + MIN_H / 2; }
+  }
+
+  // Compute the USABLE viewport rectangle (pixels) = the container minus the OPEN panel.
+  // The panel is a right rail on wide screens but a full-width BOTTOM SHEET on mobile. We
+  // frame the content into this rectangle directly (measure + nudge), rather than padding
+  // the bbox asymmetrically, so it is correct in both orientations at any size.
+  const panel = document.querySelector(".details, .xray-panel") as HTMLElement | null;
+  const prect = panel ? panel.getBoundingClientRect() : null;
+  const crect = el.getBoundingClientRect();
+  const uLeft = 0, uTop = 0;
+  let uRight = vw, uBottom = vh;
+  if (prect && prect.width > 0 && prect.height > 0) {
+    const isBottomSheet = prect.width >= vw * 0.85;
+    if (isBottomSheet) {
+      // sheet occupies the bottom; usable band is above its top edge.
+      uBottom = Math.max(uTop + 120, prect.top - crect.top - 12);
+    } else {
+      // right rail; usable band is left of its left edge.
+      uRight = Math.max(uLeft + 160, prect.left - crect.left - 12);
+    }
+  }
+  const usableW = Math.max(120, uRight - uLeft);
+  const usableH = Math.max(120, uBottom - uTop);
+
+  // Construct an EXTENDED bbox that, when Sigma maps it to the full container, places the
+  // content bounds exactly onto the usable rectangle. Sigma fits a custom bbox to the
+  // container by the CONSTRAINING axis (letterboxing the other), so we use a single uniform
+  // graph-units-per-pixel for both axes, then expand the content bounds outward by the
+  // margins between the usable rect and the container edges. No camera-space math, no
+  // hardcoded offsets — purely graph-space, correct for right-rail and bottom-sheet alike.
+  const gpx = Math.max(
+    (bMaxX - bMinX) / usableW,
+    (bMaxY - bMinY) / usableH,
+  );
+  // Re-center content so the uniform gpx keeps it centered in the usable rect first.
+  const contentCX = (bMinX + bMaxX) / 2;
+  const contentCY = (bMinY + bMaxY) / 2;
+  const halfUsableWg = (usableW / 2) * gpx;
+  const halfUsableHg = (usableH / 2) * gpx;
+  // Usable-rect edges in graph units (content centered in the usable rect):
+  const uMinXg = contentCX - halfUsableWg;
+  const uMaxXg = contentCX + halfUsableWg;
+  // NOTE: viewport Y grows downward; graph Y grows upward. Top of usable rect = max graph Y.
+  const uMinYg = contentCY - halfUsableHg; // bottom of usable rect (graph)
+  const uMaxYg = contentCY + halfUsableHg; // top of usable rect (graph)
+
+  // Extend to the full container: add the px margins (container edge to usable edge) * gpx.
+  const fullMinX = uMinXg - uLeft * gpx;
+  const fullMaxX = uMaxXg + (vw - uRight) * gpx;
+  // top margin (uTop px) is above the usable rect -> larger graph Y; bottom margin below.
+  const fullMaxY = uMaxYg + uTop * gpx;
+  const fullMinY = uMinYg - (vh - uBottom) * gpx;
+
+  renderer.setCustomBBox({ x: [fullMinX, fullMaxX], y: [fullMinY, fullMaxY] });
+  renderer.refresh();
+  // animatedReset frames the (extended) bbox: content lands on the usable rectangle.
+  void renderer.getCamera().animatedReset({ duration: prefersReduced ? 0 : 650 });
+}
 export function GraphCanvas({
   data,
   selectedId,
@@ -107,6 +208,9 @@ export function GraphCanvas({
   const savedCoordsRef = useRef<Map<string, { x: number; y: number }> | null>(null);
   const stackAnimRef = useRef<number | null>(null);
   const stackActiveRef = useRef<boolean>(false);
+  const framedStackRef = useRef<number | null>(null);
+  const stackPositionsRef = useRef<Map<string, { x: number; y: number }> | null>(null);
+  const stackHeadingsRef = useRef<{ x: number; y: number }[] | null>(null);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
   // Exposes the build-effect's coalesced refresh to the selection/filter effects,
@@ -152,6 +256,12 @@ export function GraphCanvas({
       },
     });
     sigmaRef.current = renderer;
+    // Test-only renderer handle, compiled in ONLY when VITE_TEST_HOOKS is set at build
+    // time (the e2e harness build). It is tree-shaken out of the production deploy build,
+    // so no internal renderer reference is ever exposed to shipped users.
+    if (import.meta.env.VITE_TEST_HOOKS === "true" && typeof window !== "undefined") {
+      (window as unknown as { __ta_sigma?: unknown }).__ta_sigma = renderer;
+    }
 
     // Compute the highlight set once whenever the active node changes.
     const recomputeActive = () => {
@@ -271,8 +381,26 @@ export function GraphCanvas({
       const scanEdges = scanEdgesRef.current;
       if (scanEdges) {
         if (stackActiveRef.current) {
-          // Stack View: suppress edges so domain grouping is not mistaken for dependencies
-          // (spec SS3). Verified relationships are surfaced via the sidebar / Universe View.
+          // Stack View default: suppress edges so domain grouping is not mistaken for a
+          // dependency (spec SS3). BUT when a node is SELECTED, reveal only its VERIFIED
+          // canonical edges to other detected nodes (spec SS2) — never co-occurrence edges.
+          const act = activeRef.current;
+          if (act && scanEdges.has(edge)) {
+            const [es, et] = graph.extremities(edge);
+            if (es === act || et === act) {
+              // Cross-domain verified edges are styled distinctly (amber) from same-domain
+              // (blue) so a grouping line is never confused with a real relationship.
+              const sd = graph.getNodeAttribute(es, "primaryDomain");
+              const td = graph.getNodeAttribute(et, "primaryDomain");
+              const crossDomain = sd !== td;
+              return {
+                ...dataIn,
+                color: crossDomain ? "rgba(251,191,36,0.85)" : "rgba(150,180,255,0.75)",
+                size: crossDomain ? 2.0 : 1.6,
+                zIndex: 3,
+              };
+            }
+          }
           return { ...dataIn, hidden: true };
         }
         if (scanEdges.has(edge)) {
@@ -368,7 +496,14 @@ export function GraphCanvas({
         statusByNode: scanStatusByNode,
         sizeById,
       };
-      persistentLabelsRef.current = selectPersistentLabels(scanStatusByNode.keys(), ctx);
+      // Label prioritization: on narrow (mobile) viewports show only the top few
+      // persistent labels so clusters stay readable; selection/hover/zoom reveal more
+      // (those bypass the budget in the node reducer). Desktop keeps the full budget.
+      const vw = containerRef.current?.clientWidth ?? window.innerWidth;
+      const labelBudget = vw < 760 ? 8 : vw < 1024 ? 16 : undefined;
+      persistentLabelsRef.current = selectPersistentLabels(
+        scanStatusByNode.keys(), ctx, labelBudget,
+      );
     } else {
       persistentLabelsRef.current = null;
     }
@@ -393,8 +528,14 @@ export function GraphCanvas({
       cancelAnimationFrame(stackAnimRef.current);
       stackAnimRef.current = null;
     }
+    if (framedStackRef.current !== null) {
+      cancelAnimationFrame(framedStackRef.current);
+      framedStackRef.current = null;
+    }
 
     stackActiveRef.current = !!(stackPositions && stackPositions.size > 0);
+    stackPositionsRef.current = stackPositions ?? null;
+    stackHeadingsRef.current = stackHeadings?.map((h) => ({ x: h.x, y: h.y })) ?? null;
     if (stackPositions && stackPositions.size > 0) {
       // Save canonical coordinates once (first entry into Stack View).
       if (!savedCoordsRef.current) {
@@ -431,29 +572,23 @@ export function GraphCanvas({
         else stackAnimRef.current = null;
       };
       stackAnimRef.current = requestAnimationFrame(step);
-      // Frame the camera on the reprojected stack bounds (same sidebar-aware fit used for
-      // Focus on Stack), so the clusters sit in the visible canvas.
-      let sMinX = Infinity, sMinY = Infinity, sMaxX = -Infinity, sMaxY = -Infinity;
-      for (const [, pos] of stackPositions) {
-        sMinX = Math.min(sMinX, pos.x); sMinY = Math.min(sMinY, pos.y);
-        sMaxX = Math.max(sMaxX, pos.x); sMaxY = Math.max(sMaxY, pos.y);
-      }
-      const camera = renderer.getCamera();
-      const fit = computeFit({
-        bounds: { minX: sMinX, minY: sMinY, maxX: sMaxX, maxY: sMaxY },
-        fullSpread: { minX: sMinX, minY: sMinY, maxX: sMaxX, maxY: sMaxY },
-        sidebarWidthPx: 400,
-        viewportWidthPx: containerRef.current?.clientWidth ?? window.innerWidth,
-        minRatio: 0.08, universeRatio: 1.6, padding: 0.25,
+      // Frame the camera on the reprojected stack bounds using Sigma's OWN coordinate
+      // conversion (self-calibrating, not hardcoded), so clusters fit the USABLE viewport
+      // (canvas width minus the open right sidebar + a label-safe margin) at any screen size.
+      framedStackRef.current = requestAnimationFrame(() => {
+        // Include heading anchors in the fit bounds so the topmost cluster label is
+        // never clipped by the camera frame.
+        const pts = [
+          ...stackPositions.values(),
+          ...(stackHeadings?.map((h) => ({ x: h.x, y: h.y })) ?? []),
+        ];
+        fitStack(renderer, pts, prefersReduced);
       });
-      if (fit) {
-        camera.animate(
-          { x: fit.x, y: fit.y, ratio: fit.ratio },
-          { duration: prefersReduced ? 0 : 650 },
-        );
-      }
     } else if (savedCoordsRef.current) {
       // Exit Stack View -> restore canonical coordinates (snap or eased).
+      // Clear the custom bbox first so Sigma reframes the full canonical universe,
+      // then reset the camera once coordinates are back home.
+      renderer.setCustomBBox(null);
       const saved = savedCoordsRef.current;
       const starts = new Map<string, { x: number; y: number }>();
       graph.forEachNode((id, a) => starts.set(id, { x: a.x as number, y: a.y as number }));
@@ -466,7 +601,11 @@ export function GraphCanvas({
         }
         renderer.refresh();
       };
-      if (prefersReduced) { apply(1); savedCoordsRef.current = null; return; }
+      if (prefersReduced) {
+        apply(1); savedCoordsRef.current = null;
+        void renderer.getCamera().animatedReset({ duration: 0 });
+        return;
+      }
       const dur = 500;
       const t0 = performance.now();
       const ease = (u: number) => 1 - Math.pow(1 - u, 3);
@@ -474,11 +613,14 @@ export function GraphCanvas({
         const u = Math.min(1, (now - t0) / dur);
         apply(ease(u));
         if (u < 1) stackAnimRef.current = requestAnimationFrame(step);
-        else { stackAnimRef.current = null; savedCoordsRef.current = null; }
+        else {
+          stackAnimRef.current = null; savedCoordsRef.current = null;
+          void renderer.getCamera().animatedReset({ duration: 400 });
+        }
       };
       stackAnimRef.current = requestAnimationFrame(step);
     }
-  }, [stackPositions]);
+  }, [stackPositions, stackHeadings]);
 
   // "Focus Stack" — frame the detected nodes' bounding region with padding, keeping
   // labels readable (never zoom so far the graph is unusable). Uses the precomputed
@@ -488,6 +630,16 @@ export function GraphCanvas({
     const graph = graphRef.current;
     if (!renderer || !graph || !fitSignal || fitSignal.ids.length === 0) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // In Stack View the camera is framed by the custom bbox (fitStack); re-run that
+    // same path so "Focus on Stack" stays consistent and never mixes coordinate spaces.
+    if (stackActiveRef.current && stackPositionsRef.current) {
+      const pts = [
+        ...stackPositionsRef.current.values(),
+        ...(stackHeadingsRef.current?.map((h) => ({ x: h.x, y: h.y })) ?? []),
+      ];
+      fitStack(renderer, pts, prefersReduced);
+      return;
+    }
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     let found = 0;
     for (const id of fitSignal.ids) {
@@ -563,9 +715,22 @@ export function GraphCanvas({
     project();
     const camera = renderer.getCamera();
     camera.on("updated", project);
-    const raf = requestAnimationFrame(project); // catch the entry animation
-    return () => { camera.removeListener("updated", project); cancelAnimationFrame(raf); };
-  }, [stackHeadings]);
+    // The camera "updated" event can miss the final frame of an animatedReset (used by
+    // fitStack) and of the collapse reframe, leaving headings projected from a stale
+    // camera and visually detached from their clusters. Re-project on a short rAF loop
+    // that spans the camera animation so headings track their clusters to the last frame.
+    let rafId = 0;
+    const start = performance.now();
+    const loop = (now: number) => {
+      project();
+      if (now - start < 1200) rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => { camera.removeListener("updated", project); cancelAnimationFrame(rafId); };
+    // Re-run (restart the rAF loop) whenever the stack reprojects or the camera is
+    // reframed (fitSignal nonce changes, e.g. the mobile sheet collapse) so headings
+    // re-sync even when fitStack uses setCustomBBox (which may not emit camera 'updated').
+  }, [stackHeadings, stackPositions, fitSignal?.nonce]);
 
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
 

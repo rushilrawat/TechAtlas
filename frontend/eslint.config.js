@@ -2,7 +2,13 @@ import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", "dist-xray", "node_modules", "e2e", "playwright.config.ts", "playwright.xray.config.ts"] },
+  {
+    ignores: [
+      "dist", "dist-xray", "dist-xray-test", "node_modules", "e2e",
+      ".uia-shots", "screenshots",
+      "playwright.config.ts", "playwright.xray.config.ts", "playwright.stackview.config.ts",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

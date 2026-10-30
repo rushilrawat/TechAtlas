@@ -63,6 +63,20 @@ export default function App() {
   // X-Ray view mode: Stack (clustered reprojection) is the default on a completed
   // scan; Universe shows detections highlighted in the canonical 417-node layout.
   const [xrayView, setXrayView] = useState<"stack" | "universe">("stack");
+  // Track narrow (mobile) viewports so Stack View can lay clusters in a single column
+  // that fits the portrait band above the bottom sheet.
+  const [narrow, setNarrow] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 820px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 820px)");
+    const on = () => setNarrow(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  // Mobile bottom-sheet collapse: lets users minimize the panel to a thin bar and
+  // explore the full-height visualization. Reframes the camera when toggled.
+  const [sheetCollapsed, setSheetCollapsed] = useState(false);
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
@@ -185,8 +199,10 @@ export default function App() {
       });
     }
     if (inputs.length === 0) return null;
-    return computeStackLayout(inputs);
-  }, [overlay, graphData, xrayView]);
+    // Narrow screens: single column of clusters (tall, portrait-friendly) so the
+    // camera can frame them in the band above the bottom sheet.
+    return computeStackLayout(inputs, narrow ? { cols: 1, nodeCols: 2 } : {});
+  }, [overlay, graphData, xrayView, narrow]);
 
   const stackPositions = stackView?.positions ?? null;
 
@@ -220,6 +236,7 @@ export default function App() {
   const exitXray = useCallback(() => {
     resetScan();
     setXrayOpen(false);
+    setSheetCollapsed(false);
   }, [resetScan]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
@@ -308,6 +325,12 @@ export default function App() {
             domainsById={domainsById}
             view={xrayView}
             onViewChange={setXrayView}
+            collapsed={sheetCollapsed}
+            onToggleCollapsed={() => {
+              setSheetCollapsed((v) => !v);
+              // Reframe after the sheet height transition so clusters use the new area.
+              window.setTimeout(() => setFitNonce((n) => n + 1), 260);
+            }}
           />
         ) : (
           <>

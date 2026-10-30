@@ -541,6 +541,14 @@ body {
   font-size: 11px; cursor: pointer;
 }
 .xray-exit:hover, .xray-focus:hover { color: #c8d0e8; }
+/* Mobile-only bottom-sheet collapse toggle (hidden on desktop; the right rail is fixed). */
+.xray-collapse {
+  display: none;
+  background: transparent; border: 1px solid var(--panel-border);
+  color: var(--text-dim); border-radius: 6px; padding: 3px 9px;
+  font-size: 11px; cursor: pointer;
+}
+.xray-collapse:hover { color: #c8d0e8; }
 .xray-desc { margin: 4px 0 10px; color: var(--text-dim); }
 .xray-form { display: flex; gap: 6px; }
 .xray-input {
@@ -743,6 +751,16 @@ body {
     max-height: 62%; border-radius: var(--radius) var(--radius) 0 0;
     overflow-y: auto; -webkit-overflow-scrolling: touch;
   }
+  /* Show the collapse toggle on mobile; it minimizes the sheet to its header bar so the
+     user can explore the full-height Stack View, then expand it again. */
+  .xray-collapse { display: inline-flex; align-items: center; }
+  .xray-panel.collapsed {
+    max-height: none; height: auto;
+    overflow: hidden;
+  }
+  /* When collapsed, keep only the header row (title + expand control) visible. */
+  .xray-panel.collapsed > *:not(.xray-header) { display: none; }
+  .xray-panel.collapsed .xray-header { margin: 0; }
   /* Detail panel is also a bottom sheet on mobile, above the X-Ray sheet, own scroll. */
   .details {
     top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none;

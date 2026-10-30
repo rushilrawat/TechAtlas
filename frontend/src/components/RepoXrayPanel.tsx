@@ -24,6 +24,9 @@ interface Props {
   domainsById: Map<string, DomainSummary>;
   view: "stack" | "universe";
   onViewChange: (v: "stack" | "universe") => void;
+  /** Mobile bottom-sheet collapse state + toggle (ignored on desktop via CSS). */
+  collapsed?: boolean;
+  onToggleCollapsed?: () => void;
 }
 
 const STATUS_LABEL: Record<DetectionStatus, string> = {
@@ -38,7 +41,7 @@ const GH_RE = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/?$/i;
 
 export function RepoXrayPanel({
   phase, onAnalyze, onExit, onAnalyzeAnother, onFocusStack, onFocusNode, nodesById,
-  domainsById, view, onViewChange,
+  domainsById, view, onViewChange, collapsed = false, onToggleCollapsed,
 }: Props) {
   const [url, setUrl] = useState("");
   const [touched, setTouched] = useState(false);
@@ -53,9 +56,22 @@ export function RepoXrayPanel({
   const analyzing = phase.kind === "analyzing";
 
   return (
-    <section className="xray-panel" aria-label="Repo X-Ray">
+    <section
+      className={collapsed ? "xray-panel collapsed" : "xray-panel"}
+      aria-label="Repo X-Ray"
+    >
       <div className="xray-header">
         <h2>Analyze a GitHub Repository</h2>
+        <button
+          type="button"
+          className="xray-collapse"
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? "Expand repository panel" : "Minimize repository panel"}
+          title={collapsed ? "Expand panel" : "Minimize panel to explore the graph"}
+          onClick={onToggleCollapsed}
+        >
+          {collapsed ? "▴ Expand" : "▾ Minimize"}
+        </button>
         {phase.kind !== "idle" && phase.kind !== "done" && (
           <button type="button" className="xray-exit" onClick={onExit}>
             Back to Universe

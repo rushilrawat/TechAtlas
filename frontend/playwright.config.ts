@@ -6,7 +6,10 @@ import { defineConfig } from "@playwright/test";
 // HTTP 200 (or a jsdom unit test) cannot prove the graph renders.
 export default defineConfig({
   testDir: "./e2e",
-  testIgnore: /xray\.spec\.ts/,
+  // Smoke-only: the scanner-enabled xray and the Stack View regression suites have
+  // their own configs (and their own builds/servers). This default config proves the
+  // public, scanner-disabled Pages build renders.
+  testMatch: /smoke\.spec\.ts/,
   timeout: 60_000,
   fullyParallel: false,
   reporter: [["list"]],

@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "e2e": "playwright test",
-    "e2e:xray": "playwright test -c playwright.xray.config.ts"
+    "e2e:xray": "playwright test -c playwright.xray.config.ts",
+    "e2e:stackview": "playwright test -c playwright.stackview.config.ts",
+    "build:xray-test": "VITE_BASE=/TechAtlas/ VITE_STATIC_API=true VITE_SCANNER_API=/api/v1 VITE_TEST_HOOKS=true vite build && rm -rf dist-xray-test && mv dist dist-xray-test"
   },
   "dependencies": {
     "@sigma/node-border": "^3.0.0",

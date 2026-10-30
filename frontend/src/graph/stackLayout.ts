@@ -47,14 +47,16 @@ export function computeStackLayout(
     nodeGap?: number;       // gap between nodes within a cluster
     cols?: number;          // cluster grid columns
     nodeCols?: number;      // node columns within a cluster
+    headingGap?: number;    // vertical clearance from heading to first node row
   } = {},
 ): StackLayout {
   // Gaps are in canonical graph-coordinate units (the universe spans ~2300x2300), so
   // clusters and nodes get real separation instead of collapsing into a central blob.
-  const clusterGapX = opts.clusterGapX ?? 1500;
-  const clusterGapY = opts.clusterGapY ?? 1100;
-  const nodeGap = opts.nodeGap ?? 300;
+  const clusterGapX = opts.clusterGapX ?? 1750;
+  const nodeGap = opts.nodeGap ?? 430;
   const nodeCols = opts.nodeCols ?? 3;
+  // Clearance between a cluster heading and its first node row (graph units).
+  const headingGap = opts.headingGap ?? 260;
 
   // group by domain
   const byDomain = new Map<string, StackNodeInput[]>();
@@ -64,7 +66,24 @@ export function computeStackLayout(
     byDomain.set(n.primaryDomain, list);
   }
   const domains = domainOrder([...byDomain.keys()]);
-  const cols = opts.cols ?? Math.min(3, Math.max(1, Math.ceil(Math.sqrt(domains.length))));
+  // Cluster grid columns. For few domains prefer a SINGLE ROW (cols = count) so small
+  // stacks sit side-by-side instead of stacking into a tall, sparse column. Beyond 3
+  // domains, grow toward a squarer grid (max 3 columns) to keep it compact.
+  const cols =
+    opts.cols ??
+    (domains.length <= 3
+      ? Math.max(1, domains.length)
+      : Math.min(3, Math.ceil(Math.sqrt(domains.length))));
+
+  // Vertical gap between cluster rows ADAPTS to the tallest cluster so small stacks
+  // are compact (no vast empty bands) while large clusters still get room. It equals
+  // the tallest cluster's node-block height + heading clearance + a breathing margin.
+  const maxRows = Math.max(
+    1,
+    ...[...byDomain.values()].map((m) => Math.ceil(m.length / nodeCols)),
+  );
+  const clusterGapY =
+    opts.clusterGapY ?? headingGap + (maxRows - 1) * nodeGap + 200;
 
   const positions = new Map<string, { x: number; y: number }>();
   const clusters: StackCluster[] = [];
@@ -78,8 +97,9 @@ export function computeStackLayout(
     );
     const gx = (ci % cols) * clusterGapX;
     const gy = Math.floor(ci / cols) * clusterGapY;
-    // heading sits above the cluster's node block
-    const heading = { x: gx, y: gy - 60 };
+    // heading sits well ABOVE the cluster's first node row so the label pill never
+    // overlaps the nodes (headingGap in graph units, scaled to node spacing).
+    const heading = { x: gx, y: gy - headingGap };
     clusters.push({ domainId, heading, nodeIds: members.map((m) => m.id) });
 
     members.forEach((m, i) => {
@@ -88,7 +108,7 @@ export function computeStackLayout(
       const x = gx + (c - (nodeCols - 1) / 2) * nodeGap;
       const y = gy + r * nodeGap;
       positions.set(m.id, { x, y });
-      minX = Math.min(minX, x); minY = Math.min(minY, y - 60);
+      minX = Math.min(minX, x); minY = Math.min(minY, y - headingGap);
       maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
     });
   });
