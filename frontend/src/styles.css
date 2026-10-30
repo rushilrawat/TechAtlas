@@ -364,22 +364,13 @@ body {
   color: var(--accent);
 }
 
-@media (max-width: 720px) {
-  .topbar {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .details {
-    top: auto;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    width: auto;
-    max-height: 55%;
-  }
-  .legend {
-    display: none;
-  }
+/* Tablet (640-1023px): narrower, collapsible panels; keep a graph-first feel. */
+@media (max-width: 1023px) {
+  .topbar { flex-wrap: wrap; gap: 10px; }
+  .details { width: 320px; }
+  .xray-panel { width: 320px; }
+  /* The full domain jump-list is heavy on tablet; the reopen chip keeps it reachable. */
+  .legend { max-width: 210px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -727,7 +718,29 @@ body {
 @media (max-width: 640px) {
   .xray-panel {
     top: auto; bottom: 0; right: 0; left: 0; width: auto; max-width: none;
-    max-height: 55%; border-radius: var(--radius) var(--radius) 0 0;
+    max-height: 62%; border-radius: var(--radius) var(--radius) 0 0;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
   }
-  .xray-legend { font-size: 10px; gap: 6px; padding: 6px 8px; }
+  /* Detail panel is also a bottom sheet on mobile, above the X-Ray sheet, own scroll. */
+  .details {
+    top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none;
+    max-height: 70%; border-radius: var(--radius) var(--radius) 0 0;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .xray-legend {
+    font-size: 10px; gap: 6px; padding: 6px 8px;
+    left: 8px; right: 8px; max-width: none; flex-wrap: wrap;
+  }
+  /* Keep the domain reopen chip clear of the bottom sheet. */
+  .legend-reopen { bottom: auto; top: 58px; }
+  /* Req 6: the sticky partial banner must not grow to obscure content on small screens. */
+  .xray-partial { max-height: 30vh; overflow-y: auto; }
+  /* Search wraps to its own full-width row, tappable; no hover needed (req 5). */
+  .search { flex: 1 1 100%; max-width: none; order: 3; }
+  .topbar { row-gap: 8px; }
+  /* Explore filters become a compact bottom sheet on mobile so the graph stays visible. */
+  .filter-panel {
+    top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none;
+    max-height: 45%; border-radius: var(--radius) var(--radius) 0 0;
+  }
 }

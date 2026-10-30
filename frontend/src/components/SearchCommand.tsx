@@ -94,8 +94,13 @@ export function SearchCommand({ onPick }: Props) {
         className="search-input"
         placeholder="Search technologies, concepts, domains…  ( / )"
         aria-label="Search the technology graph"
+        role="combobox"
         aria-expanded={open}
         aria-controls="search-results"
+        aria-autocomplete="list"
+        aria-activedescendant={
+          open && results.length > 0 ? `search-opt-${active}` : undefined
+        }
         autoComplete="off"
         value={query}
         onChange={(e) => {
@@ -111,6 +116,7 @@ export function SearchCommand({ onPick }: Props) {
           {results.map((r, i) => (
             <li
               key={r.id}
+              id={`search-opt-${i}`}
               role="option"
               aria-selected={i === active}
               className={i === active ? "search-item active" : "search-item"}

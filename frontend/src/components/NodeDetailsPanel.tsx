@@ -21,13 +21,22 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const [loading, setLoading] = useState(true);
   const panelRef = useRef<HTMLElement | null>(null);
 
-  // UI-C focus management: move focus into the detail surface when it opens so keyboard
-  // and screen-reader users land here (one navigational surface), and let Escape close it.
+  // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
+  // technology row or search option), move focus into the detail surface on open, let
+  // Escape close it, and RESTORE focus to the opener on close/unmount — for all close
+  // paths (Escape, close button, back-navigation deselect).
   useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
     panelRef.current?.focus();
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      // Restore focus only if the opener is still in the document and focusable.
+      if (opener && document.contains(opener) && typeof opener.focus === "function") {
+        opener.focus();
+      }
+    };
   }, [onClose]);
 
   useEffect(() => {

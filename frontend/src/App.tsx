@@ -58,7 +58,16 @@ export default function App() {
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
-  useEffect(() => { setLegendCollapsed(xrayOpen); }, [xrayOpen]);
+  // Auto-minimize the domain legend when entering X-Ray OR on narrow (mobile/tablet)
+  // viewports, so the graph is not buried; the user can still reopen it. Re-evaluates on
+  // resize so rotating or resizing updates the default.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const apply = () => setLegendCollapsed(xrayOpen || mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [xrayOpen]);
 
   // UI-C refinement 1: while a node detail overlays the X-Ray summary, make the
   // underlying summary inert so there are never two simultaneously-interactive
