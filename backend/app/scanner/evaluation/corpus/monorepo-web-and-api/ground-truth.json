@@ -1,0 +1,15 @@
+{
+  "repository": "example/monorepo-web-and-api",
+  "ecosystems": [
+    "npm",
+    "pypi"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:fastapi"
+    }
+  ]
+}

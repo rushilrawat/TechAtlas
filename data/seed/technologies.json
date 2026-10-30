@@ -1412,7 +1412,12 @@
     "official_url": "https://spring.io/projects/spring-boot",
     "documentation_url": "https://docs.spring.io/spring-boot/index.html",
     "wikipedia_title": "Spring Framework",
-    "repo": "spring-projects/spring-boot"
+    "repo": "spring-projects/spring-boot",
+    "aliases": [
+      "spring-boot-starter",
+      "spring-boot-starter-web",
+      "springboot"
+    ]
   },
   {
     "id": "technology:dotnet",

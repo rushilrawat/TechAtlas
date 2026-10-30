@@ -1,0 +1,7 @@
+{
+  "owner": "example",
+  "name": "go-gin-api",
+  "commit_sha": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "default_branch": "main",
+  "language": "Go"
+}

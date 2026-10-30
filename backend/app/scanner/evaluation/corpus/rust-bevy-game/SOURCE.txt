@@ -1,0 +1,3 @@
+Synthetic fixture authored for the TechAtlas Phase 1.5C evaluation harness.
+Manifest/source content is minimal and hand-written (not copied from a repo),
+so there are no third-party license constraints. Ground truth is human-authored.

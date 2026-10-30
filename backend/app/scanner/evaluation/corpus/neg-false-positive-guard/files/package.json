@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "my-internal-react-helpers": "1.0.0",
+    "totally-unknown-pkg-xyz": "1.0.0"
+  }
+}

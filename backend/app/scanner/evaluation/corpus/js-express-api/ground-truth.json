@@ -1,0 +1,17 @@
+{
+  "repository": "example/js-express-api",
+  "ecosystems": [
+    "npm"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:typescript"
+    }
+  ]
+}

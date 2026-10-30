@@ -1,0 +1,2 @@
+Synthetic negative-case fixture: package names that must NOT false-positive to
+canonical nodes (loose-substring guard). Hand-written; no license constraints.

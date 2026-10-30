@@ -23,7 +23,9 @@ target-version = "py311"
 # One-off Phase 1B data-authoring scripts: their output (data/seed/*.json) is the
 # real deliverable and is validated by scripts/validate_dataset.py. The generators
 # themselves are provenance, not shipped code, so they are excluded from lint.
-extend-exclude = ["../scripts/expand"]
+extend-exclude = ["../scripts/expand",
+    # Evaluation corpus fixtures are repository-content samples, not shipped code.
+    "app/scanner/evaluation/corpus"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

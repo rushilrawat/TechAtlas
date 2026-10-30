@@ -1,0 +1,7 @@
+{
+  "owner": "example",
+  "name": "monorepo-web-and-api",
+  "commit_sha": "ffffffffffffffffffffffffffffffffffffffff",
+  "default_branch": "main",
+  "language": "TypeScript"
+}

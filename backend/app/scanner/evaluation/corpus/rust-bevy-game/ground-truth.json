@@ -1,0 +1,11 @@
+{
+  "repository": "example/rust-bevy-game",
+  "ecosystems": [
+    "cargo"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:bevy"
+    }
+  ]
+}

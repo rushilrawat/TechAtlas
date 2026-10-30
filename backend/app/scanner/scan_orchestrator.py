@@ -146,7 +146,13 @@ def build_scan(
         return eid
 
     def component_of(path: str) -> str | None:
-        return path.split("/", 1)[0] if "/" in path else None
+        # Workspace = the directory that holds the contributing file (Req 9.1/9.2). A
+        # root-level file (no slash) belongs to the root workspace and contributes no
+        # distinct component path. Nested manifests (e.g. services/api/go.mod) yield the
+        # full workspace dir "services/api" so sibling workspaces stay distinguishable.
+        if "/" not in path:
+            return None
+        return path.rsplit("/", 1)[0]
 
     # Lockfile rules per ecosystem signal transitive presence; manifests signal direct.
     _LOCKFILE_RULES = {

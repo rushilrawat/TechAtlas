@@ -1,0 +1,11 @@
+{
+  "repository": "example/go-gin-api",
+  "ecosystems": [
+    "go"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:gin"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "repository": "example/java-spring-gradle",
+  "ecosystems": [
+    "maven"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:spring-boot"
+    }
+  ]
+}

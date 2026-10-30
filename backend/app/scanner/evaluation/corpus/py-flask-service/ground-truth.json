@@ -1,0 +1,20 @@
+{
+  "repository": "example/py-flask-service",
+  "ecosystems": [
+    "pypi"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:flask"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:celery"
+    },
+    {
+      "node_id": "technology:pytest"
+    }
+  ]
+}

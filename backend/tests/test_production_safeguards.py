@@ -217,3 +217,69 @@ def test_route_rate_limit_not_bypassed_by_forged_xff(client, monkeypatch):
     # 3rd request, yet another forged leftmost — still the SAME bucket -> 429.
     r = c.post("/api/v1/repository-scans", json=body, headers=forged("3.3.3.3"))
     assert r.status_code == 429, "forged XFF must not create a fresh rate-limit bucket"
+
+
+# ---- Phase 1.5C targeted regression tests: timeouts, partial coverage, distinct clients
+
+def test_scan_deadline_in_past_marks_partial(monkeypatch):
+    """A wall-clock deadline already elapsed stops fetching and yields a PARTIAL scan
+    (never a hang, never a false 'completed')."""
+    import time as _t
+
+    from app.graph_service import GraphService
+    from app.scanner.github_client import GitHubClient
+    from app.scanner.scan_orchestrator import run_scan
+    from app.scanner.technology_matcher import TechnologyMatcher
+    from tests.test_scanner import FakeGitHub
+
+    fake = FakeGitHub(files={
+        "package.json": '{"dependencies":{"react":"18.0.0"}}',
+        "src/a.js": "import 'react'",
+    })
+    gh = GitHubClient(client=fake, token=None, request_budget=200)
+    matcher = TechnologyMatcher(GraphService().all_nodes())
+    scan = run_scan("https://github.com/acme/app", gh, matcher, mapping_version="0.3.0",
+                    deadline=_t.monotonic() - 1)  # already past
+    assert scan.coverage.partial is True
+    assert scan.status == "partial"
+
+
+def test_partial_coverage_has_note_and_never_claims_complete():
+    """A truncated tree must set partial, add a coverage note, and report status=partial."""
+    from app.graph_service import GraphService
+    from app.scanner.github_client import GitHubClient
+    from app.scanner.scan_orchestrator import run_scan
+    from app.scanner.technology_matcher import TechnologyMatcher
+    from tests.test_scanner import FakeGitHub
+
+    fake = FakeGitHub(truncated=True,
+                      files={"package.json": '{"dependencies":{"react":"18.0.0"}}'})
+    gh = GitHubClient(client=fake, token=None, request_budget=200)
+    matcher = TechnologyMatcher(GraphService().all_nodes())
+    scan = run_scan("https://github.com/acme/app", gh, matcher, mapping_version="0.3.0")
+    assert scan.coverage.partial is True
+    assert scan.status == "partial"
+    assert any("truncated" in n.lower() for n in scan.coverage.notes)
+
+
+def test_distinct_clients_get_independent_rate_buckets(client, monkeypatch):
+    """Two DIFFERENT clients (different rightmost-trusted X-Forwarded-For) must not share
+    a rate-limit bucket: exhausting one client's burst does not 429 the other."""
+    c, main = client
+    from app.scanner.repository_resolver import RepoIdentity
+    monkeypatch.setattr(main, "GitHubClient", lambda *a, **k: object())
+    ident = RepoIdentity("o", "r", "https://github.com/o/r", "main", "a" * 40,
+                         None, None, None)
+    monkeypatch.setattr("app.scanner.repository_resolver.resolve", lambda url, gh: ident)
+    monkeypatch.setattr(main._get_scan_cache(), "get", lambda *a: _scan("cached"))
+    body = {"repository_url": "https://github.com/o/r"}
+
+    # Client A (rightmost-trusted IP 203.0.113.1): exhaust capacity=2 then hit 429.
+    hdr_a = {"x-forwarded-for": "203.0.113.1"}
+    assert c.post("/api/v1/repository-scans", json=body, headers=hdr_a).status_code == 200
+    assert c.post("/api/v1/repository-scans", json=body, headers=hdr_a).status_code == 200
+    assert c.post("/api/v1/repository-scans", json=body, headers=hdr_a).status_code == 429
+
+    # Client B (different rightmost-trusted IP) still has a full bucket -> 200.
+    hdr_b = {"x-forwarded-for": "203.0.113.2"}
+    assert c.post("/api/v1/repository-scans", json=body, headers=hdr_b).status_code == 200

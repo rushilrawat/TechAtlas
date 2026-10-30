@@ -1,0 +1,17 @@
+{
+  "repository": "example/neg-false-positive-guard",
+  "ecosystems": [
+    "npm"
+  ],
+  "expected_detections": [],
+  "expected_unmapped": [
+    {
+      "name": "my-internal-react-helpers",
+      "ecosystem": "npm"
+    },
+    {
+      "name": "totally-unknown-pkg-xyz",
+      "ecosystem": "npm"
+    }
+  ]
+}

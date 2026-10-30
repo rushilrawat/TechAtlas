@@ -75,6 +75,28 @@ class TechnologyMatcher:
         hit = self._by_pkg.get((ecosystem, lower))
         if hit:
             return hit
+
+        # 2. ecosystem-specific identifier shapes -> repo / artifact match.
+        if ecosystem == "go":
+            # A Go module path is host/owner/repo[/sub...]. Try the owner/repo pair
+            # against known source repos (e.g. github.com/gin-gonic/gin -> gin-gonic/gin).
+            parts = lower.split("/")
+            if len(parts) >= 3:
+                repo_hit = self._by_repo.get("/".join(parts[1:3]))
+                if repo_hit:
+                    return repo_hit
+        elif ecosystem == "maven":
+            # A Maven coordinate is group:artifact. Match the artifact id against the
+            # official name/alias (e.g. spring-boot-starter-web -> spring-boot) and try
+            # the group's trailing segment too, without loose substring matching.
+            if ":" in lower:
+                group, artifact = lower.split(":", 1)
+                for cand in (artifact, artifact.replace("-", " "),
+                             group.rsplit(".", 1)[-1]):
+                    repo_hit = self._by_name.get(_norm(cand))
+                    if repo_hit:
+                        return repo_hit
+
         # 3. exact normalized official name / 4. approved alias
         hit = self._by_name.get(_norm(lower))
         if hit:

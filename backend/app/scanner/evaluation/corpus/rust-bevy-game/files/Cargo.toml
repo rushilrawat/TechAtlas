@@ -1,0 +1,4 @@
+[package]
+name = "game"
+[dependencies]
+bevy = "0.13"
