@@ -125,6 +125,7 @@ def _index() -> GraphIndex:
         type_slugs={("technology", "react")},
         wikidata_ids={"Q19399674"},
         norm_names={"react", "vuejs"},
+        all_slugs={"react"},
     )
 
 
@@ -151,14 +152,14 @@ def test_dedup_drops_existing_slug_name_and_qid():
 
 
 def test_dedup_collapses_self_collisions():
-    idx = GraphIndex(set(), set(), set(), set())
+    idx = GraphIndex(set(), set(), set(), set(), set())
     res = dedup([_raw("Deno"), _raw("Deno")], idx)
     assert len(res.kept) == 1
     assert len(res.dropped) == 1
 
 
 def test_dedup_drops_unslugglable():
-    idx = GraphIndex(set(), set(), set(), set())
+    idx = GraphIndex(set(), set(), set(), set(), set())
     res = dedup([_raw("***")], idx)
     assert res.kept == []
     assert "slug" in res.dropped[0][1]

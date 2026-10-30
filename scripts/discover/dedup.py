@@ -41,6 +41,7 @@ class GraphIndex:
     type_slugs: set[tuple[str, str]]
     wikidata_ids: set[str]
     norm_names: set[str]
+    all_slugs: set[str]
 
     @classmethod
     def from_dataset(cls, path: Path = DATASET) -> GraphIndex:
@@ -49,16 +50,18 @@ class GraphIndex:
         type_slugs: set[tuple[str, str]] = set()
         wikidata_ids: set[str] = set()
         norm_names: set[str] = set()
+        all_slugs: set[str] = set()
         for n in data.get("nodes", []):
             ids.add(n["id"])
             type_slugs.add((n["node_type"], n["slug"]))
+            all_slugs.add(n["slug"])
             if n.get("wikidata_id"):
                 wikidata_ids.add(n["wikidata_id"])
             for alias in [n.get("name", ""), *n.get("aliases", [])]:
                 norm = normalize(alias)
                 if norm:
                     norm_names.add(norm)
-        return cls(ids, type_slugs, wikidata_ids, norm_names)
+        return cls(ids, type_slugs, wikidata_ids, norm_names, all_slugs)
 
 
 @dataclass
@@ -83,7 +86,9 @@ def dedup(candidates: list[RawCandidate], index: GraphIndex) -> DedupResult:
         norm = normalize(c.name)
 
         # Against the existing graph.
-        if f"technology:{slug}" in index.ids or ("technology", slug) in index.type_slugs:
+        if slug in index.all_slugs:
+            # A slug collision with ANY node type blocks the candidate: static files
+            # and deep links are keyed by bare slug across types.
             dropped.append((c, f"slug '{slug}' already in graph"))
             continue
         if c.wikidata_id and c.wikidata_id in index.wikidata_ids:

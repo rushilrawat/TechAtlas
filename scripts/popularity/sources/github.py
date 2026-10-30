@@ -10,6 +10,7 @@ that metric. An optional GITHUB_TOKEN (build-time env) raises the rate limit.
 """
 from __future__ import annotations
 
+import calendar
 import os
 import time
 
@@ -22,7 +23,8 @@ _ACTIVITY_HALF_LIFE_DAYS = 180.0
 
 def _activity_score(pushed_at: str) -> float | None:
     try:
-        pushed = time.mktime(time.strptime(pushed_at, "%Y-%m-%dT%H:%M:%SZ"))
+        # UTC-correct parse (pushed_at is a UTC timestamp from GitHub).
+        pushed = calendar.timegm(time.strptime(pushed_at, "%Y-%m-%dT%H:%M:%SZ"))
     except (ValueError, TypeError):
         return None
     age_days = max(0.0, (time.time() - pushed) / 86400.0)

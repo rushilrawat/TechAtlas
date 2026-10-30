@@ -17,11 +17,18 @@ export function SearchCommand({ onPick }: Props) {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  // The value just chosen from the dropdown; skip the next search so picking a
+  // result doesn't reopen the list 180ms later.
+  const justPickedRef = useRef<string | null>(null);
 
   useEffect(() => {
     const q = query.trim();
     if (!q) {
       setResults([]);
+      return;
+    }
+    if (q === justPickedRef.current) {
+      // We set the query to a picked result's name; don't search for it again.
       return;
     }
     const controller = new AbortController();
@@ -57,7 +64,9 @@ export function SearchCommand({ onPick }: Props) {
 
   function pick(r: SearchResult) {
     onPick(r.slug);
+    justPickedRef.current = r.name;
     setOpen(false);
+    setResults([]);
     setQuery(r.name);
   }
 
@@ -89,7 +98,11 @@ export function SearchCommand({ onPick }: Props) {
         aria-controls="search-results"
         autoComplete="off"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          // Any manual edit clears the just-picked guard so re-typing searches again.
+          justPickedRef.current = null;
+          setQuery(e.target.value);
+        }}
         onFocus={() => results.length && setOpen(true)}
         onKeyDown={onKeyDown}
       />

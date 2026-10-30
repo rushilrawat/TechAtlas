@@ -100,3 +100,32 @@ def test_load_popularity_parses_scores(tmp_path):
     )
     loaded = load_popularity(p)
     assert loaded == {"technology:a": 0.9, "technology:b": 0.1}
+
+
+# --- P3 item 13: served size must stay consistent with size_basis even when the
+# committed layout was generated WITHOUT popularity data (stale layout radius) -----
+
+def test_size_consistent_with_popularity_basis_over_stale_layout(tmp_path):
+    import json
+    import shutil
+    from pathlib import Path
+
+    from sizing import SIZE_TECH
+
+    from app.graph_service import GraphService
+
+    root = Path(__file__).resolve().parent.parent.parent
+    shutil.copy(root / "data" / "graph.json", tmp_path / "graph.json")
+    shutil.copy(root / "data" / "layout.json", tmp_path / "layout.json")
+    # layout.json here is connectivity-based (no popularity). Add popularity scoring
+    # react at 0.0 -> the served size MUST be the popularity radius (floor), not the
+    # stale connectivity radius from the layout.
+    (tmp_path / "popularity.json").write_text(
+        json.dumps({"scores": {"technology:react": {"score": 0.0, "metrics": {}}}})
+    )
+    svc = GraphService(data_dir=tmp_path)
+    nodes, _ = svc.graph()
+    react = next(n for n in nodes if n.id == "technology:react")
+    assert react.size_basis == "popularity"
+    assert react.popularity == 0.0
+    assert abs(react.size - SIZE_TECH[0]) < 0.01  # floor, consistent with score 0.0

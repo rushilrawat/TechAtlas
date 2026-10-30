@@ -12,6 +12,10 @@ built incrementally, milestone by milestone, per the spec's roadmap.
 **Phases 0–1D complete.** Built incrementally per the spec roadmap; Phase 2 (AI
 recommendations) is the only remaining milestone.
 
+**Live demo:** https://rushilrawat.github.io/TechAtlas/ — a fully static build (the API
+responses are pre-rendered to JSON by `scripts/build_static_api.py` and fetched client-side;
+Wikipedia summaries, which need the live backend, degrade to the outbound link).
+
 What exists today:
 
 - A canonical graph schema (nodes / edges / aliases) in `data/schema`.
@@ -39,7 +43,11 @@ What exists today:
 
 What does **not** yet exist (and is not claimed to):
 
+- Repo X-Ray / GitHub stack scanner (Phase 1.5) — specced in
+  `.kiro/specs/techatlas-phase-1.5-repo-xray/`, not yet built.
 - AI project-to-stack recommendations (Phase 2) — designed and specced, not yet built.
+
+See `docs/known-issues.md` for tracked low-severity issues.
 
 ## Repository layout
 
@@ -51,6 +59,10 @@ What does **not** yet exist (and is not claimed to):
 /docs        Architecture, schema, and methodology documentation
 /.kiro/specs Requirements / design / tasks for each milestone
 ```
+
+The GitHub Pages deploy runs a Playwright browser smoke test on the built site (graph
+renders, nodes select, detail panel opens) as a gate before publishing — an HTTP 200 is
+not treated as deployment success.
 
 ## Quick start
 

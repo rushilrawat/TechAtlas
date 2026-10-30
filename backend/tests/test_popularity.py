@@ -72,12 +72,13 @@ def test_package_fetch_npm_and_pypi_and_crates():
         {
             "last-month/react": (200, {"downloads": 25_000_000}),
             "packages/fastapi/recent": (200, {"data": {"last_month": 9_000_000}}),
-            "crates/bevy": (200, {"crate": {"downloads": 3_000_000}}),
+            "crates/bevy": (200, {"crate": {"recent_downloads": 3_000_000}}),
         }
     )
     assert packages.fetch("npm", "react", client=client).value == 25_000_000
     assert packages.fetch("pypi", "fastapi", client=client).value == 9_000_000
-    assert packages.fetch("crates", "bevy", client=client).value == 3_000_000
+    # recent_downloads (90d) / 3 => comparable monthly figure
+    assert packages.fetch("crates", "bevy", client=client).value == 1_000_000
 
 
 def test_package_unwired_ecosystem_returns_none():

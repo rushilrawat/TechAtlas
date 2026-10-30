@@ -20,6 +20,7 @@ not change existing API shapes — the summary is attached as an optional field.
 """
 from __future__ import annotations
 
+import calendar
 import json
 import time
 from collections import OrderedDict
@@ -144,7 +145,10 @@ class SummaryService:
         if self._ttl_seconds <= 0:
             return True
         try:
-            fetched = time.mktime(time.strptime(summary.fetched_at, "%Y-%m-%dT%H:%M:%SZ"))
+            # timegm treats the parsed struct as UTC (fetched_at is written with gmtime);
+            # time.mktime would wrongly assume local time and skew staleness by the
+            # machine UTC offset.
+            fetched = calendar.timegm(time.strptime(summary.fetched_at, "%Y-%m-%dT%H:%M:%SZ"))
         except (ValueError, TypeError):
             return True
         return (time.time() - fetched) > self._ttl_seconds

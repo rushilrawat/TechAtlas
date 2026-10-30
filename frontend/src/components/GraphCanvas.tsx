@@ -53,6 +53,10 @@ export function GraphCanvas({
   const visibleEdgesRef = useRef<Set<string> | null>(visibleEdges);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
+  // Exposes the build-effect's coalesced refresh to the selection/filter effects,
+  // so a selection change from search/legend/deep-link/panel recomputes the highlight
+  // set (not just a bare renderer.refresh()).
+  const scheduleRefreshRef = useRef<(() => void) | null>(null);
   const ratioRef = useRef<number>(1);
 
   // Build the Sigma instance once per dataset.
@@ -77,7 +81,12 @@ export function GraphCanvas({
 
     // Compute the highlight set once whenever the active node changes.
     const recomputeActive = () => {
-      const active = selectedRef.current ?? hoveredRef.current;
+      let active = selectedRef.current ?? hoveredRef.current;
+      // If a filter currently hides the active node, don't treat it as active —
+      // otherwise every visible node outside its neighbor set gets dimmed and the
+      // graph looks blanked (requirement: handle selection hidden by filtering).
+      const vis = visibleNodesRef.current;
+      if (active && vis && !vis.has(active)) active = null;
       if (active === activeRef.current) return;
       activeRef.current = active;
       if (!active || !graph.hasNode(active)) {
@@ -98,6 +107,7 @@ export function GraphCanvas({
         renderer.refresh();
       });
     };
+    scheduleRefreshRef.current = scheduleRefresh;
 
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
     // from semanticZoom.ts and fed the live camera ratio.
@@ -193,10 +203,9 @@ export function GraphCanvas({
   // React to selection changes (recompute happens inside the scheduled refresh).
   useEffect(() => {
     selectedRef.current = selectedId;
-    const renderer = sigmaRef.current;
-    if (!renderer) return;
-    // force a refresh to pick up the new selection
-    renderer.refresh();
+    // Recompute the highlight set (not just a bare refresh) so selections coming
+    // from search, the legend, a deep link, or the detail panel update the graph.
+    scheduleRefreshRef.current?.();
   }, [selectedId]);
 
   // React to filter changes: update the live sets the reducers read, then refresh.
@@ -204,8 +213,8 @@ export function GraphCanvas({
   useEffect(() => {
     visibleNodesRef.current = visibleNodes;
     visibleEdgesRef.current = visibleEdges;
-    const renderer = sigmaRef.current;
-    if (renderer) renderer.refresh();
+    // Recompute active too: a filter may have just hidden the selected node.
+    scheduleRefreshRef.current?.();
   }, [visibleNodes, visibleEdges]);
 
   // Animate the camera to the focused node; cancel any in-flight animation (Task 9).

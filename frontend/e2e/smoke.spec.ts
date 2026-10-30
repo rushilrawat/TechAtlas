@@ -63,3 +63,25 @@ test("deep link under the base path loads the right node", async ({ page }) => {
   await expect(panel).toBeVisible();
   await expect(panel.getByRole("heading", { name: "FastAPI" })).toBeVisible();
 });
+
+test("selecting a second node (via search) updates the panel — no stale highlight", async ({ page }) => {
+  // Regression for the selection-highlight bug: a selection coming from search must
+  // update the graph/panel, and switching to another node must swap cleanly.
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+
+  const search = page.getByLabel("Search the technology graph");
+  const panel = page.locator(".details");
+
+  await search.click();
+  await search.fill("react");
+  await page.getByRole("option").first().click();
+  await expect(panel.getByRole("heading", { name: "React" })).toBeVisible();
+
+  // Pick a different node; the panel must now show it (not the stale first one).
+  await search.click();
+  await search.fill("fastapi");
+  await page.getByRole("option").first().click();
+  await expect(panel.getByRole("heading", { name: "FastAPI" })).toBeVisible();
+  await expect(panel.getByRole("heading", { name: "React" })).toHaveCount(0);
+});

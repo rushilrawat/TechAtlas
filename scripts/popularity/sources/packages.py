@@ -52,16 +52,22 @@ def _pypi(name: str, client, timeout: float) -> MetricValue | None:
 
 
 def _crates(name: str, client, timeout: float) -> MetricValue | None:
+    # IMPORTANT: npm and PyPI return LAST-MONTH downloads. crates.io's
+    # crate.downloads is ALL-TIME, which is not comparable and would massively
+    # inflate crates in a shared min-max metric. Use recent_downloads (last 90 days)
+    # divided by 3 to approximate a monthly figure on the same scale.
     try:
         resp = client.get(CRATES_URL.format(name=name), headers=_HEADERS, timeout=timeout)
         if resp.status_code != 200:
             return None
-        downloads = resp.json().get("crate", {}).get("downloads")
+        crate = resp.json().get("crate", {})
+        recent = crate.get("recent_downloads")
     except Exception:  # noqa: BLE001
         return None
-    if not isinstance(downloads, (int, float)):
-        return None
-    return MetricValue(float(downloads), "crates", _now(), CRATES_LICENSE)
+    if not isinstance(recent, (int, float)):
+        return None  # no comparable monthly figure -> treat as missing, never all-time
+    monthly = float(recent) / 3.0
+    return MetricValue(monthly, "crates", _now(), CRATES_LICENSE)
 
 
 _FETCHERS = {"npm": _npm, "pypi": _pypi, "crates": _crates}

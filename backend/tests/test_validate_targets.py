@@ -59,3 +59,54 @@ def test_both_out_of_range_reports_two_errors():
 def test_missing_counts_treated_as_zero():
     errors = vd.check_targets({})
     assert len(errors) == 2
+
+
+# --- cross-type slug collisions + URL scheme (P3 hardening) ------------------
+
+def _ds(nodes, edges=None):
+    return {"version": "0.0.0", "nodes": nodes, "edges": edges or []}
+
+
+def _node(nid, slug, ntype, **extra):
+    n = {"id": nid, "slug": slug, "name": slug, "node_type": ntype,
+         "primary_domain": "domain:d", "short_description": "x"}
+    n.update(extra)
+    return n
+
+
+def test_cross_type_slug_collision_is_error():
+    ds = _ds([
+        _node("domain:d", "d", "domain"),
+        _node("technology:x", "x", "technology"),
+        _node("concept:x", "x", "concept"),
+    ])
+    r = vd.validate(ds)
+    assert any("multiple node types" in e for e in r.errors)
+
+
+def test_unique_slugs_across_types_pass():
+    ds = _ds([
+        _node("domain:d", "d", "domain"),
+        _node("technology:x", "x", "technology"),
+        _node("concept:y", "y", "concept"),
+    ])
+    r = vd.validate(ds)
+    assert not any("multiple node types" in e for e in r.errors)
+
+
+def test_non_http_url_is_error():
+    ds = _ds([
+        _node("domain:d", "d", "domain"),
+        _node("technology:x", "x", "technology", official_url="javascript:alert(1)"),
+    ])
+    r = vd.validate(ds)
+    assert any("not an http(s) URL" in e for e in r.errors)
+
+
+def test_https_url_passes():
+    ds = _ds([
+        _node("domain:d", "d", "domain"),
+        _node("technology:x", "x", "technology", official_url="https://x.dev"),
+    ])
+    r = vd.validate(ds)
+    assert not any("not an http(s) URL" in e for e in r.errors)

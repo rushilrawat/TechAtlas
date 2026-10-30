@@ -96,6 +96,7 @@ def validate(dataset: dict) -> Report:
     by_id: dict[str, dict] = {}
     type_slug_seen: set[tuple[str, str]] = set()
     alias_owner: dict[str, str] = {}
+    slug_owner: dict[str, str] = {}
 
     for node in nodes:
         nid = node.get("id")
@@ -117,6 +118,24 @@ def validate(dataset: dict) -> Report:
         if key in type_slug_seen:
             report.error(f"Duplicate (node_type, slug): {key}")
         type_slug_seen.add(key)
+
+        # Slugs must be unique ACROSS node types too: static detail files are keyed by
+        # bare slug (data/.../nodes/<slug>.json) and deep links resolve by slug, so a
+        # concept and a technology sharing a slug would collide/overwrite each other.
+        if slug is not None:
+            if slug in slug_owner and slug_owner[slug] != nid:
+                report.error(
+                    f"Slug '{slug}' used by multiple node types: "
+                    f"{slug_owner[slug]} and {nid}"
+                )
+            else:
+                slug_owner.setdefault(slug, nid)
+
+        # Untrusted/http-safety: official_url and documentation_url must be http(s).
+        for url_field in ("official_url", "documentation_url"):
+            val = node.get(url_field)
+            if val and not (val.startswith("http://") or val.startswith("https://")):
+                report.error(f"Node {nid} {url_field} is not an http(s) URL: {val!r}")
 
         # aliases: name + declared aliases must be searchable & ideally unique
         for alias in [node.get("name", ""), *node.get("aliases", [])]:

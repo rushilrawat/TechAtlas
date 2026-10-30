@@ -131,14 +131,19 @@ class GraphService:
         return "popularity" if node["id"] in self._popularity else "connectivity"
 
     def _size(self, node: dict) -> float:
-        # Prefer the radius emitted by the offline layout (identical formula). Fall
-        # back to computing it here so the API still works without a layout file.
-        coord = self._coords.get(node["id"])
-        if coord and isinstance(coord.get("radius"), (int, float)):
-            return float(coord["radius"])
-        return node_radius(
-            node, self._degree, self._max_tech_degree, self._popularity_of(node)
-        )
+        # Keep the served size consistent with size_basis. If this node has a sourced
+        # popularity score, the authoritative size is the popularity-based radius —
+        # even if the committed layout was generated without popularity (otherwise the
+        # panel could say "sized by popularity" while serving a connectivity radius).
+        # When there is NO popularity score, prefer the layout's radius (identical
+        # formula, and it's what the overlap pass packed against); fall back to
+        # computing it if no layout file is present.
+        pop = self._popularity_of(node)
+        if pop is None:
+            coord = self._coords.get(node["id"])
+            if coord and isinstance(coord.get("radius"), (int, float)):
+                return float(coord["radius"])
+        return node_radius(node, self._degree, self._max_tech_degree, pop)
 
     def _to_graph_node(self, node: dict) -> GraphNode:
         coord = self._coords.get(node["id"], {})

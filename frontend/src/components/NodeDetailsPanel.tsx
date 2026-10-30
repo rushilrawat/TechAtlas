@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { NeighborEdge, NodeDetail } from "../api/types";
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
+import { safeHttpUrl } from "../util/safeUrl";
 
 interface Props {
   slugOrId: string;
@@ -65,26 +66,38 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate }: Props) {
               <p>{detail.summary.extract}</p>
               <p className="summary-attribution">
                 Summary from{" "}
-                <a
-                  href={detail.summary.source_url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Wikipedia
-                </a>{" "}
+                {safeHttpUrl(detail.summary.source_url) ? (
+                  <a
+                    href={safeHttpUrl(detail.summary.source_url) as string}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Wikipedia
+                  </a>
+                ) : (
+                  "Wikipedia"
+                )}{" "}
                 · {detail.summary.license}
               </p>
             </section>
           )}
 
           <div className="details-actions">
-            {detail.official_url && (
-              <a href={detail.official_url} target="_blank" rel="noreferrer noopener">
+            {safeHttpUrl(detail.official_url) && (
+              <a
+                href={safeHttpUrl(detail.official_url) as string}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
                 Official site
               </a>
             )}
-            {detail.documentation_url && (
-              <a href={detail.documentation_url} target="_blank" rel="noreferrer noopener">
+            {safeHttpUrl(detail.documentation_url) && (
+              <a
+                href={safeHttpUrl(detail.documentation_url) as string}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
                 Documentation
               </a>
             )}
