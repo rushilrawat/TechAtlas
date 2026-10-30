@@ -10,7 +10,7 @@ replace it later without changing the API layer.
 from __future__ import annotations
 
 import json
-import math
+import sys
 from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
@@ -23,6 +23,13 @@ from .models import (
     NodeDetail,
     SearchResult,
 )
+
+# Share the exact sizing formula with the offline layout generator so the radius the
+# API serves matches what the overlap pass packed against (scripts/sizing.py, Task 1).
+_SCRIPTS_DIR = Path(__file__).resolve().parent.parent.parent / "scripts"
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+from sizing import node_radius  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 
@@ -45,10 +52,8 @@ DOMAIN_COLORS: dict[str, str] = {
 }
 FALLBACK_COLOR = "#9aa5ce"
 
-# Render size bands by node type (spec §5.3: three separate scales, bounded radii).
-SIZE_DOMAIN = (14.0, 26.0)
-SIZE_CONCEPT = (6.0, 12.0)
-SIZE_TECH = (5.0, 16.0)
+# Render size bands come from scripts/sizing.py (single source of truth, Task 1):
+# SIZE_DOMAIN, SIZE_CONCEPT, SIZE_TECH are imported above.
 
 
 class GraphService:
@@ -109,20 +114,12 @@ class GraphService:
         return DOMAIN_COLORS.get(node.get("primary_domain", ""), FALLBACK_COLOR)
 
     def _size(self, node: dict) -> float:
-        ntype = node["node_type"]
-        if ntype == "domain":
-            lo, hi = SIZE_DOMAIN
-            imp = node.get("importance") or 0.5
-            return round(lo + (hi - lo) * imp, 2)
-        if ntype == "concept":
-            lo, hi = SIZE_CONCEPT
-            imp = node.get("importance") or 0.4
-            return round(lo + (hi - lo) * imp, 2)
-        # technology: sqrt scaling on normalized degree as a stand-in until real
-        # popularity data exists (spec §5.3 / §7 — honest placeholder, bounded).
-        lo, hi = SIZE_TECH
-        norm = self._degree[node["id"]] / self._max_tech_degree if self._max_tech_degree else 0
-        return round(lo + (hi - lo) * math.sqrt(norm), 2)
+        # Prefer the radius emitted by the offline layout (identical formula). Fall
+        # back to computing it here so the API still works without a layout file.
+        coord = self._coords.get(node["id"])
+        if coord and isinstance(coord.get("radius"), (int, float)):
+            return float(coord["radius"])
+        return node_radius(node, self._degree, self._max_tech_degree)
 
     def _to_graph_node(self, node: dict) -> GraphNode:
         coord = self._coords.get(node["id"], {})

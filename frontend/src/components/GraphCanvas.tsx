@@ -3,6 +3,7 @@ import Graph from "graphology";
 import Sigma from "sigma";
 import type { GraphResponse } from "../api/types";
 import { buildGraph } from "../graph/buildGraph";
+import { bandOf, labelVisibleAtRatio } from "../graph/semanticZoom";
 
 interface Props {
   data: GraphResponse;
@@ -15,16 +16,30 @@ const DIM_NODE = "rgba(120,130,150,0.12)";
 const DIM_EDGE = "rgba(120,130,150,0.04)";
 
 /**
- * The primary WebGL visualization. Owns the Sigma instance imperatively; React
- * only drives it through the `selectedId` / `focusId` props. Keeping Sigma out of
- * React's render loop avoids re-creating the renderer on every interaction (spec §15).
+ * The primary WebGL visualization. Owns the Sigma instance imperatively; React only
+ * drives it through props. Sigma is kept out of React's render loop so interactions
+ * never recreate the renderer (spec §15).
+ *
+ * Performance (smoothness plan, Tasks 7-9):
+ *  - the active node's neighbor set is computed ONCE per hover/selection change, not
+ *    per-node per-frame, avoiding O(n^2) work in the reducers;
+ *  - enter/leave events coalesce into a single requestAnimationFrame refresh;
+ *  - label/edge visibility follows the camera ratio (semantic zoom);
+ *  - camera animations cancel any in-flight animation before starting a new one.
  */
 export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
   const graphRef = useRef<Graph | null>(null);
+
   const hoveredRef = useRef<string | null>(null);
   const selectedRef = useRef<string | null>(selectedId);
+  // Precomputed highlight set for the current active node (Task 7).
+  const activeRef = useRef<string | null>(null);
+  const neighborSetRef = useRef<Set<string> | null>(null);
+  // rAF coalescing for refreshes (Task 7).
+  const rafRef = useRef<number | null>(null);
+  const ratioRef = useRef<number>(1);
 
   // Build the Sigma instance once per dataset.
   useEffect(() => {
@@ -38,7 +53,7 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
       labelColor: { color: "#c8d0e8" },
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
-      labelDensity: 0.6,
+      labelDensity: 0.7,
       labelGridCellSize: 70,
       zIndex: true,
       minCameraRatio: 0.08,
@@ -46,25 +61,62 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
     });
     sigmaRef.current = renderer;
 
-    const adjacency = (id: string): Set<string> => {
-      const set = new Set<string>([id]);
-      graph.forEachNeighbor(id, (nb) => set.add(nb));
-      return set;
+    // Compute the highlight set once whenever the active node changes.
+    const recomputeActive = () => {
+      const active = selectedRef.current ?? hoveredRef.current;
+      if (active === activeRef.current) return;
+      activeRef.current = active;
+      if (!active || !graph.hasNode(active)) {
+        neighborSetRef.current = null;
+        return;
+      }
+      const set = new Set<string>([active]);
+      graph.forEachNeighbor(active, (nb) => set.add(nb));
+      neighborSetRef.current = set;
     };
 
-    // Node reducer: dim everything not connected to the hovered/selected node.
+    // Coalesced refresh: at most one per animation frame (Task 7).
+    const scheduleRefresh = () => {
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        recomputeActive();
+        renderer.refresh();
+      });
+    };
+
+    // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
+    // from semanticZoom.ts and fed the live camera ratio.
+    const labelVisible = (nodeType: string, size: number): boolean =>
+      labelVisibleAtRatio(nodeType as never, size, ratioRef.current);
+
     renderer.setSetting("nodeReducer", (node, dataIn) => {
-      const active = selectedRef.current ?? hoveredRef.current;
-      if (!active) return dataIn;
-      const visible = adjacency(active);
-      if (visible.has(node)) {
-        return node === active ? { ...dataIn, zIndex: 2, highlighted: true } : dataIn;
+      const active = activeRef.current;
+      const res: Record<string, unknown> = { ...dataIn };
+
+      // Semantic-zoom label gating.
+      if (!labelVisible(dataIn.nodeType as string, dataIn.size as number)) {
+        res.label = "";
       }
-      return { ...dataIn, color: DIM_NODE, label: "", zIndex: 0 };
+
+      if (!active) return res;
+      const set = neighborSetRef.current;
+      if (set && set.has(node)) {
+        if (node === active) {
+          res.zIndex = 2;
+          res.highlighted = true;
+          res.label = dataIn.label; // always label the active node
+        }
+        return res;
+      }
+      res.color = DIM_NODE;
+      res.label = "";
+      res.zIndex = 0;
+      return res;
     });
 
     renderer.setSetting("edgeReducer", (edge, dataIn) => {
-      const active = selectedRef.current ?? hoveredRef.current;
+      const active = activeRef.current;
       if (!active) return dataIn;
       const [s, t] = graph.extremities(edge);
       if (s === active || t === active) {
@@ -75,31 +127,51 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
 
     renderer.on("enterNode", ({ node }) => {
       hoveredRef.current = node;
-      renderer.refresh();
+      scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "pointer";
     });
     renderer.on("leaveNode", () => {
       hoveredRef.current = null;
-      renderer.refresh();
+      scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "default";
     });
     renderer.on("clickNode", ({ node }) => onSelect(node));
     renderer.on("clickStage", () => onSelect(null));
 
+    // Re-gate labels when the zoom level crosses a threshold (Task 8).
+    const camera = renderer.getCamera();
+    const onCameraUpdate = () => {
+      const r = camera.getState().ratio;
+      const crossed =
+        bandOf(r) !== bandOf(ratioRef.current); // only refresh on band change
+      ratioRef.current = r;
+      if (crossed) scheduleRefresh();
+    };
+    camera.on("updated", onCameraUpdate);
+    ratioRef.current = camera.getState().ratio;
+
     return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      camera.removeListener("updated", onCameraUpdate);
       renderer.kill();
       sigmaRef.current = null;
       graphRef.current = null;
+      activeRef.current = null;
+      neighborSetRef.current = null;
     };
   }, [data, onSelect]);
 
-  // React to selection changes.
+  // React to selection changes (recompute happens inside the scheduled refresh).
   useEffect(() => {
     selectedRef.current = selectedId;
-    sigmaRef.current?.refresh();
+    const renderer = sigmaRef.current;
+    if (!renderer) return;
+    // force a refresh to pick up the new selection
+    renderer.refresh();
   }, [selectedId]);
 
-  // Animate the camera to the focused node (search / deep link / neighbor click).
+  // Animate the camera to the focused node; cancel any in-flight animation (Task 9).
   useEffect(() => {
     const renderer = sigmaRef.current;
     const graph = graphRef.current;
@@ -109,7 +181,10 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
     ).matches;
     const display = renderer.getNodeDisplayData(focusId);
     if (!display) return;
-    renderer.getCamera().animate(
+    const camera = renderer.getCamera();
+    // starting a new animation implicitly supersedes the previous target; calling
+    // animate again is safe, but we null-out the callback timer by not chaining.
+    camera.animate(
       { x: display.x, y: display.y, ratio: 0.35 },
       { duration: prefersReducedMotion ? 0 : 500 },
     );

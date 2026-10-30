@@ -22,8 +22,22 @@ over that single graph.
   unordered pair), endpoint-type rules per `docs/relationship-taxonomy.md`, and flags
   inferred (`is_curated: false`) edges so they are never silently trusted. It runs in CI.
 - **Layout:** `scripts/generate_layout.py` produces a **deterministic**,
-  community-aware force-directed layout (`data/layout.json`) offline, keyed to the
-  dataset version (spec §5.2). The browser never runs a full simulation.
+  community-aware layout (`data/layout.json`) offline, keyed to the dataset version
+  (spec §5.2). The browser never runs a full simulation. The pipeline:
+  1. **Per-node radius** from `scripts/sizing.py` — the single source of truth the
+     backend also uses, so the API-served size matches what the layout packed against.
+  2. **Connectivity-ordered domain ring** — domain anchors are placed so strongly
+     cross-linked domains sit adjacent, keeping cross-domain edges short.
+  3. **Barnes-Hut (quadtree) force layout** with relationship-weighted edge attraction
+     (`commonly_used_with` pulls hard, `alternative_to` barely pulls) and an early-stop
+     convergence cutoff, so it scales to the full target dataset.
+  4. **Radius-aware overlap resolution** — a final grid relaxation guarantees no two
+     bubbles overlap (edge-to-edge gap ≥ margin).
+  5. **Cross-version pinning** — on a version bump, unchanged nodes far from any change
+     are frozen at their previous coordinates; only new nodes and their 2-hop
+     neighborhood relax, so edits don't reshuffle the whole map. A fresh run (no prior
+     file, or same version) recomputes deterministically from a seeded hash, keeping CI
+     reproducible.
 
 ### Why JSON now, PostgreSQL later
 
@@ -53,6 +67,12 @@ scales. When real popularity ingestion lands, only the sizing input changes.
 - **Rendering:** Sigma.js (WebGL) over a Graphology graph (spec §8.2). The Sigma instance
   is owned imperatively in `GraphCanvas` and driven by props, so interactions don't
   recreate the renderer (spec §15).
+- **Interaction smoothness:** the active node's neighbor set is computed once per
+  hover/selection change (not per node per frame), hover enter/leave events coalesce into
+  a single `requestAnimationFrame` refresh, and label/edge visibility follows the camera
+  ratio via **semantic zoom** (`src/graph/semanticZoom.ts`, spec §5.5) — universe zoom
+  shows only domains + large hubs, detail zoom shows everything. Camera focus animations
+  supersede any in-flight animation and honor `prefers-reduced-motion`.
 - **Layout:** precomputed coordinates from the API; no browser-side physics.
 - **Components** (spec §11): `GraphCanvas`, `SearchCommand`, `NodeDetailsPanel`,
   `DomainLegend`, composed by `App`. Rendering, data fetching, and relationship phrasing
