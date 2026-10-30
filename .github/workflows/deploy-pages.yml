@@ -29,6 +29,13 @@ jobs:
       # Served from https://<user>.github.io/TechAtlas/ -> base path must match the repo.
       VITE_BASE: /TechAtlas/
       VITE_STATIC_API: "true"
+      # Repo X-Ray backend URL, injected at BUILD time from the repo variable
+      # SCANNER_API_URL (Settings -> Secrets and variables -> Actions -> Variables).
+      # Empty/unset => the Repo X-Ray entry point stays HIDDEN (the default public state).
+      # Set it to the Render HTTPS base (e.g. https://techatlas-scanner.onrender.com/api/v1)
+      # and the next deploy automatically exposes the feature. Not a secret (it is a public
+      # URL); the GITHUB_TOKEN lives only in the backend environment, never here.
+      VITE_SCANNER_API: ${{ vars.SCANNER_API_URL }}
     steps:
       - uses: actions/checkout@v4
 

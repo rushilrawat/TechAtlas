@@ -12,6 +12,31 @@ const RAW = import.meta.env.VITE_SCANNER_API;
 export const SCANNER_ENABLED = typeof RAW === "string" && RAW.trim().length > 0;
 const SCANNER_BASE = (RAW ?? "").replace(/\/$/, "");
 
+// Render Free sleeps when idle (~30-60s cold start); the backend scan deadline is ~45s.
+// Give the request up to ~90s before giving up, so a waking service isn't cut off, while
+// never hanging forever. The caller's AbortSignal (repo switch / unmount) still wins.
+const SCAN_TIMEOUT_MS = 90_000;
+
+function withTimeout(signal: AbortSignal | undefined, ms: number): {
+  signal: AbortSignal;
+  done: () => void;
+} {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(new DOMException("timeout", "TimeoutError")), ms);
+  const onAbort = () => ctrl.abort(signal?.reason);
+  if (signal) {
+    if (signal.aborted) ctrl.abort(signal.reason);
+    else signal.addEventListener("abort", onAbort, { once: true });
+  }
+  return {
+    signal: ctrl.signal,
+    done: () => {
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", onAbort);
+    },
+  };
+}
+
 export class ScanError extends Error {
   code: string;
   retryAfterSeconds: number | null;
@@ -50,14 +75,28 @@ export const scanner = {
     if (!SCANNER_ENABLED) {
       throw new ScanError({ error: "disabled", message: "Scanner is not configured." });
     }
-    const res = await fetch(`${SCANNER_BASE}/repository-scans`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ repository_url: repositoryUrl }),
-      signal,
-    });
-    if (!res.ok) throw await parseError(res);
-    return (await res.json()) as RepoScan;
+    const t = withTimeout(signal, SCAN_TIMEOUT_MS);
+    try {
+      const res = await fetch(`${SCANNER_BASE}/repository-scans`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ repository_url: repositoryUrl }),
+        signal: t.signal,
+      });
+      if (!res.ok) throw await parseError(res);
+      return (await res.json()) as RepoScan;
+    } catch (e) {
+      // Distinguish a timeout (likely cold start that never woke) from a user abort.
+      if (e instanceof DOMException && e.name === "TimeoutError") {
+        throw new ScanError({
+          error: "timeout",
+          message: "The scanner did not respond in time (it may be waking up). Try again.",
+        });
+      }
+      throw e;
+    } finally {
+      t.done();
+    }
   },
 
   async get(scanId: string, signal?: AbortSignal): Promise<RepoScan> {

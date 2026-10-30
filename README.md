@@ -52,6 +52,12 @@ on the public GitHub Pages site (which has no backend). It is available when the
 against a backend; see `docs/development-setup.md`. The scanner performs deterministic
 static analysis only — it never runs repository code.
 
+Production deployment (Render Free) is prepared (`render.yaml`, `backend/Dockerfile`, and
+production safeguards: per-IP rate limiting, a concurrency gate, a scan deadline, a bounded
+result store, strict CORS). The public GitHub Pages site keeps Repo X-Ray hidden until the
+backend URL is configured (`SCANNER_API_URL` repo variable). Exact setup +
+verification steps: `docs/deployment-scanner.md`.
+
 See `docs/known-issues.md` for tracked low-severity issues.
 
 ## Repository layout

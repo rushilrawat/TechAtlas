@@ -59,7 +59,7 @@ describe("RepoXrayPanel", () => {
 
   it("shows an analyzing state", () => {
     render(<RepoXrayPanel {...base({ phase: { kind: "analyzing", url: "https://github.com/acme/app" } })} />);
-    expect(screen.getByText(/Scanning/)).toBeTruthy();
+    expect(screen.getByText(/Connecting to the repository scanner/)).toBeTruthy();
   });
 
   it("renders a completed result grouped by domain with focusable techs", () => {

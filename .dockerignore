@@ -1,0 +1,13 @@
+frontend/
+scripts/
+!scripts/sizing.py
+docs/
+.kiro/
+.git/
+**/__pycache__/
+**/.venv/
+**/node_modules/
+data/cache/
+data/popularity*
+data/discovery/
+*.md

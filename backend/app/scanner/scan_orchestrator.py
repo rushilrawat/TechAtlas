@@ -8,6 +8,7 @@ coverage is labeled, never hidden. No repository code is executed.
 from __future__ import annotations
 
 import hashlib
+import time
 from urllib.parse import quote
 
 from .github_client import BudgetExceeded, GitHubClient, GitHubError
@@ -219,6 +220,7 @@ def run_scan(
     max_files: int = 300,
     max_source_files: int = 120,
     max_bytes: int = 256 * 1024,
+    deadline: float | None = None,
 ) -> RepoScan:
     """Full pipeline (does network via gh). Validation/resolution errors propagate as
     the resolver's typed exceptions / GitHubError for the route to translate."""
@@ -239,6 +241,9 @@ def run_scan(
     file_texts: dict[str, str] = {}
     if selection is not None:
         for f in selection.files:
+            if deadline is not None and time.monotonic() > deadline:
+                budget_hit = True  # overall wall-clock cap reached -> partial
+                break
             try:
                 txt = fetch_text(
                     identity.owner, identity.name, identity.commit_sha, f.path, gh,

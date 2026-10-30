@@ -100,7 +100,11 @@ export function RepoXrayPanel({
       {analyzing && (
         <div className="xray-status" role="status" aria-live="polite">
           <span className="xray-spinner" aria-hidden />
-          Scanning {phase.url.replace(/^https?:\/\/(www\.)?github\.com\//, "")}…
+          <span>
+            Connecting to the repository scanner and analyzing{" "}
+            {phase.url.replace(/^https?:\/\/(www\.)?github\.com\//, "")}…
+            <span className="xray-note"> The scanner may take up to a minute to wake up.</span>
+          </span>
         </div>
       )}
 
@@ -132,6 +136,8 @@ function errorTitle(code: string): string {
     case "invalid_url": return "Invalid URL";
     case "not_found": return "Repository not found";
     case "rate_limited": return "GitHub rate limit";
+    case "timeout": return "Scanner timed out";
+    case "busy": return "Scanner busy";
     default: return "Scan failed";
   }
 }

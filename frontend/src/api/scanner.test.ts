@@ -64,3 +64,37 @@ describe("scanner client", () => {
     await expect(scanner.scan("https://github.com/a/b")).rejects.toBeInstanceOf(ScanError);
   });
 });
+
+describe("scanner cold-start resilience", () => {
+  it("aborts with a timeout ScanError when the backend never responds", async () => {
+    vi.useFakeTimers();
+    // fetch that rejects when its signal aborts (simulates a hung/sleeping backend).
+    vi.stubGlobal("fetch", vi.fn((_url: string, init: RequestInit) =>
+      new Promise((_resolve, reject) => {
+        init.signal?.addEventListener("abort", () =>
+          reject(init.signal?.reason ?? new DOMException("aborted", "AbortError")));
+      })));
+    const p = scanner.scan("https://github.com/a/b");
+    const assertion = expect(p).rejects.toMatchObject({ code: "timeout" });
+    await vi.advanceTimersByTimeAsync(90_001); // trip the 90s client timeout
+    await assertion;
+    vi.useRealTimers();
+  });
+
+  it("surfaces a network error when the backend is unreachable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+    await expect(scanner.scan("https://github.com/a/b")).rejects.toBeTruthy();
+  });
+
+  it("propagates a caller abort (repo switch) without a timeout error", async () => {
+    const ctrl = new AbortController();
+    vi.stubGlobal("fetch", vi.fn((_url: string, init: RequestInit) =>
+      new Promise((_resolve, reject) => {
+        init.signal?.addEventListener("abort", () =>
+          reject(init.signal?.reason ?? new DOMException("aborted", "AbortError")));
+      })));
+    const p = scanner.scan("https://github.com/a/b", ctrl.signal);
+    ctrl.abort(new DOMException("switch", "AbortError"));
+    await expect(p).rejects.toMatchObject({ name: "AbortError" });
+  });
+});

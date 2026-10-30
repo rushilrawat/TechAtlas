@@ -380,3 +380,21 @@ def test_cross_host_redirect_is_not_followed():
     resp = gh.get("/repos/a/b")
     # not followed -> we return the 301 as-is (caller treats non-200 as an error)
     assert resp.status_code == 301
+
+
+# ---------------------------------------------------------------- deadline (1.5D)
+
+def test_scan_deadline_marks_partial(matcher):
+    """An already-passed wall-clock deadline short-circuits file fetching -> partial,
+    without crashing (the scan still returns what it has)."""
+    import time as _t
+    fake = FakeGitHub(files={
+        "package.json": '{"dependencies":{"react":"1"}}',
+        "src/a.ts": 'import React from "react";',
+        "src/b.ts": 'import x from "lodash";',
+    })
+    gh = GitHubClient(client=fake, token=None, request_budget=200)
+    scan = run_scan("https://github.com/acme/app", gh, matcher, "0.2.0",
+                    deadline=_t.monotonic() - 1)  # already expired
+    assert scan.status == "partial"
+    assert scan.coverage.partial is True

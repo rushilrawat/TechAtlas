@@ -1,0 +1,27 @@
+# Render blueprint for the TechAtlas scanner backend (Phase 1.5D).
+# Free Web Service: HTTPS, single instance, sleeps when idle (~30-60s cold start).
+# Connect this repo in Render; it reads this file. Secrets (GITHUB_TOKEN,
+# TECHATLAS_CORS_ORIGINS) are set in the Render dashboard, NOT committed here.
+services:
+  - type: web
+    name: techatlas-scanner
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Set these in the Render dashboard (sync:false = not stored in the repo):
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: TECHATLAS_CORS_ORIGINS
+        sync: false
+      # Safeguard tuning (optional overrides; the defaults are production-safe):
+      - key: TECHATLAS_SCAN_MAX_CONCURRENT
+        value: "2"
+      - key: TECHATLAS_SCAN_DEADLINE_SEC
+        value: "45"
+      - key: TECHATLAS_SCAN_RATE_PER_MIN
+        value: "5"
