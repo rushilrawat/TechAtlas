@@ -36,3 +36,6 @@ data/popularity/history/
 
 # Discovery-assist staging output — generated proposals for human review, source-derived.
 data/discovery/
+
+# Static API snapshot — generated from the dataset at build time for the Pages deploy.
+frontend/public/api/

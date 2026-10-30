@@ -14,12 +14,17 @@ type LoadState =
   | { status: "ready"; graph: GraphResponse; domains: DomainSummary[] };
 
 // Deep-link helpers (spec §5.9): /technology/python, /concept/authentication, etc.
+// Base-aware so they work under a GitHub Pages sub-path (e.g. /TechAtlas/).
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, ""); // "" or "/TechAtlas"
+
 function slugFromPath(): string | null {
-  const m = window.location.pathname.match(/^\/(technology|concept|domain)\/([a-z0-9-]+)$/);
+  let path = window.location.pathname;
+  if (BASE_PATH && path.startsWith(BASE_PATH)) path = path.slice(BASE_PATH.length);
+  const m = path.match(/^\/(technology|concept|domain)\/([a-z0-9-]+)$/);
   return m ? m[2] : null;
 }
 function pathForNode(nodeType: string, slug: string): string {
-  return `/${nodeType}/${slug}`;
+  return `${BASE_PATH}/${nodeType}/${slug}`;
 }
 
 export default function App() {
@@ -70,7 +75,7 @@ export default function App() {
     (id: string | null) => {
       if (id === null) {
         setSelected(null);
-        window.history.replaceState(null, "", "/");
+        window.history.replaceState(null, "", BASE_PATH ? `${BASE_PATH}/` : "/");
         return;
       }
       navigate(id);
