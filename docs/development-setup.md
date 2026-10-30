@@ -168,3 +168,36 @@ python scripts/build_dataset.py && python scripts/validate_dataset.py && python 
 (cd backend && ruff check app tests ../scripts && pytest -q)
 (cd frontend && npm run typecheck && npm run lint && npm test && npm run build)
 ```
+
+### Repo X-Ray scanner (Phase 1.5A, backend)
+
+The backend can scan a public GitHub repository and return evidence-backed technology
+detections mapped onto the existing graph. It is **deterministic static analysis** — it
+never executes repository code or installs dependencies.
+
+```bash
+# requires the backend running (uvicorn app.main:app) — NOT available on the static
+# GitHub Pages build, which has no backend.
+curl -s -X POST localhost:8000/api/v1/repository-scans \
+  -H 'content-type: application/json' \
+  -d '{"repository_url":"https://github.com/owner/repo"}' | jq
+# then: GET /api/v1/repository-scans/{scan_id}
+```
+
+GitHub API access:
+
+- **`GITHUB_TOKEN`** (server-side env) is optional for local tinkering but effectively
+  **required for real use**: unauthenticated GitHub allows only ~60 requests/hour/IP, and
+  a single scan uses ~10–30. With a token the limit is 5000/hour. The token is read only
+  by the backend (`scanner/github_client.py`) and never reaches the frontend.
+- Results are cached on disk by `repository + commit SHA + scanner version + mapping
+  version` under `data/cache/scans/` (gitignored, atomic writes). Re-scanning the same
+  commit is a cache hit.
+- Budgets: ≤300 files inspected, ≤120 source files, ≤256 KB/file, bounded GitHub requests;
+  a truncated tree or exhausted budget yields a scan explicitly labeled `partial`.
+
+Supported detection (1.5A): JavaScript/TypeScript (`package.json`, lockfiles,
+`tsconfig`/`vite`/`next`/`angular` config, source imports), Python
+(`pyproject.toml`/`requirements*.txt`/`poetry.lock`/`uv.lock`, source imports), Docker
+(`Dockerfile`/compose), and GitHub Actions (`.github/workflows/*`). More ecosystems plug
+in as new modules under `backend/app/scanner/manifest_parsers/`.

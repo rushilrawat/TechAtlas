@@ -177,6 +177,17 @@ class GraphService:
         nodes = [self._to_graph_node(n) for n in self._raw_nodes.values()]
         return nodes, self._edges
 
+    def all_nodes(self) -> list[dict]:
+        """Raw node dicts (id, slug, name, node_type, package, repo, aliases, ...).
+
+        Exposed read-only for the Repo X-Ray matcher so it can reuse the canonical
+        package/repo/alias data instead of maintaining a second catalog (spec §9.1).
+        """
+        return list(self._raw_nodes.values())
+
+    def has_node(self, node_id: str) -> bool:
+        return node_id in self._raw_nodes
+
     def domains(self) -> list[DomainSummary]:
         counts: dict[str, int] = defaultdict(int)
         for n in self._raw_nodes.values():

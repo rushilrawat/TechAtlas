@@ -1,0 +1,11 @@
+{
+  "_comment": "Import/module name -> PyPI/npm distribution name, for cases where the import name differs from the package the dataset maps. Extend here, not in code.",
+  "pypi": {
+    "sklearn": "scikit-learn",
+    "cv2": "opencv-python",
+    "PIL": "pillow",
+    "yaml": "pyyaml",
+    "bs4": "beautifulsoup4"
+  },
+  "npm": {}
+}

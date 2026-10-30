@@ -10,6 +10,7 @@ from functools import lru_cache
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from .graph_service import get_graph_service
 from .models import (
@@ -36,7 +37,7 @@ _origins = os.environ.get(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in _origins if o.strip()],
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],  # POST for Repo X-Ray scans (Phase 1.5)
     allow_headers=["*"],
 )
 
@@ -102,3 +103,83 @@ def search(
     limit: int = Query(20, ge=1, le=100),
 ) -> list[SearchResult]:
     return get_graph_service().search(q, limit=limit)
+
+
+# ---- Phase 1.5A: Repo X-Ray scanner ----------------------------------------
+# Synchronous-with-cache MVP: POST runs (or returns cached) a bounded scan; GET fetches
+# a completed scan by id. No background jobs (reviewer decision 2). The scanner only
+# runs where a server-side GITHUB_TOKEN/backend exists; the static Pages build never
+# calls these routes.
+from .scanner.github_client import GitHubClient, GitHubError  # noqa: E402
+from .scanner.models import RepoScan  # noqa: E402
+from .scanner.repository_resolver import (  # noqa: E402
+    InvalidRepositoryURL,
+    RepositoryNotFound,
+)
+from .scanner.scan_cache import ScanCache  # noqa: E402
+from .scanner.scan_orchestrator import run_scan  # noqa: E402
+from .scanner.technology_matcher import TechnologyMatcher  # noqa: E402
+
+# Completed scans are also held in memory for the GET-by-id lookup within a process.
+_scan_store: dict[str, RepoScan] = {}
+
+
+@lru_cache(maxsize=1)
+def _get_matcher() -> TechnologyMatcher:
+    return TechnologyMatcher(get_graph_service().all_nodes())
+
+
+@lru_cache(maxsize=1)
+def _get_scan_cache() -> ScanCache:
+    return ScanCache()
+
+
+class RepositoryScanRequest(BaseModel):
+    repository_url: str
+
+
+@app.post(f"{API}/repository-scans", response_model=RepoScan)
+def create_repository_scan(req: RepositoryScanRequest) -> RepoScan:
+    svc = get_graph_service()
+    matcher = _get_matcher()
+    cache = _get_scan_cache()
+
+    gh = GitHubClient()
+    try:
+        # Resolve first (cheap) so we can check the cache by commit before a full scan.
+        from .scanner.repository_resolver import resolve
+        identity = resolve(req.repository_url, gh)
+        cached = cache.get(identity.owner, identity.name, identity.commit_sha, svc.version)
+        if cached is not None:
+            _scan_store[cached.scan_id] = cached
+            return cached
+        scan = run_scan(req.repository_url, gh, matcher, svc.version)
+    except InvalidRepositoryURL as e:
+        raise HTTPException(status_code=400, detail={
+            "error": "invalid_url",
+            "message": "Enter a valid public GitHub repository URL.",
+        }) from e
+    except RepositoryNotFound as e:
+        raise HTTPException(status_code=404, detail={
+            "error": "not_found", "message": str(e),
+        }) from e
+    except GitHubError as e:
+        status = 429 if e.code == "rate_limited" else 502
+        raise HTTPException(status_code=status, detail={
+            "error": e.code, "message": e.message,
+            "retry_after_seconds": e.retry_after,
+        }) from e
+
+    cache.put(scan)
+    _scan_store[scan.scan_id] = scan
+    return scan
+
+
+@app.get(f"{API}/repository-scans/{{scan_id}}", response_model=RepoScan)
+def get_repository_scan(scan_id: str) -> RepoScan:
+    scan = _scan_store.get(scan_id)
+    if scan is None:
+        raise HTTPException(status_code=404, detail={
+            "error": "not_found", "message": "Scan not found or expired.",
+        })
+    return scan
