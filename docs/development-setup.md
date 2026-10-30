@@ -38,7 +38,13 @@ Ports are overridable: `make dev BACKEND_PORT=9000 FRONTEND_PORT=3000`.
 
 You can also run the launcher directly without Make: `./dev.sh` (or `./dev.sh
 --rebuild-data`). It waits for the backend `/health` endpoint before starting the
-frontend and tears both down cleanly on exit.
+frontend and tears down what it started on exit. It is port-aware:
+
+- If a healthy TechAtlas backend is already running on the backend port, it is
+  reused instead of starting a duplicate (and left running when you Ctrl-C).
+- If a port is occupied by something else, the script stops with a clear message
+  instead of silently picking another port. Override with
+  `TECHATLAS_BACKEND_PORT` / `TECHATLAS_FRONTEND_PORT`.
 
 ---
 
