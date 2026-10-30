@@ -32,6 +32,19 @@ function pathForNode(nodeType: string, slug: string): string {
   return `${BASE_PATH}/${nodeType}/${slug}`;
 }
 
+// Measure the actual on-screen width of the open right-edge panel (detail panel if it
+// overlays, else the X-Ray summary). Returns 0 when nothing is open, so the camera fit
+// uses true available canvas and never double-counts a fixed sidebar width (UI-C).
+function measureRightPanelWidth(): number {
+  if (typeof document === "undefined") return 0;
+  const detail = document.querySelector(".details") as HTMLElement | null;
+  const xray = document.querySelector(".xray-panel") as HTMLElement | null;
+  const el = detail ?? xray;
+  if (!el) return 0;
+  const rect = el.getBoundingClientRect();
+  return Math.round(rect.width + 14); // include the 14px gutter
+}
+
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [selected, setSelected] = useState<string | null>(null);
@@ -39,7 +52,32 @@ export default function App() {
   const [filter, setFilter] = useState<FilterState>(emptyFilter());
   const [xrayOpen, setXrayOpen] = useState(false);
   const [fitNonce, setFitNonce] = useState(0);
+  // UI-C: domain legend auto-minimizes during Repo X-Ray to free canvas space;
+  // the user can reopen it any time (it stays mounted as a reopen control).
+  const [legendCollapsed, setLegendCollapsed] = useState(false);
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
+
+  // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
+  useEffect(() => { setLegendCollapsed(xrayOpen); }, [xrayOpen]);
+
+  // UI-C refinement 1: while a node detail overlays the X-Ray summary, make the
+  // underlying summary inert so there are never two simultaneously-interactive
+  // overlapping panels (one navigational surface). Restored when the detail closes.
+  useEffect(() => {
+    const xray = document.querySelector(".xray-panel") as HTMLElement | null;
+    if (!xray) return;
+    if (selected && xrayOpen) {
+      xray.setAttribute("inert", "");
+      xray.setAttribute("aria-hidden", "true");
+    } else {
+      xray.removeAttribute("inert");
+      xray.removeAttribute("aria-hidden");
+    }
+    return () => {
+      xray.removeAttribute("inert");
+      xray.removeAttribute("aria-hidden");
+    };
+  }, [selected, xrayOpen]);
 
   // Initial data load.
   useEffect(() => {
@@ -184,7 +222,14 @@ export default function App() {
           scanContextEdges={overlay ? overlay.contextualEdges : null}
           fitSignal={
             overlay && fitNonce > 0
-              ? { ids: [...overlay.detectedNodes], nonce: fitNonce, sidebarWidthPx: 400 }
+              ? {
+                  ids: [...overlay.detectedNodes],
+                  nonce: fitNonce,
+                  // Measured, not assumed: real rendered width of the open right panel
+                  // (detail overlays the X-Ray summary on the same surface). 0 if none.
+                  // Avoids double-counting a fixed sidebar width (UI-C refinement 3).
+                  sidebarWidthPx: measureRightPanelWidth(),
+                }
               : null
           }
         />
@@ -203,7 +248,12 @@ export default function App() {
           <FilterPanel domains={state.domains} filter={filter} onChange={setFilter} />
         )}
         {overlay && <XrayLegend />}
-        <DomainLegend domains={state.domains} onPick={navigate} />
+        <DomainLegend
+          domains={state.domains}
+          onPick={navigate}
+          collapsed={legendCollapsed}
+          onToggle={() => setLegendCollapsed((v) => !v)}
+        />
         {selected && (
           <NodeDetailsPanel
             // Pass the node's canonical slug (resolved from the loaded graph) rather

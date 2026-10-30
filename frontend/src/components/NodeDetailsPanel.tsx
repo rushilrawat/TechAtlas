@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../api/client";
 import type { DetectionStatus, NeighborEdge, NodeDetail, RepoScan } from "../api/types";
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
@@ -19,6 +19,16 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const [detail, setDetail] = useState<NodeDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const panelRef = useRef<HTMLElement | null>(null);
+
+  // UI-C focus management: move focus into the detail surface when it opens so keyboard
+  // and screen-reader users land here (one navigational surface), and let Escape close it.
+  useEffect(() => {
+    panelRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -37,7 +47,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const grouped = groupNeighbors(detail?.neighbors ?? []);
 
   return (
-    <aside className="details" aria-label="Node details">
+    <aside className="details" aria-label="Node details" role="region" tabIndex={-1} ref={panelRef}>
       <button className="details-close" onClick={onClose} aria-label="Close details">
         ×
       </button>

@@ -573,9 +573,10 @@ body {
 .xray-repo-desc { margin: 4px 0; }
 .xray-commit { font-size: 11px; }
 .xray-partial {
+  position: sticky; top: 0; z-index: 2;
   margin: 10px 0; padding: 8px 10px; border-radius: 8px;
-  background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.4);
-  color: #f4d58a; font-size: 12px;
+  background: rgba(45, 38, 16, 0.96); border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #f4d58a; font-size: 12px; backdrop-filter: blur(4px);
 }
 .xray-empty { color: var(--text-dim); margin: 10px 0; }
 .xray-group { margin: 10px 0; }
@@ -667,6 +668,24 @@ body {
 .xray-partial strong { color: #f4d58a; }
 .xray-partial-notes { margin: 6px 0 0; padding-left: 16px; font-size: 11px; }
 
+/* UI-C: collapsible domain legend */
+.legend-head { display: flex; align-items: center; justify-content: space-between; }
+.legend-collapse {
+  background: none; border: none; color: var(--text-dim); font-size: 16px;
+  line-height: 1; cursor: pointer; padding: 0 2px;
+}
+.legend-collapse:hover { color: #c8d0e8; }
+.legend-reopen {
+  position: absolute; left: 14px; bottom: 14px; z-index: 10;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  background: rgba(17, 21, 31, 0.92); border: 1px solid var(--panel-border);
+  border-radius: var(--radius); color: var(--text); font-size: 12px; cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+.legend-reopen:hover { border-color: #2a344a; }
+.legend-reopen-dots { display: inline-flex; gap: 2px; }
+.legend-reopen-dots span { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
 /* legend */
 .xray-legend {
   position: absolute; left: 14px; top: 14px; display: flex; flex-wrap: wrap;
@@ -676,6 +695,13 @@ body {
 }
 .xray-legend-title { color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
 .xray-legend-item { display: flex; align-items: center; gap: 5px; }
+.xray-legend-word { white-space: nowrap; }
+.xray-legend-help {
+  width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--panel-border);
+  background: transparent; color: var(--text-dim); font-size: 10px; cursor: pointer;
+  line-height: 1; padding: 0;
+}
+.xray-legend-help:hover { color: #c8d0e8; border-color: #2a344a; }
 .xray-ring { border: 2px solid; background: transparent; }
 .xray-ring.status-confirmed { border-color: #4ade80; }
 .xray-ring.status-declared { border-color: #60a5fa; }

@@ -113,8 +113,11 @@ export function GraphCanvas({
       labelColor: { color: "#c8d0e8" },
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
-      labelDensity: 0.7,
-      labelGridCellSize: 70,
+      // UI-C: reduce Universe label collisions. Larger grid cells + lower density mean
+      // fewer labels compete per screen region; the rendered-size threshold suppresses
+      // labels for small nodes until the user zooms in (semantic zoom still applies on top).
+      labelDensity: 0.5,
+      labelGridCellSize: 110,
       zIndex: true,
       minCameraRatio: 0.08,
       maxCameraRatio: 2.5,
@@ -197,7 +200,14 @@ export function GraphCanvas({
           const persist = persistentLabelsRef.current;
           const labelled =
             node === active || node === hoveredRef.current || (persist?.has(node) ?? false);
-          if (!labelled) res.label = "";
+          if (labelled) {
+            // Bypass Sigma's global label-collision for the budgeted detected set so the
+            // scanned stack stays identifiable (UI-A R5) even under the tighter Universe
+            // label density used for collision control (UI-C).
+            res.forceLabel = true;
+          } else {
+            res.label = "";
+          }
           return res;
         }
         // not detected -> fade into the background
