@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "./api/client";
 import type { DomainSummary, GraphResponse } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
 import { SearchCommand } from "./components/SearchCommand";
 import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
 import { DomainLegend } from "./components/DomainLegend";
+import { FilterPanel } from "./components/FilterPanel";
+import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
 
 type LoadState =
   | { status: "loading" }
@@ -24,6 +26,7 @@ export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [selected, setSelected] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
+  const [filter, setFilter] = useState<FilterState>(emptyFilter());
 
   // Initial data load.
   useEffect(() => {
@@ -75,6 +78,14 @@ export default function App() {
     [navigate],
   );
 
+  // Compute visible node/edge sets from the active filter. null = no filter (show all),
+  // so GraphCanvas skips hiding entirely. Memoized so we don't recompute per render.
+  const graphData = state.status === "ready" ? state.graph : null;
+  const visible = useMemo(() => {
+    if (!graphData || isEmptyFilter(filter)) return null;
+    return applyFilters(graphData, filter);
+  }, [graphData, filter]);
+
   if (state.status === "loading") {
     return (
       <div className="app-loading" role="status">
@@ -118,7 +129,10 @@ export default function App() {
           selectedId={selected}
           focusId={focus}
           onSelect={handleSelect}
+          visibleNodes={visible ? visible.nodes : null}
+          visibleEdges={visible ? visible.edges : null}
         />
+        <FilterPanel domains={state.domains} filter={filter} onChange={setFilter} />
         <DomainLegend domains={state.domains} onPick={navigate} />
         {selected && (
           <NodeDetailsPanel

@@ -25,11 +25,12 @@ import json
 import math
 from pathlib import Path
 
-from sizing import radii_for_dataset
+from sizing import load_popularity, radii_for_dataset
 
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
 OUTPUT = ROOT / "data" / "layout.json"
+POPULARITY = ROOT / "data" / "popularity.json"
 
 ITERATIONS = 400
 WIDTH = 2000.0
@@ -274,7 +275,7 @@ def generate(dataset: dict) -> dict:
     ids = [n["id"] for n in nodes]
     node_by_id = {n["id"]: n for n in nodes}
 
-    radius = radii_for_dataset(nodes, edges)
+    radius = radii_for_dataset(nodes, edges, load_popularity(POPULARITY))
 
     # Task 3: connectivity-ordered domain ring.
     domains = [n["id"] for n in nodes if n["node_type"] == "domain"]

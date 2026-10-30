@@ -20,9 +20,9 @@ BACKEND_PORT  ?= 8000
 FRONTEND_PORT ?= 5173
 
 .DEFAULT_GOAL := help
-.PHONY: help setup setup-backend setup-frontend data dev dev-rebuild \
-        backend frontend test test-backend test-frontend lint lint-backend \
-        lint-frontend build clean
+.PHONY: help setup setup-backend setup-frontend data popularity discover promote \
+        discover-auto dev dev-rebuild backend frontend test test-backend \
+        test-frontend lint lint-backend lint-frontend build clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -44,10 +44,27 @@ setup-frontend: ## Install frontend node modules
 
 ## ---- data ----------------------------------------------------------------
 
-data: ## Compile, validate, and lay out the dataset
+data: ## Compile, validate (+1B targets), and lay out the dataset
 	$(PY) scripts/build_dataset.py
-	$(PY) scripts/validate_dataset.py
+	$(PY) scripts/validate_dataset.py --require-targets
 	$(PY) scripts/generate_layout.py
+
+popularity: ## (Phase 1D) Ingest public metrics + score -> data/popularity.json
+	cd scripts/popularity && $(PY) ingest.py
+	cd scripts/popularity && $(PY) score.py
+	@echo "popularity.json written; re-run 'make data' to re-lay-out sized by adoption"
+
+discover: ## (discovery-assist) Propose candidate technologies for review
+	cd scripts && $(PY) -m discover.discover
+	@echo "review data/discovery/candidates.json: set primary_domain + edges, mark APPROVED, then 'make promote'"
+
+promote: ## (discovery-assist) Promote APPROVED+complete candidates via the curated path
+	cd scripts && $(PY) -m discover.promote
+	@echo "now run 'make data' to rebuild + validate + lay out"
+
+discover-auto: ## (discovery-assist) Hands-off: auto-add new techs (safe placement only)
+	cd scripts && $(PY) -m discover.auto_ingest
+	@echo "run 'make data' to rebuild + validate + lay out (CI's weekly job does this + opens a PR)"
 
 ## ---- run -----------------------------------------------------------------
 
@@ -85,6 +102,7 @@ build: ## Build the frontend for production
 	cd $(FRONTEND) && npm run build
 
 clean: ## Remove generated data artifacts and build output
-	rm -f data/graph.json data/layout.json
+	rm -f data/graph.json data/layout.json data/popularity.json
+	rm -rf data/popularity/raw data/popularity/history data/cache data/discovery
 	rm -rf $(FRONTEND)/dist
 	@echo "cleaned generated artifacts (run 'make data' to regenerate)"

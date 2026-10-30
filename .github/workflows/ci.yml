@@ -15,8 +15,8 @@ jobs:
           python-version: "3.12"
       - name: Build dataset
         run: python scripts/build_dataset.py
-      - name: Validate dataset
-        run: python scripts/validate_dataset.py
+      - name: Validate dataset (enforce Phase 1B milestone targets)
+        run: python scripts/validate_dataset.py --require-targets
       - name: Generate layout
         run: python scripts/generate_layout.py
 

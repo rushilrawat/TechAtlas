@@ -23,3 +23,16 @@ dist-ssr/
 # OS / editor
 .DS_Store
 *.log
+
+# Generated data caches (Phase 1C: Wikipedia summaries, namespaced by dataset version)
+data/cache/
+
+# Phase 1D popularity artifacts — derived from live third-party metrics, so they are
+# NOT reproducible in CI and are not committed. The backend/layout gracefully fall back
+# to connectivity sizing when these are absent.
+data/popularity.json
+data/popularity/raw/
+data/popularity/history/
+
+# Discovery-assist staging output — generated proposals for human review, source-derived.
+data/discovery/

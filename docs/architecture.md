@@ -57,10 +57,13 @@ implementation can replace it behind the same API without touching routes or fro
 
 ### Sizing honesty (spec §5.3, §7)
 
-No popularity data exists yet, and the spec forbids inventing it. Technology node size is
-a bounded `sqrt(normalized degree)` placeholder, and the detail panel states plainly that
-sizing reflects connectivity, not adoption. Domains and concepts use separate editorial
-scales. When real popularity ingestion lands, only the sizing input changes.
+Technology node size is sized by **sourced popularity when available** and falls back to a
+bounded `sqrt(normalized degree)` connectivity placeholder otherwise. The detail panel
+states plainly which basis a node uses (`size_basis` = `popularity` | `connectivity`) and
+never implies invented adoption. The popularity pipeline (Phase 1D,
+`scripts/popularity/`) is offline and source-attributed; `scripts/sizing.py` remains the
+single source of truth shared by the layout generator and the backend, now taking an
+optional per-technology score. Domains and concepts use separate editorial scales.
 
 ## Frontend (React + TypeScript + Vite)
 
@@ -87,20 +90,33 @@ scales. When real popularity ingestion lands, only the sizing input changes.
 
 Per spec §19 roadmap and §25, these are later phases and are not faked:
 
-- Full 250+/150-170 dataset (current seed is a verified subset; counts printed by the
-  validator are the truth).
-- Live popularity ingestion and historical trends (Phase 1D).
-- Wikipedia summary fetching/caching (Phase 1C) — the UI links out to Wikipedia using the
-  curated article title, but does not yet fetch/display summaries server-side.
+- AI project-to-stack recommendations (Phase 2).
+
+Completed since Phase 0:
+
+- Full 250+/150-170 dataset — **done in Phase 1B** (dataset version `0.2.0`); the
+  validator prints the live counts and `--require-targets` gates the milestone in CI.
+- Wikipedia summaries — **done in Phase 1C**. `app/summary_service.py` is the only
+  component that calls Wikipedia; it resolves strictly by the curated `wikipedia_title`,
+  caches in an in-process LRU plus an on-disk store namespaced by dataset version
+  (`data/cache/wikipedia/<version>/`, gitignored), degrades to `None` on any error/timeout,
+  and attaches an optional `summary` field to the node-detail response. The UI renders the
+  extract as plain text with attribution and still links out when no summary is available.
+- Popularity ingestion + scoring — **done in Phase 1D**. `scripts/popularity/` fetches
+  public, source-attributed metrics offline into `data/popularity.json`; sizing uses the
+  score when present and falls back to connectivity otherwise (`size_basis` surfaced in the
+  API/UI). History snapshots are archived for future trend display. Artifacts are
+  gitignored (live-data-derived), so the committed layout stays connectivity-based and
+  reproducible.
 - AI project-to-stack recommendations (Phase 2).
 
 ## Milestone map
 
 | Phase | Status | What it delivers |
 |-------|--------|------------------|
-| 0  — Data foundation        | **done (seed subset)** | schema, validated seed, layout, graph API |
+| 0  — Data foundation        | **done** | schema, validated dataset, layout, graph API |
 | 1A — Interactive prototype  | **done** | Sigma graph, hover/select, detail panel, search |
-| 1B — Complete ecosystem     | next | expand to 250+ tech / 150-170 concepts, filters, semantic zoom |
-| 1C — Encyclopedia + polish  | later | server-side Wikipedia summaries + caching, UI polish |
-| 1D — Popularity             | later | sourced adoption metrics, size by metric, history |
+| 1B — Complete ecosystem     | **done** | 250+ tech / 150-170 concepts (v0.2.0), type+domain filters, semantic zoom |
+| 1C — Encyclopedia + polish  | **done** | server-side Wikipedia summaries + two-tier cache, attribution |
+| 1D — Popularity             | **done** | offline source-backed popularity ingestion + scoring, size-by-adoption with connectivity fallback |
 | 2  — Recommendations        | future | project description → graph-backed stack |

@@ -13,10 +13,15 @@ Enforces (spec §16 and docs/relationship-taxonomy.md):
   - reports inferred (is_curated=false) edges so they are never silently trusted
   - reports orphan nodes (no edges) as a warning
 
+With --require-targets, ALSO enforces the Phase 1B milestone counts (>= 250
+technologies and 150..170 concepts). Off by default so intermediate commits during
+dataset expansion are not blocked.
+
 Exit code 0 = valid (warnings allowed), 1 = validation errors found.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from collections import defaultdict
@@ -24,6 +29,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
+
+# Phase 1B milestone targets (requirements.md 1.1). Checked only when
+# --require-targets is passed, so intermediate commits are not blocked.
+MIN_TECHNOLOGIES = 250
+MIN_CONCEPTS = 150
+MAX_CONCEPTS = 170
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 
@@ -54,6 +65,27 @@ class Report:
 def _normalize(alias: str) -> str:
     # Keep '+' and '#' — they distinguish language names like C, C++, C#, F#.
     return "".join(ch for ch in alias.lower() if ch.isalnum() or ch in "+#")
+
+
+def check_targets(counts: dict[str, int]) -> list[str]:
+    """Return milestone target violations for the 1B gate (requirements.md 1.1).
+
+    Pure and side-effect free so it can be unit-tested at the boundaries. An empty
+    list means the expanded-dataset targets are met.
+    """
+    errors: list[str] = []
+    techs = counts.get("technology", 0)
+    concepts = counts.get("concept", 0)
+    if techs < MIN_TECHNOLOGIES:
+        errors.append(
+            f"technologies {techs} below target (require >= {MIN_TECHNOLOGIES})"
+        )
+    if not (MIN_CONCEPTS <= concepts <= MAX_CONCEPTS):
+        errors.append(
+            f"concepts {concepts} out of target range "
+            f"(require {MIN_CONCEPTS}..{MAX_CONCEPTS} inclusive)"
+        )
+    return errors
 
 
 def validate(dataset: dict) -> Report:
@@ -188,12 +220,31 @@ def validate(dataset: dict) -> Report:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Validate the TechAtlas dataset.")
+    parser.add_argument(
+        "--require-targets",
+        action="store_true",
+        help=(
+            "Also enforce the Phase 1B milestone targets: "
+            f">= {MIN_TECHNOLOGIES} technologies and "
+            f"{MIN_CONCEPTS}..{MAX_CONCEPTS} concepts. Off by default."
+        ),
+    )
+    args = parser.parse_args()
+
     if not DATASET.exists():
         print(f"ERROR: {DATASET} not found. Run scripts/build_dataset.py first.", file=sys.stderr)
         sys.exit(1)
 
     dataset = json.loads(DATASET.read_text(encoding="utf-8"))
     report = validate(dataset)
+
+    if args.require_targets:
+        counts: dict[str, int] = defaultdict(int)
+        for node in dataset.get("nodes", []):
+            counts[node.get("node_type")] += 1
+        for msg in check_targets(counts):
+            report.error(msg)
 
     for w in report.warnings:
         print(f"  WARN  {w}")

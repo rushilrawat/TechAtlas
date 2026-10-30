@@ -29,7 +29,7 @@ from .models import (
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent.parent / "scripts"
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
-from sizing import node_radius  # noqa: E402
+from sizing import load_popularity, node_radius  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 
@@ -108,10 +108,27 @@ class GraphService:
             default=1,
         )
 
+        # Phase 1D: sourced popularity scores (technology id -> 0..1), or {} if none.
+        # Loaded via the shared loader so the backend sizes identically to the layout.
+        self._popularity: dict[str, float] = load_popularity(
+            self._data_dir / "popularity.json"
+        )
+
     # ---- helpers -------------------------------------------------------------
 
     def _color(self, node: dict) -> str:
         return DOMAIN_COLORS.get(node.get("primary_domain", ""), FALLBACK_COLOR)
+
+    def _popularity_of(self, node: dict) -> float | None:
+        if node["node_type"] != "technology":
+            return None
+        return self._popularity.get(node["id"])
+
+    def _size_basis(self, node: dict) -> str | None:
+        """'popularity' | 'connectivity' for technologies; None for domain/concept."""
+        if node["node_type"] != "technology":
+            return None
+        return "popularity" if node["id"] in self._popularity else "connectivity"
 
     def _size(self, node: dict) -> float:
         # Prefer the radius emitted by the offline layout (identical formula). Fall
@@ -119,7 +136,9 @@ class GraphService:
         coord = self._coords.get(node["id"])
         if coord and isinstance(coord.get("radius"), (int, float)):
             return float(coord["radius"])
-        return node_radius(node, self._degree, self._max_tech_degree)
+        return node_radius(
+            node, self._degree, self._max_tech_degree, self._popularity_of(node)
+        )
 
     def _to_graph_node(self, node: dict) -> GraphNode:
         coord = self._coords.get(node["id"], {})
@@ -135,6 +154,8 @@ class GraphService:
             cluster=coord.get("cluster", node.get("primary_domain")),
             size=self._size(node),
             color=self._color(node),
+            popularity=self._popularity_of(node),
+            size_basis=self._size_basis(node),
         )
 
     def _resolve(self, slug_or_id: str) -> dict | None:
@@ -205,6 +226,8 @@ class GraphService:
             aliases=node.get("aliases", []),
             color=self._color(node),
             neighbors=neighbors,
+            popularity=self._popularity_of(node),
+            size_basis=self._size_basis(node),
         )
 
     def neighbors(self, slug_or_id: str) -> list[NeighborEdge] | None:

@@ -59,6 +59,24 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate }: Props) {
 
           <p className="details-desc">{detail.short_description}</p>
 
+          {detail.summary && (
+            <section className="details-summary" aria-label="Wikipedia summary">
+              {/* Rendered as plain text (React escapes it) — never as HTML. */}
+              <p>{detail.summary.extract}</p>
+              <p className="summary-attribution">
+                Summary from{" "}
+                <a
+                  href={detail.summary.source_url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Wikipedia
+                </a>{" "}
+                · {detail.summary.license}
+              </p>
+            </section>
+          )}
+
           <div className="details-actions">
             {detail.official_url && (
               <a href={detail.official_url} target="_blank" rel="noreferrer noopener">
@@ -119,10 +137,16 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate }: Props) {
             ))}
           </section>
 
-          <p className="provenance">
-            Popularity metrics are not yet available — the graph currently sizes
-            technologies by connectivity, not adoption data.
-          </p>
+          {detail.node_type === "technology" && (
+            <p className="provenance">
+              {detail.size_basis === "popularity" &&
+              typeof detail.popularity === "number"
+                ? `Sized by sourced popularity (adoption score ${detail.popularity.toFixed(
+                    2,
+                  )} of 1.00).`
+                : "Sized by connectivity — no sourced popularity data for this technology yet, so its size reflects how connected it is in the graph, not adoption."}
+            </p>
+          )}
         </>
       )}
     </aside>

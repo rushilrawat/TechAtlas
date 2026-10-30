@@ -85,6 +85,28 @@
           "description": "Editorial structural importance 0..1. Used for sizing domains/concepts (NOT the technology popularity scale).",
           "minimum": 0,
           "maximum": 1
+        },
+        "repo": {
+          "type": ["string", "null"],
+          "description": "Source repository as 'owner/name' (currently GitHub), used by the Phase 1D popularity pipeline to fetch stars/activity. Optional.",
+          "pattern": "^[^/\\s]+/[^/\\s]+$"
+        },
+        "package": {
+          "type": ["object", "null"],
+          "description": "Package-registry identity used by the popularity pipeline to fetch download counts. Optional.",
+          "additionalProperties": false,
+          "required": ["ecosystem", "name"],
+          "properties": {
+            "ecosystem": {
+              "type": "string",
+              "enum": ["npm", "pypi", "crates", "maven", "nuget", "rubygems", "packagist", "go"]
+            },
+            "name": { "type": "string", "minLength": 1 }
+          }
+        },
+        "auto_added": {
+          "type": ["boolean", "null"],
+          "description": "True when the node was added by the scheduled discovery auto-ingest (identity + primary domain are source-derived; richer typed edges are NOT auto-generated and may be added by a curator later). Absent/false for hand-curated nodes."
         }
       }
     },

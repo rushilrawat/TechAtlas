@@ -40,6 +40,14 @@ export interface NeighborEdge {
   node: GraphNode;
 }
 
+export interface NodeSummary {
+  extract: string;
+  source_url: string;
+  lang: string;
+  fetched_at: string;
+  license: string;
+}
+
 export interface NodeDetail {
   id: string;
   slug: string;
@@ -57,6 +65,9 @@ export interface NodeDetail {
   aliases: string[];
   color: string;
   neighbors: NeighborEdge[];
+  popularity?: number | null;
+  size_basis?: string | null;
+  summary?: NodeSummary | null;
 }
 
 export interface SearchResult {

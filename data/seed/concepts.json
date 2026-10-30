@@ -7,7 +7,9 @@
     "node_subtype": "methodology",
     "primary_domain": "domain:software-engineering",
     "short_description": "A paradigm organizing code around objects that bundle state and behavior.",
-    "aliases": ["OOP"],
+    "aliases": [
+      "OOP"
+    ],
     "importance": 0.8,
     "wikipedia_title": "Object-oriented programming",
     "wikidata_id": "Q79872"
@@ -20,7 +22,9 @@
     "node_subtype": "methodology",
     "primary_domain": "domain:software-engineering",
     "short_description": "A paradigm treating computation as the evaluation of pure functions.",
-    "aliases": ["FP"],
+    "aliases": [
+      "FP"
+    ],
     "importance": 0.7,
     "wikipedia_title": "Functional programming",
     "wikidata_id": "Q193076"
@@ -45,7 +49,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:software-engineering",
     "short_description": "Performing work without blocking, using callbacks, promises, or async/await.",
-    "aliases": ["async"],
+    "aliases": [
+      "async"
+    ],
     "importance": 0.65
   },
   {
@@ -66,7 +72,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:frontend",
     "short_description": "Rendering HTML on the server before sending it to the browser.",
-    "aliases": ["SSR"],
+    "aliases": [
+      "SSR"
+    ],
     "importance": 0.65,
     "wikipedia_title": "Server-side scripting"
   },
@@ -88,7 +96,10 @@
     "node_subtype": "architecture",
     "primary_domain": "domain:backend",
     "short_description": "An architectural style for web APIs built on HTTP resources and verbs.",
-    "aliases": ["REST", "RESTful API"],
+    "aliases": [
+      "REST",
+      "RESTful API"
+    ],
     "importance": 0.8,
     "wikipedia_title": "REST",
     "wikidata_id": "Q749568"
@@ -113,7 +124,9 @@
     "node_subtype": "protocol",
     "primary_domain": "domain:backend",
     "short_description": "The Hypertext Transfer Protocol underpinning communication on the web.",
-    "aliases": ["HyperText Transfer Protocol"],
+    "aliases": [
+      "HyperText Transfer Protocol"
+    ],
     "importance": 0.85,
     "wikipedia_title": "HTTP",
     "wikidata_id": "Q8777"
@@ -173,7 +186,9 @@
     "node_subtype": "standard",
     "primary_domain": "domain:databases",
     "short_description": "The standard query language for relational databases.",
-    "aliases": ["Structured Query Language"],
+    "aliases": [
+      "Structured Query Language"
+    ],
     "importance": 0.8,
     "wikipedia_title": "SQL",
     "wikidata_id": "Q47607"
@@ -210,7 +225,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:ai-ml",
     "short_description": "Dense numeric representations of data that capture semantic meaning.",
-    "aliases": ["embeddings"],
+    "aliases": [
+      "embeddings"
+    ],
     "importance": 0.6,
     "wikipedia_title": "Word embedding"
   },
@@ -258,7 +275,10 @@
     "node_subtype": "architecture",
     "primary_domain": "domain:ai-ml",
     "short_description": "Very large transformer models trained on text to generate and understand language.",
-    "aliases": ["LLM", "LLMs"],
+    "aliases": [
+      "LLM",
+      "LLMs"
+    ],
     "importance": 0.8,
     "wikipedia_title": "Large language model",
     "wikidata_id": "Q115481823"
@@ -271,7 +291,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:ai-ml",
     "short_description": "Augmenting LLM responses with documents retrieved from an external knowledge store.",
-    "aliases": ["RAG"],
+    "aliases": [
+      "RAG"
+    ],
     "importance": 0.65,
     "wikipedia_title": "Retrieval-augmented generation",
     "wikidata_id": "Q125109675"
@@ -315,7 +337,12 @@
     "node_subtype": "methodology",
     "primary_domain": "domain:cloud-devops",
     "short_description": "Continuous integration and continuous delivery/deployment pipelines.",
-    "aliases": ["CICD", "Continuous Integration", "Continuous Delivery", "Continuous Deployment"],
+    "aliases": [
+      "CICD",
+      "Continuous Integration",
+      "Continuous Delivery",
+      "Continuous Deployment"
+    ],
     "importance": 0.7,
     "wikipedia_title": "CI/CD"
   },
@@ -327,7 +354,9 @@
     "node_subtype": "methodology",
     "primary_domain": "domain:cloud-devops",
     "short_description": "Managing infrastructure through declarative, version-controlled configuration.",
-    "aliases": ["IaC"],
+    "aliases": [
+      "IaC"
+    ],
     "importance": 0.65,
     "wikipedia_title": "Infrastructure as code",
     "wikidata_id": "Q30269490"
@@ -362,7 +391,10 @@
     "node_subtype": "technique",
     "primary_domain": "domain:security",
     "short_description": "Verifying the identity of a user, service, or device.",
-    "aliases": ["auth", "authn"],
+    "aliases": [
+      "auth",
+      "authn"
+    ],
     "importance": 0.75,
     "wikipedia_title": "Authentication",
     "wikidata_id": "Q212108"
@@ -375,7 +407,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:security",
     "short_description": "Determining what an authenticated identity is allowed to do.",
-    "aliases": ["authz"],
+    "aliases": [
+      "authz"
+    ],
     "importance": 0.7,
     "wikipedia_title": "Authorization"
   },
@@ -387,7 +421,10 @@
     "node_subtype": "standard",
     "primary_domain": "domain:security",
     "short_description": "An authorization framework for delegated access without sharing credentials.",
-    "aliases": ["OAuth", "OAuth2"],
+    "aliases": [
+      "OAuth",
+      "OAuth2"
+    ],
     "importance": 0.6,
     "wikipedia_title": "OAuth",
     "wikidata_id": "Q1163645"
@@ -400,7 +437,9 @@
     "node_subtype": "standard",
     "primary_domain": "domain:security",
     "short_description": "A compact, signed token format for transmitting claims between parties.",
-    "aliases": ["JWT"],
+    "aliases": [
+      "JWT"
+    ],
     "importance": 0.55,
     "wikipedia_title": "JSON Web Token",
     "wikidata_id": "Q27146641"
@@ -435,7 +474,9 @@
     "node_subtype": "architecture",
     "primary_domain": "domain:systems",
     "short_description": "Software managing hardware resources and providing services to programs.",
-    "aliases": ["OS"],
+    "aliases": [
+      "OS"
+    ],
     "importance": 0.7,
     "wikipedia_title": "Operating system",
     "wikidata_id": "Q9135"
@@ -482,7 +523,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:testing-tooling",
     "short_description": "Testing complete user flows through a running application.",
-    "aliases": ["E2E testing"],
+    "aliases": [
+      "E2E testing"
+    ],
     "importance": 0.55
   },
   {
@@ -493,7 +536,9 @@
     "node_subtype": "technique",
     "primary_domain": "domain:testing-tooling",
     "short_description": "Analyzing code without executing it to find bugs and enforce style.",
-    "aliases": ["linting"],
+    "aliases": [
+      "linting"
+    ],
     "importance": 0.55,
     "wikipedia_title": "Static program analysis"
   },
@@ -518,5 +563,1238 @@
     "importance": 0.6,
     "wikipedia_title": "Game engine",
     "wikidata_id": "Q193077"
+  },
+  {
+    "id": "concept:virtual-dom",
+    "slug": "virtual-dom",
+    "name": "Virtual DOM",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "An in-memory representation of the UI diffed against the real DOM to batch updates.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:reactive-programming",
+    "slug": "reactive-programming",
+    "name": "Reactive Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A paradigm centered on data streams and the propagation of change.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:single-page-application",
+    "slug": "single-page-application",
+    "name": "Single-Page Application",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A web app that loads one page and updates content dynamically without full reloads.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "spa"
+    ]
+  },
+  {
+    "id": "concept:progressive-web-app",
+    "slug": "progressive-web-app",
+    "name": "Progressive Web App",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A web app that uses modern capabilities to deliver app-like experiences.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "pwa"
+    ],
+    "wikipedia_title": "Progressive web app"
+  },
+  {
+    "id": "concept:responsive-design",
+    "slug": "responsive-design",
+    "name": "Responsive Web Design",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "An approach that makes web pages render well across device sizes.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Responsive web design"
+  },
+  {
+    "id": "concept:accessibility",
+    "slug": "accessibility",
+    "name": "Web Accessibility",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Designing web content usable by people with disabilities.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "a11y"
+    ],
+    "wikipedia_title": "Web accessibility"
+  },
+  {
+    "id": "concept:dom",
+    "slug": "dom",
+    "name": "Document Object Model",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A cross-platform interface treating an HTML/XML document as a tree of nodes.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "dom"
+    ],
+    "wikipedia_title": "Document Object Model"
+  },
+  {
+    "id": "concept:css-in-js",
+    "slug": "css-in-js",
+    "name": "CSS-in-JS",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A styling technique where CSS is composed using JavaScript.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:hydration",
+    "slug": "hydration",
+    "name": "Hydration",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Attaching client-side interactivity to server-rendered HTML.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Hydration (web development)"
+  },
+  {
+    "id": "concept:static-site-generation",
+    "slug": "static-site-generation",
+    "name": "Static Site Generation",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Pre-rendering pages to static HTML at build time.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "ssg"
+    ]
+  },
+  {
+    "id": "concept:api-gateway",
+    "slug": "api-gateway",
+    "name": "API Gateway",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A server that is the single entry point routing requests to backend services.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:message-queue",
+    "slug": "message-queue",
+    "name": "Message Queue",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Asynchronous service-to-service communication via a queue of messages.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Message queue"
+  },
+  {
+    "id": "concept:event-driven-architecture",
+    "slug": "event-driven-architecture",
+    "name": "Event-Driven Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A pattern where components communicate through the production/consumption of events.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Event-driven architecture"
+  },
+  {
+    "id": "concept:rpc",
+    "slug": "rpc",
+    "name": "Remote Procedure Call",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Invoking a procedure in a different address space as if it were local.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "rpc"
+    ],
+    "wikipedia_title": "Remote procedure call"
+  },
+  {
+    "id": "concept:serverless",
+    "slug": "serverless",
+    "name": "Serverless Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "A model where the cloud provider runs code without managing servers.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Serverless computing"
+  },
+  {
+    "id": "concept:orm",
+    "slug": "orm",
+    "name": "Object-Relational Mapping",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A technique mapping objects in code to relational database tables.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "orm"
+    ],
+    "wikipedia_title": "Object–relational mapping"
+  },
+  {
+    "id": "concept:middleware",
+    "slug": "middleware",
+    "name": "Middleware",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Software that sits between the OS/network and applications to provide services.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Middleware"
+  },
+  {
+    "id": "concept:session-management",
+    "slug": "session-management",
+    "name": "Session Management",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Tracking a user's state across multiple requests to a web application.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:rate-limiting",
+    "slug": "rate-limiting",
+    "name": "Rate Limiting",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Controlling the rate of requests a client may make to a service.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:dependency-injection",
+    "slug": "dependency-injection",
+    "name": "Dependency Injection",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Supplying an object's dependencies from outside rather than constructing them.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Dependency injection"
+  },
+  {
+    "id": "concept:message-broker",
+    "slug": "message-broker",
+    "name": "Publish–Subscribe",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A messaging pattern where senders publish to topics consumed by subscribers.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "pub/sub",
+      "pubsub"
+    ],
+    "wikipedia_title": "Publish–subscribe pattern"
+  },
+  {
+    "id": "concept:webhooks",
+    "slug": "webhooks",
+    "name": "Webhook",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A user-defined HTTP callback triggered by events in a source system.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "webhook"
+    ],
+    "wikipedia_title": "Webhook"
+  },
+  {
+    "id": "concept:acid",
+    "slug": "acid",
+    "name": "ACID",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A set of properties (atomicity, consistency, isolation, durability) of transactions.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "ACID"
+  },
+  {
+    "id": "concept:database-transaction",
+    "slug": "database-transaction",
+    "name": "Database Transaction",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A unit of work performed against a database treated as a single logical operation.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Database transaction"
+  },
+  {
+    "id": "concept:database-indexing",
+    "slug": "database-indexing",
+    "name": "Database Index",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A data structure that speeds up data retrieval at the cost of extra writes/space.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Database index"
+  },
+  {
+    "id": "concept:database-sharding",
+    "slug": "database-sharding",
+    "name": "Shard",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Horizontal partitioning of data across multiple database instances.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "sharding"
+    ],
+    "wikipedia_title": "Shard (database architecture)"
+  },
+  {
+    "id": "concept:replication",
+    "slug": "replication",
+    "name": "Database Replication",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Copying and maintaining data across multiple database nodes.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Replication (computing)"
+  },
+  {
+    "id": "concept:data-warehouse",
+    "slug": "data-warehouse",
+    "name": "Data Warehouse",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A central repository of integrated data optimized for analysis and reporting.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Data warehouse"
+  },
+  {
+    "id": "concept:data-lake",
+    "slug": "data-lake",
+    "name": "Data Lake",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A storage repository holding large amounts of raw data in its native format.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Data lake"
+  },
+  {
+    "id": "concept:etl",
+    "slug": "etl",
+    "name": "ETL",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Extract, transform, load — moving data from sources into a destination store.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "elt"
+    ],
+    "wikipedia_title": "Extract, transform, load"
+  },
+  {
+    "id": "concept:olap",
+    "slug": "olap",
+    "name": "OLAP",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Online analytical processing for multidimensional analytical queries.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "olap"
+    ],
+    "wikipedia_title": "Online analytical processing"
+  },
+  {
+    "id": "concept:oltp",
+    "slug": "oltp",
+    "name": "OLTP",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Online transaction processing for high volumes of short transactions.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "oltp"
+    ],
+    "wikipedia_title": "Online transaction processing"
+  },
+  {
+    "id": "concept:cap-theorem",
+    "slug": "cap-theorem",
+    "name": "CAP Theorem",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "The principle that a distributed store trades off consistency, availability, and partition tolerance.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "CAP theorem"
+  },
+  {
+    "id": "concept:full-text-search",
+    "slug": "full-text-search",
+    "name": "Full-Text Search",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Searching the complete text of documents stored in a collection.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Full-text search"
+  },
+  {
+    "id": "concept:data-pipeline",
+    "slug": "data-pipeline",
+    "name": "Data Pipeline",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A series of processing steps that move and transform data between systems.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Pipeline (computing)"
+  },
+  {
+    "id": "concept:stream-processing",
+    "slug": "stream-processing",
+    "name": "Stream Processing",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Processing data continuously as it arrives rather than in batches.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Stream processing"
+  },
+  {
+    "id": "concept:supervised-learning",
+    "slug": "supervised-learning",
+    "name": "Supervised Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Learning a function from labeled input-output example pairs.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Supervised learning"
+  },
+  {
+    "id": "concept:unsupervised-learning",
+    "slug": "unsupervised-learning",
+    "name": "Unsupervised Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Finding structure in data without labeled responses.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Unsupervised learning"
+  },
+  {
+    "id": "concept:reinforcement-learning",
+    "slug": "reinforcement-learning",
+    "name": "Reinforcement Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Learning to act by maximizing cumulative reward through trial and error.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "rl"
+    ],
+    "wikipedia_title": "Reinforcement learning"
+  },
+  {
+    "id": "concept:natural-language-processing",
+    "slug": "natural-language-processing",
+    "name": "Natural Language Processing",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "The field concerned with interactions between computers and human language.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "nlp"
+    ],
+    "wikipedia_title": "Natural language processing"
+  },
+  {
+    "id": "concept:computer-vision",
+    "slug": "computer-vision",
+    "name": "Computer Vision",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Enabling computers to derive meaning from images and video.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "cv"
+    ],
+    "wikipedia_title": "Computer vision"
+  },
+  {
+    "id": "concept:gradient-descent",
+    "slug": "gradient-descent",
+    "name": "Gradient Descent",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "An optimization algorithm that iteratively moves toward a function's minimum.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Gradient descent"
+  },
+  {
+    "id": "concept:backpropagation",
+    "slug": "backpropagation",
+    "name": "Backpropagation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "The algorithm for computing gradients used to train neural networks.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Backpropagation"
+  },
+  {
+    "id": "concept:overfitting",
+    "slug": "overfitting",
+    "name": "Overfitting",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "When a model learns training noise and fails to generalize.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Overfitting"
+  },
+  {
+    "id": "concept:feature-engineering",
+    "slug": "feature-engineering",
+    "name": "Feature Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Using domain knowledge to create input features for ML models.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Feature engineering"
+  },
+  {
+    "id": "concept:fine-tuning",
+    "slug": "fine-tuning",
+    "name": "Fine-Tuning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Adapting a pretrained model to a specific task with further training.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Fine-tuning (deep learning)"
+  },
+  {
+    "id": "concept:prompt-engineering",
+    "slug": "prompt-engineering",
+    "name": "Prompt Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Designing inputs to guide the outputs of generative AI models.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Prompt engineering"
+  },
+  {
+    "id": "concept:attention-mechanism",
+    "slug": "attention-mechanism",
+    "name": "Attention",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A mechanism letting models weigh the relevance of different inputs.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "attention"
+    ],
+    "wikipedia_title": "Attention (machine learning)"
+  },
+  {
+    "id": "concept:diffusion-models",
+    "slug": "diffusion-models",
+    "name": "Diffusion Model",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Generative models that learn to reverse a gradual noising process.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "diffusion"
+    ],
+    "wikipedia_title": "Diffusion model"
+  },
+  {
+    "id": "concept:convolutional-neural-network",
+    "slug": "convolutional-neural-network",
+    "name": "Convolutional Neural Network",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A neural network architecture specialized for grid-like data such as images.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "cnn"
+    ],
+    "wikipedia_title": "Convolutional neural network"
+  },
+  {
+    "id": "concept:recommender-systems",
+    "slug": "recommender-systems",
+    "name": "Recommender System",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Systems that predict a user's preference for items.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "recommendation system"
+    ],
+    "wikipedia_title": "Recommender system"
+  },
+  {
+    "id": "concept:mlops",
+    "slug": "mlops",
+    "name": "MLOps",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Practices for deploying and maintaining ML models reliably in production.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "MLOps"
+  },
+  {
+    "id": "concept:load-balancing",
+    "slug": "load-balancing",
+    "name": "Load Balancing",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Distributing network or application traffic across multiple servers.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Load balancing (computing)"
+  },
+  {
+    "id": "concept:auto-scaling",
+    "slug": "auto-scaling",
+    "name": "Autoscaling",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Automatically adjusting compute resources to match demand.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Autoscaling"
+  },
+  {
+    "id": "concept:gitops",
+    "slug": "gitops",
+    "name": "GitOps",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Operating infrastructure and apps using Git as the single source of truth.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:blue-green-deployment",
+    "slug": "blue-green-deployment",
+    "name": "Blue-Green Deployment",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "A release strategy running two identical environments to reduce downtime.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Blue–green deployment"
+  },
+  {
+    "id": "concept:canary-deployment",
+    "slug": "canary-deployment",
+    "name": "Canary Release",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Rolling out a change to a small subset of users before a full release.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "canary deployment"
+    ]
+  },
+  {
+    "id": "concept:service-mesh",
+    "slug": "service-mesh",
+    "name": "Service Mesh",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "A dedicated infrastructure layer for managing service-to-service communication.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Service mesh"
+  },
+  {
+    "id": "concept:edge-computing",
+    "slug": "edge-computing",
+    "name": "Edge Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Processing data near the source rather than in a centralized data center.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Edge computing"
+  },
+  {
+    "id": "concept:secrets-management",
+    "slug": "secrets-management",
+    "name": "Secrets Management",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Securely storing, distributing, and rotating credentials and keys.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:distributed-tracing",
+    "slug": "distributed-tracing",
+    "name": "Distributed Tracing",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Tracking requests as they flow through distributed services.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:virtualization",
+    "slug": "virtualization",
+    "name": "Virtualization",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Creating virtual versions of compute, storage, or network resources.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Virtualization"
+  },
+  {
+    "id": "concept:content-delivery-network",
+    "slug": "content-delivery-network",
+    "name": "Content Delivery Network",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "A geographically distributed network of servers that delivers content.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "cdn"
+    ],
+    "wikipedia_title": "Content delivery network"
+  },
+  {
+    "id": "concept:high-availability",
+    "slug": "high-availability",
+    "name": "High Availability",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Designing systems to remain operational for a very high percentage of time.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "High availability"
+  },
+  {
+    "id": "concept:penetration-testing",
+    "slug": "penetration-testing",
+    "name": "Penetration Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Authorized simulated attacks to evaluate system security.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "pentest"
+    ],
+    "wikipedia_title": "Penetration test"
+  },
+  {
+    "id": "concept:threat-modeling",
+    "slug": "threat-modeling",
+    "name": "Threat Modeling",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A structured process for identifying and prioritizing potential threats.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Threat model"
+  },
+  {
+    "id": "concept:zero-trust",
+    "slug": "zero-trust",
+    "name": "Zero Trust Security",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A model that trusts no entity by default, verifying every request.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "zero trust"
+    ],
+    "wikipedia_title": "Zero trust security model"
+  },
+  {
+    "id": "concept:public-key-cryptography",
+    "slug": "public-key-cryptography",
+    "name": "Public-Key Cryptography",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Cryptography using key pairs of public and private keys.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "asymmetric cryptography"
+    ],
+    "wikipedia_title": "Public-key cryptography"
+  },
+  {
+    "id": "concept:tls",
+    "slug": "tls",
+    "name": "Transport Layer Security",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A protocol providing encryption and authentication for network communication.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "tls",
+      "ssl"
+    ],
+    "wikipedia_title": "Transport Layer Security"
+  },
+  {
+    "id": "concept:hashing",
+    "slug": "hashing",
+    "name": "Cryptographic Hash Function",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A one-way function mapping data to a fixed-size digest.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "hashing"
+    ],
+    "wikipedia_title": "Cryptographic hash function"
+  },
+  {
+    "id": "concept:xss",
+    "slug": "xss",
+    "name": "Cross-Site Scripting",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A web vulnerability allowing attackers to inject client-side scripts.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "xss"
+    ],
+    "wikipedia_title": "Cross-site scripting"
+  },
+  {
+    "id": "concept:sql-injection",
+    "slug": "sql-injection",
+    "name": "SQL Injection",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "An attack that inserts malicious SQL into application queries.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "SQL injection"
+  },
+  {
+    "id": "concept:mfa",
+    "slug": "mfa",
+    "name": "Multi-Factor Authentication",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Requiring two or more verification factors to gain access.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "mfa",
+      "2fa"
+    ],
+    "wikipedia_title": "Multi-factor authentication"
+  },
+  {
+    "id": "concept:cross-platform-ui",
+    "slug": "cross-platform-ui",
+    "name": "Declarative UI",
+    "node_type": "concept",
+    "primary_domain": "domain:mobile",
+    "short_description": "Describing UI as a function of state rather than imperative mutations.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Declarative programming"
+  },
+  {
+    "id": "concept:mobile-app-lifecycle",
+    "slug": "mobile-app-lifecycle",
+    "name": "Mobile Application Development",
+    "node_type": "concept",
+    "primary_domain": "domain:mobile",
+    "short_description": "The process of building software for mobile devices.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Mobile app development"
+  },
+  {
+    "id": "concept:push-notifications",
+    "slug": "push-notifications",
+    "name": "Push Technology",
+    "node_type": "concept",
+    "primary_domain": "domain:mobile",
+    "short_description": "Server-initiated delivery of information to client devices.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "push notifications"
+    ],
+    "wikipedia_title": "Push technology"
+  },
+  {
+    "id": "concept:memory-management",
+    "slug": "memory-management",
+    "name": "Memory Management",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Controlling and coordinating how a program uses computer memory.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Memory management"
+  },
+  {
+    "id": "concept:garbage-collection",
+    "slug": "garbage-collection",
+    "name": "Garbage Collection",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Automatic reclamation of memory no longer in use by a program.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Garbage collection (computer science)"
+  },
+  {
+    "id": "concept:compilation",
+    "slug": "compilation",
+    "name": "Compiler",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A program translating source code into another (often machine) language.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "compiler"
+    ],
+    "wikipedia_title": "Compiler"
+  },
+  {
+    "id": "concept:embedded-systems",
+    "slug": "embedded-systems",
+    "name": "Embedded System",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A computer system with a dedicated function within a larger system.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Embedded system"
+  },
+  {
+    "id": "concept:parallel-computing",
+    "slug": "parallel-computing",
+    "name": "Parallel Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Carrying out many calculations or processes simultaneously.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Parallel computing"
+  },
+  {
+    "id": "concept:systems-programming",
+    "slug": "systems-programming",
+    "name": "Systems Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Writing software that provides services to other software or hardware.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Systems programming"
+  },
+  {
+    "id": "concept:test-driven-development",
+    "slug": "test-driven-development",
+    "name": "Test-Driven Development",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Writing tests before the code that makes them pass.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "tdd"
+    ],
+    "wikipedia_title": "Test-driven development"
+  },
+  {
+    "id": "concept:integration-testing",
+    "slug": "integration-testing",
+    "name": "Integration Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Testing combined parts of an application to verify they work together.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Integration testing"
+  },
+  {
+    "id": "concept:code-coverage",
+    "slug": "code-coverage",
+    "name": "Code Coverage",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A measure of how much source code is exercised by a test suite.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Code coverage"
+  },
+  {
+    "id": "concept:linting",
+    "slug": "linting",
+    "name": "Lint",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Static analysis that flags programming errors and stylistic issues.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "linter"
+    ],
+    "wikipedia_title": "Lint (software)"
+  },
+  {
+    "id": "concept:code-review",
+    "slug": "code-review",
+    "name": "Code Review",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Systematic examination of source code by peers.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Code review"
+  },
+  {
+    "id": "concept:rendering-pipeline",
+    "slug": "rendering-pipeline",
+    "name": "Graphics Pipeline",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "The sequence of steps converting 3D scene data into a 2D image.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "rendering pipeline"
+    ],
+    "wikipedia_title": "Graphics pipeline"
+  },
+  {
+    "id": "concept:physics-engine",
+    "slug": "physics-engine",
+    "name": "Physics Engine",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Software providing an approximate simulation of physical systems.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Physics engine"
+  },
+  {
+    "id": "concept:shaders",
+    "slug": "shaders",
+    "name": "Shader",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "A program that runs on the GPU to compute rendering effects.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "shader"
+    ],
+    "wikipedia_title": "Shader"
+  },
+  {
+    "id": "concept:ray-tracing",
+    "slug": "ray-tracing",
+    "name": "Ray Tracing",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "A rendering technique that simulates light by tracing ray paths.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Ray tracing (graphics)"
+  },
+  {
+    "id": "concept:data-structures",
+    "slug": "data-structures",
+    "name": "Data Structure",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A way of organizing and storing data for efficient access and modification.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "data structures"
+    ],
+    "wikipedia_title": "Data structure"
+  },
+  {
+    "id": "concept:algorithms",
+    "slug": "algorithms",
+    "name": "Algorithm",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A finite sequence of well-defined instructions to solve a problem.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "algorithm"
+    ],
+    "wikipedia_title": "Algorithm"
+  },
+  {
+    "id": "concept:recursion",
+    "slug": "recursion",
+    "name": "Recursion",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A method where the solution depends on solutions to smaller instances.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Recursion (computer science)"
+  },
+  {
+    "id": "concept:design-patterns",
+    "slug": "design-patterns",
+    "name": "Software Design Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A reusable solution to a commonly occurring problem in software design.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "design patterns"
+    ],
+    "wikipedia_title": "Software design pattern"
+  },
+  {
+    "id": "concept:solid-principles",
+    "slug": "solid-principles",
+    "name": "SOLID",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Five design principles for maintainable object-oriented software.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "SOLID"
+  },
+  {
+    "id": "concept:clean-code",
+    "slug": "clean-code",
+    "name": "Clean Code",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Writing code that is readable, simple, and easy to maintain.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:refactoring",
+    "slug": "refactoring",
+    "name": "Code Refactoring",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Restructuring existing code without changing its external behavior.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Code refactoring"
+  },
+  {
+    "id": "concept:immutability",
+    "slug": "immutability",
+    "name": "Immutable Object",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "An object whose state cannot be modified after creation.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "immutability"
+    ],
+    "wikipedia_title": "Immutable object"
+  },
+  {
+    "id": "concept:serialization",
+    "slug": "serialization",
+    "name": "Serialization",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Converting data structures into a format for storage or transmission.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Serialization"
+  },
+  {
+    "id": "concept:idempotency",
+    "slug": "idempotency",
+    "name": "Idempotence",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "An operation that yields the same result when applied multiple times.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "idempotency"
+    ],
+    "wikipedia_title": "Idempotence"
+  },
+  {
+    "id": "concept:api-versioning",
+    "slug": "api-versioning",
+    "name": "API Versioning",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Managing changes to an API contract over time without breaking clients.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:domain-driven-design",
+    "slug": "domain-driven-design",
+    "name": "Domain-Driven Design",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Modeling software to match a domain according to input from domain experts.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "ddd"
+    ],
+    "wikipedia_title": "Domain-driven design"
+  },
+  {
+    "id": "concept:event-sourcing",
+    "slug": "event-sourcing",
+    "name": "Event Sourcing",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Persisting state as a sequence of events rather than current state.",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "concept:cqrs",
+    "slug": "cqrs",
+    "name": "CQRS",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Separating read and write operations into different models.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "cqrs"
+    ],
+    "wikipedia_title": "Command Query Responsibility Segregation"
+  },
+  {
+    "id": "concept:package-management",
+    "slug": "package-management",
+    "name": "Package Manager",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A tool that automates installing, upgrading, and removing software packages.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "package management"
+    ],
+    "wikipedia_title": "Package manager"
+  },
+  {
+    "id": "concept:semantic-versioning",
+    "slug": "semantic-versioning",
+    "name": "Software Versioning",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A scheme for assigning version numbers to communicate the nature of changes.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "semver"
+    ],
+    "wikipedia_title": "Software versioning"
+  },
+  {
+    "id": "concept:monorepo",
+    "slug": "monorepo",
+    "name": "Monorepo",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A version-control strategy where many projects live in a single repository.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Monorepo"
+  },
+  {
+    "id": "concept:technical-debt",
+    "slug": "technical-debt",
+    "name": "Technical Debt",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "The implied cost of rework from choosing an easy solution now.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Technical debt"
+  },
+  {
+    "id": "concept:agile",
+    "slug": "agile",
+    "name": "Agile Software Development",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Iterative approaches to delivering software incrementally.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Agile software development"
+  },
+  {
+    "id": "concept:real-time-communication",
+    "slug": "real-time-communication",
+    "name": "Real-Time Communication",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Exchange of information with negligible latency between participants.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "rtc"
+    ],
+    "wikipedia_title": "Real-time communication"
   }
 ]

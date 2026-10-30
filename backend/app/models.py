@@ -23,6 +23,10 @@ class GraphNode(BaseModel):
     cluster: str | None = None
     size: float = Field(description="Render radius hint, bounded by the layout scale.")
     color: str
+    # Phase 1D: optional popularity signals. `popularity` is a 0..1 sourced adoption
+    # score (null when no sourced data). `size_basis` explains what `size` reflects.
+    popularity: float | None = None
+    size_basis: str | None = None
 
 
 class GraphEdge(BaseModel):
@@ -48,6 +52,16 @@ class NeighborEdge(BaseModel):
     node: GraphNode
 
 
+class NodeSummary(BaseModel):
+    """Wikipedia-sourced summary for a node (Phase 1C). Optional and additive."""
+
+    extract: str
+    source_url: str
+    lang: str
+    fetched_at: str
+    license: str
+
+
 class NodeDetail(BaseModel):
     """Full detail for a selected node, loaded on demand."""
 
@@ -67,6 +81,12 @@ class NodeDetail(BaseModel):
     aliases: list[str] = []
     color: str
     neighbors: list[NeighborEdge] = []
+    # Phase 1D: popularity signals for the detail panel's honesty note.
+    popularity: float | None = None
+    size_basis: str | None = None
+    # Phase 1C: Wikipedia summary, populated on demand when a curated title exists.
+    # Null when there is no title or the fetch failed (graceful degradation).
+    summary: NodeSummary | None = None
 
 
 class SearchResult(BaseModel):

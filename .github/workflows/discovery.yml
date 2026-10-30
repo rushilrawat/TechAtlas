@@ -1,0 +1,67 @@
+name: Weekly discovery
+
+# Hands-off discovery of NEW technologies. Runs on a schedule, auto-places each new
+# node (real identity from Wikidata + a deterministic primary_domain + the single
+# definitionally-true belongs_to_domain edge), rebuilds/validates, and opens a PR for a
+# quick human glance. It NEVER invents richer typed edges and never pushes to main
+# directly — the PR is the review gate.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday 06:00 UTC
+  workflow_dispatch: # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  discover:
+    name: Discover + open PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend (brings httpx for fetchers)
+        working-directory: backend
+        run: pip install -e ".[dev]"
+
+      - name: Auto-ingest new technologies (safe placement only)
+        id: ingest
+        run: |
+          cd scripts && python -m discover.auto_ingest --limit 200
+
+      - name: Rebuild + validate + lay out
+        run: |
+          python scripts/build_dataset.py
+          python scripts/validate_dataset.py --require-targets
+          python scripts/generate_layout.py
+
+      - name: Open a review PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(discovery): auto-add newly discovered technologies"
+          branch: auto/discovery-update
+          delete-branch: true
+          title: "Weekly discovery: new technologies for review"
+          body: |
+            Automated discovery found new technologies and added them with **safe
+            placement only**:
+
+            - real identity from Wikidata (name, Wikidata id, Wikipedia title, official URL, subtype),
+            - a **deterministic** `primary_domain` from the Wikidata entity class,
+            - exactly one auto-created edge per node: `belongs_to_domain`.
+
+            Each new node is marked `auto_added: true`. **Richer typed edges
+            (`implements`, `alternative_to`, `written_in`, `commonly_used_with`, …) were
+            NOT auto-generated** — add those by hand where they add value.
+
+            The dataset was rebuilt, validated (`--require-targets`), and re-laid-out; CI
+            must pass before merge. Review the diff, optionally enrich edges, then merge.
+          labels: |
+            discovery
+            needs-review

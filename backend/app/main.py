@@ -6,6 +6,7 @@ Lightweight whole-graph payload + on-demand node detail.
 from __future__ import annotations
 
 import os
+from functools import lru_cache
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,8 +17,10 @@ from .models import (
     GraphResponse,
     NeighborEdge,
     NodeDetail,
+    NodeSummary,
     SearchResult,
 )
+from .summary_service import SummaryService
 
 app = FastAPI(
     title="TechAtlas API",
@@ -38,6 +41,15 @@ app.add_middleware(
 )
 
 API = "/api/v1"
+
+
+@lru_cache(maxsize=1)
+def get_summary_service() -> SummaryService:
+    """Singleton SummaryService keyed to the current dataset version (Phase 1C)."""
+    svc = get_graph_service()
+    lang = os.environ.get("TECHATLAS_WIKIPEDIA_LANG", "en")
+    ttl_days = int(os.environ.get("TECHATLAS_SUMMARY_TTL_DAYS", "30"))
+    return SummaryService(svc.version, lang=lang, ttl_days=ttl_days)
 
 
 @app.get("/health")
@@ -68,6 +80,11 @@ def get_node(slug: str) -> NodeDetail:
     detail = get_graph_service().node_detail(slug)
     if detail is None:
         raise HTTPException(status_code=404, detail=f"Node '{slug}' not found")
+    # Phase 1C: attach a Wikipedia summary when a curated title exists. Served from
+    # cache where possible; failures degrade to None (the UI keeps the outbound link).
+    summary = get_summary_service().get(detail.slug, detail.wikipedia_title)
+    if summary is not None:
+        detail.summary = NodeSummary(**summary.__dict__)
     return detail
 
 

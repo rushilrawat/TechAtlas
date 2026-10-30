@@ -10,6 +10,10 @@ interface Props {
   selectedId: string | null;
   focusId: string | null;
   onSelect: (id: string | null) => void;
+  // Phase 1B filtering (requirements 1.6–1.10). null means "no filter: show all".
+  // When present, only ids in these sets are shown; coordinates are never recomputed.
+  visibleNodes?: Set<string> | null;
+  visibleEdges?: Set<string> | null;
 }
 
 const DIM_NODE = "rgba(120,130,150,0.12)";
@@ -27,7 +31,14 @@ const DIM_EDGE = "rgba(120,130,150,0.04)";
  *  - label/edge visibility follows the camera ratio (semantic zoom);
  *  - camera animations cancel any in-flight animation before starting a new one.
  */
-export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
+export function GraphCanvas({
+  data,
+  selectedId,
+  focusId,
+  onSelect,
+  visibleNodes = null,
+  visibleEdges = null,
+}: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
   const graphRef = useRef<Graph | null>(null);
@@ -37,6 +48,9 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
   // Precomputed highlight set for the current active node (Task 7).
   const activeRef = useRef<string | null>(null);
   const neighborSetRef = useRef<Set<string> | null>(null);
+  // Live filter visibility sets, read inside the reducers (Phase 1B).
+  const visibleNodesRef = useRef<Set<string> | null>(visibleNodes);
+  const visibleEdgesRef = useRef<Set<string> | null>(visibleEdges);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
   const ratioRef = useRef<number>(1);
@@ -94,6 +108,15 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
       const active = activeRef.current;
       const res: Record<string, unknown> = { ...dataIn };
 
+      // Phase 1B filter: hide nodes outside the visible set. This composes with
+      // semantic zoom by logical AND — a node shows only if the filter allows it
+      // AND the zoom level would show it. Coordinates are untouched.
+      const vis = visibleNodesRef.current;
+      if (vis && !vis.has(node)) {
+        res.hidden = true;
+        return res;
+      }
+
       // Semantic-zoom label gating.
       if (!labelVisible(dataIn.nodeType as string, dataIn.size as number)) {
         res.label = "";
@@ -116,6 +139,11 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
     });
 
     renderer.setSetting("edgeReducer", (edge, dataIn) => {
+      // Phase 1B filter: hide edges whose endpoints aren't both visible.
+      const vedges = visibleEdgesRef.current;
+      if (vedges && !vedges.has(edge)) {
+        return { ...dataIn, hidden: true };
+      }
       const active = activeRef.current;
       if (!active) return dataIn;
       const [s, t] = graph.extremities(edge);
@@ -171,6 +199,15 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
     renderer.refresh();
   }, [selectedId]);
 
+  // React to filter changes: update the live sets the reducers read, then refresh.
+  // We never rebuild the graph or touch coordinates (requirement 1.7).
+  useEffect(() => {
+    visibleNodesRef.current = visibleNodes;
+    visibleEdgesRef.current = visibleEdges;
+    const renderer = sigmaRef.current;
+    if (renderer) renderer.refresh();
+  }, [visibleNodes, visibleEdges]);
+
   // Animate the camera to the focused node; cancel any in-flight animation (Task 9).
   useEffect(() => {
     const renderer = sigmaRef.current;
@@ -190,12 +227,22 @@ export function GraphCanvas({ data, selectedId, focusId, onSelect }: Props) {
     );
   }, [focusId]);
 
+  const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
+
   return (
-    <div
-      ref={containerRef}
-      className="graph-canvas"
-      role="application"
-      aria-label="Interactive technology graph. Use the search box or the node list for keyboard access."
-    />
+    <div className="graph-canvas-wrap">
+      <div
+        ref={containerRef}
+        className="graph-canvas"
+        role="application"
+        aria-label="Interactive technology graph. Use the search box or the node list for keyboard access."
+      />
+      {isEmpty && (
+        <div className="graph-empty-state" role="status">
+          <p>No nodes match the current filters.</p>
+          <p className="muted">Clear a filter to see the graph again.</p>
+        </div>
+      )}
+    </div>
   );
 }
