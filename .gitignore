@@ -39,3 +39,7 @@ data/discovery/
 
 # Static API snapshot — generated from the dataset at build time for the Pages deploy.
 frontend/public/api/
+
+# Playwright browser smoke-test artifacts
+frontend/playwright-report/
+frontend/test-results/

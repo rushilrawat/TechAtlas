@@ -64,6 +64,16 @@ jobs:
         working-directory: frontend
         run: cp dist/index.html dist/404.html
 
+      # 4) Browser smoke test on the built dist: prove the graph actually RENDERS and
+      #    is interactive before we publish. An HTTP 200 alone is NOT sufficient — this
+      #    is the gate that would have caught the Graphology render crash.
+      - name: Install Playwright browser
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+      - name: Browser smoke test (render + select + panel)
+        working-directory: frontend
+        run: npm run e2e
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

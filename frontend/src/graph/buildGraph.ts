@@ -13,7 +13,10 @@ const TYPE_TO_SHAPE: Record<NodeType, string> = {
 };
 
 export function buildGraph(data: GraphResponse): Graph {
-  const graph = new Graph({ multi: false, type: "mixed" });
+  // multi:true so a node pair may carry more than one relationship type as
+  // separate edges (e.g. pandas -built_on-> numpy AND pandas -depends_on-> numpy).
+  // Each API edge has a unique id (e0, e1, ...), so edges stay individually keyed.
+  const graph = new Graph({ multi: true, type: "mixed" });
 
   for (const n of data.nodes) {
     graph.addNode(n.id, {

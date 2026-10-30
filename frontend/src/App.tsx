@@ -141,7 +141,13 @@ export default function App() {
         <DomainLegend domains={state.domains} onPick={navigate} />
         {selected && (
           <NodeDetailsPanel
-            slugOrId={selected}
+            // Pass the node's canonical slug (resolved from the loaded graph) rather
+            // than its id: static detail files are keyed by slug, and a node's id
+            // suffix is not guaranteed to equal its slug (e.g. technology:tailwind /
+            // slug tailwind-css). Fall back to the raw selection if not yet loaded.
+            slugOrId={
+              state.graph.nodes.find((n) => n.id === selected)?.slug ?? selected
+            }
             onClose={() => handleSelect(null)}
             onNavigate={navigate}
           />

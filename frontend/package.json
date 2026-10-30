@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@sigma/node-border": "^3.0.0",
@@ -19,8 +20,9 @@
     "sigma": "^3.0.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.0.1",
     "@eslint/js": "^9.13.0",
+    "@playwright/test": "1.48.2",
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
