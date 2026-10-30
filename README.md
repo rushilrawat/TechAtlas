@@ -9,35 +9,47 @@ built incrementally, milestone by milestone, per the spec's roadmap.
 
 ## Current status
 
-**Phase 0 — Data foundation (in progress).**
+**Phases 0–1D complete.** Built incrementally per the spec roadmap; Phase 2 (AI
+recommendations) is the only remaining milestone.
 
 What exists today:
 
-- A canonical graph schema (nodes / edges / aliases) defined in `data/schema`.
-- A **verified representative seed subset** of the technology universe in `data/seed` —
-  a real connected slice spanning every major domain. This is deliberately smaller than
-  the eventual 250+ technology / 150+ concept target so that every node and edge can be
-  hand-verified. See `data/seed/README.md` for the honest count.
-- A dataset validation script (`scripts/validate_dataset.py`) that enforces the data
-  quality rules from the spec (canonical IDs, no broken edges, valid types, etc.).
-- A FastAPI backend (`backend/`) that serves the graph, nodes, neighbors, and search.
-- A React + TypeScript + Sigma.js interactive graph prototype (`frontend/`).
+- A canonical graph schema (nodes / edges / aliases) in `data/schema`.
+- The **full curated dataset** (`data/seed`, version `0.2.0`): **251 technologies, 155
+  concepts, 11 domains**, all hand-verified. The validator's `--require-targets` gate
+  enforces the 250+ technology / 150–170 concept breadth targets in CI. Run
+  `python scripts/validate_dataset.py` for the exact live counts.
+- A dataset validation script (`scripts/validate_dataset.py`) enforcing the spec's data
+  quality rules (canonical IDs, no broken edges, valid types, relationship endpoint rules).
+- Deterministic, community-aware offline layout (`scripts/generate_layout.py`).
+- A FastAPI backend (`backend/`) serving the graph, nodes, neighbors, and search.
+- A React + TypeScript + Sigma.js interactive graph with type/domain **filtering** and
+  semantic zoom (`frontend/`).
+- **Wikipedia integration (Phase 1C):** server-side article summaries resolved by curated
+  title, with a two-tier (in-process + on-disk, version-namespaced) cache and attribution.
+- **Popularity / adoption data (Phase 1D):** an offline, source-attributed ingestion
+  pipeline (`scripts/popularity/`) pulling GitHub stars/activity and npm/PyPI/crates
+  download counts, with deterministic scoring. Technology bubbles are sized by sourced
+  adoption where available and fall back to connectivity otherwise (`size_basis` says
+  which). Live-derived artifacts are gitignored, so the committed layout stays reproducible.
+- **Discovery-assist tool (`scripts/discover/`):** proposes genuinely new technologies from
+  Wikidata for human review, plus a weekly GitHub Actions job that auto-ingests new entries
+  with safe placement (real identity + a deterministic domain + the single
+  `belongs_to_domain` edge) and opens a review PR. It never invents richer relationships.
 
 What does **not** yet exist (and is not claimed to):
 
-- The full 250+ technology dataset.
-- Live popularity / adoption data (no ingestion of third-party sources yet).
-- Wikipedia integration.
-- AI project-to-stack recommendations (Phase 2).
+- AI project-to-stack recommendations (Phase 2) — designed and specced, not yet built.
 
 ## Repository layout
 
 ```
-/data        Canonical schema + curated seed dataset (source of truth, JSON)
-/scripts     Data validation, layout generation, future ingestion
-/backend     FastAPI service that serves the graph API
+/data        Canonical schema + curated dataset (source of truth, JSON)
+/scripts     Validation, layout, popularity ingestion, discovery-assist
+/backend     FastAPI service that serves the graph API (+ Wikipedia summaries)
 /frontend    React + TypeScript + Sigma.js interactive graph
 /docs        Architecture, schema, and methodology documentation
+/.kiro/specs Requirements / design / tasks for each milestone
 ```
 
 ## Quick start
