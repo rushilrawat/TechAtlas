@@ -86,29 +86,32 @@ canonically-matched detections with coverage + caching. 120 backend tests pass
 ## Phase 1.5B — Graph highlight integration (frontend overlay)
 
 ### 10. Scan API wiring + state
-- [ ] `/api/v1/repository-scans` routes in `main.py`; `api/client.ts` `scanRepository` +
+- [x] `/api/v1/repository-scans` routes in `main.py`; `api/client.ts` `scanRepository` +
       `getScan`; `types.ts` models; `mode` + `scanState` in `App.tsx`.
 - _Requirements: 5.7, 8.3_
 
 ### 11. Entry point + input + loading/error
-- [ ] `RepoXrayPanel.tsx` entry in header (gated on `VITE_SCANNER_API`); input with
+- [x] `RepoXrayPanel.tsx` entry in header (gated on `VITE_SCANNER_API`); input with
       client-side validation; real lifecycle labels / indeterminate loader (no fake %);
       error states per spec §16.
 - _Requirements: 1.1, 4 (input), 7.4, 7.5, 7.7_
 
 ### 12. Reducer-based overlay
-- [ ] Extend `GraphCanvas` reducers to read `scanState`: status outline/halo (separate
+- [x] Extend `GraphCanvas` reducers to read `scanState`: status outline/halo (separate
       channel; domain color preserved), dim non-scan, highlight existing edges between
       detected nodes; reduced-motion-aware reveal; no relayout/mutation.
-- [ ] Camera "Focus on Stack" + fit with padding; "Back to Universe" restores state+camera.
-- [ ] Vitest: highlight set applied, domain color unchanged, exit restores, no relayout.
+- [x] Camera "Focus on Stack" + fit with padding; "Back to Universe" restores state+camera.
+- [x] Vitest: highlight set applied, domain color unchanged, exit restores, no relayout.
 - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.6, 5.7, 8.1_
 
 ### 13. Summary panel
-- [ ] Categorized detected-stack summary; click row → focus node; unmapped section.
+- [x] Categorized detected-stack summary; click row → focus node; unmapped section.
 - _Requirements: 5 (summary), 6.4, 4.4_
 
-**1.5B deliverable:** paste a repo → stack highlighted on the existing graph.
+**1.5B deliverable: DELIVERED.** Repo X-Ray UI overlays detections on the existing
+graph (status rings, dimming, highlighted existing edges), with a summary panel, evidence
+in the detail panel, Focus Stack, and exit/restore. Gated on VITE_SCANNER_API. 33 unit +
+7 Playwright e2e tests; real GitHub scan validated on expressjs/express.
 
 ---
 

@@ -49,6 +49,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -67,3 +70,29 @@ jobs:
       - name: Build
         working-directory: frontend
         run: npm run build
+
+      # Repo X-Ray browser e2e (Phase 1.5B): build a SCANNER-ENABLED static bundle and
+      # run the Playwright flow against mocked scanner responses. Also needs the static
+      # API JSON rendered from the dataset. The public Pages deploy stays scanner-DISABLED.
+      - name: Render static API for e2e
+        run: |
+          pip install -e "backend[dev]"
+          python scripts/build_dataset.py
+          python scripts/generate_layout.py
+          python scripts/build_static_api.py
+      - name: Install Playwright browser
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+      - name: Build scanner-enabled bundle (dist-xray)
+        working-directory: frontend
+        env:
+          VITE_BASE: /TechAtlas/
+          VITE_STATIC_API: "true"
+          VITE_SCANNER_API: /api/v1
+        run: |
+          npx vite build
+          mv dist dist-xray
+          cp dist-xray/index.html dist-xray/404.html
+      - name: Repo X-Ray e2e (scanner enabled, mocked responses)
+        working-directory: frontend
+        run: npm run e2e:xray

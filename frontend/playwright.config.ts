@@ -6,6 +6,7 @@ import { defineConfig } from "@playwright/test";
 // HTTP 200 (or a jsdom unit test) cannot prove the graph renders.
 export default defineConfig({
   testDir: "./e2e",
+  testIgnore: /xray\.spec\.ts/,
   timeout: 60_000,
   fullyParallel: false,
   reporter: [["list"]],

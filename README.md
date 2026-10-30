@@ -43,9 +43,14 @@ What exists today:
 
 What does **not** yet exist (and is not claimed to):
 
-- Repo X-Ray / GitHub stack scanner (Phase 1.5) — specced in
-  `.kiro/specs/techatlas-phase-1.5-repo-xray/`, not yet built.
 - AI project-to-stack recommendations (Phase 2) — designed and specced, not yet built.
+
+Repo X-Ray / GitHub stack scanner (Phase 1.5A+B) is **built**: paste a public GitHub repo
+URL to highlight its detected technologies across the graph. It needs a live FastAPI
+backend (GitHub calls + token), so it is **gated behind `VITE_SCANNER_API`** and is hidden
+on the public GitHub Pages site (which has no backend). It is available when the app is run
+against a backend; see `docs/development-setup.md`. The scanner performs deterministic
+static analysis only — it never runs repository code.
 
 See `docs/known-issues.md` for tracked low-severity issues.
 

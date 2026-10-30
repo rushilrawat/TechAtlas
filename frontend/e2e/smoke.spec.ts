@@ -85,3 +85,10 @@ test("selecting a second node (via search) updates the panel — no stale highli
   await expect(panel.getByRole("heading", { name: "FastAPI" })).toBeVisible();
   await expect(panel.getByRole("heading", { name: "React" })).toHaveCount(0);
 });
+
+test("Repo X-Ray entry is hidden when the scanner is not configured", async ({ page }) => {
+  // This build has no VITE_SCANNER_API, matching the public GitHub Pages deploy.
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("button", { name: "Repo X-Ray" })).toHaveCount(0);
+});

@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "e2e:xray": "playwright test -c playwright.xray.config.ts"
   },
   "dependencies": {
     "@sigma/node-border": "^3.0.0",

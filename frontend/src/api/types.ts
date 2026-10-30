@@ -88,3 +88,85 @@ export interface DomainSummary {
   color: string;
   node_count: number;
 }
+
+// ---- Repo X-Ray scanner (Phase 1.5B) ----
+// Mirrors backend/app/scanner/models.py. Additive; existing types unchanged.
+
+export type DetectionStatus = "confirmed" | "declared" | "inferred" | "related";
+export type ScanStatus = "completed" | "partial" | "failed";
+
+export interface ScanEvidence {
+  id: string;
+  node_id: string;
+  type: string;
+  file_path: string;
+  description: string;
+  detection_status: DetectionStatus;
+  source_url: string;
+  rule: string;
+  scanner_version: string;
+  line: number | null;
+}
+
+export interface ScanDetection {
+  node_id: string;
+  node_type: "technology" | "concept";
+  role: string;
+  detection_status: DetectionStatus;
+  evidence_ids: string[];
+  component_paths: string[];
+}
+
+export interface UnmappedPackage {
+  name: string;
+  ecosystem: string;
+  detection_status: DetectionStatus;
+  evidence_ids: string[];
+}
+
+export interface ScanRepository {
+  owner: string;
+  name: string;
+  url: string;
+  default_branch: string;
+  commit_sha: string;
+  description: string | null;
+  primary_language: string | null;
+  stars: number | null;
+}
+
+export interface ScanCoverage {
+  files_listed: number;
+  files_inspected: number;
+  manifests_inspected: number;
+  source_files_inspected: number;
+  files_skipped_limit: number;
+  tree_truncated: boolean;
+  partial: boolean;
+  notes: string[];
+}
+
+export interface ScanSummary {
+  matched_technology_count: number;
+  matched_concept_count: number;
+  unmapped_package_count: number;
+}
+
+export interface RepoScan {
+  scan_id: string;
+  status: ScanStatus;
+  scanner_version: string;
+  mapping_version: string;
+  repository: ScanRepository;
+  summary: ScanSummary;
+  coverage: ScanCoverage;
+  detections: ScanDetection[];
+  evidence: ScanEvidence[];
+  unmapped: UnmappedPackage[];
+}
+
+export interface ScanErrorBody {
+  error: string; // invalid_url | not_found | rate_limited | github_error | ...
+  message: string;
+  retry_after_seconds?: number | null;
+}

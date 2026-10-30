@@ -43,3 +43,4 @@ frontend/public/api/
 # Playwright browser smoke-test artifacts
 frontend/playwright-report/
 frontend/test-results/
+frontend/dist-xray/

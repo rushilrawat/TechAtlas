@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "./api/client";
-import type { DomainSummary, GraphResponse } from "./api/types";
+import type { DomainSummary, GraphNode, GraphResponse } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
 import { SearchCommand } from "./components/SearchCommand";
 import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
 import { DomainLegend } from "./components/DomainLegend";
 import { FilterPanel } from "./components/FilterPanel";
 import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
+import { RepoXrayPanel } from "./components/RepoXrayPanel";
+import { XrayLegend } from "./components/XrayLegend";
+import { useRepoScan } from "./graph/useRepoScan";
+import { buildOverlay } from "./graph/scanOverlay";
+import { SCANNER_ENABLED } from "./api/scanner";
 
 type LoadState =
   | { status: "loading" }
@@ -32,6 +37,9 @@ export default function App() {
   const [selected, setSelected] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterState>(emptyFilter());
+  const [xrayOpen, setXrayOpen] = useState(false);
+  const [fitNonce, setFitNonce] = useState(0);
+  const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Initial data load.
   useEffect(() => {
@@ -91,6 +99,32 @@ export default function App() {
     return applyFilters(graphData, filter);
   }, [graphData, filter]);
 
+  // The active scan (completed or partial) drives the graph overlay.
+  const activeScan = scanPhase.kind === "done" ? scanPhase.scan : null;
+  const overlay = useMemo(() => {
+    if (!graphData || !activeScan) return null;
+    return buildOverlay(activeScan, graphData);
+  }, [graphData, activeScan]);
+
+  // id -> node and id -> domain lookups for the summary panel.
+  const nodesById = useMemo(() => {
+    const m = new Map<string, GraphNode>();
+    if (graphData) for (const n of graphData.nodes) m.set(n.id, n);
+    return m;
+  }, [graphData]);
+  const domainsById = useMemo(() => {
+    const m = new Map<string, DomainSummary>();
+    if (state.status === "ready") for (const d of state.domains) m.set(d.id, d);
+    return m;
+  }, [state]);
+
+  const exitXray = useCallback(() => {
+    resetScan();
+    setXrayOpen(false);
+  }, [resetScan]);
+
+  const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
+
   if (state.status === "loading") {
     return (
       <div className="app-loading" role="status">
@@ -121,6 +155,15 @@ export default function App() {
           <span className="brand-sub">the technology knowledge graph</span>
         </div>
         <SearchCommand onPick={navigate} />
+        {SCANNER_ENABLED && !xrayOpen && (
+          <button
+            type="button"
+            className="xray-entry"
+            onClick={() => setXrayOpen(true)}
+          >
+            Repo X-Ray
+          </button>
+        )}
         <div className="topbar-meta">
           <span>
             {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
@@ -136,8 +179,28 @@ export default function App() {
           onSelect={handleSelect}
           visibleNodes={visible ? visible.nodes : null}
           visibleEdges={visible ? visible.edges : null}
+          scanStatusByNode={overlay ? overlay.statusByNode : null}
+          scanHighlightEdges={overlay ? overlay.highlightEdges : null}
+          fitSignal={
+            overlay && fitNonce > 0
+              ? { ids: [...overlay.detectedNodes], nonce: fitNonce }
+              : null
+          }
         />
-        <FilterPanel domains={state.domains} filter={filter} onChange={setFilter} />
+        {xrayOpen ? (
+          <RepoXrayPanel
+            phase={scanPhase}
+            onAnalyze={analyze}
+            onExit={exitXray}
+            onFocusStack={focusStack}
+            onFocusNode={navigate}
+            nodesById={nodesById}
+            domainsById={domainsById}
+          />
+        ) : (
+          <FilterPanel domains={state.domains} filter={filter} onChange={setFilter} />
+        )}
+        {overlay && <XrayLegend />}
         <DomainLegend domains={state.domains} onPick={navigate} />
         {selected && (
           <NodeDetailsPanel
@@ -148,6 +211,8 @@ export default function App() {
             slugOrId={
               state.graph.nodes.find((n) => n.id === selected)?.slug ?? selected
             }
+            nodeId={selected}
+            scan={activeScan}
             onClose={() => handleSelect(null)}
             onNavigate={navigate}
           />

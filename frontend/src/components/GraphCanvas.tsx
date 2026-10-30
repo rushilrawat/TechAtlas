@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import Graph from "graphology";
 import Sigma from "sigma";
-import type { GraphResponse } from "../api/types";
+import { createNodeBorderProgram } from "@sigma/node-border";
+import type { DetectionStatus, GraphResponse } from "../api/types";
 import { buildGraph } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio } from "../graph/semanticZoom";
 
@@ -14,10 +15,29 @@ interface Props {
   // When present, only ids in these sets are shown; coordinates are never recomputed.
   visibleNodes?: Set<string> | null;
   visibleEdges?: Set<string> | null;
+  // Phase 1.5B Repo X-Ray overlay. null = no active scan (normal appearance). When set,
+  // detected nodes get a status ring (domain color/size preserved) and the rest dim.
+  scanStatusByNode?: Map<string, DetectionStatus> | null;
+  scanHighlightEdges?: Set<string> | null;
+  // "Focus Stack": a bounds + nonce to frame the detected region. Bumping the nonce
+  // re-triggers the fit (so the button works repeatedly).
+  fitSignal?: { ids: string[]; nonce: number } | null;
 }
 
 const DIM_NODE = "rgba(120,130,150,0.12)";
 const DIM_EDGE = "rgba(120,130,150,0.04)";
+
+// Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
+// node's domain color). confirmed=green, declared=blue, inferred=amber, related=neutral.
+const STATUS_RING: Record<DetectionStatus, string> = {
+  confirmed: "#4ade80",
+  declared: "#60a5fa",
+  inferred: "#fbbf24",
+  related: "#c0caf5",
+};
+const SCAN_DIM_NODE = "rgba(120,130,150,0.10)";
+const SCAN_HILITE_EDGE = "rgba(180,200,255,0.5)";
+const SCAN_DIM_EDGE = "rgba(120,130,150,0.035)";
 
 /**
  * The primary WebGL visualization. Owns the Sigma instance imperatively; React only
@@ -38,6 +58,9 @@ export function GraphCanvas({
   onSelect,
   visibleNodes = null,
   visibleEdges = null,
+  scanStatusByNode = null,
+  scanHighlightEdges = null,
+  fitSignal = null,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
@@ -51,6 +74,9 @@ export function GraphCanvas({
   // Live filter visibility sets, read inside the reducers (Phase 1B).
   const visibleNodesRef = useRef<Set<string> | null>(visibleNodes);
   const visibleEdgesRef = useRef<Set<string> | null>(visibleEdges);
+  // Repo X-Ray overlay sets, read inside the reducers (Phase 1.5B).
+  const scanStatusRef = useRef<Map<string, DetectionStatus> | null>(scanStatusByNode);
+  const scanEdgesRef = useRef<Set<string> | null>(scanHighlightEdges);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
   // Exposes the build-effect's coalesced refresh to the selection/filter effects,
@@ -76,6 +102,17 @@ export function GraphCanvas({
       zIndex: true,
       minCameraRatio: 0.08,
       maxCameraRatio: 2.5,
+      // "bordered" node type = fill (domain color) + an outer ring (detection status).
+      // The default "circle" program is kept for normal (non-scan) rendering.
+      nodeProgramClasses: {
+        bordered: createNodeBorderProgram({
+          borders: [
+            { size: { attribute: "borderSize", defaultValue: 0 },
+              color: { attribute: "borderColor", defaultValue: "#000000" } },
+            { size: { fill: true }, color: { attribute: "color" } },
+          ],
+        }),
+      },
     });
     sigmaRef.current = renderer;
 
@@ -127,6 +164,28 @@ export function GraphCanvas({
         return res;
       }
 
+      // Repo X-Ray overlay (Phase 1.5B): detected nodes keep their domain color and
+      // size but gain a status-colored ring; everything else dims. This is applied
+      // before the hover/selection highlight so a scan read is stable.
+      const scan = scanStatusRef.current;
+      if (scan) {
+        const status = scan.get(node);
+        if (status) {
+          res.type = "bordered";
+          res.borderColor = STATUS_RING[status];
+          res.borderSize = 3;
+          res.zIndex = 2;
+          // keep domain color (res.color unchanged) and size; label only the hovered/active
+          if (node !== active && node !== hoveredRef.current) res.label = "";
+          return res;
+        }
+        // not detected -> fade into the background
+        res.color = SCAN_DIM_NODE;
+        res.label = "";
+        res.zIndex = 0;
+        return res;
+      }
+
       // Semantic-zoom label gating.
       if (!labelVisible(dataIn.nodeType as string, dataIn.size as number)) {
         res.label = "";
@@ -153,6 +212,14 @@ export function GraphCanvas({
       const vedges = visibleEdgesRef.current;
       if (vedges && !vedges.has(edge)) {
         return { ...dataIn, hidden: true };
+      }
+      // Repo X-Ray overlay: highlight only existing edges between two detected nodes.
+      const scanEdges = scanEdgesRef.current;
+      if (scanEdges) {
+        if (scanEdges.has(edge)) {
+          return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.4, zIndex: 1 };
+        }
+        return { ...dataIn, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
       const active = activeRef.current;
       if (!active) return dataIn;
@@ -216,6 +283,63 @@ export function GraphCanvas({
     // Recompute active too: a filter may have just hidden the selected node.
     scheduleRefreshRef.current?.();
   }, [visibleNodes, visibleEdges]);
+
+  // React to Repo X-Ray overlay changes: update the live sets the reducers read, then
+  // refresh. Clearing them (scan exit) restores normal styling. Never mutates the graph.
+  useEffect(() => {
+    scanStatusRef.current = scanStatusByNode;
+    scanEdgesRef.current = scanHighlightEdges;
+    const renderer = sigmaRef.current;
+    if (renderer) renderer.refresh();
+  }, [scanStatusByNode, scanHighlightEdges]);
+
+  // "Focus Stack" — frame the detected nodes' bounding region with padding, keeping
+  // labels readable (never zoom so far the graph is unusable). Uses the precomputed
+  // coordinates; never relayouts.
+  useEffect(() => {
+    const renderer = sigmaRef.current;
+    const graph = graphRef.current;
+    if (!renderer || !graph || !fitSignal || fitSignal.ids.length === 0) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let found = 0;
+    for (const id of fitSignal.ids) {
+      if (!graph.hasNode(id)) continue;
+      const x = graph.getNodeAttribute(id, "x") as number;
+      const y = graph.getNodeAttribute(id, "y") as number;
+      if (typeof x !== "number" || typeof y !== "number") continue;
+      found++;
+      minX = Math.min(minX, x); minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+    }
+    if (found === 0) return;
+    const camera = renderer.getCamera();
+    const cx = (minX + maxX) / 2;
+    const cy = (minY + maxY) / 2;
+    // Convert the graph-space span to a camera ratio against the graph's own extent,
+    // with padding, and clamp so we never zoom out past the full universe or in too far.
+    const gw = Math.max(maxX - minX, 1e-6);
+    const gh = Math.max(maxY - minY, 1e-6);
+    // Sigma's default ratio 1 ~ shows the whole graph; approximate a framing ratio from
+    // the detected span relative to the full node spread.
+    let fullMinX = Infinity, fullMaxX = -Infinity, fullMinY = Infinity, fullMaxY = -Infinity;
+    graph.forEachNode((_n, a) => {
+      const x = a.x as number, y = a.y as number;
+      fullMinX = Math.min(fullMinX, x); fullMaxX = Math.max(fullMaxX, x);
+      fullMinY = Math.min(fullMinY, y); fullMaxY = Math.max(fullMaxY, y);
+    });
+    const fullW = Math.max(fullMaxX - fullMinX, 1e-6);
+    const fullH = Math.max(fullMaxY - fullMinY, 1e-6);
+    const spanRatio = Math.max(gw / fullW, gh / fullH);
+    const ratio = Math.min(1.1, Math.max(0.12, spanRatio * 1.4 + 0.08));
+    // Map graph center to the camera's normalized coordinate space.
+    const nx = (cx - fullMinX) / fullW;
+    const ny = 1 - (cy - fullMinY) / fullH;
+    camera.animate(
+      { x: nx, y: ny, ratio },
+      { duration: prefersReduced ? 0 : 600 },
+    );
+  }, [fitSignal]);
 
   // Animate the camera to the focused node; cancel any in-flight animation (Task 9).
   useEffect(() => {

@@ -201,3 +201,27 @@ Supported detection (1.5A): JavaScript/TypeScript (`package.json`, lockfiles,
 (`pyproject.toml`/`requirements*.txt`/`poetry.lock`/`uv.lock`, source imports), Docker
 (`Dockerfile`/compose), and GitHub Actions (`.github/workflows/*`). More ecosystems plug
 in as new modules under `backend/app/scanner/manifest_parsers/`.
+
+
+### Repo X-Ray UI (Phase 1.5B, frontend)
+
+The scanner is surfaced in the UI as a **Repo X-Ray** entry point that highlights a
+repository's detected technologies across the existing graph (Universe Highlight View).
+
+- The entry point is **gated on `VITE_SCANNER_API`**: unset means the button is hidden and
+  the app behaves exactly as before (this is the public GitHub Pages deploy); set means it
+  points at a reachable scanner backend base URL (e.g. `/api/v1` behind the dev proxy, or a
+  hosted backend's `https://host/api/v1`).
+- Local dev with the backend running: start the FastAPI backend (`make backend`, set
+  `GITHUB_TOKEN` for real use), then start the frontend dev server with
+  `VITE_SCANNER_API=/api/v1` so the proxy forwards `/api` to the backend.
+- The overlay is a temporary render-state layer: detected nodes keep their domain color and
+  size and gain a status-colored ring (green=confirmed, blue=declared, amber=inferred,
+  neutral=related); unrelated nodes/edges dim; only **existing** graph edges between two
+  detected nodes are highlighted (co-occurrence never invents edges). Exiting restores the
+  normal graph; the canonical node/edge data is never mutated.
+
+Frontend tests: unit (`scanOverlay`, `scanner` client, `RepoXrayPanel`) plus two Playwright
+suites. The default scanner-DISABLED smoke build verifies the entry is hidden and the static
+site is intact; a scanner-ENABLED build drives the full scan/highlight/evidence/exit flow
+against mocked responses (`e2e` and `e2e:xray` npm scripts).
