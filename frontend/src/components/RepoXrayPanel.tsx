@@ -17,6 +17,7 @@ interface Props {
   phase: ScanPhase;
   onAnalyze: (url: string) => void;
   onExit: () => void;
+  onAnalyzeAnother: () => void;
   onFocusStack: () => void;
   onFocusNode: (nodeId: string) => void;
   nodesById: Map<string, GraphNode>;
@@ -33,20 +34,9 @@ const STATUS_LABEL: Record<DetectionStatus, string> = {
 // Client-side URL check mirrors the server allowlist (server still re-validates).
 const GH_RE = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/?$/i;
 
-function groupByDomain(scan: RepoScan, nodesById: Map<string, GraphNode>) {
-  const groups = new Map<string, RepoScan["detections"]>();
-  for (const d of scan.detections) {
-    const node = nodesById.get(d.node_id);
-    const key = node?.primary_domain ?? "domain:other";
-    const list = groups.get(key) ?? [];
-    list.push(d);
-    groups.set(key, list);
-  }
-  return groups;
-}
-
 export function RepoXrayPanel({
-  phase, onAnalyze, onExit, onFocusStack, onFocusNode, nodesById, domainsById,
+  phase, onAnalyze, onExit, onAnalyzeAnother, onFocusStack, onFocusNode, nodesById,
+  domainsById,
 }: Props) {
   const [url, setUrl] = useState("");
   const [touched, setTouched] = useState(false);
@@ -64,12 +54,14 @@ export function RepoXrayPanel({
     <section className="xray-panel" aria-label="Repo X-Ray">
       <div className="xray-header">
         <h2>Analyze a GitHub Repository</h2>
-        {phase.kind !== "idle" && (
+        {phase.kind !== "idle" && phase.kind !== "done" && (
           <button type="button" className="xray-exit" onClick={onExit}>
             Back to Universe
           </button>
         )}
       </div>
+      {phase.kind !== "done" && (
+      <>
       <p className="xray-desc">
         Discover the technologies powering any public GitHub project.
       </p>
@@ -96,6 +88,8 @@ export function RepoXrayPanel({
         </p>
       )}
       <p className="xray-note">Public repositories only. No GitHub login required.</p>
+      </>
+      )}
 
       {analyzing && (
         <div className="xray-status" role="status" aria-live="polite">
@@ -125,6 +119,8 @@ export function RepoXrayPanel({
           domainsById={domainsById}
           onFocusStack={onFocusStack}
           onFocusNode={onFocusNode}
+          onAnalyzeAnother={() => { setUrl(""); setTouched(false); onAnalyzeAnother(); }}
+          onExit={onExit}
         />
       )}
     </section>
@@ -142,48 +138,159 @@ function errorTitle(code: string): string {
   }
 }
 
+function groupSplit(
+  dets: RepoScan["detections"],
+  nodesById: Map<string, GraphNode>,
+) {
+  // Presentation-only split (never alters scanner truth): technologies (tools) vs concepts,
+  // each grouped by primary_domain. Every detection appears exactly once.
+  const tools = new Map<string, RepoScan["detections"]>();
+  const concepts = new Map<string, RepoScan["detections"]>();
+  for (const d of dets) {
+    const node = nodesById.get(d.node_id);
+    const key = node?.primary_domain ?? "domain:other";
+    const bucket = d.node_type === "concept" ? concepts : tools;
+    const list = bucket.get(key) ?? [];
+    list.push(d);
+    bucket.set(key, list);
+  }
+  return { tools, concepts };
+}
+
+function DetectionGroups({
+  groups, nodesById, domainsById, onFocusNode,
+}: {
+  groups: Map<string, RepoScan["detections"]>;
+  nodesById: Map<string, GraphNode>;
+  domainsById: Map<string, DomainSummary>;
+  onFocusNode: (id: string) => void;
+}) {
+  return (
+    <div className="xray-groups">
+      {[...groups.entries()].map(([domainId, dets]) => (
+        <div key={domainId} className="xray-group">
+          <h4 className="xray-group-title">
+            {domainsById.get(domainId)?.name ?? "Other"}
+          </h4>
+          <ul>
+            {dets.map((d) => {
+              const node = nodesById.get(d.node_id);
+              const cls = d.dependency_classification;
+              return (
+                <li key={d.node_id}>
+                  <button
+                    type="button"
+                    className={`xray-tech status-${d.detection_status}`}
+                    onClick={() => onFocusNode(d.node_id)}
+                    title={`${STATUS_LABEL[d.detection_status]} — open details`}
+                  >
+                    <span className={`xray-dot status-${d.detection_status}`} aria-hidden />
+                    <span className="xray-tech-name">{node?.label ?? d.node_id}</span>
+                    {cls ? <span className={`xray-class class-${cls}`}>{cls}</span> : null}
+                    <span className="xray-tech-status">
+                      {STATUS_LABEL[d.detection_status]}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const UNMAPPED_CAP = 50;
+
 function Results({
-  scan, nodesById, domainsById, onFocusStack, onFocusNode,
+  scan, nodesById, domainsById, onFocusStack, onFocusNode, onAnalyzeAnother, onExit,
 }: {
   scan: RepoScan;
   nodesById: Map<string, GraphNode>;
   domainsById: Map<string, DomainSummary>;
   onFocusStack: () => void;
   onFocusNode: (id: string) => void;
+  onAnalyzeAnother: () => void;
+  onExit: () => void;
 }) {
-  const groups = groupByDomain(scan, nodesById);
   const repo = scan.repository;
   const noMatches = scan.detections.length === 0;
+  const { tools, concepts } = groupSplit(scan.detections, nodesById);
+  const repoUrl = safeHttpUrl(repo.url);
+  const partial = scan.status === "partial";
 
   return (
     <div className="xray-results">
+      {/* Section B: repository identity */}
       <div className="xray-repo">
         <div className="xray-repo-title">
-          {safeHttpUrl(repo.url) ? (
-            <a href={safeHttpUrl(repo.url) as string} target="_blank" rel="noreferrer noopener">
+          {repoUrl ? (
+            <a href={repoUrl as string} target="_blank" rel="noreferrer noopener">
               {repo.owner}/{repo.name}
             </a>
           ) : (
             <span>{repo.owner}/{repo.name}</span>
           )}
         </div>
-        {repo.description && <p className="xray-repo-desc">{repo.description}</p>}
+        {repo.description && (
+          <p className="xray-repo-desc" title={repo.description}>{repo.description}</p>
+        )}
         <p className="muted xray-commit">
           {repo.primary_language ? `${repo.primary_language} · ` : ""}
           commit {repo.commit_sha.slice(0, 7)} on {repo.default_branch}
         </p>
-        <button type="button" className="xray-focus" onClick={onFocusStack}>
-          Focus Stack
-        </button>
       </div>
 
-      {scan.status === "partial" && (
+      {/* Section G (surfaced high): always-visible partial-scan warning */}
+      {partial && (
         <div className="xray-partial" role="status">
-          Partial scan: some files were skipped (budgets or a truncated tree). Results
-          may be incomplete.
+          <strong>Partial scan.</strong> Some files were not inspected, so not every
+          technology in this repository was necessarily detected.
+          {scan.coverage.notes.length > 0 && (
+            <ul className="xray-partial-notes">
+              {scan.coverage.notes.map((n, i) => <li key={i}>{n}</li>)}
+            </ul>
+          )}
         </div>
       )}
 
+      {/* Section C: compact source-backed summary metrics */}
+      <div className="xray-metrics" aria-label="Scan summary">
+        <div className="xray-metric">
+          <span className="xray-metric-n">{scan.summary.matched_technology_count}</span>
+          <span className="xray-metric-l">technologies</span>
+        </div>
+        <div className="xray-metric">
+          <span className="xray-metric-n">{scan.summary.matched_concept_count}</span>
+          <span className="xray-metric-l">concepts</span>
+        </div>
+        <div className="xray-metric">
+          <span className="xray-metric-n">{scan.summary.unmapped_package_count}</span>
+          <span className="xray-metric-l">unmapped</span>
+        </div>
+      </div>
+
+      {/* Section D: primary actions (Focus on Stack primary; others secondary) */}
+      <div className="xray-actions">
+        <button type="button" className="xray-focus primary" onClick={onFocusStack}>
+          Focus on Stack
+        </button>
+        <div className="xray-actions-secondary">
+          {repoUrl && (
+            <a className="xray-action-btn" href={repoUrl as string}
+               target="_blank" rel="noreferrer noopener">Open GitHub</a>
+          )}
+          <button type="button" className="xray-action-btn" onClick={onAnalyzeAnother}>
+            Analyze Another
+          </button>
+          <button type="button" className="xray-action-btn" onClick={onExit}>
+            Back to Universe
+          </button>
+        </div>
+      </div>
+
+      {/* Section E/F: detected stack — tools (technologies) first, then concepts */}
       {noMatches ? (
         <p className="xray-empty">
           No TechAtlas technologies matched this repository
@@ -192,48 +299,41 @@ function Results({
             : "."}
         </p>
       ) : (
-        <div className="xray-groups">
-          {[...groups.entries()].map(([domainId, dets]) => (
-            <div key={domainId} className="xray-group">
-              <h3>{domainsById.get(domainId)?.name ?? "Other"}</h3>
-              <ul>
-                {dets.map((d) => {
-                  const node = nodesById.get(d.node_id);
-                  return (
-                    <li key={d.node_id}>
-                      <button
-                        type="button"
-                        className={`xray-tech status-${d.detection_status}`}
-                        onClick={() => onFocusNode(d.node_id)}
-                        title={STATUS_LABEL[d.detection_status]}
-                      >
-                        <span className={`xray-dot status-${d.detection_status}`} aria-hidden />
-                        {node?.label ?? d.node_id}
-                        <span className="xray-tech-status">
-                          {STATUS_LABEL[d.detection_status]}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <>
+          {tools.size > 0 && (
+            <section className="xray-section" aria-label="Technologies and tools">
+              <h3 className="xray-section-title">Technologies &amp; tools</h3>
+              <DetectionGroups groups={tools} nodesById={nodesById}
+                domainsById={domainsById} onFocusNode={onFocusNode} />
+            </section>
+          )}
+          {concepts.size > 0 && (
+            <section className="xray-section" aria-label="Engineering concepts">
+              <h3 className="xray-section-title">Engineering concepts</h3>
+              <DetectionGroups groups={concepts} nodesById={nodesById}
+                domainsById={domainsById} onFocusNode={onFocusNode} />
+            </section>
+          )}
+        </>
       )}
 
+      {/* Section F: unmapped dependencies — collapsed, capped display, full list retained */}
       {scan.unmapped.length > 0 && (
         <details className="xray-unmapped">
-          <summary>
-            Unmapped dependencies ({scan.unmapped.length})
-          </summary>
+          <summary>Unmapped dependencies ({scan.unmapped.length})</summary>
           <ul>
-            {scan.unmapped.slice(0, 50).map((u) => (
+            {scan.unmapped.slice(0, UNMAPPED_CAP).map((u) => (
               <li key={`${u.ecosystem}:${u.name}`}>
                 <code>{u.name}</code> <span className="muted">({u.ecosystem})</span>
               </li>
             ))}
           </ul>
+          {scan.unmapped.length > UNMAPPED_CAP && (
+            <p className="muted">
+              Showing {UNMAPPED_CAP} of {scan.unmapped.length}. The full list is retained as
+              scan evidence; none are discarded.
+            </p>
+          )}
           <p className="muted">
             These packages were found but have no matching TechAtlas node yet.
           </p>

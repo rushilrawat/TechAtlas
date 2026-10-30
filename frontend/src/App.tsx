@@ -193,6 +193,7 @@ export default function App() {
             phase={scanPhase}
             onAnalyze={analyze}
             onExit={exitXray}
+            onAnalyzeAnother={resetScan}
             onFocusStack={focusStack}
             onFocusNode={navigate}
             nodesById={nodesById}

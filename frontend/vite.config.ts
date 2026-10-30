@@ -25,6 +25,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: [],
     // Playwright specs under e2e/ are run by Playwright, not vitest.
-    exclude: ["node_modules/**", "dist/**", "e2e/**"],
+    // Playwright specs (e2e/ and the local .uia-shots/ screenshot harness) are run by
+    // Playwright, not vitest.
+    exclude: ["node_modules/**", "dist/**", "dist-xray/**", "e2e/**", ".uia-shots/**"],
   },
 });

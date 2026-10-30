@@ -218,6 +218,7 @@ body {
   border-radius: var(--radius);
   backdrop-filter: blur(8px);
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5);
+  z-index: 25; /* overlay the X-Ray summary on the same right-edge surface (R21) */
 }
 .details-close {
   position: absolute;
@@ -517,6 +518,7 @@ body {
   position: absolute;
   top: 14px;
   right: 14px;
+  z-index: 15;
   width: 360px;
   max-width: calc(100% - 28px);
   max-height: calc(100% - 28px);
@@ -604,6 +606,66 @@ body {
 .xray-unmapped { margin-top: 10px; }
 .xray-unmapped summary { cursor: pointer; color: var(--text-dim); }
 .xray-coverage { margin-top: 10px; font-size: 11px; }
+
+/* --- UI-B: Repo X-Ray information hierarchy ------------------------------- */
+.xray-repo { padding-bottom: 8px; border-bottom: 1px solid var(--panel-border); }
+.xray-repo-desc {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; color: var(--text); font-size: 12px;
+}
+/* Compact source-backed metrics (Section C) */
+.xray-metrics {
+  display: flex; gap: 8px; margin: 10px 0;
+}
+.xray-metric {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 8px 4px; background: rgba(10,13,20,0.5);
+  border: 1px solid var(--panel-border); border-radius: 8px;
+}
+.xray-metric-n { font-size: 18px; font-weight: 600; color: #e6ebf5; line-height: 1; }
+.xray-metric-l {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px;
+  color: var(--text-dim); margin-top: 3px;
+}
+/* Primary actions (Section D) */
+.xray-actions { margin: 10px 0 4px; }
+.xray-focus.primary {
+  display: block; width: 100%; text-align: center;
+  background: #7aa2f7; color: #0a0d14; border: none; border-radius: 8px;
+  padding: 8px 12px; font-weight: 600; font-size: 13px; cursor: pointer;
+}
+.xray-focus.primary:hover { background: #8fb0f9; color: #0a0d14; }
+.xray-actions-secondary {
+  display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;
+}
+.xray-action-btn {
+  flex: 1; min-width: 90px; text-align: center; text-decoration: none;
+  background: transparent; border: 1px solid var(--panel-border);
+  color: var(--text-dim); border-radius: 6px; padding: 5px 8px;
+  font-size: 11px; cursor: pointer;
+}
+.xray-action-btn:hover { color: #c8d0e8; border-color: #2a344a; }
+/* Section headings (Section E/F) */
+.xray-section { margin-top: 12px; }
+.xray-section-title {
+  margin: 0 0 4px; font-size: 12px; font-weight: 600; color: #c8d0e8;
+}
+.xray-group-title {
+  margin: 8px 0 2px; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-dim);
+}
+.xray-tech-name { flex: 0 1 auto; }
+/* Dependency classification badge (only rendered when the scanner emits it) */
+.xray-class {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px;
+  padding: 1px 5px; border-radius: 999px; border: 1px solid transparent;
+}
+.xray-class.class-direct { color: #9ae6b4; border-color: rgba(74,222,128,0.4); }
+.xray-class.class-transitive { color: #a9c2f7; border-color: rgba(96,165,250,0.4); }
+.xray-class.class-undetermined { color: var(--text-dim); border-color: var(--panel-border); }
+/* Partial banner coverage notes */
+.xray-partial strong { color: #f4d58a; }
+.xray-partial-notes { margin: 6px 0 0; padding-left: 16px; font-size: 11px; }
 
 /* legend */
 .xray-legend {

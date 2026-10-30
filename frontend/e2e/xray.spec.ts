@@ -70,8 +70,8 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await expect(page.getByLabel("Detection status legend")).toBeVisible();
     await expect(page.getByText(/Unmapped dependencies/)).toBeVisible();
 
-    // Focus Stack works (no crash) while the summary is showing.
-    await page.getByRole("button", { name: "Focus Stack" }).click();
+    // Focus on Stack works (no crash) while the summary is showing.
+    await page.getByRole("button", { name: "Focus on Stack" }).click();
 
     // Click a detected tech -> focuses its node & opens the detail panel with evidence.
     await page.getByRole("button", { name: /React/ }).click();
@@ -99,8 +99,11 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await input.fill("https://github.com/acme/demo");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible();
-    // analyze a different repo (same mock) -> still shows a result, no stale crash
-    await input.fill("https://github.com/other/project");
+    // UI-B: after a scan the input is hidden; "Analyze Another" brings it back, then
+    // analyzing a different repo (same mock) still shows a result with no stale crash.
+    await page.getByRole("button", { name: "Analyze Another" }).click();
+    const input2 = page.getByLabel("GitHub repository URL");
+    await input2.fill("https://github.com/other/project");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible(); // mock returns acme/demo
   });

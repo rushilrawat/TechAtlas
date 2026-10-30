@@ -37,7 +37,8 @@ const noop = () => {};
 function base(overrides = {}) {
   return {
     phase: { kind: "idle" } as const, onAnalyze: noop, onExit: noop,
-    onFocusStack: noop, onFocusNode: noop, nodesById, domainsById, ...overrides,
+    onAnalyzeAnother: noop, onFocusStack: noop, onFocusNode: noop, nodesById,
+    domainsById, ...overrides,
   };
 }
 

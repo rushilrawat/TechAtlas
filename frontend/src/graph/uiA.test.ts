@@ -12,6 +12,7 @@ function alpha(rgba: string): number {
 
 const G: GraphResponse = {
   version: "0.3.0",
+  layout_version: null,
   nodes: [
     { id: "technology:a", slug: "a", label: "A", node_type: "technology", x: 0, y: 0, size: 10, color: "#aaa", primary_domain: "domain:x" },
     { id: "technology:b", slug: "b", label: "B", node_type: "technology", x: 2, y: 2, size: 8, color: "#bbb", primary_domain: "domain:x" },

@@ -115,6 +115,9 @@ export interface ScanDetection {
   detection_status: DetectionStatus;
   evidence_ids: string[];
   component_paths: string[];
+  // Phase 1.5C: emitted by the scanner only when it can classify a dependency.
+  // Optional/nullable so it is rendered ONLY when present (never implied).
+  dependency_classification?: "direct" | "transitive" | "undetermined" | null;
 }
 
 export interface UnmappedPackage {
