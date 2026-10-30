@@ -7,7 +7,43 @@ frontend. The curated dataset lives in `/data` and is compiled + validated by sc
 
 - Python 3.11+
 - Node.js 20+
+- GNU Make (preinstalled on macOS/Linux) — optional but convenient
 - (optional) `uv` for faster Python envs
+
+## Quick start (recommended)
+
+One-time install, then run everything with a single command:
+
+```bash
+make setup      # create backend venv + install, and npm install the frontend
+make dev        # build data if missing, then run backend (:8000) + frontend (:5173)
+```
+
+Open http://localhost:5173. Press Ctrl-C to stop both servers.
+
+Other useful targets (`make help` lists them all):
+
+```bash
+make dev-rebuild   # like `make dev` but always rebuilds the dataset first
+make data          # compile + validate + lay out the dataset
+make test          # backend (pytest) + frontend (vitest)
+make lint          # ruff + tsc + eslint
+make build         # production frontend build
+make backend       # run only the API
+make frontend      # run only the frontend
+make clean         # remove generated data + dist
+```
+
+Ports are overridable: `make dev BACKEND_PORT=9000 FRONTEND_PORT=3000`.
+
+You can also run the launcher directly without Make: `./dev.sh` (or `./dev.sh
+--rebuild-data`). It waits for the backend `/health` endpoint before starting the
+frontend and tears both down cleanly on exit.
+
+---
+
+The sections below document the manual steps that the Make targets wrap, in case you
+want to run pieces individually.
 
 ## 1. Build and validate the dataset
 
