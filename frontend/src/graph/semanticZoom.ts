@@ -26,3 +26,69 @@ export function labelVisibleAtRatio(
   if (band === 1) return nodeType !== "technology" || size >= 8;
   return true;
 }
+
+
+// --- Label priority + persistent-label selection (Phase 1.5 UI-A) ----------------
+//
+// In Repo X-Ray the detected stack must be readable at a glance, so detected nodes get
+// persistent labels regardless of zoom band, bounded by LABEL_BUDGET to avoid clutter
+// and per the performance constraint (no DOM-label flood). Selection is deterministic.
+
+import type { DetectionStatus } from "../api/types";
+
+export const LABEL_BUDGET = 24;
+
+// Higher number = higher priority (shown first when space/budget is tight).
+export type LabelContext = {
+  selectedId: string | null;
+  hoveredId: string | null;
+  // detection status for detected nodes (absent for non-detected).
+  statusByNode?: Map<string, DetectionStatus> | null;
+  // popularity-ish ranking input (node render size is a stable proxy already in-graph).
+  sizeById?: Map<string, number> | null;
+};
+
+const _STATUS_RANK: Record<DetectionStatus, number> = {
+  confirmed: 3,
+  declared: 2,
+  inferred: 1,
+  related: 0,
+};
+
+/**
+ * Priority order (design LLD): selected > hovered > confirmed > declared > inferred >
+ * related > (non-detected). Ties within a detected status are broken later by
+ * popularity then node-id, so this returns a coarse rank; selectPersistentLabels applies
+ * the full deterministic ordering.
+ */
+export function labelPriority(id: string, ctx: LabelContext): number {
+  if (ctx.selectedId && id === ctx.selectedId) return 1000;
+  if (ctx.hoveredId && id === ctx.hoveredId) return 900;
+  const status = ctx.statusByNode?.get(id);
+  if (status) return 100 + _STATUS_RANK[status] * 10;
+  return 0;
+}
+
+/**
+ * Deterministically choose which detected nodes get a persistent label, bounded by
+ * `budget`. Order: priority desc, then popularity (size) desc, then node-id ascending
+ * (stable, reproducible). Returns a Set for O(1) membership in the reducer.
+ */
+export function selectPersistentLabels(
+  detectedIds: Iterable<string>,
+  ctx: LabelContext,
+  budget: number = LABEL_BUDGET,
+): Set<string> {
+  const ids = [...detectedIds];
+  const sizeOf = (id: string) => ctx.sizeById?.get(id) ?? 0;
+  ids.sort((a, b) => {
+    const pa = labelPriority(a, ctx);
+    const pb = labelPriority(b, ctx);
+    if (pa !== pb) return pb - pa;              // priority desc
+    const sa = sizeOf(a);
+    const sb = sizeOf(b);
+    if (sa !== sb) return sb - sa;              // popularity (size) desc
+    return a < b ? -1 : a > b ? 1 : 0;          // node-id asc (deterministic tiebreak)
+  });
+  return new Set(ids.slice(0, Math.max(0, budget)));
+}

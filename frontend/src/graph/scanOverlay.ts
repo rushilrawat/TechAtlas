@@ -10,6 +10,10 @@ export interface ScanOverlay {
   statusByNode: Map<string, DetectionStatus>;
   // ids of existing edges whose BOTH endpoints are detected (highlight these).
   highlightEdges: Set<string>;
+  // ids of existing edges with EXACTLY ONE detected endpoint (contextual: a detected
+  // node's link to the surrounding graph). Rendered fainter than verified edges so the
+  // detected stack's immediate context is visible without a spiderweb (UI-A).
+  contextualEdges: Set<string>;
   // detected node ids present in the graph (for camera fit + dimming).
   detectedNodes: Set<string>;
 }
@@ -25,16 +29,19 @@ export function buildOverlay(scan: RepoScan, graph: GraphResponse): ScanOverlay 
     detectedNodes.add(d.node_id);
   }
 
-  // Highlight only existing edges connecting two detected nodes. Repository
-  // co-occurrence is NOT a relationship; we never add edges.
+  // Classify EXISTING edges only (repository co-occurrence is NOT a relationship; we
+  // never add edges): both endpoints detected -> verified highlight; exactly one
+  // detected -> contextual; neither -> left as quiet background.
   const highlightEdges = new Set<string>();
+  const contextualEdges = new Set<string>();
   for (const e of graph.edges) {
-    if (detectedNodes.has(e.source) && detectedNodes.has(e.target)) {
-      highlightEdges.add(e.id);
-    }
+    const s = detectedNodes.has(e.source);
+    const t = detectedNodes.has(e.target);
+    if (s && t) highlightEdges.add(e.id);
+    else if (s || t) contextualEdges.add(e.id);
   }
 
-  return { statusByNode, highlightEdges, detectedNodes };
+  return { statusByNode, highlightEdges, contextualEdges, detectedNodes };
 }
 
 // Bounding box of the detected nodes' precomputed coordinates, for camera fit.

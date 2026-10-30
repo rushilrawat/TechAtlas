@@ -181,9 +181,10 @@ export default function App() {
           visibleEdges={visible ? visible.edges : null}
           scanStatusByNode={overlay ? overlay.statusByNode : null}
           scanHighlightEdges={overlay ? overlay.highlightEdges : null}
+          scanContextEdges={overlay ? overlay.contextualEdges : null}
           fitSignal={
             overlay && fitNonce > 0
-              ? { ids: [...overlay.detectedNodes], nonce: fitNonce }
+              ? { ids: [...overlay.detectedNodes], nonce: fitNonce, sidebarWidthPx: 400 }
               : null
           }
         />

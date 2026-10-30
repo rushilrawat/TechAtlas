@@ -5,6 +5,12 @@
 import Graph from "graphology";
 import type { GraphResponse, NodeType } from "../api/types";
 
+// Phase 1.5 UI-A: quiet background edges. The base graph must read as a calm map, not a
+// bright spiderweb, so unpromoted edges sit in the 0.04-0.10 opacity band (per-state
+// reducers in GraphCanvas promote the relevant ones). See design LLD.
+export const BASE_EDGE_SIZE = 0.4;
+export const BASE_EDGE_COLOR = "rgba(140,150,170,0.06)";
+
 // Node-type shapes so classification is conveyed by form, not just color (a11y §14.2).
 const TYPE_TO_SHAPE: Record<NodeType, string> = {
   domain: "circle",
@@ -42,8 +48,8 @@ export function buildGraph(data: GraphResponse): Graph {
     if (graph.hasEdge(key)) continue;
     graph.addEdgeWithKey(key, e.source, e.target, {
       relationshipType: e.relationship_type,
-      size: 0.6,
-      color: "rgba(140,150,170,0.18)",
+      size: BASE_EDGE_SIZE,
+      color: BASE_EDGE_COLOR,
     });
   }
 

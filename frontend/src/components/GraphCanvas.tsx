@@ -4,7 +4,9 @@ import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
 import type { DetectionStatus, GraphResponse } from "../api/types";
 import { buildGraph } from "../graph/buildGraph";
-import { bandOf, labelVisibleAtRatio } from "../graph/semanticZoom";
+import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
+import type { LabelContext } from "../graph/semanticZoom";
+import { computeFit } from "../graph/cameraFit";
 
 interface Props {
   data: GraphResponse;
@@ -19,13 +21,17 @@ interface Props {
   // detected nodes get a status ring (domain color/size preserved) and the rest dim.
   scanStatusByNode?: Map<string, DetectionStatus> | null;
   scanHighlightEdges?: Set<string> | null;
+  // Contextual edges (exactly one detected endpoint) — rendered faintly (UI-A).
+  scanContextEdges?: Set<string> | null;
   // "Focus Stack": a bounds + nonce to frame the detected region. Bumping the nonce
   // re-triggers the fit (so the button works repeatedly).
-  fitSignal?: { ids: string[]; nonce: number } | null;
+  fitSignal?: { ids: string[]; nonce: number; sidebarWidthPx?: number } | null;
 }
 
+// Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
-const DIM_EDGE = "rgba(120,130,150,0.04)";
+const DIM_EDGE = "rgba(120,130,150,0.035)";           // <=0.05 non-touching (UI-A R2.2)
+const ACTIVE_EDGE = "rgba(150,180,255,0.55)";          // 0.50-0.60 touching (UI-A R2.1)
 
 // Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
 // node's domain color). confirmed=green, declared=blue, inferred=amber, related=neutral.
@@ -35,9 +41,15 @@ const STATUS_RING: Record<DetectionStatus, string> = {
   inferred: "#fbbf24",
   related: "#c0caf5",
 };
-const SCAN_DIM_NODE = "rgba(120,130,150,0.10)";
-const SCAN_HILITE_EDGE = "rgba(180,200,255,0.5)";
-const SCAN_DIM_EDGE = "rgba(120,130,150,0.035)";
+// Repo X-Ray state: detected nodes at full opacity; unrelated nodes fade to 0.10-0.20;
+// verified edges (both endpoints detected) prominent; contextual (one endpoint) faint;
+// unrelated edges nearly invisible so the detected stack reads in seconds (UI-A R3).
+const SCAN_DIM_NODE = "rgba(110,120,140,0.11)";        // 0.10-0.20 unrelated node (low end)
+const SCAN_HILITE_EDGE = "rgba(190,205,255,0.7)";      // 0.60-0.80 verified-between
+const SCAN_CONTEXT_EDGE = "rgba(150,165,205,0.20)";    // 0.15-0.30 contextual
+// Unrelated edges are the overwhelming majority (hundreds); even a tiny alpha accumulates
+// into a visible web where they overlap, so they are effectively hidden (UI-A R3.3).
+const SCAN_DIM_EDGE = "rgba(120,130,150,0.0)";
 
 /**
  * The primary WebGL visualization. Owns the Sigma instance imperatively; React only
@@ -60,6 +72,7 @@ export function GraphCanvas({
   visibleEdges = null,
   scanStatusByNode = null,
   scanHighlightEdges = null,
+  scanContextEdges = null,
   fitSignal = null,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -77,6 +90,9 @@ export function GraphCanvas({
   // Repo X-Ray overlay sets, read inside the reducers (Phase 1.5B).
   const scanStatusRef = useRef<Map<string, DetectionStatus> | null>(scanStatusByNode);
   const scanEdgesRef = useRef<Set<string> | null>(scanHighlightEdges);
+  const scanContextRef = useRef<Set<string> | null>(scanContextEdges);
+  // Persistent detected-node labels (UI-A): recomputed only when the overlay changes.
+  const persistentLabelsRef = useRef<Set<string> | null>(null);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
   // Exposes the build-effect's coalesced refresh to the selection/filter effects,
@@ -175,8 +191,13 @@ export function GraphCanvas({
           res.borderColor = STATUS_RING[status];
           res.borderSize = 3;
           res.zIndex = 2;
-          // keep domain color (res.color unchanged) and size; label only the hovered/active
-          if (node !== active && node !== hoveredRef.current) res.label = "";
+          // keep domain color (res.color unchanged) and size; show a PERSISTENT label for
+          // this detected node when it's in the budgeted set, or when hovered/active, so the
+          // scanned stack is identifiable without the sidebar (UI-A R5).
+          const persist = persistentLabelsRef.current;
+          const labelled =
+            node === active || node === hoveredRef.current || (persist?.has(node) ?? false);
+          if (!labelled) res.label = "";
           return res;
         }
         // not detected -> fade into the background
@@ -217,15 +238,20 @@ export function GraphCanvas({
       const scanEdges = scanEdgesRef.current;
       if (scanEdges) {
         if (scanEdges.has(edge)) {
-          return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.4, zIndex: 1 };
+          return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2 };
         }
-        return { ...dataIn, color: SCAN_DIM_EDGE, zIndex: 0 };
+        if (scanContextRef.current?.has(edge)) {
+          return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1 };
+        }
+        // Unrelated edges: hide outright. They are the majority and only add noise in a
+        // scan read; hiding (not just alpha~0) also saves overdraw (perf R30).
+        return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
       const active = activeRef.current;
       if (!active) return dataIn;
       const [s, t] = graph.extremities(edge);
       if (s === active || t === active) {
-        return { ...dataIn, color: "rgba(180,200,255,0.55)", size: 1.4, zIndex: 1 };
+        return { ...dataIn, color: ACTIVE_EDGE, size: 1.4, zIndex: 1 };
       }
       return { ...dataIn, color: DIM_EDGE, zIndex: 0 };
     });
@@ -289,9 +315,28 @@ export function GraphCanvas({
   useEffect(() => {
     scanStatusRef.current = scanStatusByNode;
     scanEdgesRef.current = scanHighlightEdges;
+    scanContextRef.current = scanContextEdges;
+    // Recompute the budgeted persistent-label set once per overlay change (never per
+    // frame — performance R30.4). Uses the graph's render sizes as the popularity proxy.
+    const graph = graphRef.current;
+    if (scanStatusByNode && graph) {
+      const sizeById = new Map<string, number>();
+      for (const id of scanStatusByNode.keys()) {
+        if (graph.hasNode(id)) sizeById.set(id, graph.getNodeAttribute(id, "size") as number);
+      }
+      const ctx: LabelContext = {
+        selectedId: selectedRef.current,
+        hoveredId: hoveredRef.current,
+        statusByNode: scanStatusByNode,
+        sizeById,
+      };
+      persistentLabelsRef.current = selectPersistentLabels(scanStatusByNode.keys(), ctx);
+    } else {
+      persistentLabelsRef.current = null;
+    }
     const renderer = sigmaRef.current;
     if (renderer) renderer.refresh();
-  }, [scanStatusByNode, scanHighlightEdges]);
+  }, [scanStatusByNode, scanHighlightEdges, scanContextEdges]);
 
   // "Focus Stack" — frame the detected nodes' bounding region with padding, keeping
   // labels readable (never zoom so far the graph is unusable). Uses the precomputed
@@ -314,29 +359,25 @@ export function GraphCanvas({
     }
     if (found === 0) return;
     const camera = renderer.getCamera();
-    const cx = (minX + maxX) / 2;
-    const cy = (minY + maxY) / 2;
-    // Convert the graph-space span to a camera ratio against the graph's own extent,
-    // with padding, and clamp so we never zoom out past the full universe or in too far.
-    const gw = Math.max(maxX - minX, 1e-6);
-    const gh = Math.max(maxY - minY, 1e-6);
-    // Sigma's default ratio 1 ~ shows the whole graph; approximate a framing ratio from
-    // the detected span relative to the full node spread.
+    // Full node spread for normalization.
     let fullMinX = Infinity, fullMaxX = -Infinity, fullMinY = Infinity, fullMaxY = -Infinity;
     graph.forEachNode((_n, a) => {
       const x = a.x as number, y = a.y as number;
       fullMinX = Math.min(fullMinX, x); fullMaxX = Math.max(fullMaxX, x);
       fullMinY = Math.min(fullMinY, y); fullMaxY = Math.max(fullMaxY, y);
     });
-    const fullW = Math.max(fullMaxX - fullMinX, 1e-6);
-    const fullH = Math.max(fullMaxY - fullMinY, 1e-6);
-    const spanRatio = Math.max(gw / fullW, gh / fullH);
-    const ratio = Math.min(1.1, Math.max(0.12, spanRatio * 1.4 + 0.08));
-    // Map graph center to the camera's normalized coordinate space.
-    const nx = (cx - fullMinX) / fullW;
-    const ny = 1 - (cy - fullMinY) / fullH;
+    const fit = computeFit({
+      bounds: { minX, minY, maxX, maxY },
+      fullSpread: { minX: fullMinX, minY: fullMinY, maxX: fullMaxX, maxY: fullMaxY },
+      sidebarWidthPx: fitSignal.sidebarWidthPx ?? 0,
+      viewportWidthPx: containerRef.current?.clientWidth ?? window.innerWidth,
+      minRatio: 0.12,
+      universeRatio: 1.1,
+      padding: 0.4,
+    });
+    if (!fit) return;
     camera.animate(
-      { x: nx, y: ny, ratio },
+      { x: fit.x, y: fit.y, ratio: fit.ratio },
       { duration: prefersReduced ? 0 : 600 },
     );
   }, [fitSignal]);

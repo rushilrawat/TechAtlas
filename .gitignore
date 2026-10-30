@@ -44,3 +44,7 @@ frontend/public/api/
 frontend/playwright-report/
 frontend/test-results/
 frontend/dist-xray/
+
+# Phase 1.5 UI-A local visual-verification artifacts (not shipped)
+frontend/.uia-shots/
+frontend/screenshots/
