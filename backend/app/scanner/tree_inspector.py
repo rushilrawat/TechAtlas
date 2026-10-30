@@ -36,6 +36,13 @@ MANIFEST_BASENAMES = {
     # Docker / infra
     "Dockerfile", ".dockerignore", "docker-compose.yml", "docker-compose.yaml",
     "compose.yml", "compose.yaml",
+    # Rust (cargo)
+    "Cargo.toml", "Cargo.lock",
+    # Java / Kotlin (maven / gradle)
+    "pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle",
+    "settings.gradle.kts",
+    # Go
+    "go.mod", "go.sum",
 }
 # Prefix/suffix patterns for manifests/config.
 def _is_manifest(path: str) -> bool:
@@ -48,6 +55,10 @@ def _is_manifest(path: str) -> bool:
         return True
     if base.startswith("vite.config.") or base.startswith("next.config."):
         return True
+    # Gradle version catalog: only when it lives under a gradle/ directory, to avoid
+    # scooping up unrelated TOML files elsewhere in the tree.
+    if base == "libs.versions.toml" and "gradle/" in path:
+        return True
     return False
 
 
@@ -58,7 +69,7 @@ def _is_workflow(path: str) -> bool:
 
 
 # Source extensions we do a bounded import scan on.
-SOURCE_EXT = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".py"}
+SOURCE_EXT = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".py", ".rs", ".go"}
 
 
 def _excluded(path: str) -> bool:

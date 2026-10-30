@@ -24,3 +24,6 @@ class RawDetection:
     rule: str
     direct: bool = True            # direct vs transitive dependency (when known)
     line: int | None = None
+    # Phase 1.5C optional metadata, carried to build_scan for classification/scoping:
+    section: str | None = None     # e.g. rust: 'dependencies'|'dev'|'build'
+    scope: str | None = None       # e.g. java/go: 'test' when known

@@ -12,9 +12,12 @@ from pydantic import BaseModel, Field
 # Scanner + mapping versions are part of the cache key: bump SCANNER_VERSION when
 # detection/parsing rules change; MAPPING_VERSION tracks the dataset's package/alias
 # mapping data (it is the dataset version, surfaced for cache invalidation).
-SCANNER_VERSION = "1.5a.1"
+SCANNER_VERSION = "1.5c.1"
 
 DetectionStatus = Literal["confirmed", "declared", "inferred", "related"]
+# Direct vs transitive dependency classification (Phase 1.5C). Distinct from
+# DetectionStatus; optional on Detection so pre-1.5C cached scans still deserialize.
+DependencyClassification = Literal["direct", "transitive", "undetermined"]
 EvidenceType = Literal[
     "language_statistics",
     "file_extension",
@@ -51,6 +54,9 @@ class Detection(BaseModel):
     evidence_ids: list[str] = Field(default_factory=list)
     # Monorepo: component directories the detection was seen in (spec §19). Optional.
     component_paths: list[str] = Field(default_factory=list)
+    # Phase 1.5C: direct/transitive classification from manifest-vs-lockfile signals.
+    # Optional (None = undetermined/not computed) to stay backward compatible.
+    dependency_classification: DependencyClassification | None = None
 
 
 class UnmappedPackage(BaseModel):

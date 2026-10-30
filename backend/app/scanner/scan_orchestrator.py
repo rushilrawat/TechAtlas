@@ -13,7 +13,7 @@ from urllib.parse import quote
 
 from .github_client import BudgetExceeded, GitHubClient, GitHubError
 from .import_role import role_for_node
-from .manifest_parsers import infra, js
+from .manifest_parsers import infra, js, rust
 from .manifest_parsers import python as pyparser
 from .manifest_parsers.common import RawDetection
 from .models import (
@@ -64,10 +64,16 @@ def _parse_file(path: str, kind: str, text: str) -> list[RawDetection]:
         elif base in ("docker-compose.yml", "docker-compose.yaml",
                       "compose.yml", "compose.yaml"):
             out += infra.parse_compose(path, text)
+        elif base == "Cargo.toml":
+            out += rust.parse_cargo_toml(path, text)
+        elif base == "Cargo.lock":
+            out += rust.parse_cargo_lock(path, text)
         return out
     if kind == "source":
         if path.endswith(".py"):
             out += pyparser.parse_source_imports(path, text)
+        elif path.endswith(".rs"):
+            out += rust.parse_source_imports(path, text)
         else:
             out += js.parse_source_imports(path, text)
     return out
