@@ -39,7 +39,12 @@ export function labelVisibleAtRatio(
 
 import type { DetectionStatus } from "../api/types";
 
-export const LABEL_BUDGET = 24;
+// Max simultaneously-shown persistent detected-node labels. Bounded for readability
+// and performance (no DOM-label flood), but set high enough that typical stacks and
+// the 25-30 stress range are fully labelled; very large monorepo scans still cap here.
+// Selected/hovered labels are shown IN ADDITION via the reducer (they never count
+// against this budget), so the active node is always labelled.
+export const LABEL_BUDGET = 30;
 
 // Higher number = higher priority (shown first when space/budget is tight).
 export type LabelContext = {
