@@ -16,15 +16,16 @@ describe("semantic zoom", () => {
   it("at universe zoom only domains and the biggest hubs are labelled", () => {
     const ratio = RATIO_UNIVERSE + 0.5;
     expect(labelVisibleAtRatio("domain", 20, ratio)).toBe(true);
-    expect(labelVisibleAtRatio("technology", 14, ratio)).toBe(true); // big hub
-    expect(labelVisibleAtRatio("technology", 6, ratio)).toBe(false); // small tech hidden
+    expect(labelVisibleAtRatio("technology", 20, ratio)).toBe(true); // very big hub (>=18)
+    expect(labelVisibleAtRatio("technology", 14, ratio)).toBe(false); // mid hub now hidden
     expect(labelVisibleAtRatio("concept", 7, ratio)).toBe(false);
   });
 
-  it("at domain zoom concepts and prominent tech are labelled", () => {
+  it("at domain zoom domains and prominent (>=12) nodes are labelled", () => {
     const ratio = (RATIO_UNIVERSE + RATIO_DOMAIN) / 2;
-    expect(labelVisibleAtRatio("concept", 7, ratio)).toBe(true);
-    expect(labelVisibleAtRatio("technology", 9, ratio)).toBe(true);
+    expect(labelVisibleAtRatio("domain", 10, ratio)).toBe(true);     // domains always
+    expect(labelVisibleAtRatio("technology", 13, ratio)).toBe(true); // prominent tech
+    expect(labelVisibleAtRatio("concept", 7, ratio)).toBe(false);    // small concept hidden
     expect(labelVisibleAtRatio("technology", 5, ratio)).toBe(false);
   });
 

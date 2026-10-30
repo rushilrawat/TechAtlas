@@ -55,6 +55,9 @@ export default function App() {
   // UI-C: domain legend auto-minimizes during Repo X-Ray to free canvas space;
   // the user can reopen it any time (it stays mounted as a reopen control).
   const [legendCollapsed, setLegendCollapsed] = useState(false);
+  // UI-E req 1: on mobile the filter sheet is closed by default (graph-first);
+  // an accessible Filters control opens/closes it. Ignored on desktop (CSS).
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
@@ -254,7 +257,23 @@ export default function App() {
             domainsById={domainsById}
           />
         ) : (
-          <FilterPanel domains={state.domains} filter={filter} onChange={setFilter} />
+          <>
+            <button
+              type="button"
+              className="filters-toggle"
+              aria-expanded={filtersOpen}
+              aria-controls="graph-filters"
+              onClick={() => setFiltersOpen((v) => !v)}
+            >
+              {filtersOpen ? "Close filters" : "Filters"}
+            </button>
+            <FilterPanel
+              domains={state.domains}
+              filter={filter}
+              onChange={setFilter}
+              mobileOpen={filtersOpen}
+            />
+          </>
         )}
         {overlay && <XrayLegend />}
         <DomainLegend

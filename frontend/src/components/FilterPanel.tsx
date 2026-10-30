@@ -9,6 +9,9 @@ interface Props {
   domains: DomainSummary[];
   filter: FilterState;
   onChange: (next: FilterState) => void;
+  // UI-E: on mobile the panel is a bottom sheet hidden until the Filters control opens it.
+  // Desktop ignores this (CSS keeps the panel visible regardless).
+  mobileOpen?: boolean;
 }
 
 const NODE_TYPES: { value: NodeType; label: string }[] = [
@@ -24,11 +27,15 @@ function toggle<T>(set: Set<T>, value: T): Set<T> {
   return next;
 }
 
-export function FilterPanel({ domains, filter, onChange }: Props) {
+export function FilterPanel({ domains, filter, onChange, mobileOpen = false }: Props) {
   const active = !isEmptyFilter(filter);
 
   return (
-    <section className="filter-panel" aria-label="Graph filters">
+    <section
+      id="graph-filters"
+      className={`filter-panel${mobileOpen ? " mobile-open" : ""}`}
+      aria-label="Graph filters"
+    >
       <div className="filter-panel-header">
         <h2>Filters</h2>
         <button

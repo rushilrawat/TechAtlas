@@ -22,8 +22,11 @@ export function labelVisibleAtRatio(
   ratio: number,
 ): boolean {
   const band = bandOf(ratio);
-  if (band === 0) return nodeType === "domain" || size >= 12;
-  if (band === 1) return nodeType !== "technology" || size >= 8;
+  // UI-E: stricter label gating to cut Universe-view collisions. At the overview band
+  // only domains and the very largest hubs are labelled; at the mid band, domains plus
+  // prominent concepts/technologies; full detail only when zoomed in.
+  if (band === 0) return nodeType === "domain" || size >= 18;
+  if (band === 1) return nodeType === "domain" || size >= 12;
   return true;
 }
 

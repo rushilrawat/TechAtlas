@@ -401,6 +401,7 @@ body {
 .graph-empty-state p {
   margin: 0 0 4px;
 }
+.filters-toggle { display: none; }
 .filter-panel {
   position: absolute;
   top: 14px;
@@ -738,9 +739,18 @@ body {
   /* Search wraps to its own full-width row, tappable; no hover needed (req 5). */
   .search { flex: 1 1 100%; max-width: none; order: 3; }
   .topbar { row-gap: 8px; }
-  /* Explore filters become a compact bottom sheet on mobile so the graph stays visible. */
+  /* Graph-first (req 1): the filter sheet is hidden until the Filters control opens it. */
+  .filters-toggle {
+    display: inline-flex; position: absolute; left: 12px; bottom: 58px; z-index: 11;
+    align-items: center; gap: 6px; padding: 8px 14px;
+    background: rgba(17, 21, 31, 0.92); border: 1px solid var(--panel-border);
+    border-radius: 999px; color: var(--text); font-size: 12px; cursor: pointer;
+    backdrop-filter: blur(6px);
+  }
   .filter-panel {
     top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none;
-    max-height: 45%; border-radius: var(--radius) var(--radius) 0 0;
+    max-height: 50%; border-radius: var(--radius) var(--radius) 0 0;
+    display: none;
   }
+  .filter-panel.mobile-open { display: block; }
 }
