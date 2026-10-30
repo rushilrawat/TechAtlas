@@ -126,9 +126,11 @@ def build_scan(
 
     # Consolidate per node id. Package detections -> match; node_id detections direct.
     evidence: list[Evidence] = []
-    by_node: dict[str, dict] = {}   # node_id -> {status, evidence_ids, components}
+    by_node: dict[str, dict] = {}   # node_id -> {status, evidence_ids, components, ...}
     unmapped: dict[tuple[str, str], dict] = {}
     ev_seq = 0
+    # Dedupe guard: the same observation (node, rule, file, line) counts once (Req 7.1).
+    seen_obs: set[tuple[str, str, str, int | None]] = set()
 
     def add_evidence(node_id: str, rd: RawDetection) -> str:
         nonlocal ev_seq
@@ -146,35 +148,73 @@ def build_scan(
     def component_of(path: str) -> str | None:
         return path.split("/", 1)[0] if "/" in path else None
 
+    # Lockfile rules per ecosystem signal transitive presence; manifests signal direct.
+    _LOCKFILE_RULES = {
+        "rust.cargo_lock", "go.sum", "python.poetry_lock", "python.uv_lock",
+        "js.package_lock",
+    }
+
+    def _obs_key(nid: str, rd: RawDetection) -> tuple[str, str, str, int | None]:
+        return (nid, rd.rule, rd.file_path, rd.line)
+
     for rd in raw:
         node_id = rd.node_id
         if node_id is None and rd.ecosystem and rd.package:
             node_id = matcher.match_package(rd.ecosystem, rd.package)
         if node_id is None:
             if rd.ecosystem and rd.package:  # record unmapped package
-                key = (rd.ecosystem, rd.package.lower())
-                u = unmapped.setdefault(key, {"status": rd.detection_status, "eids": []})
-                eid = add_evidence(f"unmapped:{rd.ecosystem}:{rd.package}", rd)
+                eco = rd.ecosystem or "unknown"
+                key = (eco, rd.package.lower())
+                if _obs_key(f"unmapped:{eco}:{rd.package}", rd) in seen_obs:
+                    continue
+                seen_obs.add(_obs_key(f"unmapped:{eco}:{rd.package}", rd))
+                u = unmapped.setdefault(
+                    key, {"status": rd.detection_status, "eids": [], "name": rd.package}
+                )
+                eid = add_evidence(f"unmapped:{eco}:{rd.package}", rd)
                 u["eids"].append(eid)
                 if _STATUS_RANK[rd.detection_status] > _STATUS_RANK[u["status"]]:
                     u["status"] = rd.detection_status
             continue
         if not matcher.has(node_id):
             continue  # a direct node_id (e.g. a tool) not present in this dataset
+        if _obs_key(node_id, rd) in seen_obs:
+            continue  # dedupe identical observations (Req 7.1)
+        seen_obs.add(_obs_key(node_id, rd))
         eid = add_evidence(node_id, rd)
-        slot = by_node.setdefault(
-            node_id, {"status": rd.detection_status, "eids": [], "components": set()}
-        )
+        slot = by_node.setdefault(node_id, {
+            "status": rd.detection_status, "eids": [], "components": set(),
+            "direct_manifest": False, "lockfile_only_seen": False,
+        })
         slot["eids"].append(eid)
         if _STATUS_RANK[rd.detection_status] > _STATUS_RANK[slot["status"]]:
             slot["status"] = rd.detection_status
         comp = component_of(rd.file_path)
         if comp:
             slot["components"].add(comp)
+        # Classification signals: a manifest declaration with direct=True -> direct;
+        # a lockfile rule (or direct=False) -> transitive candidate (Req 5.1-5.4).
+        if rd.rule in _LOCKFILE_RULES or rd.direct is False:
+            slot["lockfile_only_seen"] = True
+        elif rd.evidence_type in ("dependency_manifest", "source_import", "source_usage") \
+                and rd.direct is True:
+            slot["direct_manifest"] = True
+
+    def _classify(slot: dict) -> str | None:
+        # Direct declaration wins even if also in a lockfile (Req 5.2); lockfile-only is
+        # transitive (Req 5.3); neither signal -> undetermined (Req 5.4). Concepts and
+        # node_id-only detections (no dep signal) stay None (undetermined/N-A).
+        if slot.get("direct_manifest"):
+            return "direct"
+        if slot.get("lockfile_only_seen"):
+            return "transitive"
+        return None
 
     detections: list[Detection] = []
     tech_count = concept_count = 0
     for node_id, slot in by_node.items():
+        if not slot["eids"]:
+            continue  # no-zero-evidence invariant (Req 7.3): never emit evidence-less
         node_type = "concept" if node_id.startswith("concept:") else "technology"
         if node_type == "technology":
             tech_count += 1
@@ -185,11 +225,12 @@ def build_scan(
             role=role_for_node(node_id, matcher),
             detection_status=slot["status"], evidence_ids=slot["eids"],
             component_paths=sorted(slot["components"]),
+            dependency_classification=_classify(slot),
         ))
 
     unmapped_list = [
-        UnmappedPackage(name=name, ecosystem=eco, detection_status=d["status"],
-                        evidence_ids=d["eids"])
+        UnmappedPackage(name=d.get("name", name), ecosystem=eco or "unknown",
+                        detection_status=d["status"], evidence_ids=d["eids"])
         for (eco, name), d in unmapped.items()
     ]
 
