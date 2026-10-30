@@ -141,6 +141,9 @@ _SCAN_RATE_PER_MIN = float(os.environ.get("TECHATLAS_SCAN_RATE_PER_MIN", "5"))
 _SCAN_MAX_CONCURRENT = int(os.environ.get("TECHATLAS_SCAN_MAX_CONCURRENT", "2"))
 _SCAN_DEADLINE_SEC = float(os.environ.get("TECHATLAS_SCAN_DEADLINE_SEC", "45"))
 _SCAN_REQUEST_BUDGET = int(os.environ.get("TECHATLAS_SCAN_REQUEST_BUDGET", "60"))
+# Number of trusted proxy hops in front of the app. Render's edge = 1. Used to read a
+# spoof-resistant client IP from X-Forwarded-For (counted from the right).
+_TRUSTED_PROXIES = int(os.environ.get("TECHATLAS_TRUSTED_PROXIES", "1"))
 
 _rate_limiter = RateLimiter(
     capacity=_SCAN_RATE_BURST, refill_per_sec=_SCAN_RATE_PER_MIN / 60.0
@@ -167,7 +170,7 @@ class RepositoryScanRequest(BaseModel):
 def create_repository_scan(req: RepositoryScanRequest, request: Request) -> RepoScan:
     # 1) per-IP rate limit (best-effort, per instance; see safeguards.py).
     peer = request.client.host if request.client else None
-    key = client_ip(dict(request.headers), peer)
+    key = client_ip(dict(request.headers), peer, trusted_proxies=_TRUSTED_PROXIES)
     allowed, retry = _rate_limiter.check(key)
     if not allowed:
         raise HTTPException(status_code=429, detail={
