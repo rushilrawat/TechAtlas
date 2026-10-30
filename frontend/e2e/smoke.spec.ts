@@ -86,8 +86,28 @@ test("selecting a second node (via search) updates the panel — no stale highli
   await expect(panel.getByRole("heading", { name: "React" })).toHaveCount(0);
 });
 
-test("Repo X-Ray entry is hidden when the scanner is not configured", async ({ page }) => {
-  // This build has no VITE_SCANNER_API, matching the public GitHub Pages deploy.
+// The Repo X-Ray entry point is gated on the build-time VITE_SCANNER_API variable
+// (frontend/src/api/scanner.ts -> SCANNER_ENABLED). The same variable is set on the
+// job that builds AND runs this suite, so the test process reads it from process.env to
+// assert the behavior that matches the build under test. Both scenarios are defined as
+// tests; the one that does not match the current build configuration is marked skipped
+// (never removed) so the opposite case stays documented and runs under the other config.
+const SCANNER_CONFIGURED =
+  typeof process.env.VITE_SCANNER_API === "string" &&
+  process.env.VITE_SCANNER_API.trim().length > 0;
+
+test("Repo X-Ray entry is visible when the scanner IS configured", async ({ page }) => {
+  test.skip(!SCANNER_CONFIGURED, "VITE_SCANNER_API is unset for this build");
+  // This build has VITE_SCANNER_API set (e.g. the production Pages deploy pointing at
+  // the Render backend), so the Repo X-Ray entry point must be present and usable.
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
+});
+
+test("Repo X-Ray entry is hidden when the scanner is NOT configured", async ({ page }) => {
+  test.skip(SCANNER_CONFIGURED, "VITE_SCANNER_API is set for this build");
+  // This build has no VITE_SCANNER_API, matching a scanner-less static deploy.
   await page.goto("/");
   await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
   await expect(page.getByRole("button", { name: "Repo X-Ray" })).toHaveCount(0);
