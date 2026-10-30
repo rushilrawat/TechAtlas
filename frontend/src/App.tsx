@@ -11,6 +11,8 @@ import { RepoXrayPanel } from "./components/RepoXrayPanel";
 import { XrayLegend } from "./components/XrayLegend";
 import { useRepoScan } from "./graph/useRepoScan";
 import { buildOverlay } from "./graph/scanOverlay";
+import { computeStackLayout, prominenceOf } from "./graph/stackLayout";
+import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED } from "./api/scanner";
 
 type LoadState =
@@ -58,6 +60,9 @@ export default function App() {
   // UI-E req 1: on mobile the filter sheet is closed by default (graph-first);
   // an accessible Filters control opens/closes it. Ignored on desktop (CSS).
   const [filtersOpen, setFiltersOpen] = useState(false);
+  // X-Ray view mode: Stack (clustered reprojection) is the default on a completed
+  // scan; Universe shows detections highlighted in the canonical 417-node layout.
+  const [xrayView, setXrayView] = useState<"stack" | "universe">("stack");
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
@@ -156,6 +161,35 @@ export default function App() {
     return buildOverlay(activeScan, graphData);
   }, [graphData, activeScan]);
 
+  // Default to Stack View whenever a new scan completes; reset when leaving X-Ray.
+  useEffect(() => {
+    if (activeScan) setXrayView("stack");
+  }, [activeScan]);
+
+  // Temporary Stack-View projection: cluster detected nodes by canonical primary_domain.
+  // Pure + deterministic; never mutates canonical coordinates (GraphCanvas restores them).
+  const stackView = useMemo(() => {
+    if (!overlay || !graphData || xrayView !== "stack") return null;
+    const byId = new Map(graphData.nodes.map((n) => [n.id, n]));
+    const inputs: StackNodeInput[] = [];
+    for (const [id, status] of overlay.statusByNode) {
+      const node = byId.get(id);
+      if (!node) continue;
+      inputs.push({
+        id,
+        primaryDomain: node.primary_domain,
+        nodeType: node.node_type,
+        status,
+        size: node.size,
+        prominence: prominenceOf(node.node_type, node.node_subtype),
+      });
+    }
+    if (inputs.length === 0) return null;
+    return computeStackLayout(inputs);
+  }, [overlay, graphData, xrayView]);
+
+  const stackPositions = stackView?.positions ?? null;
+
   // id -> node and id -> domain lookups for the summary panel.
   const nodesById = useMemo(() => {
     const m = new Map<string, GraphNode>();
@@ -167,6 +201,21 @@ export default function App() {
     if (state.status === "ready") for (const d of state.domains) m.set(d.id, d);
     return m;
   }, [state]);
+
+  // Domain cluster headings (name + color from canonical domain metadata) for the overlay.
+  const stackHeadings = useMemo(() => {
+    if (!stackView) return null;
+    return stackView.clusters.map((c) => {
+      const dom = domainsById.get(c.domainId);
+      return {
+        domainId: c.domainId,
+        label: dom?.name ?? "Other",
+        color: dom?.color ?? "#8a93ab",
+        x: c.heading.x,
+        y: c.heading.y,
+      };
+    });
+  }, [stackView, domainsById]);
 
   const exitXray = useCallback(() => {
     resetScan();
@@ -232,6 +281,8 @@ export default function App() {
           scanStatusByNode={overlay ? overlay.statusByNode : null}
           scanHighlightEdges={overlay ? overlay.highlightEdges : null}
           scanContextEdges={overlay ? overlay.contextualEdges : null}
+          stackPositions={stackPositions}
+          stackHeadings={stackHeadings}
           fitSignal={
             overlay && fitNonce > 0
               ? {
@@ -255,6 +306,8 @@ export default function App() {
             onFocusNode={navigate}
             nodesById={nodesById}
             domainsById={domainsById}
+            view={xrayView}
+            onViewChange={setXrayView}
           />
         ) : (
           <>

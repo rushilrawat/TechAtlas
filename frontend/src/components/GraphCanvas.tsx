@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Graph from "graphology";
 import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
@@ -26,6 +26,14 @@ interface Props {
   // "Focus Stack": a bounds + nonce to frame the detected region. Bumping the nonce
   // re-triggers the fit (so the button works repeatedly).
   fitSignal?: { ids: string[]; nonce: number; sidebarWidthPx?: number } | null;
+  // Stack View (X-Ray UX correction): temporary per-node render positions that reproject
+  // detected nodes into domain clusters. null = Universe View (canonical coordinates).
+  // Applied as a VIEW-LEVEL projection; canonical x/y are saved and restored on exit and
+  // are never mutated in the dataset.
+  stackPositions?: Map<string, { x: number; y: number }> | null;
+  // Stack View domain cluster headings (a handful): graph-space anchor + label + color.
+  // Rendered as a small DOM overlay projected to screen coords (not per-node WebGL labels).
+  stackHeadings?: { domainId: string; label: string; color: string; x: number; y: number }[] | null;
 }
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
@@ -74,6 +82,8 @@ export function GraphCanvas({
   scanHighlightEdges = null,
   scanContextEdges = null,
   fitSignal = null,
+  stackPositions = null,
+  stackHeadings = null,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
@@ -93,6 +103,10 @@ export function GraphCanvas({
   const scanContextRef = useRef<Set<string> | null>(scanContextEdges);
   // Persistent detected-node labels (UI-A): recomputed only when the overlay changes.
   const persistentLabelsRef = useRef<Set<string> | null>(null);
+  // Saved canonical coordinates while Stack View is active (restored on exit).
+  const savedCoordsRef = useRef<Map<string, { x: number; y: number }> | null>(null);
+  const stackAnimRef = useRef<number | null>(null);
+  const stackActiveRef = useRef<boolean>(false);
   // rAF coalescing for refreshes (Task 7).
   const rafRef = useRef<number | null>(null);
   // Exposes the build-effect's coalesced refresh to the selection/filter effects,
@@ -100,6 +114,10 @@ export function GraphCanvas({
   // set (not just a bare renderer.refresh()).
   const scheduleRefreshRef = useRef<(() => void) | null>(null);
   const ratioRef = useRef<number>(1);
+  // Projected screen positions for Stack View domain headings (DOM overlay).
+  const [headingScreens, setHeadingScreens] = useState<
+    { domainId: string; label: string; color: string; left: number; top: number }[]
+  >([]);
 
   // Build the Sigma instance once per dataset.
   useEffect(() => {
@@ -210,7 +228,12 @@ export function GraphCanvas({
           }
           return res;
         }
-        // not detected -> fade into the background
+        // not detected -> in Stack View hide entirely so detected clusters read cleanly;
+        // in Universe View (scan overlay) fade into the background.
+        if (stackActiveRef.current) {
+          res.hidden = true;
+          return res;
+        }
         res.color = SCAN_DIM_NODE;
         res.label = "";
         res.zIndex = 0;
@@ -247,6 +270,11 @@ export function GraphCanvas({
       // Repo X-Ray overlay: highlight only existing edges between two detected nodes.
       const scanEdges = scanEdgesRef.current;
       if (scanEdges) {
+        if (stackActiveRef.current) {
+          // Stack View: suppress edges so domain grouping is not mistaken for dependencies
+          // (spec SS3). Verified relationships are surfaced via the sidebar / Universe View.
+          return { ...dataIn, hidden: true };
+        }
         if (scanEdges.has(edge)) {
           return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2 };
         }
@@ -348,6 +376,110 @@ export function GraphCanvas({
     if (renderer) renderer.refresh();
   }, [scanStatusByNode, scanHighlightEdges, scanContextEdges]);
 
+  // Stack View projection (X-Ray UX correction). Reprojects detected nodes into domain
+  // clusters via temporary coordinates, with smooth eased repositioning; restores the
+  // canonical coordinates on exit. Never mutates the dataset. Non-detected nodes are left
+  // to the reducer (already dimmed/hidden under the scan overlay). prefers-reduced-motion
+  // skips the animation and snaps to final positions.
+  useEffect(() => {
+    const renderer = sigmaRef.current;
+    const graph = graphRef.current;
+    if (!renderer || !graph) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Cancel any running projection animation.
+    if (stackAnimRef.current !== null) {
+      cancelAnimationFrame(stackAnimRef.current);
+      stackAnimRef.current = null;
+    }
+
+    stackActiveRef.current = !!(stackPositions && stackPositions.size > 0);
+    if (stackPositions && stackPositions.size > 0) {
+      // Save canonical coordinates once (first entry into Stack View).
+      if (!savedCoordsRef.current) {
+        const saved = new Map<string, { x: number; y: number }>();
+        graph.forEachNode((id, a) => saved.set(id, { x: a.x as number, y: a.y as number }));
+        savedCoordsRef.current = saved;
+      }
+      const starts = new Map<string, { x: number; y: number }>();
+      for (const [id] of stackPositions) {
+        if (graph.hasNode(id)) {
+          starts.set(id, {
+            x: graph.getNodeAttribute(id, "x") as number,
+            y: graph.getNodeAttribute(id, "y") as number,
+          });
+        }
+      }
+      const apply = (t: number) => {
+        for (const [id, target] of stackPositions) {
+          if (!graph.hasNode(id)) continue;
+          const s = starts.get(id)!;
+          graph.setNodeAttribute(id, "x", s.x + (target.x - s.x) * t);
+          graph.setNodeAttribute(id, "y", s.y + (target.y - s.y) * t);
+        }
+        renderer.refresh();
+      };
+      if (prefersReduced) { apply(1); return; }
+      const dur = 600;
+      const t0 = performance.now();
+      const ease = (u: number) => 1 - Math.pow(1 - u, 3); // easeOutCubic
+      const step = (now: number) => {
+        const u = Math.min(1, (now - t0) / dur);
+        apply(ease(u));
+        if (u < 1) stackAnimRef.current = requestAnimationFrame(step);
+        else stackAnimRef.current = null;
+      };
+      stackAnimRef.current = requestAnimationFrame(step);
+      // Frame the camera on the reprojected stack bounds (same sidebar-aware fit used for
+      // Focus on Stack), so the clusters sit in the visible canvas.
+      let sMinX = Infinity, sMinY = Infinity, sMaxX = -Infinity, sMaxY = -Infinity;
+      for (const [, pos] of stackPositions) {
+        sMinX = Math.min(sMinX, pos.x); sMinY = Math.min(sMinY, pos.y);
+        sMaxX = Math.max(sMaxX, pos.x); sMaxY = Math.max(sMaxY, pos.y);
+      }
+      const camera = renderer.getCamera();
+      const fit = computeFit({
+        bounds: { minX: sMinX, minY: sMinY, maxX: sMaxX, maxY: sMaxY },
+        fullSpread: { minX: sMinX, minY: sMinY, maxX: sMaxX, maxY: sMaxY },
+        sidebarWidthPx: 400,
+        viewportWidthPx: containerRef.current?.clientWidth ?? window.innerWidth,
+        minRatio: 0.08, universeRatio: 1.6, padding: 0.25,
+      });
+      if (fit) {
+        camera.animate(
+          { x: fit.x, y: fit.y, ratio: fit.ratio },
+          { duration: prefersReduced ? 0 : 650 },
+        );
+      }
+    } else if (savedCoordsRef.current) {
+      // Exit Stack View -> restore canonical coordinates (snap or eased).
+      const saved = savedCoordsRef.current;
+      const starts = new Map<string, { x: number; y: number }>();
+      graph.forEachNode((id, a) => starts.set(id, { x: a.x as number, y: a.y as number }));
+      const apply = (t: number) => {
+        for (const [id, target] of saved) {
+          if (!graph.hasNode(id)) continue;
+          const s = starts.get(id)!;
+          graph.setNodeAttribute(id, "x", s.x + (target.x - s.x) * t);
+          graph.setNodeAttribute(id, "y", s.y + (target.y - s.y) * t);
+        }
+        renderer.refresh();
+      };
+      if (prefersReduced) { apply(1); savedCoordsRef.current = null; return; }
+      const dur = 500;
+      const t0 = performance.now();
+      const ease = (u: number) => 1 - Math.pow(1 - u, 3);
+      const step = (now: number) => {
+        const u = Math.min(1, (now - t0) / dur);
+        apply(ease(u));
+        if (u < 1) stackAnimRef.current = requestAnimationFrame(step);
+        else { stackAnimRef.current = null; savedCoordsRef.current = null; }
+      };
+      stackAnimRef.current = requestAnimationFrame(step);
+    }
+  }, [stackPositions]);
+
   // "Focus Stack" — frame the detected nodes' bounding region with padding, keeping
   // labels readable (never zoom so far the graph is unusable). Uses the precomputed
   // coordinates; never relayouts.
@@ -411,6 +543,30 @@ export function GraphCanvas({
     );
   }, [focusId]);
 
+  // Project Stack View domain headings to screen coordinates and keep them in sync with
+  // camera moves. A handful of headings only (one per domain) -> cheap DOM overlay, not a
+  // per-node label flood (performance budget preserved).
+  useEffect(() => {
+    const renderer = sigmaRef.current;
+    if (!renderer) return;
+    if (!stackHeadings || stackHeadings.length === 0) {
+      setHeadingScreens([]);
+      return;
+    }
+    const project = () => {
+      const next = stackHeadings.map((h) => {
+        const p = renderer.graphToViewport({ x: h.x, y: h.y });
+        return { domainId: h.domainId, label: h.label, color: h.color, left: p.x, top: p.y };
+      });
+      setHeadingScreens(next);
+    };
+    project();
+    const camera = renderer.getCamera();
+    camera.on("updated", project);
+    const raf = requestAnimationFrame(project); // catch the entry animation
+    return () => { camera.removeListener("updated", project); cancelAnimationFrame(raf); };
+  }, [stackHeadings]);
+
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
 
   return (
@@ -421,6 +577,17 @@ export function GraphCanvas({
         role="application"
         aria-label="Interactive technology graph. Use the search box or the node list for keyboard access."
       />
+      {headingScreens.map((h) => (
+        <div
+          key={h.domainId}
+          className="stack-heading"
+          style={{ left: h.left, top: h.top, borderColor: h.color }}
+          aria-hidden
+        >
+          <span className="stack-heading-dot" style={{ background: h.color }} />
+          {h.label}
+        </div>
+      ))}
       {isEmpty && (
         <div className="graph-empty-state" role="status">
           <p>No nodes match the current filters.</p>

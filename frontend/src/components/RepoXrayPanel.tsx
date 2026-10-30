@@ -22,6 +22,8 @@ interface Props {
   onFocusNode: (nodeId: string) => void;
   nodesById: Map<string, GraphNode>;
   domainsById: Map<string, DomainSummary>;
+  view: "stack" | "universe";
+  onViewChange: (v: "stack" | "universe") => void;
 }
 
 const STATUS_LABEL: Record<DetectionStatus, string> = {
@@ -36,7 +38,7 @@ const GH_RE = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/?$/i;
 
 export function RepoXrayPanel({
   phase, onAnalyze, onExit, onAnalyzeAnother, onFocusStack, onFocusNode, nodesById,
-  domainsById,
+  domainsById, view, onViewChange,
 }: Props) {
   const [url, setUrl] = useState("");
   const [touched, setTouched] = useState(false);
@@ -121,6 +123,8 @@ export function RepoXrayPanel({
           onFocusNode={onFocusNode}
           onAnalyzeAnother={() => { setUrl(""); setTouched(false); onAnalyzeAnother(); }}
           onExit={onExit}
+          view={view}
+          onViewChange={onViewChange}
         />
       )}
     </section>
@@ -205,6 +209,7 @@ const UNMAPPED_CAP = 50;
 
 function Results({
   scan, nodesById, domainsById, onFocusStack, onFocusNode, onAnalyzeAnother, onExit,
+  view, onViewChange,
 }: {
   scan: RepoScan;
   nodesById: Map<string, GraphNode>;
@@ -213,6 +218,8 @@ function Results({
   onFocusNode: (id: string) => void;
   onAnalyzeAnother: () => void;
   onExit: () => void;
+  view: "stack" | "universe";
+  onViewChange: (v: "stack" | "universe") => void;
 }) {
   const repo = scan.repository;
   const noMatches = scan.detections.length === 0;
@@ -288,6 +295,27 @@ function Results({
             Back to Universe
           </button>
         </div>
+      </div>
+
+      {/* Stack View / Universe View switch (X-Ray UX correction). Both views share the
+          same scan, evidence, and selection; switching never rescans. */}
+      <div className="xray-viewswitch" role="group" aria-label="Repo X-Ray view">
+        <button
+          type="button"
+          className={view === "stack" ? "active" : ""}
+          aria-pressed={view === "stack"}
+          onClick={() => onViewChange("stack")}
+        >
+          Stack View
+        </button>
+        <button
+          type="button"
+          className={view === "universe" ? "active" : ""}
+          aria-pressed={view === "universe"}
+          onClick={() => onViewChange("universe")}
+        >
+          Universe View
+        </button>
       </div>
 
       {/* Section E/F: detected stack — tools (technologies) first, then concepts */}

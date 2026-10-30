@@ -381,6 +381,17 @@ body {
 }
 
 /* ---- filtering (Phase 1B) ---- */
+/* Stack View domain cluster headings (DOM overlay projected from graph coords) */
+.stack-heading {
+  position: absolute; transform: translate(-50%, -100%); pointer-events: none;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
+  text-transform: uppercase; color: #e6ebf5;
+  background: rgba(11,14,20,0.82); border: 1px solid; border-radius: 999px;
+  backdrop-filter: blur(4px); z-index: 5;
+}
+.stack-heading-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
 .graph-canvas-wrap {
   position: absolute;
   inset: 0;
@@ -621,6 +632,16 @@ body {
   color: var(--text-dim); margin-top: 3px;
 }
 /* Primary actions (Section D) */
+.xray-viewswitch {
+  display: flex; gap: 0; margin: 10px 0 2px; border: 1px solid var(--panel-border);
+  border-radius: 8px; overflow: hidden;
+}
+.xray-viewswitch button {
+  flex: 1; padding: 6px 10px; background: transparent; border: none;
+  color: var(--text-dim); font-size: 12px; cursor: pointer;
+}
+.xray-viewswitch button.active { background: rgba(122,162,247,0.18); color: #c8d0e8; font-weight: 600; }
+.xray-viewswitch button + button { border-left: 1px solid var(--panel-border); }
 .xray-actions { margin: 10px 0 4px; }
 .xray-focus.primary {
   display: block; width: 100%; text-align: center;
