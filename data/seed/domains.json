@@ -1,0 +1,112 @@
+[
+  {
+    "id": "domain:software-engineering",
+    "slug": "software-engineering",
+    "name": "Software Engineering",
+    "node_type": "domain",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "The overarching discipline of designing, building, and maintaining software systems.",
+    "importance": 1.0,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:frontend",
+    "slug": "frontend",
+    "name": "Frontend Development",
+    "node_type": "domain",
+    "primary_domain": "domain:frontend",
+    "short_description": "Building the user-facing part of web applications that runs in the browser.",
+    "importance": 0.9,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:backend",
+    "slug": "backend",
+    "name": "Backend Development",
+    "node_type": "domain",
+    "primary_domain": "domain:backend",
+    "short_description": "Server-side application logic, APIs, and the systems that power clients.",
+    "importance": 0.95,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:databases",
+    "slug": "databases",
+    "name": "Databases & Data Engineering",
+    "node_type": "domain",
+    "primary_domain": "domain:databases",
+    "short_description": "Storing, querying, moving, and analyzing data at rest and in motion.",
+    "importance": 0.9,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:ai-ml",
+    "slug": "ai-ml",
+    "name": "Artificial Intelligence & Machine Learning",
+    "node_type": "domain",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Systems that learn from data: machine learning, deep learning, and modern AI.",
+    "importance": 0.95,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:cloud-devops",
+    "slug": "cloud-devops",
+    "name": "Cloud, DevOps & Infrastructure",
+    "node_type": "domain",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Deploying, scaling, automating, and operating software in the cloud.",
+    "importance": 0.9,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:security",
+    "slug": "security",
+    "name": "Cybersecurity",
+    "node_type": "domain",
+    "primary_domain": "domain:security",
+    "short_description": "Protecting systems, data, and identities across every other domain.",
+    "importance": 0.85,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:mobile",
+    "slug": "mobile",
+    "name": "Mobile & Desktop Development",
+    "node_type": "domain",
+    "primary_domain": "domain:mobile",
+    "short_description": "Building native and cross-platform applications for phones and desktops.",
+    "importance": 0.8,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:systems",
+    "slug": "systems",
+    "name": "Systems & Low-Level Engineering",
+    "node_type": "domain",
+    "primary_domain": "domain:systems",
+    "short_description": "Operating systems, embedded devices, and performance-critical low-level code.",
+    "importance": 0.8,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:testing-tooling",
+    "slug": "testing-tooling",
+    "name": "Testing & Developer Tooling",
+    "node_type": "domain",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Version control, testing, linting, and the tools that support engineering quality.",
+    "importance": 0.8,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:gamedev",
+    "slug": "gamedev",
+    "name": "Game Development & Graphics",
+    "node_type": "domain",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Game engines, real-time rendering, physics, and computer graphics.",
+    "importance": 0.75,
+    "lifecycle_status": "mature"
+  }
+]

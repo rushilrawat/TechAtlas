@@ -1,0 +1,2823 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "id": "domain:software-engineering",
+      "slug": "software-engineering",
+      "name": "Software Engineering",
+      "node_type": "domain",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "The overarching discipline of designing, building, and maintaining software systems.",
+      "importance": 1.0,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:frontend",
+      "slug": "frontend",
+      "name": "Frontend Development",
+      "node_type": "domain",
+      "primary_domain": "domain:frontend",
+      "short_description": "Building the user-facing part of web applications that runs in the browser.",
+      "importance": 0.9,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:backend",
+      "slug": "backend",
+      "name": "Backend Development",
+      "node_type": "domain",
+      "primary_domain": "domain:backend",
+      "short_description": "Server-side application logic, APIs, and the systems that power clients.",
+      "importance": 0.95,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:databases",
+      "slug": "databases",
+      "name": "Databases & Data Engineering",
+      "node_type": "domain",
+      "primary_domain": "domain:databases",
+      "short_description": "Storing, querying, moving, and analyzing data at rest and in motion.",
+      "importance": 0.9,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:ai-ml",
+      "slug": "ai-ml",
+      "name": "Artificial Intelligence & Machine Learning",
+      "node_type": "domain",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Systems that learn from data: machine learning, deep learning, and modern AI.",
+      "importance": 0.95,
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "domain:cloud-devops",
+      "slug": "cloud-devops",
+      "name": "Cloud, DevOps & Infrastructure",
+      "node_type": "domain",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Deploying, scaling, automating, and operating software in the cloud.",
+      "importance": 0.9,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:security",
+      "slug": "security",
+      "name": "Cybersecurity",
+      "node_type": "domain",
+      "primary_domain": "domain:security",
+      "short_description": "Protecting systems, data, and identities across every other domain.",
+      "importance": 0.85,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:mobile",
+      "slug": "mobile",
+      "name": "Mobile & Desktop Development",
+      "node_type": "domain",
+      "primary_domain": "domain:mobile",
+      "short_description": "Building native and cross-platform applications for phones and desktops.",
+      "importance": 0.8,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:systems",
+      "slug": "systems",
+      "name": "Systems & Low-Level Engineering",
+      "node_type": "domain",
+      "primary_domain": "domain:systems",
+      "short_description": "Operating systems, embedded devices, and performance-critical low-level code.",
+      "importance": 0.8,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:testing-tooling",
+      "slug": "testing-tooling",
+      "name": "Testing & Developer Tooling",
+      "node_type": "domain",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "Version control, testing, linting, and the tools that support engineering quality.",
+      "importance": 0.8,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "domain:gamedev",
+      "slug": "gamedev",
+      "name": "Game Development & Graphics",
+      "node_type": "domain",
+      "primary_domain": "domain:gamedev",
+      "short_description": "Game engines, real-time rendering, physics, and computer graphics.",
+      "importance": 0.75,
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "concept:object-oriented-programming",
+      "slug": "object-oriented-programming",
+      "name": "Object-Oriented Programming",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "A paradigm organizing code around objects that bundle state and behavior.",
+      "aliases": [
+        "OOP"
+      ],
+      "importance": 0.8,
+      "wikipedia_title": "Object-oriented programming",
+      "wikidata_id": "Q79872"
+    },
+    {
+      "id": "concept:functional-programming",
+      "slug": "functional-programming",
+      "name": "Functional Programming",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "A paradigm treating computation as the evaluation of pure functions.",
+      "aliases": [
+        "FP"
+      ],
+      "importance": 0.7,
+      "wikipedia_title": "Functional programming",
+      "wikidata_id": "Q193076"
+    },
+    {
+      "id": "concept:concurrency",
+      "slug": "concurrency",
+      "name": "Concurrency",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "Structuring a program so multiple tasks make progress in overlapping time.",
+      "importance": 0.7,
+      "wikipedia_title": "Concurrency (computer science)",
+      "wikidata_id": "Q910873"
+    },
+    {
+      "id": "concept:asynchronous-programming",
+      "slug": "asynchronous-programming",
+      "name": "Asynchronous Programming",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "Performing work without blocking, using callbacks, promises, or async/await.",
+      "aliases": [
+        "async"
+      ],
+      "importance": 0.65
+    },
+    {
+      "id": "concept:state-management",
+      "slug": "state-management",
+      "name": "State Management",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:frontend",
+      "short_description": "Coordinating and sharing application state across UI components.",
+      "importance": 0.7
+    },
+    {
+      "id": "concept:server-side-rendering",
+      "slug": "server-side-rendering",
+      "name": "Server-Side Rendering",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:frontend",
+      "short_description": "Rendering HTML on the server before sending it to the browser.",
+      "aliases": [
+        "SSR"
+      ],
+      "importance": 0.65,
+      "wikipedia_title": "Server-side scripting"
+    },
+    {
+      "id": "concept:component-architecture",
+      "slug": "component-architecture",
+      "name": "Component Architecture",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:frontend",
+      "short_description": "Composing UIs from reusable, self-contained components.",
+      "importance": 0.65
+    },
+    {
+      "id": "concept:rest-api",
+      "slug": "rest-api",
+      "name": "REST API",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:backend",
+      "short_description": "An architectural style for web APIs built on HTTP resources and verbs.",
+      "aliases": [
+        "REST",
+        "RESTful API"
+      ],
+      "importance": 0.8,
+      "wikipedia_title": "REST",
+      "wikidata_id": "Q749568"
+    },
+    {
+      "id": "concept:graphql",
+      "slug": "graphql",
+      "name": "GraphQL",
+      "node_type": "concept",
+      "node_subtype": "standard",
+      "primary_domain": "domain:backend",
+      "short_description": "A query language and runtime for APIs that lets clients request exactly what they need.",
+      "importance": 0.6,
+      "wikipedia_title": "GraphQL",
+      "wikidata_id": "Q25104949"
+    },
+    {
+      "id": "concept:http",
+      "slug": "http",
+      "name": "HTTP",
+      "node_type": "concept",
+      "node_subtype": "protocol",
+      "primary_domain": "domain:backend",
+      "short_description": "The Hypertext Transfer Protocol underpinning communication on the web.",
+      "aliases": [
+        "HyperText Transfer Protocol"
+      ],
+      "importance": 0.85,
+      "wikipedia_title": "HTTP",
+      "wikidata_id": "Q8777"
+    },
+    {
+      "id": "concept:websockets",
+      "slug": "websockets",
+      "name": "WebSockets",
+      "node_type": "concept",
+      "node_subtype": "protocol",
+      "primary_domain": "domain:backend",
+      "short_description": "A protocol providing full-duplex communication over a single TCP connection.",
+      "importance": 0.55,
+      "wikipedia_title": "WebSocket",
+      "wikidata_id": "Q582544"
+    },
+    {
+      "id": "concept:microservices",
+      "slug": "microservices",
+      "name": "Microservices",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:backend",
+      "short_description": "Structuring an application as a suite of small, independently deployable services.",
+      "importance": 0.65,
+      "wikipedia_title": "Microservices",
+      "wikidata_id": "Q17144402"
+    },
+    {
+      "id": "concept:caching",
+      "slug": "caching",
+      "name": "Caching",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:backend",
+      "short_description": "Storing copies of data to serve future requests faster.",
+      "importance": 0.6,
+      "wikipedia_title": "Cache (computing)"
+    },
+    {
+      "id": "concept:relational-databases",
+      "slug": "relational-databases",
+      "name": "Relational Databases",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:databases",
+      "short_description": "Databases organizing data into tables with defined relationships.",
+      "importance": 0.75,
+      "wikipedia_title": "Relational database",
+      "wikidata_id": "Q8513"
+    },
+    {
+      "id": "concept:sql",
+      "slug": "sql",
+      "name": "SQL",
+      "node_type": "concept",
+      "node_subtype": "standard",
+      "primary_domain": "domain:databases",
+      "short_description": "The standard query language for relational databases.",
+      "aliases": [
+        "Structured Query Language"
+      ],
+      "importance": 0.8,
+      "wikipedia_title": "SQL",
+      "wikidata_id": "Q47607"
+    },
+    {
+      "id": "concept:nosql",
+      "slug": "nosql",
+      "name": "NoSQL",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:databases",
+      "short_description": "Non-relational databases optimized for scale, flexibility, or specific data shapes.",
+      "importance": 0.6,
+      "wikipedia_title": "NoSQL",
+      "wikidata_id": "Q1062338"
+    },
+    {
+      "id": "concept:vector-databases",
+      "slug": "vector-databases",
+      "name": "Vector Databases",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:databases",
+      "short_description": "Databases that index high-dimensional vectors for similarity search.",
+      "importance": 0.55,
+      "wikipedia_title": "Vector database",
+      "wikidata_id": "Q122808988"
+    },
+    {
+      "id": "concept:vector-embeddings",
+      "slug": "vector-embeddings",
+      "name": "Vector Embeddings",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Dense numeric representations of data that capture semantic meaning.",
+      "aliases": [
+        "embeddings"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Word embedding"
+    },
+    {
+      "id": "concept:neural-networks",
+      "slug": "neural-networks",
+      "name": "Neural Networks",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Models composed of layers of interconnected units, loosely inspired by the brain.",
+      "importance": 0.75,
+      "wikipedia_title": "Neural network (machine learning)",
+      "wikidata_id": "Q192776"
+    },
+    {
+      "id": "concept:deep-learning",
+      "slug": "deep-learning",
+      "name": "Deep Learning",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Machine learning using deep, multi-layered neural networks.",
+      "importance": 0.8,
+      "wikipedia_title": "Deep learning",
+      "wikidata_id": "Q197536"
+    },
+    {
+      "id": "concept:transformers",
+      "slug": "transformers",
+      "name": "Transformers",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A neural network architecture based on attention, powering modern LLMs.",
+      "importance": 0.75,
+      "wikipedia_title": "Transformer (deep learning architecture)",
+      "wikidata_id": "Q85810444"
+    },
+    {
+      "id": "concept:large-language-models",
+      "slug": "large-language-models",
+      "name": "Large Language Models",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Very large transformer models trained on text to generate and understand language.",
+      "aliases": [
+        "LLM",
+        "LLMs"
+      ],
+      "importance": 0.8,
+      "wikipedia_title": "Large language model",
+      "wikidata_id": "Q115481823"
+    },
+    {
+      "id": "concept:retrieval-augmented-generation",
+      "slug": "retrieval-augmented-generation",
+      "name": "Retrieval-Augmented Generation",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Augmenting LLM responses with documents retrieved from an external knowledge store.",
+      "aliases": [
+        "RAG"
+      ],
+      "importance": 0.65,
+      "wikipedia_title": "Retrieval-augmented generation",
+      "wikidata_id": "Q125109675"
+    },
+    {
+      "id": "concept:model-inference",
+      "slug": "model-inference",
+      "name": "Model Inference",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Running a trained model to produce predictions or generations.",
+      "importance": 0.6
+    },
+    {
+      "id": "concept:containerization",
+      "slug": "containerization",
+      "name": "Containerization",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Packaging applications with their dependencies into portable, isolated containers.",
+      "importance": 0.75,
+      "wikipedia_title": "Containerization (computing)"
+    },
+    {
+      "id": "concept:container-orchestration",
+      "slug": "container-orchestration",
+      "name": "Container Orchestration",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Automating deployment, scaling, and management of containerized workloads.",
+      "importance": 0.65
+    },
+    {
+      "id": "concept:ci-cd",
+      "slug": "ci-cd",
+      "name": "CI/CD",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Continuous integration and continuous delivery/deployment pipelines.",
+      "aliases": [
+        "CICD",
+        "Continuous Integration",
+        "Continuous Delivery",
+        "Continuous Deployment"
+      ],
+      "importance": 0.7,
+      "wikipedia_title": "CI/CD"
+    },
+    {
+      "id": "concept:infrastructure-as-code",
+      "slug": "infrastructure-as-code",
+      "name": "Infrastructure as Code",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Managing infrastructure through declarative, version-controlled configuration.",
+      "aliases": [
+        "IaC"
+      ],
+      "importance": 0.65,
+      "wikipedia_title": "Infrastructure as code",
+      "wikidata_id": "Q30269490"
+    },
+    {
+      "id": "concept:observability",
+      "slug": "observability",
+      "name": "Observability",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "Understanding a system's internal state from its logs, metrics, and traces.",
+      "importance": 0.6
+    },
+    {
+      "id": "concept:cloud-computing",
+      "slug": "cloud-computing",
+      "name": "Cloud Computing",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "On-demand delivery of compute, storage, and services over the internet.",
+      "importance": 0.75,
+      "wikipedia_title": "Cloud computing",
+      "wikidata_id": "Q483639"
+    },
+    {
+      "id": "concept:authentication",
+      "slug": "authentication",
+      "name": "Authentication",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:security",
+      "short_description": "Verifying the identity of a user, service, or device.",
+      "aliases": [
+        "auth",
+        "authn"
+      ],
+      "importance": 0.75,
+      "wikipedia_title": "Authentication",
+      "wikidata_id": "Q212108"
+    },
+    {
+      "id": "concept:authorization",
+      "slug": "authorization",
+      "name": "Authorization",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:security",
+      "short_description": "Determining what an authenticated identity is allowed to do.",
+      "aliases": [
+        "authz"
+      ],
+      "importance": 0.7,
+      "wikipedia_title": "Authorization"
+    },
+    {
+      "id": "concept:oauth2",
+      "slug": "oauth2",
+      "name": "OAuth 2.0",
+      "node_type": "concept",
+      "node_subtype": "standard",
+      "primary_domain": "domain:security",
+      "short_description": "An authorization framework for delegated access without sharing credentials.",
+      "aliases": [
+        "OAuth",
+        "OAuth2"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "OAuth",
+      "wikidata_id": "Q1163645"
+    },
+    {
+      "id": "concept:jwt",
+      "slug": "jwt",
+      "name": "JSON Web Token",
+      "node_type": "concept",
+      "node_subtype": "standard",
+      "primary_domain": "domain:security",
+      "short_description": "A compact, signed token format for transmitting claims between parties.",
+      "aliases": [
+        "JWT"
+      ],
+      "importance": 0.55,
+      "wikipedia_title": "JSON Web Token",
+      "wikidata_id": "Q27146641"
+    },
+    {
+      "id": "concept:encryption",
+      "slug": "encryption",
+      "name": "Encryption",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:security",
+      "short_description": "Encoding data so only authorized parties can read it.",
+      "importance": 0.65,
+      "wikipedia_title": "Encryption",
+      "wikidata_id": "Q141090"
+    },
+    {
+      "id": "concept:cross-platform-development",
+      "slug": "cross-platform-development",
+      "name": "Cross-Platform Development",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:mobile",
+      "short_description": "Building apps that run on multiple platforms from a shared codebase.",
+      "importance": 0.6
+    },
+    {
+      "id": "concept:operating-systems",
+      "slug": "operating-systems",
+      "name": "Operating Systems",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:systems",
+      "short_description": "Software managing hardware resources and providing services to programs.",
+      "aliases": [
+        "OS"
+      ],
+      "importance": 0.7,
+      "wikipedia_title": "Operating system",
+      "wikidata_id": "Q9135"
+    },
+    {
+      "id": "concept:gpu-programming",
+      "slug": "gpu-programming",
+      "name": "GPU Programming",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:systems",
+      "short_description": "Writing massively parallel code that runs on graphics processing units.",
+      "importance": 0.55
+    },
+    {
+      "id": "concept:version-control",
+      "slug": "version-control",
+      "name": "Version Control",
+      "node_type": "concept",
+      "node_subtype": "methodology",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "Tracking and managing changes to source code over time.",
+      "importance": 0.75,
+      "wikipedia_title": "Version control",
+      "wikidata_id": "Q834394"
+    },
+    {
+      "id": "concept:unit-testing",
+      "slug": "unit-testing",
+      "name": "Unit Testing",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "Testing individual units of code in isolation.",
+      "importance": 0.65,
+      "wikipedia_title": "Unit testing",
+      "wikidata_id": "Q847424"
+    },
+    {
+      "id": "concept:end-to-end-testing",
+      "slug": "end-to-end-testing",
+      "name": "End-to-End Testing",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "Testing complete user flows through a running application.",
+      "aliases": [
+        "E2E testing"
+      ],
+      "importance": 0.55
+    },
+    {
+      "id": "concept:static-analysis",
+      "slug": "static-analysis",
+      "name": "Static Analysis",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "Analyzing code without executing it to find bugs and enforce style.",
+      "aliases": [
+        "linting"
+      ],
+      "importance": 0.55,
+      "wikipedia_title": "Static program analysis"
+    },
+    {
+      "id": "concept:real-time-graphics",
+      "slug": "real-time-graphics",
+      "name": "Real-Time Graphics",
+      "node_type": "concept",
+      "node_subtype": "technique",
+      "primary_domain": "domain:gamedev",
+      "short_description": "Rendering images fast enough for interactive, real-time applications.",
+      "importance": 0.55
+    },
+    {
+      "id": "concept:game-engines",
+      "slug": "game-engines",
+      "name": "Game Engines",
+      "node_type": "concept",
+      "node_subtype": "architecture",
+      "primary_domain": "domain:gamedev",
+      "short_description": "Frameworks providing rendering, physics, and tooling for building games.",
+      "importance": 0.6,
+      "wikipedia_title": "Game engine",
+      "wikidata_id": "Q193077"
+    },
+    {
+      "id": "technology:python",
+      "slug": "python",
+      "name": "Python",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:software-engineering",
+      "short_description": "A readable, general-purpose language dominant in AI, data, automation, and backend.",
+      "aliases": [
+        "py"
+      ],
+      "official_url": "https://www.python.org",
+      "documentation_url": "https://docs.python.org/3/",
+      "wikipedia_title": "Python (programming language)",
+      "wikidata_id": "Q28865",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:javascript",
+      "slug": "javascript",
+      "name": "JavaScript",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:frontend",
+      "short_description": "The programming language of the web, running in browsers and on servers.",
+      "aliases": [
+        "js",
+        "ecmascript"
+      ],
+      "official_url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "documentation_url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "wikipedia_title": "JavaScript",
+      "wikidata_id": "Q2005",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:typescript",
+      "slug": "typescript",
+      "name": "TypeScript",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:frontend",
+      "short_description": "A typed superset of JavaScript that compiles to plain JavaScript.",
+      "aliases": [
+        "ts"
+      ],
+      "official_url": "https://www.typescriptlang.org",
+      "documentation_url": "https://www.typescriptlang.org/docs/",
+      "wikipedia_title": "TypeScript",
+      "wikidata_id": "Q978185",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:rust",
+      "slug": "rust",
+      "name": "Rust",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:systems",
+      "short_description": "A systems language focused on performance and memory safety without a GC.",
+      "official_url": "https://www.rust-lang.org",
+      "documentation_url": "https://doc.rust-lang.org/book/",
+      "wikipedia_title": "Rust (programming language)",
+      "wikidata_id": "Q575650",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:go",
+      "slug": "go",
+      "name": "Go",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:backend",
+      "short_description": "A compiled language from Google designed for simple, concurrent, networked services.",
+      "aliases": [
+        "golang"
+      ],
+      "official_url": "https://go.dev",
+      "documentation_url": "https://go.dev/doc/",
+      "wikipedia_title": "Go (programming language)",
+      "wikidata_id": "Q37227",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:java",
+      "slug": "java",
+      "name": "Java",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:backend",
+      "short_description": "A mature, portable, object-oriented language running on the JVM.",
+      "official_url": "https://www.java.com",
+      "documentation_url": "https://docs.oracle.com/en/java/",
+      "wikipedia_title": "Java (programming language)",
+      "wikidata_id": "Q251",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:html",
+      "slug": "html",
+      "name": "HTML",
+      "node_type": "technology",
+      "node_subtype": "standard",
+      "primary_domain": "domain:frontend",
+      "short_description": "The markup language that structures content on the web.",
+      "aliases": [
+        "HyperText Markup Language"
+      ],
+      "official_url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "documentation_url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "wikipedia_title": "HTML",
+      "wikidata_id": "Q8811",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:css",
+      "slug": "css",
+      "name": "CSS",
+      "node_type": "technology",
+      "node_subtype": "standard",
+      "primary_domain": "domain:frontend",
+      "short_description": "The stylesheet language that controls the presentation of web content.",
+      "aliases": [
+        "Cascading Style Sheets"
+      ],
+      "official_url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+      "documentation_url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+      "wikipedia_title": "CSS",
+      "wikidata_id": "Q46441",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:tailwind",
+      "slug": "tailwind-css",
+      "name": "Tailwind CSS",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:frontend",
+      "short_description": "A utility-first CSS framework for building designs directly in markup.",
+      "aliases": [
+        "tailwind"
+      ],
+      "official_url": "https://tailwindcss.com",
+      "documentation_url": "https://tailwindcss.com/docs",
+      "wikipedia_title": "Tailwind CSS",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:react",
+      "slug": "react",
+      "name": "React",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:frontend",
+      "short_description": "A JavaScript library for building user interfaces from components.",
+      "aliases": [
+        "react.js",
+        "reactjs"
+      ],
+      "official_url": "https://react.dev",
+      "documentation_url": "https://react.dev/learn",
+      "wikipedia_title": "React (software)",
+      "wikidata_id": "Q19399674",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:vue",
+      "slug": "vue",
+      "name": "Vue.js",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:frontend",
+      "short_description": "An approachable, progressive JavaScript framework for building UIs.",
+      "aliases": [
+        "vue",
+        "vuejs"
+      ],
+      "official_url": "https://vuejs.org",
+      "documentation_url": "https://vuejs.org/guide/introduction.html",
+      "wikipedia_title": "Vue.js",
+      "wikidata_id": "Q21427942",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:nextjs",
+      "slug": "nextjs",
+      "name": "Next.js",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:frontend",
+      "short_description": "A React framework with server-side rendering, routing, and full-stack features.",
+      "aliases": [
+        "next",
+        "next.js"
+      ],
+      "official_url": "https://nextjs.org",
+      "documentation_url": "https://nextjs.org/docs",
+      "wikipedia_title": "Next.js",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:redux",
+      "slug": "redux",
+      "name": "Redux",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:frontend",
+      "short_description": "A predictable state container for JavaScript applications.",
+      "official_url": "https://redux.js.org",
+      "documentation_url": "https://redux.js.org/introduction/getting-started",
+      "wikipedia_title": "Redux (JavaScript library)",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:zustand",
+      "slug": "zustand",
+      "name": "Zustand",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:frontend",
+      "short_description": "A small, fast state-management solution for React using hooks.",
+      "official_url": "https://zustand-demo.pmnd.rs",
+      "documentation_url": "https://docs.pmnd.rs/zustand/getting-started/introduction",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:vite",
+      "slug": "vite",
+      "name": "Vite",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:frontend",
+      "short_description": "A fast frontend build tool and dev server with native ES modules.",
+      "official_url": "https://vite.dev",
+      "documentation_url": "https://vite.dev/guide/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:sigmajs",
+      "slug": "sigmajs",
+      "name": "Sigma.js",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:frontend",
+      "short_description": "A WebGL library for rendering large interactive network graphs in the browser.",
+      "aliases": [
+        "sigma"
+      ],
+      "official_url": "https://www.sigmajs.org",
+      "documentation_url": "https://www.sigmajs.org/docs/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:graphology",
+      "slug": "graphology",
+      "name": "Graphology",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:frontend",
+      "short_description": "A robust JavaScript graph data structure library with algorithms and layouts.",
+      "official_url": "https://graphology.github.io",
+      "documentation_url": "https://graphology.github.io/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:nodejs",
+      "slug": "nodejs",
+      "name": "Node.js",
+      "node_type": "technology",
+      "node_subtype": "runtime",
+      "primary_domain": "domain:backend",
+      "short_description": "A JavaScript runtime built on V8 for building server-side applications.",
+      "aliases": [
+        "node"
+      ],
+      "official_url": "https://nodejs.org",
+      "documentation_url": "https://nodejs.org/en/docs",
+      "wikipedia_title": "Node.js",
+      "wikidata_id": "Q756100",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:express",
+      "slug": "express",
+      "name": "Express",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:backend",
+      "short_description": "A minimal, flexible web framework for Node.js.",
+      "aliases": [
+        "express.js",
+        "expressjs"
+      ],
+      "official_url": "https://expressjs.com",
+      "documentation_url": "https://expressjs.com/en/4x/api.html",
+      "wikipedia_title": "Express.js",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:fastapi",
+      "slug": "fastapi",
+      "name": "FastAPI",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:backend",
+      "short_description": "A modern, fast Python web framework for building APIs with type hints.",
+      "official_url": "https://fastapi.tiangolo.com",
+      "documentation_url": "https://fastapi.tiangolo.com",
+      "wikipedia_title": "FastAPI",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:django",
+      "slug": "django",
+      "name": "Django",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:backend",
+      "short_description": "A batteries-included Python web framework for rapid, secure development.",
+      "official_url": "https://www.djangoproject.com",
+      "documentation_url": "https://docs.djangoproject.com/",
+      "wikipedia_title": "Django (web framework)",
+      "wikidata_id": "Q256810",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:grpc",
+      "slug": "grpc",
+      "name": "gRPC",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:backend",
+      "short_description": "A high-performance RPC framework using HTTP/2 and Protocol Buffers.",
+      "official_url": "https://grpc.io",
+      "documentation_url": "https://grpc.io/docs/",
+      "wikipedia_title": "GRPC",
+      "wikidata_id": "Q29036983",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:postgresql",
+      "slug": "postgresql",
+      "name": "PostgreSQL",
+      "node_type": "technology",
+      "node_subtype": "database",
+      "primary_domain": "domain:databases",
+      "short_description": "A powerful, open-source object-relational database system.",
+      "aliases": [
+        "postgres",
+        "psql"
+      ],
+      "official_url": "https://www.postgresql.org",
+      "documentation_url": "https://www.postgresql.org/docs/",
+      "wikipedia_title": "PostgreSQL",
+      "wikidata_id": "Q192490",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:mysql",
+      "slug": "mysql",
+      "name": "MySQL",
+      "node_type": "technology",
+      "node_subtype": "database",
+      "primary_domain": "domain:databases",
+      "short_description": "A widely used open-source relational database management system.",
+      "official_url": "https://www.mysql.com",
+      "documentation_url": "https://dev.mysql.com/doc/",
+      "wikipedia_title": "MySQL",
+      "wikidata_id": "Q850",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:mongodb",
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "node_type": "technology",
+      "node_subtype": "database",
+      "primary_domain": "domain:databases",
+      "short_description": "A document-oriented NoSQL database storing flexible JSON-like documents.",
+      "official_url": "https://www.mongodb.com",
+      "documentation_url": "https://www.mongodb.com/docs/",
+      "wikipedia_title": "MongoDB",
+      "wikidata_id": "Q1165204",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:redis",
+      "slug": "redis",
+      "name": "Redis",
+      "node_type": "technology",
+      "node_subtype": "database",
+      "primary_domain": "domain:databases",
+      "short_description": "An in-memory data store used as a cache, message broker, and database.",
+      "official_url": "https://redis.io",
+      "documentation_url": "https://redis.io/docs/",
+      "wikipedia_title": "Redis",
+      "wikidata_id": "Q2136322",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:pgvector",
+      "slug": "pgvector",
+      "name": "pgvector",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:databases",
+      "short_description": "A PostgreSQL extension adding vector similarity search.",
+      "official_url": "https://github.com/pgvector/pgvector",
+      "documentation_url": "https://github.com/pgvector/pgvector#readme",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:pytorch",
+      "slug": "pytorch",
+      "name": "PyTorch",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "An open-source deep learning framework with dynamic computation graphs.",
+      "official_url": "https://pytorch.org",
+      "documentation_url": "https://pytorch.org/docs/stable/index.html",
+      "wikipedia_title": "PyTorch",
+      "wikidata_id": "Q47509047",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:tensorflow",
+      "slug": "tensorflow",
+      "name": "TensorFlow",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "An end-to-end open-source platform for machine learning from Google.",
+      "official_url": "https://www.tensorflow.org",
+      "documentation_url": "https://www.tensorflow.org/api_docs",
+      "wikipedia_title": "TensorFlow",
+      "wikidata_id": "Q22685833",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:scikit-learn",
+      "slug": "scikit-learn",
+      "name": "scikit-learn",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A Python library for classical machine learning built on NumPy and SciPy.",
+      "aliases": [
+        "sklearn"
+      ],
+      "official_url": "https://scikit-learn.org",
+      "documentation_url": "https://scikit-learn.org/stable/documentation.html",
+      "wikipedia_title": "Scikit-learn",
+      "wikidata_id": "Q1026367",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:numpy",
+      "slug": "numpy",
+      "name": "NumPy",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "The fundamental package for numerical computing with arrays in Python.",
+      "official_url": "https://numpy.org",
+      "documentation_url": "https://numpy.org/doc/",
+      "wikipedia_title": "NumPy",
+      "wikidata_id": "Q197520",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:pandas",
+      "slug": "pandas",
+      "name": "pandas",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A Python library for data manipulation and analysis with DataFrames.",
+      "official_url": "https://pandas.pydata.org",
+      "documentation_url": "https://pandas.pydata.org/docs/",
+      "wikipedia_title": "Pandas (software)",
+      "wikidata_id": "Q15967387",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:huggingface-transformers",
+      "slug": "huggingface-transformers",
+      "name": "Hugging Face Transformers",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A library providing pretrained transformer models for NLP, vision, and audio.",
+      "aliases": [
+        "transformers library"
+      ],
+      "official_url": "https://huggingface.co/docs/transformers",
+      "documentation_url": "https://huggingface.co/docs/transformers/index",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:langchain",
+      "slug": "langchain",
+      "name": "LangChain",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A framework for building applications powered by large language models.",
+      "official_url": "https://www.langchain.com",
+      "documentation_url": "https://python.langchain.com/docs/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:ollama",
+      "slug": "ollama",
+      "name": "Ollama",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A tool for running large language models locally on your own machine.",
+      "official_url": "https://ollama.com",
+      "documentation_url": "https://github.com/ollama/ollama/tree/main/docs",
+      "lifecycle_status": "emerging"
+    },
+    {
+      "id": "technology:docker",
+      "slug": "docker",
+      "name": "Docker",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "A platform for building, shipping, and running applications in containers.",
+      "official_url": "https://www.docker.com",
+      "documentation_url": "https://docs.docker.com/",
+      "wikipedia_title": "Docker (software)",
+      "wikidata_id": "Q15206305",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:kubernetes",
+      "slug": "kubernetes",
+      "name": "Kubernetes",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "An open-source system for automating container deployment and scaling.",
+      "aliases": [
+        "k8s"
+      ],
+      "official_url": "https://kubernetes.io",
+      "documentation_url": "https://kubernetes.io/docs/home/",
+      "wikipedia_title": "Kubernetes",
+      "wikidata_id": "Q22661306",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:terraform",
+      "slug": "terraform",
+      "name": "Terraform",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "An infrastructure-as-code tool for provisioning cloud resources declaratively.",
+      "official_url": "https://www.terraform.io",
+      "documentation_url": "https://developer.hashicorp.com/terraform/docs",
+      "wikipedia_title": "Terraform (software)",
+      "wikidata_id": "Q28973671",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:aws",
+      "slug": "aws",
+      "name": "Amazon Web Services",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "A comprehensive cloud platform offering compute, storage, and managed services.",
+      "aliases": [
+        "AWS",
+        "Amazon AWS"
+      ],
+      "official_url": "https://aws.amazon.com",
+      "documentation_url": "https://docs.aws.amazon.com/",
+      "wikipedia_title": "Amazon Web Services",
+      "wikidata_id": "Q747779",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:github-actions",
+      "slug": "github-actions",
+      "name": "GitHub Actions",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "A CI/CD and automation platform integrated into GitHub repositories.",
+      "official_url": "https://github.com/features/actions",
+      "documentation_url": "https://docs.github.com/en/actions",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:nginx",
+      "slug": "nginx",
+      "name": "Nginx",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "A high-performance web server, reverse proxy, and load balancer.",
+      "official_url": "https://nginx.org",
+      "documentation_url": "https://nginx.org/en/docs/",
+      "wikipedia_title": "Nginx",
+      "wikidata_id": "Q306144",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:prometheus",
+      "slug": "prometheus",
+      "name": "Prometheus",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:cloud-devops",
+      "short_description": "An open-source monitoring system and time-series database.",
+      "official_url": "https://prometheus.io",
+      "documentation_url": "https://prometheus.io/docs/",
+      "wikipedia_title": "Prometheus (software)",
+      "wikidata_id": "Q21050050",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:keycloak",
+      "slug": "keycloak",
+      "name": "Keycloak",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:security",
+      "short_description": "An open-source identity and access management solution.",
+      "official_url": "https://www.keycloak.org",
+      "documentation_url": "https://www.keycloak.org/documentation",
+      "wikipedia_title": "Keycloak",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:auth0",
+      "slug": "auth0",
+      "name": "Auth0",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:security",
+      "short_description": "A managed authentication and authorization platform for applications.",
+      "official_url": "https://auth0.com",
+      "documentation_url": "https://auth0.com/docs",
+      "wikipedia_title": "Auth0",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:openssl",
+      "slug": "openssl",
+      "name": "OpenSSL",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:security",
+      "short_description": "A widely used toolkit implementing TLS and general-purpose cryptography.",
+      "official_url": "https://www.openssl.org",
+      "documentation_url": "https://docs.openssl.org/",
+      "wikipedia_title": "OpenSSL",
+      "wikidata_id": "Q217329",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:flutter",
+      "slug": "flutter",
+      "name": "Flutter",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:mobile",
+      "short_description": "A UI toolkit from Google for building cross-platform apps from one codebase.",
+      "official_url": "https://flutter.dev",
+      "documentation_url": "https://docs.flutter.dev/",
+      "wikipedia_title": "Flutter (software)",
+      "wikidata_id": "Q46963963",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:react-native",
+      "slug": "react-native",
+      "name": "React Native",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:mobile",
+      "short_description": "A framework for building native mobile apps using React.",
+      "official_url": "https://reactnative.dev",
+      "documentation_url": "https://reactnative.dev/docs/getting-started",
+      "wikipedia_title": "React Native",
+      "wikidata_id": "Q30412878",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:electron",
+      "slug": "electron",
+      "name": "Electron",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:mobile",
+      "short_description": "A framework for building cross-platform desktop apps with web technologies.",
+      "official_url": "https://www.electronjs.org",
+      "documentation_url": "https://www.electronjs.org/docs/latest",
+      "wikipedia_title": "Electron (software framework)",
+      "wikidata_id": "Q21028958",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:linux",
+      "slug": "linux",
+      "name": "Linux",
+      "node_type": "technology",
+      "node_subtype": "operating_system",
+      "primary_domain": "domain:systems",
+      "short_description": "A family of open-source Unix-like operating systems based on the Linux kernel.",
+      "official_url": "https://www.kernel.org",
+      "documentation_url": "https://docs.kernel.org/",
+      "wikipedia_title": "Linux",
+      "wikidata_id": "Q388",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:cuda",
+      "slug": "cuda",
+      "name": "CUDA",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:systems",
+      "short_description": "NVIDIA's parallel computing platform and API for GPU programming.",
+      "official_url": "https://developer.nvidia.com/cuda-zone",
+      "documentation_url": "https://docs.nvidia.com/cuda/",
+      "wikipedia_title": "CUDA",
+      "wikidata_id": "Q477690",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:llvm",
+      "slug": "llvm",
+      "name": "LLVM",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:systems",
+      "short_description": "A collection of modular compiler and toolchain technologies.",
+      "official_url": "https://llvm.org",
+      "documentation_url": "https://llvm.org/docs/",
+      "wikipedia_title": "LLVM",
+      "wikidata_id": "Q476819",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:git",
+      "slug": "git",
+      "name": "Git",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "A distributed version control system for tracking changes in source code.",
+      "official_url": "https://git-scm.com",
+      "documentation_url": "https://git-scm.com/doc",
+      "wikipedia_title": "Git",
+      "wikidata_id": "Q186055",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:playwright",
+      "slug": "playwright",
+      "name": "Playwright",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "A framework for reliable end-to-end testing of modern web apps.",
+      "official_url": "https://playwright.dev",
+      "documentation_url": "https://playwright.dev/docs/intro",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:pytest",
+      "slug": "pytest",
+      "name": "pytest",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "A mature, full-featured testing framework for Python.",
+      "official_url": "https://pytest.org",
+      "documentation_url": "https://docs.pytest.org/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:vitest",
+      "slug": "vitest",
+      "name": "Vitest",
+      "node_type": "technology",
+      "node_subtype": "framework",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "A fast unit test framework powered by Vite.",
+      "official_url": "https://vitest.dev",
+      "documentation_url": "https://vitest.dev/guide/",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:eslint",
+      "slug": "eslint",
+      "name": "ESLint",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:testing-tooling",
+      "short_description": "A pluggable static analysis tool for finding problems in JavaScript/TypeScript.",
+      "official_url": "https://eslint.org",
+      "documentation_url": "https://eslint.org/docs/latest/",
+      "wikipedia_title": "ESLint",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:unity",
+      "slug": "unity",
+      "name": "Unity",
+      "node_type": "technology",
+      "node_subtype": "engine",
+      "primary_domain": "domain:gamedev",
+      "short_description": "A cross-platform game engine widely used for 2D and 3D games.",
+      "official_url": "https://unity.com",
+      "documentation_url": "https://docs.unity.com/",
+      "wikipedia_title": "Unity (game engine)",
+      "wikidata_id": "Q63966",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:godot",
+      "slug": "godot",
+      "name": "Godot",
+      "node_type": "technology",
+      "node_subtype": "engine",
+      "primary_domain": "domain:gamedev",
+      "short_description": "A free and open-source game engine for 2D and 3D development.",
+      "official_url": "https://godotengine.org",
+      "documentation_url": "https://docs.godotengine.org/",
+      "wikipedia_title": "Godot (game engine)",
+      "wikidata_id": "Q16972633",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:webgpu",
+      "slug": "webgpu",
+      "name": "WebGPU",
+      "node_type": "technology",
+      "node_subtype": "standard",
+      "primary_domain": "domain:gamedev",
+      "short_description": "A modern web API exposing GPU capabilities for graphics and compute.",
+      "official_url": "https://www.w3.org/TR/webgpu/",
+      "documentation_url": "https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API",
+      "wikipedia_title": "WebGPU",
+      "lifecycle_status": "emerging"
+    },
+    {
+      "id": "technology:c",
+      "slug": "c",
+      "name": "C",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:systems",
+      "short_description": "A foundational, performant systems programming language.",
+      "official_url": "https://www.iso.org/standard/74528.html",
+      "documentation_url": "https://en.cppreference.com/w/c",
+      "wikipedia_title": "C (programming language)",
+      "wikidata_id": "Q15777",
+      "lifecycle_status": "mature"
+    },
+    {
+      "id": "technology:cpp",
+      "slug": "cpp",
+      "name": "C++",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:systems",
+      "short_description": "A high-performance language extending C with object-oriented and generic features.",
+      "aliases": [
+        "cplusplus",
+        "c plus plus"
+      ],
+      "official_url": "https://isocpp.org",
+      "documentation_url": "https://en.cppreference.com/w/",
+      "wikipedia_title": "C++",
+      "wikidata_id": "Q2407",
+      "lifecycle_status": "active"
+    }
+  ],
+  "edges": [
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:frontend",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:backend",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:databases",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:ai-ml",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:cloud-devops",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:security",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:mobile",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:systems",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:testing-tooling",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:gamedev",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "concept:object-oriented-programming",
+      "target": "domain:software-engineering",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:functional-programming",
+      "target": "domain:software-engineering",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:concurrency",
+      "target": "domain:software-engineering",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:asynchronous-programming",
+      "target": "domain:software-engineering",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:asynchronous-programming",
+      "target": "concept:concurrency",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:state-management",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:server-side-rendering",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:component-architecture",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:rest-api",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:graphql",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:http",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:websockets",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:microservices",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:caching",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:relational-databases",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:sql",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:nosql",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:vector-databases",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:vector-embeddings",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:neural-networks",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:deep-learning",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:transformers",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:large-language-models",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:retrieval-augmented-generation",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:model-inference",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:containerization",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:container-orchestration",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:ci-cd",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:infrastructure-as-code",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:observability",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cloud-computing",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:authentication",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:authorization",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:oauth2",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:jwt",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:encryption",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cross-platform-development",
+      "target": "domain:mobile",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:operating-systems",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:gpu-programming",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:version-control",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:unit-testing",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:end-to-end-testing",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:static-analysis",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:real-time-graphics",
+      "target": "domain:gamedev",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:game-engines",
+      "target": "domain:gamedev",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:deep-learning",
+      "target": "concept:neural-networks",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:transformers",
+      "target": "concept:neural-networks",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:large-language-models",
+      "target": "concept:transformers",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:retrieval-augmented-generation",
+      "target": "concept:large-language-models",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:retrieval-augmented-generation",
+      "target": "concept:vector-embeddings",
+      "relationship_type": "depends_on"
+    },
+    {
+      "source": "concept:vector-databases",
+      "target": "concept:vector-embeddings",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:relational-databases",
+      "target": "concept:sql",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:oauth2",
+      "target": "concept:authorization",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:jwt",
+      "target": "concept:authentication",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:rest-api",
+      "target": "concept:http",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:websockets",
+      "target": "concept:http",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:container-orchestration",
+      "target": "concept:containerization",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "concept:vector-embeddings",
+      "target": "concept:neural-networks",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "technology:typescript",
+      "target": "technology:javascript",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:react",
+      "target": "technology:javascript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:react",
+      "target": "technology:typescript",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:react",
+      "target": "concept:component-architecture",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:vue",
+      "target": "technology:javascript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:vue",
+      "target": "concept:component-architecture",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:vue",
+      "target": "technology:react",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:nextjs",
+      "target": "technology:react",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:nextjs",
+      "target": "concept:server-side-rendering",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:redux",
+      "target": "concept:state-management",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:zustand",
+      "target": "concept:state-management",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:zustand",
+      "target": "technology:redux",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:redux",
+      "target": "technology:react",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:zustand",
+      "target": "technology:react",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:tailwind",
+      "target": "technology:css",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:tailwind",
+      "target": "technology:react",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:vite",
+      "target": "technology:react",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:vite",
+      "target": "technology:javascript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:html",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:css",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:javascript",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:typescript",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:react",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:vue",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:nextjs",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:redux",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:zustand",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:tailwind",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:vite",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:sigmajs",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:graphology",
+      "target": "domain:frontend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:sigmajs",
+      "target": "technology:graphology",
+      "relationship_type": "depends_on"
+    },
+    {
+      "source": "technology:sigmajs",
+      "target": "technology:webgpu",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:graphology",
+      "target": "technology:javascript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:python",
+      "target": "domain:software-engineering",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:python",
+      "target": "concept:object-oriented-programming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:python",
+      "target": "domain:ai-ml",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:python",
+      "target": "domain:backend",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:javascript",
+      "target": "concept:asynchronous-programming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:nodejs",
+      "target": "technology:javascript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:nodejs",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:express",
+      "target": "technology:nodejs",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:express",
+      "target": "concept:rest-api",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:express",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "concept:rest-api",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "concept:asynchronous-programming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "technology:django",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:django",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:django",
+      "target": "concept:rest-api",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:django",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:go",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:go",
+      "target": "concept:concurrency",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:go",
+      "target": "concept:microservices",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:java",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:java",
+      "target": "concept:object-oriented-programming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:grpc",
+      "target": "domain:backend",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:grpc",
+      "target": "concept:microservices",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:grpc",
+      "target": "concept:http",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:postgresql",
+      "target": "concept:relational-databases",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:postgresql",
+      "target": "concept:sql",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:postgresql",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:mysql",
+      "target": "concept:relational-databases",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:mysql",
+      "target": "concept:sql",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:mysql",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:mysql",
+      "target": "technology:postgresql",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:mongodb",
+      "target": "concept:nosql",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:mongodb",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:redis",
+      "target": "concept:caching",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:redis",
+      "target": "concept:nosql",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:redis",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pgvector",
+      "target": "technology:postgresql",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:pgvector",
+      "target": "concept:vector-databases",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:pgvector",
+      "target": "domain:databases",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:fastapi",
+      "target": "technology:postgresql",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:django",
+      "target": "technology:postgresql",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:express",
+      "target": "technology:mongodb",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:redis",
+      "target": "technology:fastapi",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:pytorch",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pytorch",
+      "target": "concept:deep-learning",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:pytorch",
+      "target": "concept:neural-networks",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:pytorch",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pytorch",
+      "target": "technology:cuda",
+      "relationship_type": "depends_on"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "concept:deep-learning",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "concept:neural-networks",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "technology:pytorch",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:tensorflow",
+      "target": "technology:cuda",
+      "relationship_type": "depends_on"
+    },
+    {
+      "source": "technology:scikit-learn",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:scikit-learn",
+      "target": "technology:numpy",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:scikit-learn",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:numpy",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:numpy",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pandas",
+      "target": "technology:numpy",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:pandas",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pandas",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:huggingface-transformers",
+      "target": "technology:pytorch",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:huggingface-transformers",
+      "target": "concept:transformers",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:huggingface-transformers",
+      "target": "concept:large-language-models",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:huggingface-transformers",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:langchain",
+      "target": "concept:retrieval-augmented-generation",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:langchain",
+      "target": "concept:large-language-models",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:langchain",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:langchain",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:langchain",
+      "target": "technology:pgvector",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:ollama",
+      "target": "concept:model-inference",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ollama",
+      "target": "concept:large-language-models",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:ollama",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ollama",
+      "target": "technology:langchain",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:docker",
+      "target": "concept:containerization",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:docker",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:kubernetes",
+      "target": "concept:container-orchestration",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:kubernetes",
+      "target": "technology:docker",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:kubernetes",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:terraform",
+      "target": "concept:infrastructure-as-code",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:terraform",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:terraform",
+      "target": "technology:aws",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:aws",
+      "target": "concept:cloud-computing",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:aws",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:github-actions",
+      "target": "concept:ci-cd",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:github-actions",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:github-actions",
+      "target": "technology:git",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:nginx",
+      "target": "concept:caching",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:nginx",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:nginx",
+      "target": "concept:http",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:prometheus",
+      "target": "concept:observability",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:prometheus",
+      "target": "domain:cloud-devops",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:docker",
+      "target": "technology:linux",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:keycloak",
+      "target": "concept:authentication",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:keycloak",
+      "target": "concept:oauth2",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:keycloak",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:auth0",
+      "target": "concept:authentication",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:auth0",
+      "target": "concept:oauth2",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:auth0",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:auth0",
+      "target": "technology:keycloak",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:openssl",
+      "target": "concept:encryption",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:openssl",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:flutter",
+      "target": "concept:cross-platform-development",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:flutter",
+      "target": "domain:mobile",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:react-native",
+      "target": "concept:cross-platform-development",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:react-native",
+      "target": "technology:react",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:react-native",
+      "target": "domain:mobile",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:react-native",
+      "target": "technology:flutter",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:electron",
+      "target": "technology:nodejs",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:electron",
+      "target": "concept:cross-platform-development",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:electron",
+      "target": "domain:mobile",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:linux",
+      "target": "concept:operating-systems",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:linux",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cuda",
+      "target": "concept:gpu-programming",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:cuda",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:llvm",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:rust",
+      "target": "technology:llvm",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:rust",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:rust",
+      "target": "concept:concurrency",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:c",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cpp",
+      "target": "technology:c",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:cpp",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cpp",
+      "target": "concept:object-oriented-programming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:linux",
+      "target": "technology:c",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:git",
+      "target": "concept:version-control",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:git",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:playwright",
+      "target": "concept:end-to-end-testing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:playwright",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pytest",
+      "target": "concept:unit-testing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:pytest",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pytest",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:vitest",
+      "target": "concept:unit-testing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:vitest",
+      "target": "technology:vite",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:vitest",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:eslint",
+      "target": "concept:static-analysis",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:eslint",
+      "target": "domain:frontend",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:eslint",
+      "target": "domain:testing-tooling",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:unity",
+      "target": "concept:game-engines",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:unity",
+      "target": "concept:real-time-graphics",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:unity",
+      "target": "domain:gamedev",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:godot",
+      "target": "concept:game-engines",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:godot",
+      "target": "domain:gamedev",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:godot",
+      "target": "technology:unity",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:webgpu",
+      "target": "concept:real-time-graphics",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "technology:webgpu",
+      "target": "domain:gamedev",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:unity",
+      "target": "technology:cpp",
+      "relationship_type": "written_in"
+    }
+  ]
+}

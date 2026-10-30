@@ -1,0 +1,1 @@
+"""TechAtlas backend application package."""
