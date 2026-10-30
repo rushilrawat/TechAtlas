@@ -13,7 +13,8 @@ from urllib.parse import quote
 
 from .github_client import BudgetExceeded, GitHubClient, GitHubError
 from .import_role import role_for_node
-from .manifest_parsers import infra, js, rust
+from .manifest_parsers import go as goparser
+from .manifest_parsers import infra, java, js, rust
 from .manifest_parsers import python as pyparser
 from .manifest_parsers.common import RawDetection
 from .models import (
@@ -37,7 +38,9 @@ def _blob_url(owner: str, name: str, sha: str, path: str) -> str:
     return f"https://github.com/{owner}/{name}/blob/{sha}/{quote(path)}"
 
 
-def _parse_file(path: str, kind: str, text: str) -> list[RawDetection]:
+def _parse_file(path: str, kind: str, text: str,
+                gradle_catalog: dict | None = None,
+                go_own_module: str | None = None) -> list[RawDetection]:
     base = path.rsplit("/", 1)[-1]
     out: list[RawDetection] = []
     if kind == "workflow":
@@ -68,12 +71,22 @@ def _parse_file(path: str, kind: str, text: str) -> list[RawDetection]:
             out += rust.parse_cargo_toml(path, text)
         elif base == "Cargo.lock":
             out += rust.parse_cargo_lock(path, text)
+        elif base == "pom.xml":
+            out += java.parse_pom_xml(path, text)
+        elif base in ("build.gradle", "build.gradle.kts"):
+            out += java.parse_gradle(path, text, gradle_catalog)
+        elif base == "go.mod":
+            out += goparser.parse_go_mod(path, text)
+        elif base == "go.sum":
+            out += goparser.parse_go_sum(path, text)
         return out
     if kind == "source":
         if path.endswith(".py"):
             out += pyparser.parse_source_imports(path, text)
         elif path.endswith(".rs"):
             out += rust.parse_source_imports(path, text)
+        elif path.endswith(".go"):
+            out += goparser.parse_source_imports(path, text, go_own_module)
         else:
             out += js.parse_source_imports(path, text)
     return out
@@ -92,6 +105,15 @@ def build_scan(
     """Pure assembly step (no network) — easy to unit-test with fixtures."""
     raw: list[RawDetection] = []
     manifests = sources = 0
+    # Merge any gradle/libs.versions.toml catalogs so Gradle alias refs resolve (Req 2.3).
+    gradle_catalog: dict[str, str] = {}
+    go_own_module: str | None = None
+    for gpath, gtext in file_texts.items():
+        base = gpath.rsplit("/", 1)[-1]
+        if base == "libs.versions.toml" and "gradle/" in gpath:
+            gradle_catalog.update(java.resolve_version_catalog(gtext))
+        elif base == "go.mod" and go_own_module is None:
+            go_own_module = goparser.own_module(gtext)
     for f in selection.files:
         text = file_texts.get(f.path)
         if text is None:
@@ -100,7 +122,7 @@ def build_scan(
             manifests += 1
         elif f.kind == "source":
             sources += 1
-        raw += _parse_file(f.path, f.kind, text)
+        raw += _parse_file(f.path, f.kind, text, gradle_catalog, go_own_module)
 
     # Consolidate per node id. Package detections -> match; node_id detections direct.
     evidence: list[Evidence] = []
