@@ -1,5 +1,5 @@
 {
-  "layout_version": "0.2.0",
+  "layout_version": "0.3.0",
   "layout_algorithm": "deterministic-barnes-hut-fr+overlap",
   "domain_ring_order": [
     "domain:ai-ml",

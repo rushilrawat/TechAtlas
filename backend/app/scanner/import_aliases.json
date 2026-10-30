@@ -5,7 +5,23 @@
     "cv2": "opencv-python",
     "PIL": "pillow",
     "yaml": "pyyaml",
-    "bs4": "beautifulsoup4"
+    "bs4": "beautifulsoup4",
+    "dateutil": "python-dateutil",
+    "dotenv": "python-dotenv",
+    "jose": "python-jose",
+    "serial": "pyserial",
+    "google": "google-api-python-client",
+    "attr": "attrs",
+    "OpenSSL": "pyopenssl",
+    "Crypto": "pycryptodome",
+    "win32com": "pywin32",
+    "zoneinfo": "backports.zoneinfo",
+    "usb": "pyusb",
+    "docx": "python-docx",
+    "pptx": "python-pptx",
+    "fitz": "pymupdf",
+    "skimage": "scikit-image",
+    "mpl_toolkits": "matplotlib"
   },
   "npm": {}
 }

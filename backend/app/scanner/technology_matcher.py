@@ -52,8 +52,15 @@ class TechnologyMatcher:
     def has(self, node_id: str) -> bool:
         return node_id in self._valid_ids
 
+    # Parser ecosystem labels -> dataset `package.ecosystem` registry labels. The parsers
+    # emit the language registry name (cargo/go/maven); the dataset uses crates.io's
+    # "crates" label. Normalizing here keeps both conventions working without rewriting
+    # data. maven/go are passed through (added to dataset package entries over time).
+    _ECOSYSTEM_ALIASES = {"cargo": "crates"}
+
     def match_package(self, ecosystem: str, package: str) -> str | None:
         """Resolve a package to a canonical node id, or None (unmapped)."""
+        ecosystem = self._ECOSYSTEM_ALIASES.get(ecosystem, ecosystem)
         name = package.strip()
         if not name:
             return None
