@@ -270,6 +270,25 @@ def _load_previous() -> tuple[str | None, dict[str, dict]]:
 
 
 def generate(dataset: dict) -> dict:
+    """Structured-hybrid "atlas" layout (Explore-view redesign).
+
+    The opening Universe view must read as a *map of computing domains*, not a central
+    force-directed blob. So the layout is deliberately structured in three levels:
+
+      Level 1 - Domain ring: every top-level domain sits on one large, equidistant circle
+                with an intentional, stable ordering (related domains adjacent). The centre
+                is left as open negative space - no pile of nodes or colliding labels.
+      Level 2 - Domain sector: each domain owns an angular WEDGE sized by a dampened member
+                count. Its concepts/technologies fan OUTWARD from the ring into the wedge in
+                concentric shells - higher-connectivity "hub" nodes nearest the anchor,
+                leaf technologies farther out - so each domain reads as its own neighbourhood.
+      Level 3 - Collision polish: a bounded, radius-aware relaxation removes residual overlap
+                WITHOUT a global force pass (which is what collapsed the old layout inward).
+
+    Deterministic (seeded only by node id + fixed geometry) and idempotent: regenerating
+    with the committed layout present reproduces it exactly, and an incremental dataset
+    expansion preserves every previously-placed coordinate (cross-version pinning).
+    """
     nodes = dataset["nodes"]
     edges = dataset["edges"]
     ids = [n["id"] for n in nodes]
@@ -277,162 +296,150 @@ def generate(dataset: dict) -> dict:
 
     radius = radii_for_dataset(nodes, edges, load_popularity(POPULARITY))
 
-    # Task 3: connectivity-ordered domain ring.
-    domains = [n["id"] for n in nodes if n["node_type"] == "domain"]
-    ordered = _order_domains(domains, node_by_id, edges)
-    n_domains = max(len(ordered), 1)
-    radius_ring = WIDTH * 0.32
-    anchor: dict[str, tuple[float, float]] = {}
-    for i, d in enumerate(ordered):
-        angle = 2 * math.pi * i / n_domains
-        anchor[d] = (radius_ring * math.cos(angle), radius_ring * math.sin(angle))
-
-    # Task 6: cross-version pinning — reuse previous coordinates for unchanged nodes,
-    # but ONLY when the previous layout is for a different dataset version (a genuine
-    # incremental update). When versions match (or no previous file), recompute from
-    # the deterministic seed so a fresh run is fully reproducible and CI-stable.
-    prev_version, prev_coords = _load_previous()
-    # Pin to the previous layout whenever one exists and shares nodes with the current
-    # dataset. This makes the layout an INCREMENTAL, idempotent function of (dataset,
-    # previous layout): re-running with the committed layout as input reproduces it exactly
-    # (CI determinism), and adding nodes preserves every existing coordinate while placing
-    # only the new nodes. A first-ever build (no previous file) falls back to the seeded
-    # from-scratch layout.
-    reuse_prev = bool(prev_coords) and any(n in prev_coords for n in ids)
-
-    # Incremental expansion: hold EXISTING domains at their previous ring anchors so the map
-    # does not rotate when new domains enlarge the ring. New domains keep their freshly
-    # computed ring slot. On a from-scratch build (no previous layout) this is a no-op.
-    if reuse_prev:
-        for d in domains:
-            prev = prev_coords.get(d)
-            if prev and "x" in prev and "y" in prev:
-                anchor[d] = (float(prev["x"]), float(prev["y"]))
-
-    pos: dict[str, list[float]] = {}
-    pinned: set[str] = set()
-    for nid in ids:
-        prev = prev_coords.get(nid)
-        if reuse_prev and prev and "x" in prev and "y" in prev:
-            pos[nid] = [float(prev["x"]), float(prev["y"])]
-            pinned.add(nid)
-        else:
-            comm = _domain_of(node_by_id[nid])
-            ax, ay = anchor.get(comm, (0.0, 0.0))
-            r = WIDTH * 0.10 * _seeded_unit(nid + ":r")
-            theta = 2 * math.pi * _seeded_unit(nid + ":t")
-            pos[nid] = [ax + r * math.cos(theta), ay + r * math.sin(theta)]
-
-    # Dirty set: nodes that are allowed to move freely during an incremental update —
-    # the new/unpinned nodes plus their K-hop neighbors. Everything else (pinned and
-    # far from any change) is held firmly at its previous position so unrelated parts
-    # of the map stay put (Task 6).
-    anchor_target = {nid: (pos[nid][0], pos[nid][1]) for nid in pinned}
-    dirty: set[str] = set(ids) - pinned
-    if reuse_prev:
-        # Structural domain-ring edges (`has_subdomain`) must NOT propagate "dirtiness":
-        # attaching a brand-new subdomain to an existing domain should let the subdomain
-        # find its spot WITHOUT dragging the parent domain's pinned members. Only content
-        # edges spread the dirty frontier, so unrelated clusters keep their coordinates.
-        _STRUCTURAL = {"has_subdomain"}
-        neighbors_of: dict[str, set[str]] = {nid: set() for nid in ids}
-        for e in edges:
-            if e.get("relationship_type") in _STRUCTURAL:
-                continue
-            if e["source"] in neighbors_of and e["target"] in neighbors_of:
-                neighbors_of[e["source"]].add(e["target"])
-                neighbors_of[e["target"]].add(e["source"])
-        frontier = set(dirty)
-        for _hop in range(2):  # K = 2 hops
-            nxt: set[str] = set()
-            for nid in frontier:
-                nxt |= neighbors_of.get(nid, set())
-            dirty |= nxt
-            frontier = nxt
-
-    # If every node was pinned (dataset unchanged), we still run a light relaxation
-    # so edits to sizes/edges settle, but movement will be tiny and convergence fast.
-    adjacency: list[tuple[str, str, float]] = []
+    # ---- intra-domain connectivity: hubs (high degree within their domain) sit inner ----
+    domain_of = {nid: _domain_of(node_by_id[nid]) for nid in ids}
+    intra_deg: dict[str, int] = {nid: 0 for nid in ids}
     for e in edges:
-        if e["source"] in pos and e["target"] in pos:
-            mult = REL_ATTRACTION.get(e["relationship_type"], DEFAULT_ATTRACTION)
-            weight = e.get("weight")
-            if isinstance(weight, (int, float)):
-                mult *= 0.5 + float(weight)  # schema weight nudges attraction
-            adjacency.append((e["source"], e["target"], mult))
+        s, t = e.get("source"), e.get("target")
+        if s in domain_of and t in domain_of and domain_of[s] == domain_of[t]:
+            intra_deg[s] += 1
+            intra_deg[t] += 1
 
-    k = math.sqrt(AREA / max(len(ids), 1))
-    k2 = k * k
-    temp = WIDTH * 0.1
+    # ---- Level 1: TOP-LEVEL domain ring (design §13 + subdomain correction §5) ----
+    # The dataset has 17 domain nodes but 3 are SUBDOMAINS (attached to a parent via a
+    # `domain -has_subdomain-> domain` edge). Only genuine top-level domains occupy the main
+    # equidistant ring; each subdomain nests inside its parent's sector so the hierarchy is
+    # honoured rather than presenting it as an unrelated top-level discipline.
+    all_domains = [n["id"] for n in nodes if n["node_type"] == "domain"]
+    # `domain:software-engineering` is the taxonomic ROOT: it `has_subdomain` -> the ten
+    # original top-level domains, which are still peer sectors on the ring (the root is a
+    # conceptual parent, not a spatial container). A domain only NESTS off the ring when its
+    # has_subdomain parent is some OTHER domain (the genuine subdomains added in Phase 1E:
+    # computer-architecture + embedded under systems, computer-graphics under gamedev).
+    ROOT_DOMAIN = "domain:software-engineering"
+    parent_of: dict[str, str] = {}
+    for e in edges:
+        if e.get("relationship_type") == "has_subdomain":
+            s_, t_ = e.get("source"), e.get("target")
+            if s_ in all_domains and t_ in all_domains and s_ != ROOT_DOMAIN:
+                parent_of[t_] = s_            # t_ is a true (nested) subdomain of s_
+    subdomains = set(parent_of)
+    top_domains = [d for d in all_domains if d not in subdomains]
+    present = set(top_domains)
+    # Curated walk around the circle so neighbouring top-level sectors are conceptually
+    # adjacent; any top-level domain not listed is appended by the connectivity heuristic.
+    CURATED = [
+        "domain:software-engineering", "domain:testing-tooling",
+        "domain:frontend", "domain:mobile", "domain:gamedev",
+        "domain:ai-ml", "domain:robotics",
+        "domain:databases", "domain:backend", "domain:cloud-devops",
+        "domain:networks", "domain:systems",
+        "domain:theory", "domain:security",
+    ]
+    ordered = [d for d in CURATED if d in present]
+    for d in _order_domains(top_domains, node_by_id, edges):
+        if d not in ordered:
+            ordered.append(d)
 
-    for _ in range(ITERATIONS):
-        # build quadtree over current positions (Task 5)
-        xs = [p[0] for p in pos.values()]
-        ys = [p[1] for p in pos.values()]
-        min_x, max_x = min(xs), max(xs)
-        min_y, max_y = min(ys), max(ys)
-        size = max(max_x - min_x, max_y - min_y, 1.0) * 1.05
-        tree = _QuadNode(min_x - 1, min_y - 1, size)
+    # Effective sector for every non-domain node: a subdomain's members are hosted in the
+    # subdomain's PARENT sector (so the parent territory contains the whole hierarchy).
+    def sector_of(nid: str) -> str:
+        d = domain_of.get(nid, nid)
+        # walk up subdomain -> parent until a top-level domain
+        seen = 0
+        while d in parent_of and seen < 5:
+            d = parent_of[d]; seen += 1
+        return d
+
+    # Members per TOP-LEVEL sector (includes the subdomain anchor nodes + their members).
+    members: dict[str, list[str]] = {d: [] for d in ordered}
+    for nid in ids:
+        if nid in top_domains:
+            continue  # top-level domain anchors are placed on the ring, not as members
+        sec = sector_of(nid)
+        if sec in members:
+            members[sec].append(nid)
+
+    # Angular wedge per domain, proportional to sqrt(member count) so big domains get more
+    # arc without starving small ones. Each domain's anchor sits at its wedge centre on a
+    # large ring; the open centre inside the ring is intentional negative space.
+    weights = {d: math.sqrt(max(len(members[d]), 1)) for d in ordered}
+    wtotal = sum(weights.values()) or 1.0
+    RING = WIDTH * 0.62          # radius of the DOMAIN ANCHOR ring (its label/marker)
+    GAP = 0.14                   # fraction of each wedge kept as an inter-sector gutter
+    pos: dict[str, list[float]] = {}
+    wedge_center: dict[str, float] = {}
+    wedge_half: dict[str, float] = {}
+
+    acc = 0.0
+    # Start at -90deg (top) and go clockwise for a stable, familiar orientation.
+    base = -math.pi / 2
+    for d in ordered:
+        frac = weights[d] / wtotal
+        span = 2 * math.pi * frac
+        center = base + acc + span / 2
+        acc += span
+        wedge_center[d] = center
+        wedge_half[d] = span * (1 - GAP) / 2
+        pos[d] = [RING * math.cos(center), RING * math.sin(center)]
+
+    # ---- Level 2: fan each domain's members OUTWARD into its wedge, in shells ----
+    # Shell radius grows from just inside the ring to well beyond it, so a sector reads as
+    # a fan radiating away from the open centre. Hubs (high intra-degree) take inner shells.
+    SHELL0 = RING + 150.0        # first member shell sits just OUTSIDE the anchor ring
+    SHELL_STEP = 150.0           # radial spacing between shells (graph units), growing out
+    PER_SHELL_BASE = 6           # nodes in the first shell; shells widen outward
+    for d in ordered:
+        ms = members[d]
+        if not ms:
+            continue
+        # order: hubs first (inner), then by size, then id -> deterministic & meaningful
+        ms.sort(key=lambda nid: (-intra_deg[nid], -radius.get(nid, 0.0), nid))
+        center = wedge_center[d]
+        half = wedge_half[d]
+        placed = 0
+        shell = 0
+        i = 0
+        n = len(ms)
+        while i < n:
+            cap = PER_SHELL_BASE + shell * 3           # outer shells hold more nodes
+            shell_r = SHELL0 + shell * SHELL_STEP
+            row = ms[i:i + cap]
+            k = len(row)
+            # spread this shell's nodes evenly across the (gapped) wedge arc
+            for j, nid in enumerate(row):
+                if k == 1:
+                    a = center
+                else:
+                    a = center - half + (2 * half) * (j / (k - 1))
+                # tiny deterministic jitter so shells don't look mechanically gridded
+                jit = (_seeded_unit(nid + ":j") - 0.5) * SHELL_STEP * 0.3
+                r = shell_r + jit
+                pos[nid] = [r * math.cos(a), r * math.sin(a)]
+            i += cap
+            shell += 1
+            placed += k
+
+    # ---- cross-version pinning: preserve previously-placed coordinates, idempotent ----
+    prev_version, prev_coords = _load_previous()
+    reuse_prev = bool(prev_coords) and any(n in prev_coords for n in ids)
+    if reuse_prev:
         for nid in ids:
-            tree.insert(pos[nid][0], pos[nid][1])
+            prev = prev_coords.get(nid)
+            if prev and "x" in prev and "y" in prev:
+                pos[nid] = [float(prev["x"]), float(prev["y"])]
 
-        disp: dict[str, list[float]] = {}
-        for nid in ids:
-            fx, fy = _bh_force(tree, pos[nid][0], pos[nid][1], k2, BARNES_HUT_THETA)
-            disp[nid] = [fx, fy]
+    # anchor map for the overlap resolver (domains are gently tethered to their ring slot).
+    anchor = {d: (pos[d][0], pos[d][1]) for d in ordered}
 
-        # attractive forces along edges, scaled by relationship (Task 4)
-        for s, t, mult in adjacency:
-            dx = pos[s][0] - pos[t][0]
-            dy = pos[s][1] - pos[t][1]
-            dist = math.hypot(dx, dy) or 0.01
-            force = ((dist * dist) / k) * mult
-            ux, uy = dx / dist, dy / dist
-            disp[s][0] -= ux * force
-            disp[s][1] -= uy * force
-            disp[t][0] += ux * force
-            disp[t][1] += uy * force
-
-        # apply with temperature cap; tether domain anchors to their ring position
-        max_move = 0.0
-        for nid in ids:
-            # Task 6: freeze pinned nodes that are far from any change.
-            if nid in anchor_target and nid not in dirty:
-                tx, ty = anchor_target[nid]
-                pos[nid][0] = tx
-                pos[nid][1] = ty
-                continue
-            dxy = disp[nid]
-            d = math.hypot(*dxy) or 0.01
-            step = min(d, temp)
-            mx = (dxy[0] / d) * step
-            my = (dxy[1] / d) * step
-            pos[nid][0] += mx
-            pos[nid][1] += my
-            if nid in anchor:
-                ax, ay = anchor[nid]
-                pos[nid][0] = 0.85 * pos[nid][0] + 0.15 * ax
-                pos[nid][1] = 0.85 * pos[nid][1] + 0.15 * ay
-            elif nid in anchor_target and reuse_prev:
-                # PINNED node during an incremental expansion: hold it EXACTLY at its previous
-                # coordinate so the existing map is preserved. New (un-pinned) nodes relax
-                # freely around this fixed frame. (On a from-scratch build reuse_prev is False
-                # and this branch is skipped, so the canonical deterministic layout is unchanged.)
-                tx, ty = anchor_target[nid]
-                pos[nid][0] = tx
-                pos[nid][1] = ty
-            max_move = max(max_move, math.hypot(mx, my))
-
-        temp *= 0.98
-        if max_move < CONVERGENCE_EPS:  # Task 5: early stop
-            break
-
-    # Task 2: final radius-aware overlap resolution. During an incremental expansion
-    # (reuse_prev) freeze ALL pinned nodes so previously-placed coordinates are preserved
-    # exactly — only new (un-pinned) nodes absorb overlap adjustments. On a from-scratch
-    # build (no previous layout) nothing is pinned, so this is a no-op and the full relaxation
-    # still produces the canonical deterministic layout.
-    frozen = set(pinned) if reuse_prev else {nid for nid in pinned if nid not in dirty}
+    # ---- Level 3: bounded, radius-aware overlap resolution (no global force collapse) ----
+    # On an incremental expansion, freeze everything that was pinned so the existing map is
+    # untouched and only genuinely new nodes settle. On a fresh build nothing is pinned.
+    if reuse_prev:
+        pinned = {nid for nid in ids if prev_coords.get(nid)}
+        frozen = set(pinned)
+    else:
+        frozen = set()
     _resolve_overlaps(ids, pos, radius, anchor, frozen=frozen)
 
     coords = {
@@ -440,17 +447,18 @@ def generate(dataset: dict) -> dict:
             "x": round(pos[nid][0], 2),
             "y": round(pos[nid][1], 2),
             "radius": radius[nid],
-            "cluster": _domain_of(node_by_id[nid]),
+            "cluster": domain_of.get(nid, nid),
         }
         for nid in ids
     }
 
     return {
         "layout_version": dataset["version"],
-        "layout_algorithm": "deterministic-barnes-hut-fr+overlap",
+        "layout_algorithm": "structured-atlas-ring+radial-fan",
         "domain_ring_order": ordered,
         "coordinates": coords,
     }
+
 
 
 def main() -> None:

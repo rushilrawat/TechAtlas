@@ -47,7 +47,37 @@ body {
   display: flex;
   align-items: baseline;
   gap: 8px;
+  /* Clickable home control: reset native <button> chrome, keep it inline, add affordances. */
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
 }
+.brand:hover { background: rgba(122, 162, 247, 0.10); }
+.brand:focus-visible {
+  outline: 2px solid var(--accent, #7aa2f7);
+  outline-offset: 2px;
+}
+/* Persistent "Back to Explore" action, shown in the top bar while Repo X-Ray is active.
+   Always visible (desktop/tablet/mobile) regardless of the results-sheet state. */
+.explore-back {
+  background: rgba(122, 162, 247, 0.16);
+  border: 1px solid rgba(122, 162, 247, 0.45);
+  color: #c8d4ff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.explore-back:hover { background: rgba(122, 162, 247, 0.28); }
+.explore-back:focus-visible { outline: 2px solid var(--accent, #7aa2f7); outline-offset: 2px; }
 .brand-mark {
   width: 14px;
   height: 14px;

@@ -34,11 +34,15 @@ interface Props {
   // Stack View domain cluster headings (a handful): graph-space anchor + label + color.
   // Rendered as a small DOM overlay projected to screen coords (not per-node WebGL labels).
   stackHeadings?: { domainId: string; label: string; color: string; x: number; y: number }[] | null;
+  // Explore "Home" reframe: bump this nonce to smoothly re-fit the default atlas camera
+  // (used when returning from Repo X-Ray so the homepage camera is fully restored).
+  exploreNonce?: number;
 }
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
 const DIM_EDGE = "rgba(120,130,150,0.035)";           // <=0.05 non-touching (UI-A R2.2)
+const REST_EDGE = "rgba(130,140,160,0.03)";            // Explore at-rest cross-node edges (barely-there; map-first)
 const ACTIVE_EDGE = "rgba(150,180,255,0.55)";          // 0.50-0.60 touching (UI-A R2.1)
 
 // Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
@@ -172,6 +176,54 @@ function fitStack(
   // animatedReset frames the (extended) bbox: content lands on the usable rectangle.
   void renderer.getCamera().animatedReset({ duration: prefersReduced ? 0 : 650 });
 }
+// Sidebar-aware Explore framing: optically centre the FULL atlas in the usable canvas
+// (viewport minus the left legend + right filter side-rails on wide screens; symmetric on
+// mobile where panels are bottom sheets). Pure geometry, deterministic, no hardcoded offsets.
+function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
+  const graph = renderer.getGraph();
+  let mnX = Infinity, mnY = Infinity, mxX = -Infinity, mxY = -Infinity, any = false;
+  graph.forEachNode((_n, a) => {
+    const x = a.x as number, y = a.y as number;
+    if (typeof x !== "number" || typeof y !== "number") return;
+    any = true;
+    mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
+    mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
+  });
+  if (!any) return;
+  const el = renderer.getContainer();
+  const vw = el.clientWidth || window.innerWidth;
+  // Narrow screens get extra padding so domain labels near the rim are not clipped by the
+  // viewport edge (labels extend well beyond their node); wide screens use a tight frame.
+  const padFrac = vw < 641 ? 0.22 : 0.06;
+  const padX = (mxX - mnX) * padFrac + 40;
+  const padY = (mxY - mnY) * padFrac + 40;
+  mnX -= padX; mxX += padX; mnY -= padY; mxY += padY;
+  const vh = el.clientHeight || window.innerHeight;
+  const cr = el.getBoundingClientRect();
+  const gpx = Math.max((mxX - mnX) / Math.max(vw, 1), (mxY - mnY) / Math.max(vh, 1));
+  let leftW = 0, rightW = 0;
+  if (vw >= 641) {
+    const q = (sel: string) => {
+      const n = document.querySelector(sel) as HTMLElement | null;
+      const r = n ? n.getBoundingClientRect() : null;
+      return r && r.width > 0 && r.width < vw * 0.6 ? r : null;  // ignore bottom sheets
+    };
+    const left = q(".legend");
+    const right = q("#graph-filters, .filter-panel");
+    leftW = left ? Math.max(0, left.right - cr.left) : 0;
+    rightW = right ? Math.max(0, cr.right - right.left) : 0;
+  }
+  const bMinX = mnX - leftW * gpx;
+  const bMaxX = mxX + rightW * gpx;
+  renderer.setCustomBBox({ x: [bMinX, bMaxX], y: [mnY, mxY] });
+  if (prefersReduced) {
+    renderer.getCamera().setState({ x: 0.5, y: 0.5, ratio: 1, angle: 0 });
+    renderer.refresh();
+  } else {
+    void renderer.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1, angle: 0 }, { duration: 500 });
+  }
+}
+
 export function GraphCanvas({
   data,
   selectedId,
@@ -185,6 +237,7 @@ export function GraphCanvas({
   fitSignal = null,
   stackPositions = null,
   stackHeadings = null,
+  exploreNonce = 0,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
@@ -238,8 +291,12 @@ export function GraphCanvas({
       // UI-C: reduce Universe label collisions. Larger grid cells + lower density mean
       // fewer labels compete per screen region; the rendered-size threshold suppresses
       // labels for small nodes until the user zooms in (semantic zoom still applies on top).
-      labelDensity: 0.5,
-      labelGridCellSize: 110,
+      // On NARROW (mobile) viewports collisions are worse, so use larger cells + lower
+      // density: Sigma then renders fewer labels per region and picks the LARGEST node in
+      // each cell, which is the domain anchor — so top-level domain labels win and small
+      // colliding labels are dropped (redesign §3). More labels return on zoom.
+      labelDensity: (typeof window !== "undefined" && window.innerWidth < 641) ? 0.3 : 0.5,
+      labelGridCellSize: (typeof window !== "undefined" && window.innerWidth < 641) ? 260 : 110,
       zIndex: true,
       minCameraRatio: 0.08,
       maxCameraRatio: 2.5,
@@ -256,6 +313,17 @@ export function GraphCanvas({
       },
     });
     sigmaRef.current = renderer;
+
+    // Sidebar-aware INITIAL framing (Explore redesign §11): optically centre the atlas in
+    // the USABLE canvas (viewport minus the left legend + right filter panels), not the raw
+    // viewport, so no domain sector hides behind a panel. Done once on mount by framing a
+    // custom bbox whose L/R margins mirror the measured panel widths. Pure geometry, no
+    // hardcoded offsets; skipped when a scan (Stack View) owns the camera.
+    requestAnimationFrame(() => {
+      if (stackActiveRef.current) return;
+      fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    });
+
     // Test-only renderer handle, compiled in ONLY when VITE_TEST_HOOKS is set at build
     // time (the e2e harness build). It is tree-shaken out of the production deploy build,
     // so no internal renderer reference is ever exposed to shipped users.
@@ -294,9 +362,18 @@ export function GraphCanvas({
     scheduleRefreshRef.current = scheduleRefresh;
 
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
-    // from semanticZoom.ts and fed the live camera ratio.
-    const labelVisible = (nodeType: string, size: number): boolean =>
-      labelVisibleAtRatio(nodeType as never, size, ratioRef.current);
+    // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
+    // overview band shows ONLY top-level domain labels (redesign §3): even the large hubs
+    // are suppressed until the user zooms in, so domain names never fight each other for
+    // space. Sigma's enlarged collision grid then drops any domain labels that still touch.
+    const labelVisible = (nodeType: string, size: number): boolean => {
+      const narrowView =
+        (containerRef.current?.clientWidth ?? window.innerWidth) < 641;
+      // The Explore custom-bbox fit frames the whole atlas at camera ratio ~1 (band 1),
+      // so treat bands 0 AND 1 as "overview" on narrow screens: domain labels only.
+      if (narrowView && bandOf(ratioRef.current) <= 1) return nodeType === "domain";
+      return labelVisibleAtRatio(nodeType as never, size, ratioRef.current);
+    };
 
     renderer.setSetting("nodeReducer", (node, dataIn) => {
       const active = activeRef.current;
@@ -414,7 +491,18 @@ export function GraphCanvas({
         return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
       const active = activeRef.current;
-      if (!active) return dataIn;
+      if (!active) {
+        // Explore default (nothing selected): the view must read first as a MAP OF DOMAINS,
+        // not a web of relationships (redesign §14). The structural spokes that converge on
+        // each domain anchor (belongs_to_domain / has_subdomain) are redundant with colour +
+        // sector position, so hide them at rest; keep genuine cross-node relationships but
+        // extremely faint. Everything returns in full the moment a node is selected/hovered.
+        const rt = dataIn.relationshipType as string | undefined;
+        if (rt === "belongs_to_domain" || rt === "has_subdomain") {
+          return { ...dataIn, hidden: true };
+        }
+        return { ...dataIn, color: REST_EDGE, zIndex: 0 };
+      }
       const [s, t] = graph.extremities(edge);
       if (s === active || t === active) {
         return { ...dataIn, color: ACTIVE_EDGE, size: 1.4, zIndex: 1 };
@@ -675,6 +763,21 @@ export function GraphCanvas({
       { duration: prefersReduced ? 0 : 600 },
     );
   }, [fitSignal]);
+
+  // Explore "Home" reframe (Repo X-Ray -> Explore): clear any Stack View custom bbox and
+  // smoothly restore the default sidebar-aware atlas camera. Runs only when exploreNonce
+  // changes (not on first mount, which the construction effect already frames).
+  const exploreNonceRef = useRef(exploreNonce);
+  useEffect(() => {
+    if (exploreNonce === exploreNonceRef.current) return;
+    exploreNonceRef.current = exploreNonce;
+    const renderer = sigmaRef.current;
+    if (!renderer) return;
+    renderer.setCustomBBox(null);
+    requestAnimationFrame(() => {
+      fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    });
+  }, [exploreNonce]);
 
   // Animate the camera to the focused node; cancel any in-flight animation (Task 9).
   useEffect(() => {

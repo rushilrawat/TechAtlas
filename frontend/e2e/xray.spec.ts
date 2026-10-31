@@ -107,4 +107,46 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible(); // mock returns acme/demo
   });
+
+  // Repo X-Ray -> Explore Home navigation (required feature). Verifies the journey from
+  // BOTH Stack View and X-Ray Universe View fully restores the default Explore homepage:
+  // no scan overlay/panel, entry point back, no page reload. Checks actual UI state.
+  test("Back to Explore from Stack View restores the homepage", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(String(e)));
+    await mockScanner(page);
+    await page.goto("/");
+    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await page.getByRole("button", { name: "Repo X-Ray" }).click();
+    await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
+    await page.getByRole("button", { name: "Analyze Repository" }).click();
+    await expect(page.getByText("acme/demo")).toBeVisible();
+    // The persistent top-bar "Explore Universe" action exits X-Ray entirely.
+    await page.getByRole("button", { name: /Explore Universe/ }).click();
+    // Homepage fully restored: X-Ray panel gone, entry point back, no detection legend.
+    await expect(page.locator(".xray-panel")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
+    await expect(page.getByLabel("Detection status legend")).toHaveCount(0);
+    // A fresh scan still works after returning home (no stale state).
+    await page.getByRole("button", { name: "Repo X-Ray" }).click();
+    await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
+    await page.getByRole("button", { name: "Analyze Repository" }).click();
+    await expect(page.getByText("acme/demo")).toBeVisible();
+    expect(errors, `page errors: ${errors.join("\n")}`).toEqual([]);
+  });
+
+  test("TechAtlas logo returns home from X-Ray Universe View", async ({ page }) => {
+    await mockScanner(page);
+    await page.goto("/");
+    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await page.getByRole("button", { name: "Repo X-Ray" }).click();
+    await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
+    await page.getByRole("button", { name: "Analyze Repository" }).click();
+    await expect(page.getByText("acme/demo")).toBeVisible();
+    // Switch to X-Ray Universe View, then use the clickable logo to return home.
+    await page.locator(".xray-viewswitch").getByRole("button", { name: "Universe View" }).click();
+    await page.getByRole("button", { name: /TechAtlas home/ }).click();
+    await expect(page.locator(".xray-panel")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
+  });
 });

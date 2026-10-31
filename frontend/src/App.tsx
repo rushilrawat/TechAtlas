@@ -54,6 +54,8 @@ export default function App() {
   const [filter, setFilter] = useState<FilterState>(emptyFilter());
   const [xrayOpen, setXrayOpen] = useState(false);
   const [fitNonce, setFitNonce] = useState(0);
+  // Bumped to re-fit the default Explore atlas camera when returning from Repo X-Ray.
+  const [exploreNonce, setExploreNonce] = useState(0);
   // UI-C: domain legend auto-minimizes during Repo X-Ray to free canvas space;
   // the user can reopen it any time (it stays mounted as a reopen control).
   const [legendCollapsed, setLegendCollapsed] = useState(false);
@@ -239,10 +241,19 @@ export default function App() {
     });
   }, [stackView, domainsById]);
 
+  // Return to the Explore homepage: fully EXIT Repo X-Ray and restore the default experience
+  // (no scan overlay, no scan-specific selection/filtering, no leftover Stack View positions,
+  // default atlas camera). No page reload; pure app-state reset + a camera reframe.
   const exitXray = useCallback(() => {
-    resetScan();
-    setXrayOpen(false);
-    setSheetCollapsed(false);
+    resetScan();                       // clear scan phase/overlay (removes scanner colours,
+                                       // highlighted/hidden edges, detection rings)
+    setXrayOpen(false);                // close the results panel / X-Ray interface
+    setSheetCollapsed(false);          // reset the mobile sheet state
+    setXrayView("stack");              // reset the X-Ray view mode for next time
+    setSelected(null);                 // drop scan-specific selection
+    setFocus(null);
+    setFilter(emptyFilter());          // clear any active filtering
+    setExploreNonce((n) => n + 1);     // re-fit the default atlas camera (clears Stack bbox)
   }, [resetScan]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
@@ -271,12 +282,27 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <div className="brand">
+        <button
+          type="button"
+          className="brand"
+          onClick={exitXray}
+          aria-label="TechAtlas home — return to the Explore universe"
+          title="Return to the Explore universe"
+        >
           <span className="brand-mark" aria-hidden />
           <span className="brand-name">TechAtlas</span>
           <span className="brand-sub">the technology knowledge graph</span>
-        </div>
+        </button>
         <SearchCommand onPick={navigate} />
+        {SCANNER_ENABLED && xrayOpen && (
+          <button
+            type="button"
+            className="explore-back"
+            onClick={exitXray}
+          >
+            ← Explore Universe
+          </button>
+        )}
         {SCANNER_ENABLED && !xrayOpen && (
           <button
             type="button"
@@ -306,6 +332,7 @@ export default function App() {
           scanContextEdges={overlay ? overlay.contextualEdges : null}
           stackPositions={stackPositions}
           stackHeadings={stackHeadings}
+          exploreNonce={exploreNonce}
           fitSignal={
             overlay && fitNonce > 0
               ? {

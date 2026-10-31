@@ -1,3665 +1,3662 @@
 {
   "layout_version": "0.4.0",
-  "layout_algorithm": "deterministic-barnes-hut-fr+overlap",
+  "layout_algorithm": "structured-atlas-ring+radial-fan",
   "domain_ring_order": [
-    "domain:ai-ml",
     "domain:software-engineering",
-    "domain:backend",
-    "domain:databases",
-    "domain:cloud-devops",
     "domain:testing-tooling",
-    "domain:systems",
-    "domain:computer-architecture",
-    "domain:computer-graphics",
-    "domain:gamedev",
     "domain:frontend",
     "domain:mobile",
-    "domain:embedded",
+    "domain:gamedev",
+    "domain:ai-ml",
+    "domain:robotics",
+    "domain:databases",
+    "domain:backend",
+    "domain:cloud-devops",
     "domain:networks",
-    "domain:security",
+    "domain:systems",
     "domain:theory",
-    "domain:robotics"
+    "domain:security"
   ],
   "coordinates": {
     "domain:software-engineering": {
-      "x": 537.77,
-      "y": 345.57,
+      "x": 210.57,
+      "y": -1221.99,
       "radius": 26.0,
       "cluster": "domain:software-engineering"
     },
     "domain:frontend": {
-      "x": -91.14,
-      "y": -634.25,
+      "x": 1075.83,
+      "y": -616.59,
       "radius": 24.8,
       "cluster": "domain:frontend"
     },
     "domain:backend": {
-      "x": 265.46,
-      "y": 580.44,
+      "x": -637.89,
+      "y": 1063.34,
       "radius": 25.4,
       "cluster": "domain:backend"
     },
     "domain:databases": {
-      "x": -91.04,
-      "y": 634.25,
+      "x": -28.38,
+      "y": 1239.68,
       "radius": 24.8,
       "cluster": "domain:databases"
     },
     "domain:ai-ml": {
-      "x": 640.77,
-      "y": 0.02,
+      "x": 957.41,
+      "y": 788.01,
       "radius": 25.4,
       "cluster": "domain:ai-ml"
     },
     "domain:cloud-devops": {
-      "x": -419.39,
-      "y": 483.91,
+      "x": -1091.44,
+      "y": 588.53,
       "radius": 24.8,
       "cluster": "domain:cloud-devops"
     },
     "domain:security": {
-      "x": 538.98,
-      "y": -346.52,
+      "x": -262.71,
+      "y": -1211.85,
       "radius": 24.2,
       "cluster": "domain:security"
     },
     "domain:mobile": {
-      "x": 266.15,
-      "y": -582.4,
+      "x": 1233.0,
+      "y": -131.57,
       "radius": 23.6,
       "cluster": "domain:mobile"
     },
     "domain:systems": {
-      "x": -615.16,
-      "y": -179.31,
+      "x": -1181.8,
+      "y": -375.44,
       "radius": 23.6,
       "cluster": "domain:systems"
     },
     "domain:testing-tooling": {
-      "x": -614.84,
-      "y": 180.27,
+      "x": 665.29,
+      "y": -1046.42,
       "radius": 23.6,
       "cluster": "domain:testing-tooling"
     },
     "domain:gamedev": {
-      "x": -419.59,
-      "y": -484.28,
+      "x": 1209.27,
+      "y": 274.35,
       "radius": 23.0,
       "cluster": "domain:gamedev"
     },
     "domain:networks": {
-      "x": 65.96,
-      "y": -640.77,
+      "x": -1229.06,
+      "y": 164.38,
       "radius": 24.2,
       "cluster": "domain:networks"
     },
     "domain:theory": {
-      "x": 473.22,
-      "y": -431.43,
+      "x": -780.73,
+      "y": -963.36,
       "radius": 24.2,
       "cluster": "domain:theory"
     },
     "domain:robotics": {
-      "x": 597.14,
-      "y": -231.24,
+      "x": 482.08,
+      "y": 1142.45,
       "radius": 23.6,
       "cluster": "domain:robotics"
     },
     "domain:computer-architecture": {
-      "x": -544.48,
-      "y": 337.06,
+      "x": -1400.26,
+      "y": -35.7,
       "radius": 23.0,
       "cluster": "domain:computer-architecture"
     },
     "domain:embedded": {
-      "x": -175.46,
-      "y": -615.76,
+      "x": -1339.01,
+      "y": -343.59,
       "radius": 22.64,
       "cluster": "domain:embedded"
     },
     "domain:computer-graphics": {
-      "x": -629.13,
-      "y": 117.24,
+      "x": 1654.59,
+      "y": 310.7,
       "radius": 22.64,
       "cluster": "domain:computer-graphics"
     },
     "concept:object-oriented-programming": {
-      "x": 249.1,
-      "y": 206.06,
+      "x": 33.56,
+      "y": -1404.63,
       "radius": 10.8,
       "cluster": "domain:software-engineering"
     },
     "concept:functional-programming": {
-      "x": 821.28,
-      "y": 680.04,
+      "x": 274.69,
+      "y": -1355.19,
       "radius": 10.2,
       "cluster": "domain:software-engineering"
     },
     "concept:concurrency": {
-      "x": 37.92,
-      "y": 29.88,
+      "x": 196.42,
+      "y": -1380.94,
       "radius": 10.2,
       "cluster": "domain:software-engineering"
     },
     "concept:asynchronous-programming": {
-      "x": 233.87,
-      "y": 60.22,
+      "x": 360.04,
+      "y": -1360.6,
       "radius": 9.9,
       "cluster": "domain:software-engineering"
     },
     "concept:state-management": {
-      "x": -179.37,
-      "y": -1071.58,
+      "x": 1404.36,
+      "y": -608.78,
       "radius": 10.2,
       "cluster": "domain:frontend"
     },
     "concept:server-side-rendering": {
-      "x": -332.06,
-      "y": -719.99,
+      "x": 1429.92,
+      "y": -527.4,
       "radius": 9.9,
       "cluster": "domain:frontend"
     },
     "concept:component-architecture": {
-      "x": 14.7,
-      "y": -933.21,
+      "x": 1130.17,
+      "y": -1038.58,
       "radius": 9.9,
       "cluster": "domain:frontend"
     },
     "concept:rest-api": {
-      "x": 131.38,
-      "y": 648.08,
+      "x": -661.89,
+      "y": 1237.94,
       "radius": 10.8,
       "cluster": "domain:backend"
     },
     "concept:graphql": {
-      "x": 593.19,
-      "y": 659.12,
+      "x": -838.82,
+      "y": 1651.92,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:http": {
-      "x": 205.54,
-      "y": 792.23,
+      "x": -716.17,
+      "y": 1380.14,
       "radius": 11.1,
       "cluster": "domain:backend"
     },
     "concept:websockets": {
-      "x": 239.7,
-      "y": 452.76,
+      "x": -955.92,
+      "y": 1374.66,
       "radius": 9.3,
       "cluster": "domain:backend"
     },
     "concept:microservices": {
-      "x": 474.59,
-      "y": 624.15,
+      "x": -446.89,
+      "y": 1477.89,
       "radius": 9.9,
       "cluster": "domain:backend"
     },
     "concept:caching": {
-      "x": 144.15,
-      "y": 912.46,
+      "x": -1004.85,
+      "y": 1731.52,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:relational-databases": {
-      "x": 4.88,
-      "y": 1001.05,
+      "x": 133.98,
+      "y": 1389.98,
       "radius": 10.5,
       "cluster": "domain:databases"
     },
     "concept:sql": {
-      "x": 40.44,
-      "y": 979.69,
+      "x": -307.94,
+      "y": 1369.35,
       "radius": 10.8,
       "cluster": "domain:databases"
     },
     "concept:nosql": {
-      "x": -102.2,
-      "y": 902.57,
+      "x": 23.36,
+      "y": 1392.85,
       "radius": 9.6,
       "cluster": "domain:databases"
     },
     "concept:vector-databases": {
-      "x": 445.7,
-      "y": 502.69,
+      "x": -334.0,
+      "y": 1485.26,
       "radius": 9.3,
       "cluster": "domain:databases"
     },
     "concept:vector-embeddings": {
-      "x": 817.19,
-      "y": 217.6,
+      "x": 1541.89,
+      "y": 722.47,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:neural-networks": {
-      "x": 715.42,
-      "y": -78.27,
+      "x": 1030.67,
+      "y": 938.71,
       "radius": 10.5,
       "cluster": "domain:ai-ml"
     },
     "concept:deep-learning": {
-      "x": 668.15,
-      "y": -154.92,
+      "x": 1275.45,
+      "y": 597.62,
       "radius": 10.8,
       "cluster": "domain:ai-ml"
     },
     "concept:transformers": {
-      "x": 908.51,
-      "y": -82.13,
+      "x": 1313.53,
+      "y": 829.77,
       "radius": 10.5,
       "cluster": "domain:ai-ml"
     },
     "concept:large-language-models": {
-      "x": 925.19,
-      "y": 29.74,
+      "x": 1183.49,
+      "y": 706.79,
       "radius": 10.8,
       "cluster": "domain:ai-ml"
     },
     "concept:retrieval-augmented-generation": {
-      "x": 916.36,
-      "y": 177.67,
+      "x": 1243.72,
+      "y": 899.27,
       "radius": 9.9,
       "cluster": "domain:ai-ml"
     },
     "concept:model-inference": {
-      "x": 980.4,
-      "y": -122.6,
+      "x": 1064.27,
+      "y": 1126.69,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:containerization": {
-      "x": -814.56,
-      "y": 355.78,
+      "x": -1266.33,
+      "y": 614.35,
       "radius": 10.5,
       "cluster": "domain:cloud-devops"
     },
     "concept:container-orchestration": {
-      "x": -786.96,
-      "y": 501.15,
+      "x": -1446.11,
+      "y": 501.62,
       "radius": 9.9,
       "cluster": "domain:cloud-devops"
     },
     "concept:ci-cd": {
-      "x": -849.76,
-      "y": 693.8,
+      "x": -1332.44,
+      "y": 383.64,
       "radius": 10.2,
       "cluster": "domain:cloud-devops"
     },
     "concept:infrastructure-as-code": {
-      "x": -761.6,
-      "y": 810.36,
+      "x": -1206.58,
+      "y": 927.15,
       "radius": 9.9,
       "cluster": "domain:cloud-devops"
     },
     "concept:observability": {
-      "x": -859.08,
-      "y": 464.0,
+      "x": -1206.41,
+      "y": 718.85,
       "radius": 9.6,
       "cluster": "domain:cloud-devops"
     },
     "concept:cloud-computing": {
-      "x": -594.89,
-      "y": 823.16,
+      "x": -1466.93,
+      "y": 1109.46,
       "radius": 10.5,
       "cluster": "domain:cloud-devops"
     },
     "concept:authentication": {
-      "x": 776.44,
-      "y": -677.89,
+      "x": -443.23,
+      "y": -1321.37,
       "radius": 10.5,
       "cluster": "domain:security"
     },
     "concept:authorization": {
-      "x": 691.7,
-      "y": -732.1,
+      "x": -326.41,
+      "y": -1505.66,
       "radius": 10.2,
       "cluster": "domain:security"
     },
     "concept:oauth2": {
-      "x": 742.17,
-      "y": -707.12,
+      "x": -141.25,
+      "y": -1362.18,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:jwt": {
-      "x": 778.14,
-      "y": -773.89,
+      "x": -498.44,
+      "y": -1628.97,
       "radius": 9.3,
       "cluster": "domain:security"
     },
     "concept:encryption": {
-      "x": 961.54,
-      "y": -618.9,
+      "x": -255.42,
+      "y": -1509.85,
       "radius": 9.9,
       "cluster": "domain:security"
     },
     "concept:cross-platform-development": {
-      "x": 305.15,
-      "y": -727.22,
+      "x": 1397.43,
+      "y": -36.73,
       "radius": 9.6,
       "cluster": "domain:mobile"
     },
     "concept:operating-systems": {
-      "x": -954.11,
-      "y": -217.57,
+      "x": -1388.21,
+      "y": -193.27,
       "radius": 10.2,
       "cluster": "domain:systems"
     },
     "concept:gpu-programming": {
-      "x": -316.96,
-      "y": -251.11,
+      "x": -1633.78,
+      "y": -383.68,
       "radius": 9.3,
       "cluster": "domain:systems"
     },
     "concept:version-control": {
-      "x": -1054.03,
-      "y": 323.65,
+      "x": 721.78,
+      "y": -1520.69,
       "radius": 10.5,
       "cluster": "domain:testing-tooling"
     },
     "concept:unit-testing": {
-      "x": -523.87,
-      "y": 88.91,
+      "x": 509.42,
+      "y": -1302.64,
       "radius": 9.9,
       "cluster": "domain:testing-tooling"
     },
     "concept:end-to-end-testing": {
-      "x": -1098.77,
-      "y": 100.7,
+      "x": 969.47,
+      "y": -1020.35,
       "radius": 9.3,
       "cluster": "domain:testing-tooling"
     },
     "concept:static-analysis": {
-      "x": -849.83,
-      "y": -49.24,
+      "x": 837.5,
+      "y": -1317.29,
       "radius": 9.3,
       "cluster": "domain:testing-tooling"
     },
     "concept:real-time-graphics": {
-      "x": -549.09,
-      "y": -823.46,
+      "x": 1523.08,
+      "y": 169.25,
       "radius": 9.3,
       "cluster": "domain:gamedev"
     },
     "concept:game-engines": {
-      "x": -480.41,
-      "y": -571.07,
+      "x": 1382.22,
+      "y": 270.3,
       "radius": 9.6,
       "cluster": "domain:gamedev"
     },
     "concept:virtual-dom": {
-      "x": -45.96,
-      "y": -1016.22,
+      "x": 1524.17,
+      "y": -754.53,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:reactive-programming": {
-      "x": 375.16,
-      "y": -256.17,
+      "x": 324.93,
+      "y": -1675.05,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:single-page-application": {
-      "x": -221.28,
-      "y": -995.97,
+      "x": 1457.92,
+      "y": -875.26,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:progressive-web-app": {
-      "x": -328.9,
-      "y": -1061.25,
+      "x": 1780.93,
+      "y": -917.85,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:responsive-design": {
-      "x": 50.87,
-      "y": -1058.31,
+      "x": 1458.08,
+      "y": -1103.2,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:accessibility": {
-      "x": -234.25,
-      "y": -1122.79,
+      "x": 1369.54,
+      "y": -1258.55,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:dom": {
-      "x": -120.27,
-      "y": -1145.97,
+      "x": 1723.49,
+      "y": -987.78,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:css-in-js": {
-      "x": -180.68,
-      "y": -1138.95,
+      "x": 1690.25,
+      "y": -1071.47,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:hydration": {
-      "x": -317.28,
-      "y": -845.59,
+      "x": 1407.01,
+      "y": -1212.71,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:static-site-generation": {
-      "x": -343.43,
-      "y": -809.74,
+      "x": 1464.93,
+      "y": -800.63,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:api-gateway": {
-      "x": 585.67,
-      "y": 807.76,
+      "x": -1204.54,
+      "y": 1382.95,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:message-queue": {
-      "x": 518.84,
-      "y": 806.15,
+      "x": -564.18,
+      "y": 1602.57,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:event-driven-architecture": {
-      "x": 411.14,
-      "y": 976.94,
+      "x": -527.93,
+      "y": 1422.74,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:rpc": {
-      "x": 464.31,
-      "y": 952.38,
+      "x": -577.97,
+      "y": 1911.4,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:serverless": {
-      "x": -391.44,
-      "y": 404.72,
+      "x": -1398.85,
+      "y": 1199.26,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:orm": {
-      "x": 270.38,
-      "y": 693.22,
+      "x": -594.08,
+      "y": 1740.74,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:middleware": {
-      "x": 304.19,
-      "y": 789.63,
+      "x": -1312.1,
+      "y": 1307.8,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:session-management": {
-      "x": 637.33,
-      "y": 933.56,
+      "x": -1356.76,
+      "y": 1433.18,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:rate-limiting": {
-      "x": 467.47,
-      "y": 1065.13,
+      "x": -1324.28,
+      "y": 1482.78,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:dependency-injection": {
-      "x": 330.77,
-      "y": 338.26,
+      "x": 40.12,
+      "y": -1679.02,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:message-broker": {
-      "x": 367.96,
-      "y": 1043.67,
+      "x": -488.97,
+      "y": 1617.07,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:webhooks": {
-      "x": 519.55,
-      "y": 1037.37,
+      "x": -1421.4,
+      "y": 1416.74,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:acid": {
-      "x": 81.44,
-      "y": 1013.95,
+      "x": -8.15,
+      "y": 1675.67,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:database-transaction": {
-      "x": -373.76,
-      "y": 1026.73,
+      "x": -304.66,
+      "y": 1834.88,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:database-indexing": {
-      "x": -277.68,
-      "y": 970.29,
+      "x": 270.89,
+      "y": 1828.46,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:database-sharding": {
-      "x": -122.12,
-      "y": 1154.79,
+      "x": 216.21,
+      "y": 1812.05,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:replication": {
-      "x": -332.93,
-      "y": 917.32,
+      "x": -408.25,
+      "y": 1815.43,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:data-warehouse": {
-      "x": -304.24,
-      "y": 1028.38,
+      "x": -130.77,
+      "y": 1695.51,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:data-lake": {
-      "x": -394.74,
-      "y": 943.43,
+      "x": -247.27,
+      "y": 1804.1,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:etl": {
-      "x": -158.91,
-      "y": 1109.7,
+      "x": -192.27,
+      "y": 1693.8,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:olap": {
-      "x": -240.16,
-      "y": 1124.13,
+      "x": -309.81,
+      "y": 1654.18,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:oltp": {
-      "x": -342.54,
-      "y": 979.77,
+      "x": -352.57,
+      "y": 1805.32,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:cap-theorem": {
-      "x": 906.77,
-      "y": 479.0,
+      "x": 474.99,
+      "y": -1445.95,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:full-text-search": {
-      "x": -218.61,
-      "y": 916.75,
+      "x": -251.05,
+      "y": 1671.41,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:data-pipeline": {
-      "x": -235.9,
-      "y": 1058.78,
+      "x": -68.82,
+      "y": 1680.81,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:stream-processing": {
-      "x": 50.93,
-      "y": 1103.18,
+      "x": -35.47,
+      "y": 1549.12,
       "radius": 8.4,
       "cluster": "domain:databases"
     },
     "concept:supervised-learning": {
-      "x": 996.34,
-      "y": 103.33,
+      "x": 1504.65,
+      "y": 790.46,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:unsupervised-learning": {
-      "x": 1148.04,
-      "y": 67.93,
+      "x": 1180.71,
+      "y": 1392.59,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:reinforcement-learning": {
-      "x": 1155.16,
-      "y": -75.23,
+      "x": 1412.23,
+      "y": 661.71,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:natural-language-processing": {
-      "x": 888.97,
-      "y": -27.34,
+      "x": 1677.97,
+      "y": 786.23,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:computer-vision": {
-      "x": 721.72,
-      "y": -268.46,
+      "x": 986.72,
+      "y": 1348.53,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:gradient-descent": {
-      "x": 1038.09,
-      "y": -228.17,
+      "x": 1296.92,
+      "y": 1324.68,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:backpropagation": {
-      "x": 937.8,
-      "y": -190.48,
+      "x": 1056.81,
+      "y": 1314.31,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:overfitting": {
-      "x": 1125.64,
-      "y": 128.09,
+      "x": 1841.82,
+      "y": 1058.64,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:feature-engineering": {
-      "x": 1111.26,
-      "y": -187.25,
+      "x": 1951.17,
+      "y": 914.24,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:fine-tuning": {
-      "x": 1067.24,
-      "y": 15.59,
+      "x": 1334.44,
+      "y": 1268.85,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:prompt-engineering": {
-      "x": 1049.4,
-      "y": -40.76,
+      "x": 1243.58,
+      "y": 1364.61,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:attention-mechanism": {
-      "x": 1041.44,
-      "y": -101.41,
+      "x": 1469.88,
+      "y": 1124.07,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:diffusion-models": {
-      "x": 1160.84,
-      "y": -7.99,
+      "x": 1367.5,
+      "y": 1210.14,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:convolutional-neural-network": {
-      "x": 951.74,
-      "y": -251.59,
+      "x": 1436.27,
+      "y": 1182.14,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:recommender-systems": {
-      "x": 1112.09,
-      "y": -52.6,
+      "x": 1759.45,
+      "y": 1217.07,
       "radius": 8.4,
       "cluster": "domain:ai-ml"
     },
     "concept:mlops": {
-      "x": 91.59,
-      "y": 252.42,
+      "x": -1823.25,
+      "y": 821.07,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:load-balancing": {
-      "x": -323.11,
-      "y": 706.14,
+      "x": -1626.58,
+      "y": 468.32,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:auto-scaling": {
-      "x": -394.14,
-      "y": 622.6,
+      "x": -1535.85,
+      "y": 1020.19,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:gitops": {
-      "x": -769.86,
-      "y": 713.89,
+      "x": -1622.92,
+      "y": 536.52,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:blue-green-deployment": {
-      "x": -787.08,
-      "y": 864.51,
+      "x": -1677.63,
+      "y": 1065.7,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:canary-deployment": {
-      "x": -743.57,
-      "y": 884.09,
+      "x": -1753.48,
+      "y": 945.52,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:service-mesh": {
-      "x": -667.06,
-      "y": 784.67,
+      "x": -1417.5,
+      "y": 1141.89,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:edge-computing": {
-      "x": -654.26,
-      "y": 621.19,
+      "x": -1629.27,
+      "y": 878.54,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:secrets-management": {
-      "x": -609.59,
-      "y": 931.35,
+      "x": -1654.11,
+      "y": 827.64,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:distributed-tracing": {
-      "x": -895.19,
-      "y": 706.83,
+      "x": -1608.06,
+      "y": 931.7,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:virtualization": {
-      "x": -995.98,
-      "y": -65.39,
+      "x": -1735.36,
+      "y": -551.29,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:content-delivery-network": {
-      "x": -714.0,
-      "y": 579.99,
+      "x": -1560.62,
+      "y": 969.17,
       "radius": 8.4,
       "cluster": "domain:cloud-devops"
     },
     "concept:high-availability": {
-      "x": 52.93,
-      "y": 539.91,
+      "x": 180.99,
+      "y": -1673.24,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:penetration-testing": {
-      "x": 492.72,
-      "y": -604.02,
+      "x": -535.83,
+      "y": -1462.55,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:threat-modeling": {
-      "x": 996.2,
-      "y": -512.32,
+      "x": -395.27,
+      "y": -1489.55,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:zero-trust": {
-      "x": 717.64,
-      "y": -776.54,
+      "x": -329.22,
+      "y": -1651.25,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:public-key-cryptography": {
-      "x": 896.35,
-      "y": -532.7,
+      "x": -461.85,
+      "y": -1465.56,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:tls": {
-      "x": 902.34,
-      "y": -604.05,
+      "x": -41.74,
+      "y": -1396.23,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:hashing": {
-      "x": 949.37,
-      "y": -561.05,
+      "x": -543.79,
+      "y": -1585.95,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:xss": {
-      "x": 824.44,
-      "y": -516.87,
+      "x": -383.67,
+      "y": -1637.33,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:sql-injection": {
-      "x": 910.29,
-      "y": -711.47,
+      "x": -54.58,
+      "y": -1825.73,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:mfa": {
-      "x": 823.7,
-      "y": -638.3,
+      "x": -596.17,
+      "y": -1421.64,
       "radius": 8.4,
       "cluster": "domain:security"
     },
     "concept:cross-platform-ui": {
-      "x": 460.39,
-      "y": -745.05,
+      "x": 1505.88,
+      "y": -263.14,
       "radius": 8.4,
       "cluster": "domain:mobile"
     },
     "concept:mobile-app-lifecycle": {
-      "x": 399.44,
-      "y": -1039.45,
+      "x": 1558.26,
+      "y": -9.77,
       "radius": 8.4,
       "cluster": "domain:mobile"
     },
     "concept:push-notifications": {
-      "x": 448.99,
-      "y": -1030.17,
+      "x": 1555.84,
+      "y": 42.14,
       "radius": 8.4,
       "cluster": "domain:mobile"
     },
     "concept:memory-management": {
-      "x": -844.12,
-      "y": -407.88,
+      "x": -1451.07,
+      "y": -866.7,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:garbage-collection": {
-      "x": -1006.49,
-      "y": -467.76,
+      "x": -2013.37,
+      "y": -702.73,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:compilation": {
-      "x": -910.93,
-      "y": -372.48,
+      "x": -1491.78,
+      "y": -790.2,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:embedded-systems": {
-      "x": -1085.3,
-      "y": -332.1,
+      "x": -1772.25,
+      "y": -409.35,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:parallel-computing": {
-      "x": -444.68,
-      "y": -336.47,
+      "x": -1537.17,
+      "y": -39.19,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:systems-programming": {
-      "x": -1022.7,
-      "y": -419.31,
+      "x": -1792.89,
+      "y": -490.99,
       "radius": 8.4,
       "cluster": "domain:systems"
     },
     "concept:test-driven-development": {
-      "x": -833.97,
-      "y": 139.87,
+      "x": 1165.89,
+      "y": -1227.07,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:integration-testing": {
-      "x": -1066.85,
-      "y": 249.13,
+      "x": 617.9,
+      "y": -1580.05,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:code-coverage": {
-      "x": -1007.87,
-      "y": 147.52,
+      "x": 1084.96,
+      "y": -1316.02,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:linting": {
-      "x": -802.73,
-      "y": -50.16,
+      "x": 666.64,
+      "y": -1542.36,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:code-review": {
-      "x": -1064.32,
-      "y": 50.86,
+      "x": 1082.89,
+      "y": -1482.67,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:rendering-pipeline": {
-      "x": -739.53,
-      "y": -801.43,
+      "x": 1341.56,
+      "y": 346.96,
       "radius": 8.4,
       "cluster": "domain:gamedev"
     },
     "concept:physics-engine": {
-      "x": -755.01,
-      "y": -706.31,
+      "x": 1526.65,
+      "y": 227.84,
       "radius": 8.4,
       "cluster": "domain:gamedev"
     },
     "concept:shaders": {
-      "x": -600.28,
-      "y": -902.55,
+      "x": 1301.72,
+      "y": 421.34,
       "radius": 8.4,
       "cluster": "domain:gamedev"
     },
     "concept:ray-tracing": {
-      "x": -747.53,
-      "y": -861.01,
+      "x": 1445.69,
+      "y": 504.13,
       "radius": 8.4,
       "cluster": "domain:gamedev"
     },
     "concept:data-structures": {
-      "x": 905.11,
-      "y": 546.1,
+      "x": 150.25,
+      "y": -1539.87,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:algorithms": {
-      "x": 938.38,
-      "y": 597.24,
+      "x": 429.75,
+      "y": -1308.25,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:recursion": {
-      "x": 873.07,
-      "y": 591.41,
+      "x": 387.12,
+      "y": -1627.44,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:design-patterns": {
-      "x": 658.56,
-      "y": 411.56,
+      "x": 205.44,
+      "y": -1524.49,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:solid-principles": {
-      "x": 1009.07,
-      "y": 446.9,
+      "x": 315.93,
+      "y": -1501.96,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:clean-code": {
-      "x": 963.02,
-      "y": 427.37,
+      "x": 37.17,
+      "y": -1555.6,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:refactoring": {
-      "x": 1017.84,
-      "y": 512.63,
+      "x": 456.19,
+      "y": -1614.01,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:immutability": {
-      "x": 856.98,
-      "y": 708.73,
+      "x": 254.2,
+      "y": -1685.65,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:serialization": {
-      "x": 171.03,
-      "y": 971.5,
+      "x": -649.7,
+      "y": 1704.7,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:idempotency": {
-      "x": 603.72,
-      "y": 982.96,
+      "x": -1277.74,
+      "y": 1517.08,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:api-versioning": {
-      "x": 248.94,
-      "y": 896.68,
+      "x": -1245.59,
+      "y": 1332.25,
       "radius": 8.4,
       "cluster": "domain:backend"
     },
     "concept:domain-driven-design": {
-      "x": 772.22,
-      "y": 606.92,
+      "x": 112.15,
+      "y": -1701.45,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:event-sourcing": {
-      "x": 965.72,
-      "y": 491.7,
+      "x": 263.82,
+      "y": -1531.07,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:cqrs": {
-      "x": 963.03,
-      "y": 542.68,
+      "x": 92.84,
+      "y": -1530.67,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:package-management": {
-      "x": -585.29,
-      "y": 91.01,
+      "x": 599.75,
+      "y": -1240.97,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:semantic-versioning": {
-      "x": -900.23,
-      "y": 135.67,
+      "x": 1113.36,
+      "y": -1257.57,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:monorepo": {
-      "x": -1105.77,
-      "y": 305.4,
+      "x": 1140.17,
+      "y": -1459.81,
       "radius": 8.4,
       "cluster": "domain:testing-tooling"
     },
     "concept:technical-debt": {
-      "x": 942.75,
-      "y": 649.83,
+      "x": 530.04,
+      "y": -1613.54,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:agile": {
-      "x": 995.81,
-      "y": 585.27,
+      "x": 424.98,
+      "y": -1474.02,
       "radius": 8.4,
       "cluster": "domain:software-engineering"
     },
     "concept:real-time-communication": {
-      "x": 57.35,
-      "y": -320.67,
+      "x": 1429.88,
+      "y": -1155.21,
       "radius": 8.4,
       "cluster": "domain:frontend"
     },
     "concept:isa": {
-      "x": -890.68,
-      "y": 436.05,
+      "x": -1675.02,
+      "y": -303.71,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:cpu-pipelining": {
-      "x": -1093.72,
-      "y": 785.77,
+      "x": -1668.33,
+      "y": -128.35,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:superscalar": {
-      "x": -1587.02,
-      "y": 1193.8,
+      "x": -1806.36,
+      "y": -266.34,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:out-of-order-execution": {
-      "x": -1922.96,
-      "y": 1465.5,
+      "x": -1651.64,
+      "y": -1105.18,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:branch-prediction": {
-      "x": -1454.53,
-      "y": 1102.37,
+      "x": -1989.05,
+      "y": -250.05,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:cache-hierarchy": {
-      "x": -1040.1,
-      "y": 556.24,
+      "x": -1859.35,
+      "y": -47.4,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:memory-hierarchy": {
-      "x": -1495.92,
-      "y": 747.73,
+      "x": -1714.14,
+      "y": -989.05,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:memory-consistency": {
-      "x": -163.51,
-      "y": -25.81,
+      "x": -2273.09,
+      "y": -57.95,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:multiprocessor-architecture": {
-      "x": -910.81,
-      "y": 482.29,
+      "x": -1672.26,
+      "y": -1040.34,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:gpu-architecture": {
-      "x": -630.32,
-      "y": -450.94,
+      "x": -1776.72,
+      "y": -1188.87,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:simd": {
-      "x": -838.07,
-      "y": -618.89,
+      "x": -2105.1,
+      "y": -894.09,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:mimd": {
-      "x": -876.73,
-      "y": -576.89,
+      "x": -2237.79,
+      "y": -485.31,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:digital-logic": {
-      "x": -1229.43,
-      "y": 711.54,
+      "x": -1411.34,
+      "y": -560.65,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:combinational-logic": {
-      "x": -1660.58,
-      "y": 911.07,
+      "x": -1921.87,
+      "y": -439.11,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:sequential-logic": {
-      "x": -1785.75,
-      "y": 1019.23,
+      "x": -1844.45,
+      "y": -196.42,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:finite-state-machine": {
-      "x": -2160.01,
-      "y": 1226.35,
+      "x": -1882.26,
+      "y": -702.87,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:asic": {
-      "x": -1627.08,
-      "y": 969.6,
+      "x": -2003.3,
+      "y": -117.69,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:hdl": {
-      "x": -1096.41,
-      "y": 680.85,
+      "x": -1677.05,
+      "y": -215.97,
       "radius": 9.6,
       "cluster": "domain:computer-architecture"
     },
     "concept:microcontroller": {
-      "x": -489.36,
-      "y": -1147.48,
+      "x": -1402.48,
+      "y": -675.15,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:firmware": {
-      "x": -457.49,
-      "y": -1055.72,
+      "x": -1825.37,
+      "y": -120.27,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:rtos": {
-      "x": -884.11,
-      "y": -804.51,
+      "x": -1355.27,
+      "y": -774.51,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:interrupt-handling": {
-      "x": -1285.0,
-      "y": -1096.8,
+      "x": -1831.38,
+      "y": -826.12,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:bare-metal-programming": {
-      "x": -719.62,
-      "y": -1458.65,
+      "x": -1974.72,
+      "y": -181.92,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:i2c": {
-      "x": -395.75,
-      "y": -853.82,
+      "x": -1847.68,
+      "y": -760.74,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:spi": {
-      "x": -766.59,
-      "y": -1553.66,
+      "x": -2086.66,
+      "y": -411.61,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:uart": {
-      "x": -707.81,
-      "y": -1585.98,
+      "x": -2041.9,
+      "y": -585.81,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:can-bus": {
-      "x": -356.5,
-      "y": -890.02,
+      "x": -1985.07,
+      "y": -316.78,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:real-time-scheduling": {
-      "x": -1242.26,
-      "y": -1147.65,
+      "x": -2115.78,
+      "y": -355.67,
       "radius": 9.6,
       "cluster": "domain:embedded"
     },
     "concept:virtual-memory": {
-      "x": -1285.85,
-      "y": -652.59,
+      "x": -2049.84,
+      "y": -651.2,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:process-scheduling": {
-      "x": -1434.77,
-      "y": -389.45,
+      "x": -2149.3,
+      "y": -115.53,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:synchronization": {
-      "x": -494.82,
-      "y": -63.33,
+      "x": -2078.64,
+      "y": -471.3,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:thread": {
-      "x": -135.77,
-      "y": 69.96,
+      "x": -1920.16,
+      "y": -1284.85,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:deadlock": {
-      "x": -951.86,
-      "y": -145.59,
+      "x": -1922.75,
+      "y": -507.0,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:file-system": {
-      "x": -1465.48,
-      "y": -343.29,
+      "x": -1883.18,
+      "y": -632.84,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:system-call": {
-      "x": -1424.72,
-      "y": -314.24,
+      "x": -2056.81,
+      "y": -527.77,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:kernel-architecture": {
-      "x": -1439.19,
-      "y": -244.78,
+      "x": -1746.87,
+      "y": -932.08,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:ipc": {
-      "x": -1470.32,
-      "y": -205.12,
+      "x": -1791.71,
+      "y": -880.91,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:device-driver": {
-      "x": -1479.05,
-      "y": -279.8,
+      "x": -1920.1,
+      "y": -575.09,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:parallel-algorithms": {
-      "x": -812.32,
-      "y": -575.56,
+      "x": -2147.22,
+      "y": -54.74,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:high-performance-computing": {
-      "x": -582.54,
-      "y": -429.13,
+      "x": -1250.03,
+      "y": -645.81,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:cluster-computing": {
-      "x": -1025.42,
-      "y": -713.27,
+      "x": -1938.49,
+      "y": -375.7,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:tcp-ip": {
-      "x": 332.62,
-      "y": -892.26,
+      "x": -1332.53,
+      "y": 311.6,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:ipv4": {
-      "x": 406.14,
-      "y": -1385.96,
+      "x": -1393.91,
+      "y": 104.59,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:ipv6": {
-      "x": 457.91,
-      "y": -1377.74,
+      "x": -1396.95,
+      "y": 50.58,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:routing": {
-      "x": 127.9,
-      "y": -1156.12,
+      "x": -1354.9,
+      "y": 261.99,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:switching": {
-      "x": 160.63,
-      "y": -1641.57,
+      "x": -1527.04,
+      "y": 55.29,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:dns": {
-      "x": 150.48,
-      "y": -981.78,
+      "x": -1364.54,
+      "y": 155.68,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:congestion-control": {
-      "x": 507.75,
-      "y": -1356.19,
+      "x": -1393.28,
+      "y": 213.86,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:packet-switching": {
-      "x": 123.83,
-      "y": -940.06,
+      "x": -1482.01,
+      "y": 346.56,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:sdn": {
-      "x": 177.95,
-      "y": -942.49,
+      "x": -1538.04,
+      "y": 155.4,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:quic": {
-      "x": 280.13,
-      "y": -57.87,
+      "x": -1516.95,
+      "y": 252.92,
       "radius": 9.6,
       "cluster": "domain:networks"
     },
     "concept:distributed-systems": {
-      "x": 208.67,
-      "y": 1130.12,
+      "x": -1083.35,
+      "y": 1079.8,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:consensus": {
-      "x": 290.1,
-      "y": 1781.5,
+      "x": -898.18,
+      "y": 1423.85,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:raft": {
-      "x": 309.64,
-      "y": 2220.32,
+      "x": -1146.02,
+      "y": 1629.62,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:paxos": {
-      "x": 374.54,
-      "y": 2212.1,
+      "x": -1107.9,
+      "y": 1676.8,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:distributed-transaction": {
-      "x": -549.31,
-      "y": 1502.31,
+      "x": -1326.53,
+      "y": 1696.25,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:fault-tolerance": {
-      "x": 156.6,
-      "y": 1061.49,
+      "x": -1513.69,
+      "y": 1508.73,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:message-passing": {
-      "x": 284.46,
-      "y": 1617.34,
+      "x": -1047.74,
+      "y": 1690.44,
       "radius": 9.6,
       "cluster": "domain:backend"
     },
     "concept:algorithm-design": {
-      "x": 1192.44,
-      "y": -126.84,
+      "x": -1079.32,
+      "y": -857.22,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:algorithm-analysis": {
-      "x": 1528.05,
-      "y": 1213.72,
+      "x": -1152.59,
+      "y": -1022.87,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:time-complexity": {
-      "x": 1935.27,
-      "y": 1631.16,
+      "x": -1078.16,
+      "y": -1277.62,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:space-complexity": {
-      "x": 1814.82,
-      "y": 1525.45,
+      "x": -919.72,
+      "y": -1587.95,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:asymptotic-analysis": {
-      "x": 2216.09,
-      "y": 1915.77,
+      "x": -934.13,
+      "y": -1420.4,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:divide-and-conquer": {
-      "x": 1596.21,
-      "y": -163.29,
+      "x": -753.87,
+      "y": -1511.92,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:dynamic-programming": {
-      "x": 1588.88,
-      "y": -211.82,
+      "x": -1451.95,
+      "y": -1153.18,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:greedy-algorithms": {
-      "x": 1588.73,
-      "y": -113.92,
+      "x": -1285.75,
+      "y": -1313.52,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:graph-algorithms": {
-      "x": 1609.51,
-      "y": 1133.58,
+      "x": -693.61,
+      "y": -1391.07,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:shortest-path": {
-      "x": 1998.74,
-      "y": 1438.33,
+      "x": -1187.07,
+      "y": -1199.02,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:minimum-spanning-tree": {
-      "x": 1886.23,
-      "y": 1356.26,
+      "x": -1192.45,
+      "y": -1380.94,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:search-algorithms": {
-      "x": 1439.16,
-      "y": 755.52,
+      "x": -970.96,
+      "y": -1561.88,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:sorting-algorithms": {
-      "x": 1296.63,
-      "y": 929.31,
+      "x": -991.86,
+      "y": -1743.74,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:randomized-algorithms": {
-      "x": 1697.66,
-      "y": -175.35,
+      "x": -1069.12,
+      "y": -1501.91,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:approximation-algorithms": {
-      "x": 2249.72,
-      "y": -2753.39,
+      "x": -984.02,
+      "y": -1374.09,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:computational-complexity": {
-      "x": 975.76,
-      "y": -1137.59,
+      "x": -730.12,
+      "y": -1190.99,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:complexity-class-p": {
-      "x": 1173.87,
-      "y": -1469.46,
+      "x": -863.53,
+      "y": -1434.06,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:complexity-class-np": {
-      "x": 1470.52,
-      "y": -1791.75,
+      "x": -1027.84,
+      "y": -1135.45,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:np-completeness": {
-      "x": 2003.25,
-      "y": -2485.16,
+      "x": -836.47,
+      "y": -1129.69,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:np-hardness": {
-      "x": 2192.84,
-      "y": -2796.12,
+      "x": -1150.48,
+      "y": -1419.61,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:automata-theory": {
-      "x": 1050.72,
-      "y": -1148.45,
+      "x": -1011.22,
+      "y": -958.46,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:finite-automata": {
-      "x": 1379.52,
-      "y": -1559.16,
+      "x": -753.21,
+      "y": -1324.18,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:pushdown-automata": {
-      "x": 1451.41,
-      "y": -1608.37,
+      "x": -1268.31,
+      "y": -1092.23,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:turing-machine": {
-      "x": 1293.01,
-      "y": -1441.66,
+      "x": -816.21,
+      "y": -1636.96,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:formal-languages": {
-      "x": 1304.41,
-      "y": -1531.78,
+      "x": -1328.16,
+      "y": -1274.7,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:regular-languages": {
-      "x": 1647.98,
-      "y": -1892.0,
+      "x": -1025.41,
+      "y": -1540.09,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:context-free-grammar": {
-      "x": 1824.24,
-      "y": -2031.46,
+      "x": -892.49,
+      "y": -1233.29,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:computability-theory": {
-      "x": 717.54,
-      "y": -980.7,
+      "x": -959.12,
+      "y": -1183.48,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:decidability": {
-      "x": 930.1,
-      "y": -1483.96,
+      "x": -823.7,
+      "y": -1280.0,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:undecidability": {
-      "x": 1106.92,
-      "y": -1895.07,
+      "x": -1500.81,
+      "y": -1331.9,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:compiler-theory": {
-      "x": -1372.61,
-      "y": -582.61,
+      "x": -1076.75,
+      "y": -1673.24,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:parsing": {
-      "x": 2084.36,
-      "y": -2314.99,
+      "x": -1114.26,
+      "y": -1466.2,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:formal-verification": {
-      "x": -258.72,
-      "y": -950.11,
+      "x": -907.85,
+      "y": -1025.2,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:model-checking": {
-      "x": -426.94,
-      "y": -1504.28,
+      "x": -1329.67,
+      "y": -1056.06,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:type-theory": {
-      "x": 569.74,
-      "y": -691.73,
+      "x": -1563.05,
+      "y": -1241.42,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:hoare-logic": {
-      "x": -440.77,
-      "y": -1336.96,
+      "x": -1237.7,
+      "y": -1346.02,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:temporal-logic": {
-      "x": -548.42,
-      "y": -1968.16,
+      "x": -873.7,
+      "y": -1623.31,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:automated-theorem-proving": {
-      "x": -476.86,
-      "y": -1778.06,
+      "x": -1087.6,
+      "y": -1076.94,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:sat-solving": {
-      "x": 2377.57,
-      "y": -2949.87,
+      "x": -1235.51,
+      "y": -1152.55,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:smt-solving": {
-      "x": 2679.01,
-      "y": -3316.13,
+      "x": -1141.54,
+      "y": -1248.54,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:proof-assistant": {
-      "x": -633.27,
-      "y": -2468.77,
+      "x": -1188.93,
+      "y": -944.28,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:symbolic-execution": {
-      "x": -1365.38,
-      "y": -40.23,
+      "x": -890.52,
+      "y": -1785.98,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:information-theory": {
-      "x": 780.46,
-      "y": -961.25,
+      "x": -627.12,
+      "y": -1257.71,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:entropy": {
-      "x": 966.94,
-      "y": -1304.79,
+      "x": -1398.61,
+      "y": -1183.85,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:error-correcting-codes": {
-      "x": 1013.99,
-      "y": -1376.76,
+      "x": -1356.62,
+      "y": -1223.0,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:cryptography": {
-      "x": 1064.54,
-      "y": -799.66,
+      "x": -539.91,
+      "y": -1287.47,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:symmetric-key-cryptography": {
-      "x": 1351.72,
-      "y": -1053.34,
+      "x": -224.41,
+      "y": -1835.03,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:digital-signature": {
-      "x": 1314.61,
-      "y": -1094.32,
+      "x": -546.3,
+      "y": -1733.56,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:key-exchange": {
-      "x": 1387.73,
-      "y": -1008.93,
+      "x": -394.44,
+      "y": -1819.48,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:zero-knowledge-proof": {
-      "x": 1441.46,
-      "y": -1116.64,
+      "x": -137.61,
+      "y": -1812.31,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:homomorphic-encryption": {
-      "x": 1475.82,
-      "y": -1063.75,
+      "x": -467.22,
+      "y": -1760.69,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:post-quantum-cryptography": {
-      "x": 1393.17,
-      "y": -1157.55,
+      "x": -304.65,
+      "y": -1800.84,
       "radius": 9.6,
       "cluster": "domain:security"
     },
     "concept:robot-kinematics": {
-      "x": 1228.77,
-      "y": -576.77,
+      "x": 581.68,
+      "y": 1260.8,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:forward-kinematics": {
-      "x": 1595.35,
-      "y": -748.79,
+      "x": 604.6,
+      "y": 1432.79,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:inverse-kinematics": {
-      "x": 1561.97,
-      "y": -798.7,
+      "x": 537.12,
+      "y": 1435.22,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:robot-dynamics": {
-      "x": 1669.4,
-      "y": -805.5,
+      "x": 733.2,
+      "y": 1540.42,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:control-theory": {
-      "x": 1516.87,
-      "y": -460.82,
+      "x": 663.35,
+      "y": 1219.55,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:feedback-control": {
-      "x": 2025.27,
-      "y": -614.74,
+      "x": 777.22,
+      "y": 1348.39,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:pid-control": {
-      "x": 2433.59,
-      "y": -748.01,
+      "x": 772.11,
+      "y": 1504.3,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:state-estimation": {
-      "x": 2395.49,
-      "y": -660.03,
+      "x": 416.33,
+      "y": 1343.8,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:robot-localization": {
-      "x": 1704.98,
-      "y": -596.76,
+      "x": 685.72,
+      "y": 1559.4,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:motion-planning": {
-      "x": 1343.03,
-      "y": 244.58,
+      "x": 733.79,
+      "y": 1159.86,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:path-planning": {
-      "x": 1719.99,
-      "y": 369.49,
+      "x": 805.95,
+      "y": 1460.79,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:trajectory-planning": {
-      "x": 1816.62,
-      "y": 362.44,
+      "x": 494.48,
+      "y": 1630.56,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:robot-perception": {
-      "x": 1102.33,
-      "y": -458.71,
+      "x": 639.4,
+      "y": 1580.96,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:slam": {
-      "x": 1246.93,
-      "y": -432.54,
+      "x": 491.7,
+      "y": 1281.57,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:visual-slam": {
-      "x": 1032.59,
-      "y": -381.73,
+      "x": 446.32,
+      "y": 1647.98,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:lidar": {
-      "x": 1520.22,
-      "y": -682.18,
+      "x": 483.48,
+      "y": 1474.16,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:sensor-fusion": {
-      "x": 2793.31,
-      "y": -719.15,
+      "x": 533.38,
+      "y": 1586.09,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:kalman-filter": {
-      "x": 2937.87,
-      "y": -780.34,
+      "x": 712.07,
+      "y": 1362.13,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:extended-kalman-filter": {
-      "x": 3307.89,
-      "y": -862.82,
+      "x": 660.88,
+      "y": 1401.97,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:particle-filter": {
-      "x": 2777.17,
-      "y": -788.52,
+      "x": 860.09,
+      "y": 1454.14,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:occupancy-grid": {
-      "x": 1719.66,
-      "y": -532.92,
+      "x": 898.19,
+      "y": 1419.71,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:autonomous-navigation": {
-      "x": 1964.39,
-      "y": 436.71,
+      "x": 817.32,
+      "y": 1291.88,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:obstacle-avoidance": {
-      "x": 2317.0,
-      "y": 543.37,
+      "x": 356.35,
+      "y": 1491.52,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:visual-odometry": {
-      "x": 947.6,
-      "y": -368.37,
+      "x": 424.33,
+      "y": 1776.05,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:rrt": {
-      "x": 1792.15,
-      "y": 434.48,
+      "x": 594.1,
+      "y": 1605.75,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:model-predictive-control": {
-      "x": 1901.37,
-      "y": -556.88,
+      "x": 421.5,
+      "y": 1489.79,
       "radius": 9.6,
       "cluster": "domain:robotics"
     },
     "concept:a-star-search": {
-      "x": 1634.88,
-      "y": 604.51,
+      "x": -1038.86,
+      "y": -1335.25,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:dijkstra": {
-      "x": 2266.25,
-      "y": 1649.33,
+      "x": -813.11,
+      "y": -1480.39,
       "radius": 9.6,
       "cluster": "domain:theory"
     },
     "concept:human-computer-interaction": {
-      "x": -290.15,
-      "y": -1349.64,
+      "x": 1381.65,
+      "y": -692.7,
       "radius": 9.6,
       "cluster": "domain:frontend"
     },
     "concept:user-experience": {
-      "x": -415.33,
-      "y": -1723.86,
+      "x": 1583.63,
+      "y": -1214.12,
       "radius": 9.6,
       "cluster": "domain:frontend"
     },
     "concept:interaction-design": {
-      "x": -351.58,
-      "y": -1746.26,
+      "x": 1514.19,
+      "y": -1271.87,
       "radius": 9.6,
       "cluster": "domain:frontend"
     },
     "concept:augmented-reality": {
-      "x": -502.93,
-      "y": -1934.68,
+      "x": 1662.91,
+      "y": 377.27,
       "radius": 9.6,
       "cluster": "domain:gamedev"
     },
     "concept:virtual-reality": {
-      "x": -653.56,
-      "y": -2329.9,
+      "x": 1602.02,
+      "y": 558.64,
       "radius": 9.6,
       "cluster": "domain:gamedev"
     },
     "concept:computational-geometry": {
-      "x": -945.54,
-      "y": 120.44,
+      "x": 1629.77,
+      "y": 434.55,
       "radius": 9.6,
       "cluster": "domain:computer-graphics"
     },
     "concept:physics-simulation": {
-      "x": -1104.58,
-      "y": -1052.9,
+      "x": 1618.35,
+      "y": 497.16,
       "radius": 9.6,
       "cluster": "domain:gamedev"
     },
     "concept:data-visualization": {
-      "x": -151.99,
-      "y": -1182.26,
+      "x": 1477.02,
+      "y": -1357.32,
       "radius": 9.6,
       "cluster": "domain:frontend"
     },
     "concept:scientific-visualization": {
-      "x": -194.09,
-      "y": -1591.89,
+      "x": 1273.12,
+      "y": 1739.95,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:scientific-computing": {
-      "x": 1036.57,
-      "y": 237.34,
+      "x": 1434.78,
+      "y": 929.39,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:numerical-analysis": {
-      "x": 1474.95,
-      "y": 451.73,
+      "x": 1407.37,
+      "y": 1425.45,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:bioinformatics": {
-      "x": 866.58,
-      "y": 160.57,
+      "x": 1640.91,
+      "y": 1088.05,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:quantum-computing": {
-      "x": -1371.1,
-      "y": -426.4,
+      "x": -1157.29,
+      "y": -774.39,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:qubit": {
-      "x": -1734.55,
-      "y": -597.64,
+      "x": -2140.5,
+      "y": -298.01,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:quantum-gate": {
-      "x": -1751.95,
-      "y": -546.19,
+      "x": -2133.87,
+      "y": -235.94,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:quantum-algorithms": {
-      "x": -1842.69,
-      "y": -567.04,
+      "x": -2136.77,
+      "y": -175.42,
       "radius": 9.6,
       "cluster": "domain:systems"
     },
     "concept:markov-decision-process": {
-      "x": 1645.67,
-      "y": -23.61,
+      "x": 1565.54,
+      "y": 1250.31,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:deep-rl": {
-      "x": 930.89,
-      "y": -157.28,
+      "x": 1589.57,
+      "y": 888.6,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:multi-agent-systems": {
-      "x": 1636.61,
-      "y": 25.06,
+      "x": 1524.97,
+      "y": 1293.3,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:probabilistic-graphical-models": {
-      "x": 1577.22,
-      "y": 370.84,
+      "x": 1357.22,
+      "y": 1458.18,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:bayesian-inference": {
-      "x": 1124.32,
-      "y": 201.42,
+      "x": 1617.53,
+      "y": 829.73,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:representation-learning": {
-      "x": 1263.88,
-      "y": 451.38,
+      "x": 1299.77,
+      "y": 1481.7,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:self-supervised-learning": {
-      "x": 1622.9,
-      "y": 180.26,
+      "x": 1280.04,
+      "y": 1548.98,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:multimodal-learning": {
-      "x": 1138.71,
-      "y": -322.85,
+      "x": 1493.53,
+      "y": 1344.26,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:graph-neural-networks": {
-      "x": 1408.99,
-      "y": -21.04,
+      "x": 1576.73,
+      "y": 957.01,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:geometric-deep-learning": {
-      "x": 1896.64,
-      "y": 15.75,
+      "x": 1585.0,
+      "y": 1191.09,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:embodied-ai": {
-      "x": 1066.84,
-      "y": -291.73,
+      "x": 1620.83,
+      "y": 1144.88,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:ai-planning": {
-      "x": 1662.0,
-      "y": -71.56,
+      "x": 1679.38,
+      "y": 1043.66,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "concept:neuro-symbolic-ai": {
-      "x": 1170.39,
-      "y": -271.41,
+      "x": 1440.9,
+      "y": 1375.86,
       "radius": 9.6,
       "cluster": "domain:ai-ml"
     },
     "technology:python": {
-      "x": 321.36,
-      "y": 212.58,
+      "x": 116.17,
+      "y": -1403.37,
       "radius": 15.73,
       "cluster": "domain:software-engineering"
     },
     "technology:javascript": {
-      "x": -3.11,
-      "y": -495.9,
+      "x": 1100.54,
+      "y": -843.75,
       "radius": 12.96,
       "cluster": "domain:frontend"
     },
     "technology:typescript": {
-      "x": 53.38,
-      "y": -452.59,
+      "x": 1341.73,
+      "y": -411.61,
       "radius": 11.35,
       "cluster": "domain:frontend"
     },
     "technology:rust": {
-      "x": -559.84,
-      "y": -327.19,
+      "x": -1287.63,
+      "y": -490.59,
       "radius": 12.96,
       "cluster": "domain:systems"
     },
     "technology:go": {
-      "x": 198.86,
-      "y": 227.53,
+      "x": -636.82,
+      "y": 1579.01,
       "radius": 10.37,
       "cluster": "domain:backend"
     },
     "technology:java": {
-      "x": -45.81,
-      "y": 472.99,
+      "x": -784.62,
+      "y": 1172.66,
       "radius": 12.96,
       "cluster": "domain:backend"
     },
     "technology:html": {
-      "x": -64.82,
-      "y": -1137.92,
+      "x": 1877.34,
+      "y": -668.76,
       "radius": 7.4,
       "cluster": "domain:frontend"
     },
     "technology:css": {
-      "x": -247.63,
-      "y": -1051.69,
+      "x": 1234.52,
+      "y": -1134.47,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:tailwind": {
-      "x": -197.88,
-      "y": -948.31,
+      "x": 1388.46,
+      "y": -994.77,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:react": {
-      "x": -77.48,
-      "y": -795.81,
+      "x": 1033.38,
+      "y": -949.64,
       "radius": 16.0,
       "cluster": "domain:frontend"
     },
     "technology:vue": {
-      "x": 27.46,
-      "y": -867.19,
+      "x": 1280.84,
+      "y": -521.66,
       "radius": 10.88,
       "cluster": "domain:frontend"
     },
     "technology:nextjs": {
-      "x": -302.67,
-      "y": -529.6,
+      "x": 1172.61,
+      "y": -743.33,
       "radius": 11.35,
       "cluster": "domain:frontend"
     },
     "technology:redux": {
-      "x": -137.09,
-      "y": -988.12,
+      "x": 1275.75,
+      "y": -828.77,
       "radius": 9.8,
       "cluster": "domain:frontend"
     },
     "technology:zustand": {
-      "x": -154.06,
-      "y": -950.91,
+      "x": 1332.4,
+      "y": -763.64,
       "radius": 9.8,
       "cluster": "domain:frontend"
     },
     "technology:vite": {
-      "x": -211.87,
-      "y": -533.8,
+      "x": 1236.36,
+      "y": -637.19,
       "radius": 11.35,
       "cluster": "domain:frontend"
     },
     "technology:sigmajs": {
-      "x": -286.11,
-      "y": -928.51,
+      "x": 1580.99,
+      "y": -629.02,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:graphology": {
-      "x": -153.68,
-      "y": -805.59,
+      "x": 1315.59,
+      "y": -1025.65,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:nodejs": {
-      "x": 92.47,
-      "y": 134.22,
+      "x": -396.29,
+      "y": 1310.56,
       "radius": 12.96,
       "cluster": "domain:backend"
     },
     "technology:express": {
-      "x": 121.49,
-      "y": 541.4,
+      "x": -526.48,
+      "y": 1272.4,
       "radius": 11.79,
       "cluster": "domain:backend"
     },
     "technology:fastapi": {
-      "x": 203.6,
-      "y": 552.61,
+      "x": -623.96,
+      "y": 1408.59,
       "radius": 12.2,
       "cluster": "domain:backend"
     },
     "technology:django": {
-      "x": 279.94,
-      "y": 617.99,
+      "x": -897.12,
+      "y": 1090.61,
       "radius": 11.35,
       "cluster": "domain:backend"
     },
     "technology:grpc": {
-      "x": 387.18,
-      "y": 867.51,
+      "x": -987.13,
+      "y": 983.9,
       "radius": 10.37,
       "cluster": "domain:backend"
     },
     "technology:postgresql": {
-      "x": 140.94,
-      "y": 795.31,
+      "x": 243.63,
+      "y": 1374.63,
       "radius": 13.32,
       "cluster": "domain:databases"
     },
     "technology:mysql": {
-      "x": -29.58,
-      "y": 1039.39,
+      "x": -86.43,
+      "y": 1379.95,
       "radius": 10.37,
       "cluster": "domain:databases"
     },
     "technology:mongodb": {
-      "x": -5.58,
-      "y": 773.27,
+      "x": -260.88,
+      "y": 1505.11,
       "radius": 9.8,
       "cluster": "domain:databases"
     },
     "technology:redis": {
-      "x": 86.33,
-      "y": 839.65,
+      "x": -199.26,
+      "y": 1395.02,
       "radius": 11.35,
       "cluster": "domain:databases"
     },
     "technology:pgvector": {
-      "x": 343.88,
-      "y": 591.63,
+      "x": 268.36,
+      "y": 1514.16,
       "radius": 10.37,
       "cluster": "domain:databases"
     },
     "technology:pytorch": {
-      "x": 446.47,
-      "y": -120.22,
+      "x": 1111.75,
+      "y": 825.25,
       "radius": 12.96,
       "cluster": "domain:ai-ml"
     },
     "technology:tensorflow": {
-      "x": 469.56,
-      "y": -95.18,
+      "x": 1331.23,
+      "y": 728.63,
       "radius": 11.79,
       "cluster": "domain:ai-ml"
     },
     "technology:scikit-learn": {
-      "x": 701.69,
-      "y": 152.38,
+      "x": 1444.38,
+      "y": 844.85,
       "radius": 9.8,
       "cluster": "domain:ai-ml"
     },
     "technology:numpy": {
-      "x": 744.72,
-      "y": 123.64,
+      "x": 820.76,
+      "y": 1121.72,
       "radius": 11.79,
       "cluster": "domain:ai-ml"
     },
     "technology:pandas": {
-      "x": 764.15,
-      "y": 161.83,
+      "x": 1185.48,
+      "y": 975.73,
       "radius": 10.88,
       "cluster": "domain:ai-ml"
     },
     "technology:huggingface-transformers": {
-      "x": 774.96,
-      "y": -101.01,
+      "x": 1130.35,
+      "y": 1055.7,
       "radius": 10.37,
       "cluster": "domain:ai-ml"
     },
     "technology:langchain": {
-      "x": 728.68,
-      "y": 239.34,
+      "x": 925.4,
+      "y": 1030.17,
       "radius": 12.2,
       "cluster": "domain:ai-ml"
     },
     "technology:ollama": {
-      "x": 973.44,
-      "y": 48.56,
+      "x": 907.35,
+      "y": 1240.06,
       "radius": 9.8,
       "cluster": "domain:ai-ml"
     },
     "technology:docker": {
-      "x": -755.93,
-      "y": 296.56,
+      "x": -1174.89,
+      "y": 1007.26,
       "radius": 11.35,
       "cluster": "domain:cloud-devops"
     },
     "technology:kubernetes": {
-      "x": -677.62,
-      "y": 537.17,
+      "x": -1068.96,
+      "y": 916.44,
       "radius": 11.79,
       "cluster": "domain:cloud-devops"
     },
     "technology:terraform": {
-      "x": -713.87,
-      "y": 769.85,
+      "x": -1416.98,
+      "y": 578.21,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:aws": {
-      "x": -613.09,
-      "y": 761.27,
+      "x": -1131.39,
+      "y": 812.93,
       "radius": 10.88,
       "cluster": "domain:cloud-devops"
     },
     "technology:github-actions": {
-      "x": -914.24,
-      "y": 592.96,
+      "x": -1465.71,
+      "y": 422.01,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:nginx": {
-      "x": -157.81,
-      "y": 777.78,
+      "x": -1509.12,
+      "y": 1070.39,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:prometheus": {
-      "x": -834.31,
-      "y": 551.59,
+      "x": -1554.87,
+      "y": 652.21,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:keycloak": {
-      "x": 819.97,
-      "y": -690.52,
+      "x": -244.33,
+      "y": -1367.81,
       "radius": 10.37,
       "cluster": "domain:security"
     },
     "technology:auth0": {
-      "x": 804.46,
-      "y": -738.39,
+      "x": -347.97,
+      "y": -1361.6,
       "radius": 10.37,
       "cluster": "domain:security"
     },
     "technology:openssl": {
-      "x": 936.37,
-      "y": -657.58,
+      "x": -649.01,
+      "y": -1547.64,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:flutter": {
-      "x": 377.17,
-      "y": -905.57,
+      "x": 1379.74,
+      "y": -260.1,
       "radius": 10.37,
       "cluster": "domain:mobile"
     },
     "technology:react-native": {
-      "x": 212.87,
-      "y": -896.16,
+      "x": 1362.78,
+      "y": -333.04,
       "radius": 10.88,
       "cluster": "domain:mobile"
     },
     "technology:electron": {
-      "x": 194.4,
-      "y": -331.81,
+      "x": 1408.48,
+      "y": 38.15,
       "radius": 9.8,
       "cluster": "domain:mobile"
     },
     "technology:linux": {
-      "x": -746.49,
-      "y": -62.26,
+      "x": -1276.25,
+      "y": -853.99,
       "radius": 9.8,
       "cluster": "domain:systems"
     },
     "technology:cuda": {
-      "x": 41.82,
-      "y": -179.49,
+      "x": -1533.31,
+      "y": -147.68,
       "radius": 11.35,
       "cluster": "domain:systems"
     },
     "technology:llvm": {
-      "x": -794.36,
-      "y": -375.21,
+      "x": -1644.42,
+      "y": -476.34,
       "radius": 9.16,
       "cluster": "domain:systems"
     },
     "technology:git": {
-      "x": -1011.42,
-      "y": 406.08,
+      "x": 783.94,
+      "y": -1133.64,
       "radius": 10.37,
       "cluster": "domain:testing-tooling"
     },
     "technology:playwright": {
-      "x": -1123.52,
-      "y": 146.68,
+      "x": 877.94,
+      "y": -1080.31,
       "radius": 9.8,
       "cluster": "domain:testing-tooling"
     },
     "technology:pytest": {
-      "x": -230.22,
-      "y": 144.99,
+      "x": 621.08,
+      "y": -1386.43,
       "radius": 9.8,
       "cluster": "domain:testing-tooling"
     },
     "technology:vitest": {
-      "x": -468.12,
-      "y": -195.65,
+      "x": 773.21,
+      "y": -1356.96,
       "radius": 9.8,
       "cluster": "domain:testing-tooling"
     },
     "technology:eslint": {
-      "x": -599.48,
-      "y": -213.45,
+      "x": 709.92,
+      "y": -1218.33,
       "radius": 10.37,
       "cluster": "domain:testing-tooling"
     },
     "technology:unity": {
-      "x": -422.29,
-      "y": -595.29,
+      "x": 1394.76,
+      "y": 102.27,
       "radius": 10.88,
       "cluster": "domain:gamedev"
     },
     "technology:godot": {
-      "x": -627.11,
-      "y": -695.98,
+      "x": 1310.8,
+      "y": 512.94,
       "radius": 9.8,
       "cluster": "domain:gamedev"
     },
     "technology:webgpu": {
-      "x": -471.04,
-      "y": -857.7,
+      "x": 1494.36,
+      "y": 398.45,
       "radius": 9.8,
       "cluster": "domain:gamedev"
     },
     "technology:c": {
-      "x": -422.85,
-      "y": -293.82,
+      "x": -1512.81,
+      "y": -254.31,
       "radius": 10.37,
       "cluster": "domain:systems"
     },
     "technology:cpp": {
-      "x": -142.2,
-      "y": -271.33,
+      "x": -1388.76,
+      "y": -929.27,
       "radius": 10.88,
       "cluster": "domain:systems"
     },
     "technology:angular": {
-      "x": 48.16,
-      "y": -780.88,
+      "x": 1225.19,
+      "y": -896.7,
       "radius": 9.8,
       "cluster": "domain:frontend"
     },
     "technology:svelte": {
-      "x": 168.55,
-      "y": -627.78,
+      "x": 1188.6,
+      "y": -976.01,
       "radius": 10.37,
       "cluster": "domain:frontend"
     },
     "technology:sveltekit": {
-      "x": 129.14,
-      "y": -855.62,
+      "x": 1703.14,
+      "y": -706.33,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:solidjs": {
-      "x": 205.37,
-      "y": -575.95,
+      "x": 1596.1,
+      "y": -561.3,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:astro": {
-      "x": -278.17,
-      "y": -761.36,
+      "x": 1455.24,
+      "y": -446.43,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:remix": {
-      "x": -94.0,
-      "y": -999.86,
+      "x": 1628.92,
+      "y": -865.93,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:nuxt": {
-      "x": 70.08,
-      "y": -1010.51,
+      "x": 1570.59,
+      "y": -967.81,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:jquery": {
-      "x": -6.49,
-      "y": -1130.14,
+      "x": 1905.35,
+      "y": -584.51,
       "radius": 7.4,
       "cluster": "domain:frontend"
     },
     "technology:sass": {
-      "x": -283.2,
-      "y": -1093.36,
+      "x": 1666.55,
+      "y": -819.01,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:webpack": {
-      "x": -312.0,
-      "y": -974.26,
+      "x": 1395.21,
+      "y": -916.45,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:babel": {
-      "x": 56.1,
-      "y": -694.78,
+      "x": 1514.54,
+      "y": -1071.89,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:webassembly": {
-      "x": -459.76,
-      "y": -758.16,
+      "x": 1859.92,
+      "y": -757.51,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:d3": {
-      "x": -1.97,
-      "y": -821.28,
+      "x": 1305.01,
+      "y": -1105.21,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:threejs": {
-      "x": -218.12,
-      "y": -765.44,
+      "x": 1621.89,
+      "y": -497.55,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:storybook": {
-      "x": -63.32,
-      "y": -949.05,
+      "x": 1660.01,
+      "y": -751.2,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:csharp": {
-      "x": 623.11,
-      "y": 740.79,
+      "x": -687.49,
+      "y": 1873.55,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:ruby": {
-      "x": 520.62,
-      "y": 955.19,
+      "x": -890.41,
+      "y": 1762.56,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:php": {
-      "x": 651.6,
-      "y": 872.98,
+      "x": -845.29,
+      "y": 1801.3,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:kotlin": {
-      "x": 264.12,
-      "y": 52.39,
+      "x": -723.05,
+      "y": 1713.18,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:scala": {
-      "x": 58.21,
-      "y": 792.51,
+      "x": -1155.36,
+      "y": 1424.91,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:elixir": {
-      "x": 582.05,
-      "y": 932.98,
+      "x": -861.18,
+      "y": 1944.11,
       "radius": 7.4,
       "cluster": "domain:backend"
     },
     "technology:spring": {
-      "x": 167.62,
-      "y": 568.92,
+      "x": -833.13,
+      "y": 1462.17,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:spring-boot": {
-      "x": 120.24,
-      "y": 696.51,
+      "x": -957.16,
+      "y": 1223.93,
       "radius": 10.37,
       "cluster": "domain:backend"
     },
     "technology:dotnet": {
-      "x": 498.86,
-      "y": 257.72,
+      "x": -1013.58,
+      "y": 1562.06,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:aspnet-core": {
-      "x": 584.96,
-      "y": 543.59,
+      "x": -1028.58,
+      "y": 1346.1,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:rails": {
-      "x": 445.1,
-      "y": 878.9,
+      "x": -538.32,
+      "y": 1780.26,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:laravel": {
-      "x": 603.15,
-      "y": 878.25,
+      "x": -739.68,
+      "y": 1848.1,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:flask": {
-      "x": 351.77,
-      "y": 507.69,
+      "x": -864.6,
+      "y": 1258.33,
       "radius": 10.37,
       "cluster": "domain:backend"
     },
     "technology:nestjs": {
-      "x": 189.71,
-      "y": 88.96,
+      "x": -766.95,
+      "y": 1652.14,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:deno": {
-      "x": 151.36,
-      "y": 60.66,
+      "x": -955.3,
+      "y": 1592.45,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:bun": {
-      "x": 473.67,
-      "y": 701.2,
+      "x": -633.01,
+      "y": 1893.26,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:rabbitmq": {
-      "x": 516.94,
-      "y": 899.24,
+      "x": -1188.06,
+      "y": 1184.16,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:kafka": {
-      "x": 259.94,
-      "y": 979.7,
+      "x": -795.35,
+      "y": 1325.82,
       "radius": 10.88,
       "cluster": "domain:backend"
     },
     "technology:graphql-apollo": {
-      "x": 508.92,
-      "y": 427.59,
+      "x": -1049.22,
+      "y": 1498.56,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:sqlite": {
-      "x": 34.09,
-      "y": 1064.33,
+      "x": 41.09,
+      "y": 1539.58,
       "radius": 9.8,
       "cluster": "domain:databases"
     },
     "technology:mariadb": {
-      "x": -82.73,
-      "y": 1098.95,
+      "x": 53.07,
+      "y": 1700.91,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:cassandra": {
-      "x": -152.1,
-      "y": 981.12,
+      "x": 232.17,
+      "y": 1655.18,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:elasticsearch": {
-      "x": -80.09,
-      "y": 794.79,
+      "x": -189.61,
+      "y": 1545.87,
       "radius": 9.8,
       "cluster": "domain:databases"
     },
     "technology:neo4j": {
-      "x": -182.07,
-      "y": 737.83,
+      "x": -366.7,
+      "y": 1630.65,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:duckdb": {
-      "x": -289.72,
-      "y": 1124.26,
+      "x": 112.95,
+      "y": 1677.15,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:clickhouse": {
-      "x": -281.76,
-      "y": 1076.9,
+      "x": 175.31,
+      "y": 1690.98,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:snowflake": {
-      "x": -340.46,
-      "y": 1073.36,
+      "x": -41.86,
+      "y": 1828.27,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:duckdb-dbt": {
-      "x": -193.15,
-      "y": 1153.42,
+      "x": 166.31,
+      "y": 1834.17,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:spark": {
-      "x": -73.39,
-      "y": 997.94,
+      "x": 190.91,
+      "y": 1509.08,
       "radius": 10.37,
       "cluster": "domain:databases"
     },
     "technology:airflow": {
-      "x": -168.72,
-      "y": 1056.37,
+      "x": 292.71,
+      "y": 1651.52,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:pinecone": {
-      "x": 327.95,
-      "y": 662.24,
+      "x": -109.97,
+      "y": 1514.84,
       "radius": 10.37,
       "cluster": "domain:databases"
     },
     "technology:prisma": {
-      "x": 85.02,
-      "y": 432.37,
+      "x": -195.94,
+      "y": 1809.25,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:sqlalchemy": {
-      "x": 176.14,
-      "y": 505.2,
+      "x": -146.57,
+      "y": 1838.54,
       "radius": 9.8,
       "cluster": "domain:databases"
     },
     "technology:dynamodb": {
-      "x": -203.03,
-      "y": 998.25,
+      "x": 115.13,
+      "y": 1851.65,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:keras": {
-      "x": 693.18,
-      "y": -190.61,
+      "x": 1326.62,
+      "y": 1042.15,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:jax": {
-      "x": 855.48,
-      "y": -205.59,
+      "x": 1371.3,
+      "y": 979.68,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:xgboost": {
-      "x": 942.04,
-      "y": 88.07,
+      "x": 1118.94,
+      "y": 1268.69,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:opencv": {
-      "x": 351.84,
-      "y": -222.74,
+      "x": 1519.8,
+      "y": 998.56,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:spacy": {
-      "x": 660.95,
-      "y": 89.06,
+      "x": 1482.63,
+      "y": 1051.95,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:matplotlib": {
-      "x": 887.37,
-      "y": 118.69,
+      "x": 1273.01,
+      "y": 1097.32,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:jupyter": {
-      "x": 958.93,
-      "y": 154.43,
+      "x": 1098.66,
+      "y": 1501.52,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:mlflow": {
-      "x": 444.84,
-      "y": 105.1,
+      "x": 1541.97,
+      "y": 1501.59,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:llamaindex": {
-      "x": 1049.26,
-      "y": 172.46,
+      "x": 976.71,
+      "y": 1173.1,
       "radius": 9.8,
       "cluster": "domain:ai-ml"
     },
     "technology:openai-api": {
-      "x": 988.01,
-      "y": 208.76,
+      "x": 1212.98,
+      "y": 1145.87,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:stable-diffusion": {
-      "x": 1125.03,
-      "y": 17.58,
+      "x": 1719.2,
+      "y": 999.42,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:onnx": {
-      "x": 1051.88,
-      "y": -180.31,
+      "x": 1797.7,
+      "y": 842.33,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:ray": {
-      "x": 1080.75,
-      "y": -134.3,
+      "x": 1750.96,
+      "y": 950.0,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:weights-biases": {
-      "x": 469.45,
-      "y": 146.16,
+      "x": 1395.12,
+      "y": 1606.24,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:chroma": {
-      "x": 707.25,
-      "y": 357.51,
+      "x": 1229.22,
+      "y": 1580.07,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:gcp": {
-      "x": -596.12,
-      "y": 876.37,
+      "x": -1746.56,
+      "y": 561.28,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:azure": {
-      "x": -658.24,
-      "y": 863.48,
+      "x": -1683.35,
+      "y": 717.14,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:helm": {
-      "x": -737.41,
-      "y": 637.27,
+      "x": -1456.25,
+      "y": 898.75,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:ansible": {
-      "x": -820.24,
-      "y": 823.03,
+      "x": -1656.23,
+      "y": 766.27,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:jenkins": {
-      "x": -832.45,
-      "y": 734.69,
+      "x": -1467.69,
+      "y": 828.7,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:gitlab-ci": {
-      "x": -858.72,
-      "y": 773.54,
+      "x": -1759.42,
+      "y": 506.57,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:argocd": {
-      "x": -710.25,
-      "y": 672.23,
+      "x": -1257.7,
+      "y": 863.45,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:grafana": {
-      "x": -829.29,
-      "y": 621.39,
+      "x": -1288.36,
+      "y": 493.81,
       "radius": 10.37,
       "cluster": "domain:cloud-devops"
     },
     "technology:opentelemetry": {
-      "x": -872.83,
-      "y": 640.77,
+      "x": -1411.28,
+      "y": 666.1,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:vault": {
-      "x": -657.89,
-      "y": 930.95,
+      "x": -1496.69,
+      "y": 1283.14,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:podman": {
-      "x": -783.53,
-      "y": 448.89,
+      "x": -1521.74,
+      "y": 709.2,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:containerd": {
-      "x": -738.14,
-      "y": 483.35,
+      "x": -1352.25,
+      "y": 987.68,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:aws-lambda": {
-      "x": -543.44,
-      "y": 605.33,
+      "x": -1308.06,
+      "y": 1035.85,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:cloudflare": {
-      "x": -648.77,
-      "y": 461.75,
+      "x": -1333.61,
+      "y": 814.12,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:pulumi": {
-      "x": -787.13,
-      "y": 770.76,
+      "x": -1599.12,
+      "y": 598.68,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:datadog": {
-      "x": -790.31,
-      "y": 590.28,
+      "x": -1750.6,
+      "y": 622.28,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:wireshark": {
-      "x": 881.0,
-      "y": -656.56,
+      "x": -639.3,
+      "y": -1744.98,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:metasploit": {
-      "x": 631.1,
-      "y": -693.19,
+      "x": -107.97,
+      "y": -1704.33,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:burp-suite": {
-      "x": 660.32,
-      "y": -633.04,
+      "x": -184.96,
+      "y": -1512.45,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:nmap": {
-      "x": 125.16,
-      "y": -439.14,
+      "x": -434.84,
+      "y": -1611.53,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:snort": {
-      "x": 982.27,
-      "y": -453.2,
+      "x": -49.83,
+      "y": -1666.83,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:let-s-encrypt": {
-      "x": 853.13,
-      "y": -578.4,
+      "x": -162.63,
+      "y": -1677.4,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:owasp-zap": {
-      "x": 779.78,
-      "y": -564.02,
+      "x": -607.41,
+      "y": -1595.79,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:okta": {
-      "x": 860.11,
-      "y": -726.93,
+      "x": -46.49,
+      "y": -1554.9,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:swift": {
-      "x": 496.56,
-      "y": -929.66,
+      "x": 1367.03,
+      "y": -109.08,
       "radius": 9.8,
       "cluster": "domain:mobile"
     },
     "technology:swiftui": {
-      "x": 481.49,
-      "y": -863.44,
+      "x": 1392.38,
+      "y": -186.26,
       "radius": 10.37,
       "cluster": "domain:mobile"
     },
     "technology:jetpack-compose": {
-      "x": 393.09,
-      "y": -440.43,
+      "x": 1476.84,
+      "y": -360.91,
       "radius": 9.8,
       "cluster": "domain:mobile"
     },
     "technology:android-sdk": {
-      "x": 488.79,
-      "y": -999.66,
+      "x": 1685.13,
+      "y": 45.64,
       "radius": 7.4,
       "cluster": "domain:mobile"
     },
     "technology:expo": {
-      "x": 319.22,
-      "y": -977.16,
+      "x": 1518.34,
+      "y": -317.81,
       "radius": 9.16,
       "cluster": "domain:mobile"
     },
     "technology:tauri": {
-      "x": -153.4,
-      "y": -508.32,
+      "x": 1532.47,
+      "y": -215.41,
       "radius": 9.16,
       "cluster": "domain:mobile"
     },
     "technology:dotnet-maui": {
-      "x": 460.09,
-      "y": -172.33,
+      "x": 1668.3,
+      "y": -253.44,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:zig": {
-      "x": -945.69,
-      "y": -435.26,
+      "x": -1515.46,
+      "y": -705.75,
       "radius": 9.16,
       "cluster": "domain:systems"
     },
     "technology:assembly": {
-      "x": -1010.29,
-      "y": -352.76,
+      "x": -1706.37,
+      "y": -697.83,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:gcc": {
-      "x": -764.94,
-      "y": -291.99,
+      "x": -1480.78,
+      "y": -357.78,
       "radius": 10.37,
       "cluster": "domain:systems"
     },
     "technology:qemu": {
-      "x": -1056.79,
-      "y": -204.19,
+      "x": -1553.83,
+      "y": -951.4,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:freertos": {
-      "x": -1067.29,
-      "y": -382.91,
+      "x": -1795.26,
+      "y": -339.12,
       "radius": 9.16,
       "cluster": "domain:systems"
     },
     "technology:wasmtime": {
-      "x": -670.82,
-      "y": -515.21,
+      "x": -1679.22,
+      "y": -42.81,
       "radius": 9.8,
       "cluster": "domain:systems"
     },
     "technology:openmp": {
-      "x": -736.83,
-      "y": -431.65,
+      "x": -1488.68,
+      "y": -472.93,
       "radius": 9.8,
       "cluster": "domain:systems"
     },
     "technology:jest": {
-      "x": -768.62,
-      "y": 66.64,
+      "x": 941.23,
+      "y": -1205.1,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:cypress": {
-      "x": -1073.01,
-      "y": 154.92,
+      "x": 892.58,
+      "y": -1264.41,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:selenium": {
-      "x": -1042.84,
-      "y": 99.78,
+      "x": 1054.08,
+      "y": -1109.4,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:junit": {
-      "x": -384.69,
-      "y": 286.33,
+      "x": 887.45,
+      "y": -1451.65,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:prettier": {
-      "x": -754.48,
-      "y": -111.76,
+      "x": 781.48,
+      "y": -1671.7,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:ruff": {
-      "x": -816.89,
-      "y": -112.9,
+      "x": 687.92,
+      "y": -1355.79,
       "radius": 9.8,
       "cluster": "domain:testing-tooling"
     },
     "technology:mypy": {
-      "x": -934.85,
-      "y": -9.14,
+      "x": 996.5,
+      "y": -1155.95,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:sonarqube": {
-      "x": -1028.73,
-      "y": 198.82,
+      "x": 838.45,
+      "y": -1652.46,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:unreal-engine": {
-      "x": -701.05,
-      "y": -755.2,
+      "x": 1550.86,
+      "y": 113.71,
       "radius": 9.8,
       "cluster": "domain:gamedev"
     },
     "technology:vulkan": {
-      "x": -697.65,
-      "y": -850.69,
+      "x": 1379.63,
+      "y": 184.8,
       "radius": 10.37,
       "cluster": "domain:gamedev"
     },
     "technology:opengl": {
-      "x": -790.83,
-      "y": -809.81,
+      "x": 1496.74,
+      "y": 339.57,
       "radius": 9.16,
       "cluster": "domain:gamedev"
     },
     "technology:blender": {
-      "x": -820.48,
-      "y": -710.69,
+      "x": 1569.46,
+      "y": 614.16,
       "radius": 7.4,
       "cluster": "domain:gamedev"
     },
     "technology:directx": {
-      "x": -671.95,
-      "y": -903.96,
+      "x": 1437.85,
+      "y": 562.66,
       "radius": 8.39,
       "cluster": "domain:gamedev"
     },
     "technology:r-lang": {
-      "x": 1089.52,
-      "y": 84.87,
+      "x": 1790.71,
+      "y": 904.32,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:dart": {
-      "x": 421.37,
-      "y": -970.42,
+      "x": 1533.92,
+      "y": -112.11,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:perl": {
-      "x": 557.52,
-      "y": 1005.72,
+      "x": -1094.33,
+      "y": 1824.21,
       "radius": 7.4,
       "cluster": "domain:backend"
     },
     "technology:lua": {
-      "x": -625.4,
-      "y": -755.72,
+      "x": 1669.92,
+      "y": 122.44,
       "radius": 8.39,
       "cluster": "domain:gamedev"
     },
     "technology:haskell": {
-      "x": 887.03,
-      "y": 649.09,
+      "x": 372.39,
+      "y": -1495.68,
       "radius": 8.39,
       "cluster": "domain:software-engineering"
     },
     "technology:clojure": {
-      "x": 705.14,
-      "y": 789.72,
+      "x": -1178.59,
+      "y": 1576.64,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:json": {
-      "x": 266.0,
-      "y": 1034.3,
+      "x": -701.47,
+      "y": 1536.81,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:yaml": {
-      "x": -166.12,
-      "y": 852.3,
+      "x": -1603.51,
+      "y": 1187.24,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:protobuf": {
-      "x": 338.61,
-      "y": 993.11,
+      "x": -1025.97,
+      "y": 1157.19,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:openapi": {
-      "x": -1.66,
-      "y": 687.27,
+      "x": -1119.03,
+      "y": 1484.09,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:webrtc": {
-      "x": 34.37,
-      "y": -623.12,
+      "x": 1743.62,
+      "y": -534.9,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:oauth-spec": {
-      "x": 744.05,
-      "y": -628.61,
+      "x": -117.69,
+      "y": -1549.88,
       "radius": 9.16,
       "cluster": "domain:security"
     },
     "technology:pip": {
-      "x": -274.44,
-      "y": 158.58,
+      "x": 554.45,
+      "y": -1417.79,
       "radius": 9.8,
       "cluster": "domain:testing-tooling"
     },
     "technology:npm": {
-      "x": -370.39,
-      "y": 114.16,
+      "x": 992.5,
+      "y": -1392.91,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:cargo": {
-      "x": -686.64,
-      "y": -58.14,
+      "x": 781.67,
+      "y": -1507.55,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:maven": {
-      "x": -409.77,
-      "y": 342.17,
+      "x": 921.06,
+      "y": -1393.94,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:gradle": {
-      "x": -445.2,
-      "y": 378.23,
+      "x": 828.78,
+      "y": -1469.47,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:uv": {
-      "x": -190.21,
-      "y": 198.23,
+      "x": 1021.28,
+      "y": -1331.57,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:github": {
-      "x": -1007.3,
-      "y": 338.81,
+      "x": 671.2,
+      "y": -1716.33,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:postman": {
-      "x": -239.62,
-      "y": 510.46,
+      "x": 1041.64,
+      "y": -1527.27,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:vscode": {
-      "x": -1065.09,
-      "y": 373.33,
+      "x": 943.61,
+      "y": -1595.62,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:webgl": {
-      "x": -421.6,
-      "y": -961.86,
+      "x": 1625.27,
+      "y": -1134.8,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:preact": {
-      "x": -116.91,
-      "y": -1087.08,
+      "x": 1586.56,
+      "y": -909.3,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:mui": {
-      "x": -14.84,
-      "y": -976.85,
+      "x": 1534.67,
+      "y": -1014.43,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:vuex-pinia": {
-      "x": 2.56,
-      "y": -1065.11,
+      "x": 1748.05,
+      "y": -597.74,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:tanstack-query": {
-      "x": -110.27,
-      "y": -928.22,
+      "x": 1707.58,
+      "y": -645.29,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:esbuild": {
-      "x": -30.32,
-      "y": -290.07,
+      "x": 1542.48,
+      "y": -687.29,
       "radius": 9.16,
       "cluster": "domain:frontend"
     },
     "technology:fastify": {
-      "x": 166.29,
-      "y": 354.17,
+      "x": -1086.16,
+      "y": 1296.54,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:gin": {
-      "x": 329.08,
-      "y": 430.76,
+      "x": -1137.29,
+      "y": 1240.09,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:celery": {
-      "x": 491.18,
-      "y": 562.27,
+      "x": -896.02,
+      "y": 1620.46,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:socketio": {
-      "x": 161.99,
-      "y": 163.18,
+      "x": -778.19,
+      "y": 1520.45,
       "radius": 9.8,
       "cluster": "domain:backend"
     },
     "technology:nats": {
-      "x": 410.26,
-      "y": 1071.99,
+      "x": -787.77,
+      "y": 1813.81,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:cockroachdb": {
-      "x": -29.45,
-      "y": 1088.95,
+      "x": 117.18,
+      "y": 1533.54,
       "radius": 9.8,
       "cluster": "domain:databases"
     },
     "technology:influxdb": {
-      "x": -12.79,
-      "y": 1152.97,
+      "x": 9.9,
+      "y": 1820.36,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:supabase": {
-      "x": 7.96,
-      "y": 909.69,
+      "x": 322.67,
+      "y": 1820.58,
       "radius": 9.16,
       "cluster": "domain:databases"
     },
     "technology:firebase": {
-      "x": -81.88,
-      "y": 584.49,
+      "x": -1251.16,
+      "y": 1576.18,
       "radius": 9.16,
       "cluster": "domain:backend"
     },
     "technology:flink": {
-      "x": -61.46,
-      "y": 1153.28,
+      "x": 61.84,
+      "y": 1830.82,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:qdrant": {
-      "x": 667.4,
-      "y": 334.78,
+      "x": 1188.24,
+      "y": 1623.95,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:gymnasium": {
-      "x": 1134.93,
-      "y": -122.41,
+      "x": 1143.35,
+      "y": 1450.7,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:vllm": {
-      "x": 751.96,
-      "y": -174.26,
+      "x": 1185.31,
+      "y": 1226.55,
       "radius": 9.16,
       "cluster": "domain:ai-ml"
     },
     "technology:dvc": {
-      "x": 423.18,
-      "y": 61.64,
+      "x": 1637.35,
+      "y": 1347.64,
       "radius": 8.39,
       "cluster": "domain:ai-ml"
     },
     "technology:vercel": {
-      "x": -399.84,
-      "y": -29.5,
+      "x": -1287.99,
+      "y": 1104.22,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:istio": {
-      "x": -630.76,
-      "y": 695.79,
+      "x": -1370.85,
+      "y": 739.2,
       "radius": 9.8,
       "cluster": "domain:cloud-devops"
     },
     "technology:consul": {
-      "x": -705.76,
-      "y": 834.28,
+      "x": -1730.73,
+      "y": 675.54,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:packer": {
-      "x": -705.29,
-      "y": 907.87,
+      "x": -1907.0,
+      "y": 549.06,
       "radius": 7.4,
       "cluster": "domain:cloud-devops"
     },
     "technology:loki": {
-      "x": -866.66,
-      "y": 582.91,
+      "x": -1494.46,
+      "y": 768.67,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:falco": {
-      "x": 998.5,
-      "y": -570.61,
+      "x": -273.0,
+      "y": -1655.74,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:trivy": {
-      "x": 946.42,
-      "y": -488.62,
+      "x": -711.49,
+      "y": -1696.62,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:gpg": {
-      "x": 889.98,
-      "y": -472.68,
+      "x": -221.13,
+      "y": -1691.01,
       "radius": 8.39,
       "cluster": "domain:security"
     },
     "technology:xcode": {
-      "x": 532.63,
-      "y": -965.09,
+      "x": 1559.88,
+      "y": -61.83,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:android-studio": {
-      "x": 290.51,
-      "y": -260.41,
+      "x": 1630.33,
+      "y": -398.42,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:capacitor": {
-      "x": 348.7,
-      "y": -1027.76,
+      "x": 1540.68,
+      "y": -164.4,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:qt": {
-      "x": 42.14,
-      "y": -549.36,
+      "x": 1674.46,
+      "y": -103.69,
       "radius": 8.39,
       "cluster": "domain:mobile"
     },
     "technology:fortran": {
-      "x": -887.36,
-      "y": -475.28,
+      "x": -1624.02,
+      "y": -906.51,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:nasm": {
-      "x": -935.13,
-      "y": -324.27,
+      "x": -1597.99,
+      "y": -553.16,
       "radius": 9.16,
       "cluster": "domain:systems"
     },
     "technology:ebpf": {
-      "x": -951.56,
-      "y": 42.47,
+      "x": -2015.89,
+      "y": -768.06,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:systemd": {
-      "x": -1074.45,
-      "y": -270.89,
+      "x": -1980.57,
+      "y": -50.49,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:docker-compose": {
-      "x": -933.43,
-      "y": 307.5,
+      "x": 987.41,
+      "y": -1553.09,
       "radius": 9.16,
       "cluster": "domain:testing-tooling"
     },
     "technology:make": {
-      "x": -890.93,
-      "y": -117.64,
+      "x": 1186.17,
+      "y": -1421.7,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:bash": {
-      "x": -1029.65,
-      "y": -294.12,
+      "x": -1654.04,
+      "y": -755.59,
       "radius": 8.39,
       "cluster": "domain:systems"
     },
     "technology:testcontainers": {
-      "x": -1014.23,
-      "y": 257.02,
+      "x": 887.12,
+      "y": -1616.94,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:k6": {
-      "x": -1119.11,
-      "y": 252.97,
+      "x": 723.53,
+      "y": -1687.57,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:bevy": {
-      "x": -692.64,
-      "y": -596.28,
+      "x": 1499.85,
+      "y": 281.65,
       "radius": 9.8,
       "cluster": "domain:gamedev"
     },
     "technology:sdl": {
-      "x": -796.5,
-      "y": -760.84,
+      "x": 1653.71,
+      "y": 246.8,
       "radius": 8.39,
       "cluster": "domain:gamedev"
     },
     "technology:metal": {
-      "x": -645.22,
-      "y": -854.53,
+      "x": 1681.86,
+      "y": 186.89,
       "radius": 8.39,
       "cluster": "domain:gamedev"
     },
     "technology:pygame": {
-      "x": -127.95,
-      "y": -216.88,
+      "x": 1469.86,
+      "y": 451.54,
       "radius": 9.16,
       "cluster": "domain:gamedev"
     },
     "technology:urql": {
-      "x": 186.48,
-      "y": -419.16,
+      "x": 1796.57,
+      "y": -826.81,
       "radius": 8.39,
       "cluster": "domain:frontend"
     },
     "technology:minio": {
-      "x": -535.0,
-      "y": 893.81,
+      "x": -1876.93,
+      "y": 688.83,
       "radius": 8.39,
       "cluster": "domain:cloud-devops"
     },
     "technology:envoy": {
-      "x": -529.93,
-      "y": 759.15,
+      "x": -1413.5,
+      "y": 950.3,
       "radius": 9.16,
       "cluster": "domain:cloud-devops"
     },
     "technology:temporal": {
-      "x": 463.01,
-      "y": 1015.58,
+      "x": -948.15,
+      "y": 1748.83,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:valkey": {
-      "x": -111.08,
-      "y": 1055.3,
+      "x": -94.49,
+      "y": 1843.03,
       "radius": 8.39,
       "cluster": "domain:databases"
     },
     "technology:orbstack": {
-      "x": -907.23,
-      "y": 254.81,
+      "x": 1213.22,
+      "y": -1362.29,
       "radius": 8.39,
       "cluster": "domain:testing-tooling"
     },
     "technology:wasmer": {
-      "x": -792.3,
-      "y": -444.96,
+      "x": -1555.08,
+      "y": -629.32,
       "radius": 9.16,
       "cluster": "domain:systems"
     },
     "technology:solidity": {
-      "x": 411.15,
-      "y": 412.49,
+      "x": -621.17,
+      "y": 2054.25,
       "radius": 8.39,
       "cluster": "domain:backend"
     },
     "technology:nixos": {
-      "x": -1111.39,
-      "y": 204.71,
+      "x": 1259.69,
+      "y": -1325.79,
       "radius": 7.4,
       "cluster": "domain:testing-tooling"
     },
     "technology:risc-v": {
-      "x": -866.85,
-      "y": 498.04,
+      "x": -1538.94,
+      "y": -1029.76,
       "radius": 8.39,
       "cluster": "domain:computer-architecture"
     },
     "technology:arm": {
-      "x": -873.01,
-      "y": 393.74,
+      "x": -1747.37,
+      "y": -633.69,
       "radius": 8.39,
       "cluster": "domain:computer-architecture"
     },
     "technology:x86-64": {
-      "x": -827.51,
-      "y": 405.62,
+      "x": -1842.43,
+      "y": -1087.67,
       "radius": 7.4,
       "cluster": "domain:computer-architecture"
     },
     "technology:fpga": {
-      "x": -765.44,
-      "y": 400.98,
+      "x": -1960.74,
+      "y": -811.1,
       "radius": 7.4,
       "cluster": "domain:computer-architecture"
     },
     "technology:verilog": {
-      "x": -1375.52,
-      "y": 894.77,
+      "x": -1899.22,
+      "y": -981.21,
       "radius": 7.4,
       "cluster": "domain:computer-architecture"
     },
     "technology:vhdl": {
-      "x": -1404.2,
-      "y": 849.46,
+      "x": -1889.07,
+      "y": -1044.49,
       "radius": 7.4,
       "cluster": "domain:computer-architecture"
     },
     "technology:esp32": {
-      "x": -379.69,
-      "y": -953.1,
+      "x": -1625.65,
+      "y": -823.34,
       "radius": 8.39,
       "cluster": "domain:embedded"
     },
     "technology:zephyr": {
-      "x": -1163.1,
-      "y": -1015.63,
+      "x": -1828.44,
+      "y": -1150.17,
       "radius": 7.4,
       "cluster": "domain:embedded"
     },
     "technology:mpi": {
-      "x": -947.59,
-      "y": -657.54,
+      "x": -1953.77,
+      "y": -873.54,
       "radius": 7.4,
       "cluster": "domain:systems"
     },
     "technology:lean": {
-      "x": -722.47,
-      "y": -2740.1,
+      "x": -1337.81,
+      "y": -1477.88,
       "radius": 7.4,
       "cluster": "domain:theory"
     },
     "technology:coq": {
-      "x": -668.77,
-      "y": -2752.56,
+      "x": -1412.59,
+      "y": -1398.74,
       "radius": 7.4,
       "cluster": "domain:theory"
     },
     "technology:z3": {
-      "x": 2829.82,
-      "y": -3498.65,
+      "x": -1164.3,
+      "y": -1608.9,
       "radius": 7.4,
       "cluster": "domain:theory"
     },
     "technology:tla-plus": {
-      "x": -379.61,
-      "y": -1363.57,
+      "x": -1262.18,
+      "y": -1557.43,
       "radius": 7.4,
       "cluster": "domain:theory"
     },
     "technology:ros2": {
-      "x": 1171.66,
-      "y": -454.24,
+      "x": 321.72,
+      "y": 1346.57,
       "radius": 9.16,
       "cluster": "domain:robotics"
     },
     "technology:gazebo": {
-      "x": 1512.54,
-      "y": -608.48,
+      "x": 394.42,
+      "y": 1650.87,
       "radius": 7.4,
       "cluster": "domain:robotics"
     },
     "technology:moveit": {
-      "x": 1539.63,
-      "y": -562.96,
+      "x": 980.41,
+      "y": 1549.67,
       "radius": 7.4,
       "cluster": "domain:robotics"
     },
     "technology:qiskit": {
-      "x": -1768.51,
-      "y": -493.44,
+      "x": -1927.09,
+      "y": -927.7,
       "radius": 7.4,
       "cluster": "domain:systems"
     }
