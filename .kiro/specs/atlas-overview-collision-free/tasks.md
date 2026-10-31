@@ -174,7 +174,7 @@ This plan fixes the three default-overview visual defects (overlapping circles, 
     - deploy-bundle check: `__ta_sigma` occurs 0 times in the `dist-xray` (deploy) bundle (3.13).
   - _Requirements: 3.12, 3.13, 3.14_
 
-- [-] 11. Capture before/after evidence, hold deploy, commit separately (verification + handoff)
+- [x] 11. Capture before/after evidence, hold deploy, commit separately (verification + handoff)
   - Capture actual desktop (1440x900, 1920x1080) and mobile (390x844, 390x667) screenshots of the default overview for before/after review; attach the harness metric report (six metrics per viewport).
   - **DO NOT deploy** — await explicit user review/approval of the collision-free correction.
   - Commit this collision-free correction SEPARATELY from commits `40fdb24` and `01a6cae` (keep the accepted aesthetic redesign history intact).
