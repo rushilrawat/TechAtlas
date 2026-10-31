@@ -46,9 +46,9 @@ def test_no_loose_substring_match():
     assert m.match_package("npm", "react-is-not-this-package-xyzzy") != "technology:react"
 
 
-def test_mapping_version_bumped_to_0_3_0():
+def test_mapping_version_is_current():
     g = json.loads((_ROOT / "data" / "graph.json").read_text())
-    assert g["version"] == "0.3.0"
+    assert g["version"] == "0.4.0"
 
 
 def test_import_aliases_file_is_valid_json_and_expanded():

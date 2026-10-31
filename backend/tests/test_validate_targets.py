@@ -1,7 +1,7 @@
 """Tests for the Phase 1B milestone gate in scripts/validate_dataset.py.
 
 check_targets is pure, so we test it directly at the boundaries
-(requirements.md 1.1): technologies >= 250 and 150 <= concepts <= 170.
+(requirements.md 1.1 + Phase 1E): technologies >= 250 and 150 <= concepts <= 340.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ def test_tech_above_target_passes():
     assert vd.check_targets(_counts(technology=400, concept=160)) == []
 
 
-# --- concept range boundaries (150..170 inclusive) --------------------------
+# --- concept range boundaries (150..340 inclusive; 1E-expanded) --------------
 
 def test_concepts_just_below_range_fails():
     errors = vd.check_targets(_counts(technology=300, concept=149))
@@ -39,11 +39,11 @@ def test_concepts_at_low_bound_passes():
 
 
 def test_concepts_at_high_bound_passes():
-    assert vd.check_targets(_counts(technology=300, concept=170)) == []
+    assert vd.check_targets(_counts(technology=300, concept=340)) == []
 
 
 def test_concepts_just_above_range_fails():
-    errors = vd.check_targets(_counts(technology=300, concept=171))
+    errors = vd.check_targets(_counts(technology=300, concept=341))
     assert any("concept" in e for e in errors)
 
 
