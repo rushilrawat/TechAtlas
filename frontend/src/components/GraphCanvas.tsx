@@ -3,7 +3,7 @@ import Graph from "graphology";
 import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
 import type { DetectionStatus, GraphResponse } from "../api/types";
-import { buildGraph } from "../graph/buildGraph";
+import { buildGraph, domainMemberIds } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
 import type { LabelContext } from "../graph/semanticZoom";
 import { computeFit } from "../graph/cameraFit";
@@ -346,7 +346,14 @@ export function GraphCanvas({
         return;
       }
       const set = new Set<string>([active]);
-      graph.forEachNeighbor(active, (nb) => set.add(nb));
+      if (graph.getNodeAttribute(active, "nodeType") === "domain") {
+        // Selecting a DOMAIN highlights ALL its members (shared helper = same definition as
+        // the sidebar count) so the highlight set matches the count exactly, not just the few
+        // nodes joined to the anchor by an edge (count/highlight correctness §13/§26/§36).
+        for (const id of domainMemberIds(graph, active)) set.add(id);
+      } else {
+        graph.forEachNeighbor(active, (nb) => set.add(nb));
+      }
       neighborSetRef.current = set;
     };
 

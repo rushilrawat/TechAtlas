@@ -55,3 +55,19 @@ export function buildGraph(data: GraphResponse): Graph {
 
   return graph;
 }
+
+
+/**
+ * All member node ids of a domain = every node whose `primaryDomain` is that domain, plus
+ * the domain anchor itself. This is the SAME definition the sidebar count uses (count of
+ * nodes with that primary_domain), so a domain-focus highlight set matches the count exactly
+ * (redesign §13/§26/§36 — count/highlight correctness). Deterministic; order-independent.
+ */
+export function domainMemberIds(graph: Graph, domainId: string): Set<string> {
+  const set = new Set<string>();
+  if (graph.hasNode(domainId)) set.add(domainId);
+  graph.forEachNode((nid, a) => {
+    if (a.primaryDomain === domainId) set.add(nid);
+  });
+  return set;
+}

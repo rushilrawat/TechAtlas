@@ -38,24 +38,28 @@ SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_
 # Stable, color-blind-conscious palette per domain. Node type is ALSO conveyed by
 # shape/subtype in the UI so color is never the sole signal (spec §14.2).
 DOMAIN_COLORS: dict[str, str] = {
-    "domain:software-engineering": "#8b9dc3",
-    "domain:frontend": "#7aa2f7",
-    "domain:backend": "#9ece6a",
-    "domain:databases": "#e0af68",
-    "domain:ai-ml": "#bb9af7",
-    "domain:cloud-devops": "#7dcfff",
-    "domain:security": "#f7768e",
-    "domain:mobile": "#73daca",
-    "domain:systems": "#ff9e64",
-    "domain:testing-tooling": "#c0caf5",
-    "domain:gamedev": "#ff75a0",
-    # Phase 1E domains/subdomains — distinct, accessible hues in the same theme family.
-    "domain:networks": "#2ac3de",          # bright cyan (distinct from cloud #7dcfff)
-    "domain:theory": "#b48ead",            # muted mauve (distinct from ai-ml #bb9af7)
-    "domain:robotics": "#e5c07b",          # warm gold (distinct from databases #e0af68)
-    "domain:computer-architecture": "#d19a66",  # amber-brown (distinct from systems #ff9e64)
-    "domain:embedded": "#98c379",          # sage green (distinct from backend #9ece6a)
-    "domain:computer-graphics": "#c678dd", # orchid (distinct from gamedev #ff75a0)
+    # Premium, maximally-distinct palette (Explore redesign §4-6). Every TOP-LEVEL domain
+    # has its own clearly-separated hue (min perceptual distance ~97); the three SUBDOMAINS
+    # are intentional tints inside their parent's family (systems=copper, gamedev=coral).
+    # No two top-level domains share or nearly share a hue.
+    "domain:ai-ml": "#a970ff",                 # violet
+    "domain:robotics": "#e05cc8",              # magenta-pink
+    "domain:databases": "#edb13a",             # amber-yellow
+    "domain:backend": "#49c96d",               # green
+    "domain:cloud-devops": "#5b8def",          # indigo-blue
+    "domain:networks": "#17c0b8",              # teal
+    "domain:systems": "#b5622b",               # burnt copper
+    "domain:theory": "#8f6fb0",                # plum
+    "domain:security": "#ef4d6b",              # crimson
+    "domain:software-engineering": "#9aa7c7",  # cool slate periwinkle
+    "domain:testing-tooling": "#3b5bd0",       # royal blue
+    "domain:frontend": "#38c6f0",              # bright azure
+    "domain:mobile": "#53e0a0",                # mint green
+    "domain:gamedev": "#ff7fa0",               # coral-pink
+    # Subdomains — tints within the PARENT family (hierarchy honest, §12).
+    "domain:computer-architecture": "#d98b55", # lighter copper (within Systems)
+    "domain:embedded": "#c9732f",              # deep copper-tan (within Systems)
+    "domain:computer-graphics": "#ffb0c2",     # light coral (within Game Dev)
 }
 FALLBACK_COLOR = "#9aa5ce"
 
