@@ -81,6 +81,7 @@ export function buildGraph(data: GraphResponse): Graph {
         domainId: agg.domain_id,
         memberIds: [...m.member_ids],
         count: m.count,
+        directCount: m.direct_count,
         // start hidden: the overview render logic unhides markers for collapsed sectors.
         hidden: true,
       });

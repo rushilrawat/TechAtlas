@@ -258,6 +258,25 @@ def test_overview_aggregate_markers_have_graph_geometry():
             assert m["id"].startswith("agg:")
 
 
+def test_overview_aggregate_direct_count_matches_members_only():
+    """Each marker's direct_count = members whose OWN primary_domain is the domain (the
+    sidebar members-only count), while count = the whole spatial territory. In a flat
+    dataset (no nested subdomains) they are equal."""
+    ds = _multi_sector_dataset()
+    layout = gl.generate(ds)
+    for a in layout["overview_aggregates"]:
+        dom = a["domain_id"]
+        members_only = {
+            n["id"] for n in ds["nodes"]
+            if n["id"] != dom and n.get("primary_domain") == dom
+        }
+        direct = sum(m["direct_count"] for m in a["markers"])
+        assert direct == len(members_only)
+        # flat dataset: direct == total territory count
+        total = sum(m["count"] for m in a["markers"])
+        assert direct == total
+
+
 def test_overview_aggregates_deterministic_and_idempotent(tmp_path, monkeypatch):
     """Regenerating reproduces identical overview_aggregates (determinism), and
     regenerating WITH the committed layout present is idempotent for aggregates too."""

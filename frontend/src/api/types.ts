@@ -37,6 +37,9 @@ export interface OverviewAggregateMarker {
   radius: number;
   member_ids: string[];
   count: number;
+  /** Members whose OWN primary_domain is this domain (matches the sidebar members-only
+   * count); `count` is the whole spatial territory incl. nested subdomains. */
+  direct_count: number;
 }
 
 export interface OverviewAggregate {

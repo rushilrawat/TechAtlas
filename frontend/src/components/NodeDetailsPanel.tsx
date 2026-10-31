@@ -12,10 +12,13 @@ interface Props {
   // section for this node. nodeId is the canonical id used to look up detections.
   nodeId?: string | null;
   scan?: RepoScan | null;
+  // For a DOMAIN selection: its members-only count (sidebar / aggregate "direct" figure),
+  // shown in the header so a single tap identifies the domain's name AND size. Null otherwise.
+  memberCount?: number | null;
 }
 
 /** Detail sidebar for a selected node. Loads rich data on demand (spec §6, §10). */
-export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null }: Props) {
+export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null }: Props) {
   const [detail, setDetail] = useState<NodeDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -75,6 +78,11 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
             <h2>{detail.name}</h2>
             <p className="details-type">
               {nodeTypeLabel(detail.node_type, detail.node_subtype)}
+              {detail.node_type === "domain" && memberCount != null && (
+                <span className="details-count">
+                  {" · "}{memberCount} {memberCount === 1 ? "member" : "members"}
+                </span>
+              )}
             </p>
             {detail.lifecycle_status !== "active" && (
               <span className="lifecycle">{detail.lifecycle_status}</span>

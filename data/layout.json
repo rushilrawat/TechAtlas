@@ -3695,7 +3695,8 @@
             "concept:refactoring",
             "concept:technical-debt"
           ],
-          "count": 23
+          "count": 23,
+          "direct_count": 23
         }
       ]
     },
@@ -3749,7 +3750,8 @@
             "technology:orbstack",
             "technology:nixos"
           ],
-          "count": 40
+          "count": 40,
+          "direct_count": 40
         }
       ]
     },
@@ -3816,7 +3818,8 @@
             "technology:html",
             "technology:jquery"
           ],
-          "count": 53
+          "count": 53,
+          "direct_count": 53
         }
       ]
     },
@@ -3849,7 +3852,8 @@
             "technology:qt",
             "technology:android-sdk"
           ],
-          "count": 19
+          "count": 19,
+          "direct_count": 19
         }
       ]
     },
@@ -3887,7 +3891,8 @@
             "concept:virtual-reality",
             "technology:blender"
           ],
-          "count": 24
+          "count": 24,
+          "direct_count": 22
         }
       ]
     },
@@ -3968,7 +3973,8 @@
             "technology:weights-biases",
             "concept:scientific-visualization"
           ],
-          "count": 67
+          "count": 67,
+          "direct_count": 67
         }
       ]
     },
@@ -4011,7 +4017,8 @@
             "technology:moveit",
             "concept:visual-odometry"
           ],
-          "count": 29
+          "count": 29,
+          "direct_count": 29
         }
       ]
     },
@@ -4067,7 +4074,8 @@
             "concept:oltp",
             "concept:replication"
           ],
-          "count": 42
+          "count": 42,
+          "direct_count": 42
         }
       ]
     },
@@ -4146,7 +4154,8 @@
             "concept:distributed-transaction",
             "concept:fault-tolerance"
           ],
-          "count": 65
+          "count": 65,
+          "direct_count": 65
         }
       ]
     },
@@ -4209,7 +4218,8 @@
             "technology:minio",
             "technology:packer"
           ],
-          "count": 49
+          "count": 49,
+          "direct_count": 49
         }
       ]
     },
@@ -4233,7 +4243,8 @@
             "concept:sdn",
             "concept:switching"
           ],
-          "count": 10
+          "count": 10,
+          "direct_count": 10
         }
       ]
     },
@@ -4332,7 +4343,8 @@
             "concept:simd",
             "concept:thread"
           ],
-          "count": 85
+          "count": 85,
+          "direct_count": 47
         }
       ]
     },
@@ -4397,7 +4409,8 @@
             "concept:sorting-algorithms",
             "concept:symbolic-execution"
           ],
-          "count": 51
+          "count": 51,
+          "direct_count": 51
         }
       ]
     },
@@ -4447,7 +4460,8 @@
             "concept:zero-knowledge-proof",
             "concept:sql-injection"
           ],
-          "count": 36
+          "count": 36,
+          "direct_count": 36
         }
       ]
     }

@@ -275,6 +275,7 @@ def _build_overview_aggregates(
     pos: dict[str, list[float]],
     radius: dict[str, float],
     domain_pos: dict[str, list[float]],
+    domain_of: dict[str, str],
 ) -> list[dict]:
     """Deterministic overview LOD grouping (atlas-overview-collision-free bugfix).
 
@@ -302,6 +303,10 @@ def _build_overview_aggregates(
         # is hidden at overview by the frontend and returns (with members) on zoom/selection.
         mx, my = domain_pos[d]
         rr = 40.0 + math.sqrt(len(member_ids)) * 14.0
+        # direct_count = members whose OWN primary_domain is this domain (matches the sidebar
+        # members-only count, e.g. Robotics 29, Systems 47); total count = the whole spatial
+        # territory incl. nested-subdomain members. Both derive from canonical membership.
+        direct_count = sum(1 for m in member_ids if domain_of.get(m) == d)
         markers = [
             {
                 "id": f"agg:{d}:all",
@@ -310,6 +315,7 @@ def _build_overview_aggregates(
                 "radius": round(rr, 2),
                 "member_ids": list(member_ids),
                 "count": len(member_ids),
+                "direct_count": direct_count,
             }
         ]
         out.append({"domain_id": d, "markers": markers})
@@ -512,7 +518,7 @@ def generate(dataset: dict) -> dict:
     rounded_pos = {nid: [coords[nid]["x"], coords[nid]["y"]] for nid in ids}
     domain_pos = {d: [coords[d]["x"], coords[d]["y"]] for d in ordered}
     overview_aggregates = _build_overview_aggregates(
-        ordered, shell_members, rounded_pos, radius, domain_pos
+        ordered, shell_members, rounded_pos, radius, domain_pos, domain_of
     )
     # Membership-integrity invariant: every aggregated id appears exactly once and never
     # names a top-level domain anchor; the union of aggregated ids is a subset of the

@@ -208,6 +208,7 @@ class GraphService:
                     radius=m["radius"],
                     member_ids=list(m["member_ids"]),
                     count=m["count"],
+                    direct_count=m.get("direct_count", m["count"]),
                 )
                 for m in a.get("markers", [])
             ]

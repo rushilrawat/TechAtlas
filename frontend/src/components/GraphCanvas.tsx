@@ -187,13 +187,29 @@ function fitStack(
 function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
   const graph = renderer.getGraph();
   let mnX = Infinity, mnY = Infinity, mxX = -Infinity, mxY = -Infinity, any = false;
+  // At the collision-free overview the visible content is the 14 aggregate MARKERS (on the
+  // domain ring), not the 607 hidden members that sprawl far into the sector shells. Frame to
+  // the MARKER extent when markers exist, so the ring fills the canvas instead of floating
+  // small in the centre (fixes the "too empty" overview). Fall back to all nodes otherwise
+  // (e.g. a layout with no aggregates), preserving the prior behaviour.
+  let hasMarkers = false;
   graph.forEachNode((_n, a) => {
+    if (a.isAggregate !== true) return;
     const x = a.x as number, y = a.y as number;
     if (typeof x !== "number" || typeof y !== "number") return;
-    any = true;
+    hasMarkers = true; any = true;
     mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
     mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
   });
+  if (!hasMarkers) {
+    graph.forEachNode((_n, a) => {
+      const x = a.x as number, y = a.y as number;
+      if (typeof x !== "number" || typeof y !== "number") return;
+      any = true;
+      mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
+      mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
+    });
+  }
   if (!any) return;
   const el = renderer.getContainer();
   const vw = el.clientWidth || window.innerWidth;
@@ -290,6 +306,7 @@ export function GraphCanvas({
   // Ids of overview labels SUPPRESSED by the screen-space placement pass (Layer 3).
   const suppressedLabelsRef = useRef<Set<string>>(new Set());
   const labelSettleRef = useRef<number | null>(null);
+  const recomputeLabelsRef = useRef<(() => void) | null>(null);
   // The domain id of the active selection (if a domain or one of its members is selected),
   // so that sector expands to individuals while the rest stay aggregated.
   const activeDomainRef = useRef<string | null>(null);
@@ -339,7 +356,12 @@ export function GraphCanvas({
           memberToDomain.set(m, dom);
         }
         const nm = nameByDomain.get(dom) ?? dom.replace(/^domain:/, "");
-        aggLabel.set(id, `${nm} · ${a.count}`);
+        // Label shows DIRECT members (matches the sidebar members-only count). When the
+        // spatial territory also holds nested-subdomain members, append the extra as "(+N)"
+        // so the two populations are clearly distinguished (both from canonical membership).
+        const direct = (a.directCount as number | undefined) ?? (a.count as number);
+        const total = a.count as number;
+        aggLabel.set(id, total > direct ? `${nm} · ${direct} (+${total - direct})` : `${nm} · ${direct}`);
       });
       sectorMarkerIdsRef.current = sectorMarkers;
       memberToDomainRef.current = memberToDomain;
@@ -501,7 +523,12 @@ export function GraphCanvas({
           });
           const text = aggregateLabelRef.current.get(id) ?? "";
           const PAD = 4; // breathing room; keeps the pass stricter than the measure
-          const w = labelCtx.measureText(text).width + PAD * 2;
+          // Use the LARGER of the measured width and a conservative per-character estimate.
+          // Headless/first-paint runs may measure before the Inter web font loads (narrower
+          // metrics); the estimate keeps the pass's box >= the finally-rendered label, so
+          // panel/label/node suppression never under-fires due to font-load timing.
+          const w =
+            Math.max(labelCtx.measureText(text).width, text.length * 7.2) + PAD * 2;
           candidates.push({
             id,
             priority: prio--, // larger sectors first (markers iterated in sector order)
@@ -512,12 +539,20 @@ export function GraphCanvas({
       }
       // Side panels in container-local coordinates.
       const panels: Box[] = [];
+      // Inflate each panel rect by a margin so a label is suppressed BEFORE it visibly grazes
+      // the panel edge (absorbs sub-pixel camera drift between this pass and the final frame).
+      const PANEL_MARGIN = 10;
       for (const sel of [".legend", "#graph-filters", ".filter-panel"]) {
         const n = document.querySelector(sel) as HTMLElement | null;
         if (!n) continue;
         const rr = n.getBoundingClientRect();
         if (rr.width <= 0 || rr.height <= 0 || rr.width > vwp * 0.6) continue; // ignore bottom sheets
-        panels.push({ x: rr.left - cr.left, y: rr.top - cr.top, w: rr.width, h: rr.height });
+        panels.push({
+          x: rr.left - cr.left - PANEL_MARGIN,
+          y: rr.top - cr.top - PANEL_MARGIN,
+          w: rr.width + PANEL_MARGIN * 2,
+          h: rr.height + PANEL_MARGIN * 2,
+        });
       }
       suppressedLabelsRef.current = placeLabels({
         candidates,
@@ -538,6 +573,7 @@ export function GraphCanvas({
       });
     };
     scheduleRefreshRef.current = scheduleRefresh;
+    recomputeLabelsRef.current = () => { recomputeOverviewLabels(); renderer.refresh(); };
 
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
     // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
@@ -589,17 +625,22 @@ export function GraphCanvas({
             res.hidden = true;
             return res;
           }
-          // Marker is shown: label it (domain name + count) UNLESS the screen-space label
-          // placement pass suppressed it to avoid a collision / panel occlusion (Layer 3).
+          // Marker is shown: label it (domain name + count). The ACTIVE or HOVERED marker
+          // ALWAYS shows its label (so a single tap/hover identifies the domain on every
+          // viewport — including phones where at-rest labels are suppressed). Otherwise the
+          // label shows unless the screen-space placement pass suppressed it to avoid a
+          // collision / panel occlusion (Layer 3).
           res.hidden = false;
-          if (suppressedLabelsRef.current.has(node)) {
-            res.label = "";
-            res.forceLabel = false;
-          } else {
+          const isFocusedMarker = node === active || node === hoveredRef.current;
+          if (isFocusedMarker || !suppressedLabelsRef.current.has(node)) {
             res.label = aggregateLabelRef.current.get(node) ?? "";
             res.forceLabel = true;
+            if (isFocusedMarker) res.zIndex = 3;
+          } else {
+            res.label = "";
+            res.forceLabel = false;
           }
-          res.zIndex = 1;
+          if (res.zIndex === undefined) res.zIndex = 1;
           // Responsive marker size: the 14 markers sit on a ring that fitExplore frames
           // smaller on narrow viewports (extra padding), so cap the marker's base size there
           // to keep the compressed ring collision-free without making desktop markers tiny.
@@ -1219,8 +1260,16 @@ export function GraphCanvas({
     const onResize = () => project();
     window.addEventListener("resize", onResize);
     // span the entry framing animation so the backdrop settles with the camera.
+    // Also re-place the overview priority labels at the END of the span, i.e. once the
+    // camera has fully settled at its final ratio-1 framing — the camera-event debounce can
+    // run a frame early (mid-animation), so this guarantees a final collision pass from the
+    // true final projected marker positions (no label grazes a panel/neighbour).
     let raf = 0; const t0 = performance.now();
-    const loop = (now: number) => { project(); if (now - t0 < 1400) raf = requestAnimationFrame(loop); };
+    const loop = (now: number) => {
+      project();
+      if (now - t0 < 1400) raf = requestAnimationFrame(loop);
+      else recomputeLabelsRef.current?.();
+    };
     raf = requestAnimationFrame(loop);
     return () => {
       camera.removeListener("updated", project);

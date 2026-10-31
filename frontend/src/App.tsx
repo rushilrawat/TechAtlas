@@ -404,6 +404,10 @@ export default function App() {
             }
             nodeId={selected}
             scan={activeScan}
+            // When a DOMAIN is selected, pass its members-only count (same figure as the
+            // sidebar / aggregate "direct" count) so the panel shows name AND count — key
+            // for mobile, where a single tap is the primary way to identify a domain.
+            memberCount={domainsById.get(selected)?.node_count ?? null}
             onClose={() => handleSelect(null)}
             onNavigate={navigate}
           />

@@ -187,7 +187,7 @@ describe("buildGraph overview-aggregate ingestion", () => {
     overview_aggregates: [
       { domain_id: "domain:robotics", markers: [
         { id: "agg:domain:robotics:0", x: 15, y: 15, radius: 40,
-          member_ids: ["technology:ros", "technology:slam"], count: 2 },
+          member_ids: ["technology:ros", "technology:slam"], count: 2, direct_count: 2 },
       ] },
     ],
   };
@@ -205,6 +205,7 @@ describe("buildGraph overview-aggregate ingestion", () => {
     expect(g.hasNode("agg:domain:robotics:0")).toBe(true);
     expect(g.getNodeAttribute("agg:domain:robotics:0", "isAggregate")).toBe(true);
     expect(g.getNodeAttribute("agg:domain:robotics:0", "count")).toBe(2);
+    expect(g.getNodeAttribute("agg:domain:robotics:0", "directCount")).toBe(2);
     expect(g.getNodeAttribute("agg:domain:robotics:0", "memberIds")).toEqual([
       "technology:ros", "technology:slam",
     ]);
@@ -244,8 +245,8 @@ describe("aggregateMemberIds", () => {
       edges: [],
       overview_aggregates: [
         { domain_id: "domain:x", markers: [
-          { id: "agg:domain:x:0", x: 1, y: 1, radius: 10, member_ids: ["technology:a"], count: 1 },
-          { id: "agg:domain:x:1", x: 2, y: 2, radius: 10, member_ids: ["technology:b"], count: 1 },
+          { id: "agg:domain:x:0", x: 1, y: 1, radius: 10, member_ids: ["technology:a"], count: 1, direct_count: 1 },
+          { id: "agg:domain:x:1", x: 2, y: 2, radius: 10, member_ids: ["technology:b"], count: 1, direct_count: 1 },
         ] },
       ],
     });
