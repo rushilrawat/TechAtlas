@@ -5213,5 +5213,295 @@
     "source": "technology:tla-plus",
     "target": "concept:formal-verification",
     "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:robot-kinematics",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:forward-kinematics",
+    "target": "concept:robot-kinematics",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:inverse-kinematics",
+    "target": "concept:robot-kinematics",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:robot-dynamics",
+    "target": "concept:robot-kinematics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:control-theory",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:feedback-control",
+    "target": "concept:control-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:pid-control",
+    "target": "concept:feedback-control",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:state-estimation",
+    "target": "concept:control-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:robot-localization",
+    "target": "concept:slam",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:motion-planning",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:motion-planning",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:path-planning",
+    "target": "concept:motion-planning",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:trajectory-planning",
+    "target": "concept:motion-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:robot-perception",
+    "target": "concept:computer-vision",
+    "relationship_type": "depends_on"
+  },
+  {
+    "source": "concept:slam",
+    "target": "domain:robotics",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:visual-slam",
+    "target": "concept:slam",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:visual-slam",
+    "target": "concept:computer-vision",
+    "relationship_type": "depends_on"
+  },
+  {
+    "source": "concept:lidar",
+    "target": "concept:robot-perception",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sensor-fusion",
+    "target": "concept:state-estimation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:kalman-filter",
+    "target": "concept:state-estimation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:extended-kalman-filter",
+    "target": "concept:kalman-filter",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:particle-filter",
+    "target": "concept:state-estimation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:occupancy-grid",
+    "target": "concept:slam",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:autonomous-navigation",
+    "target": "concept:motion-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:obstacle-avoidance",
+    "target": "concept:autonomous-navigation",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:visual-odometry",
+    "target": "concept:computer-vision",
+    "relationship_type": "depends_on"
+  },
+  {
+    "source": "concept:a-star-search",
+    "target": "concept:search-algorithms",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:a-star-search",
+    "target": "concept:motion-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dijkstra",
+    "target": "concept:shortest-path",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:rrt",
+    "target": "concept:motion-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:model-predictive-control",
+    "target": "concept:control-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:ros2",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:gazebo",
+    "target": "technology:ros2",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:moveit",
+    "target": "technology:ros2",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "domain:robotics",
+    "target": "domain:ai-ml",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "domain:robotics",
+    "target": "domain:systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:human-computer-interaction",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:user-experience",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:accessibility",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:interaction-design",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:augmented-reality",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:virtual-reality",
+    "target": "concept:augmented-reality",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:rendering-pipeline",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ray-tracing",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:shaders",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-geometry",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:physics-simulation",
+    "target": "concept:physics-engine",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-visualization",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:scientific-visualization",
+    "target": "concept:data-visualization",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:scientific-computing",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:scientific-computing",
+    "target": "technology:numpy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:numerical-analysis",
+    "target": "concept:scientific-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bioinformatics",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quantum-computing",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:qubit",
+    "target": "concept:quantum-computing",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:quantum-gate",
+    "target": "concept:quantum-computing",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:quantum-algorithms",
+    "target": "concept:quantum-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:qiskit",
+    "target": "concept:quantum-computing",
+    "relationship_type": "used_for"
   }
 ]

@@ -3003,5 +3003,506 @@
     ],
     "importance": 0.6,
     "wikipedia_title": "Post-quantum cryptography"
+  },
+  {
+    "id": "concept:robot-kinematics",
+    "slug": "robot-kinematics",
+    "name": "Robot Kinematics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "The study of robot motion without regard to the forces that cause it.",
+    "importance": 0.6,
+    "wikipedia_title": "Robot kinematics"
+  },
+  {
+    "id": "concept:forward-kinematics",
+    "slug": "forward-kinematics",
+    "name": "Forward Kinematics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Computing a robot's end-effector pose from its joint parameters.",
+    "importance": 0.6,
+    "wikipedia_title": "Forward kinematics"
+  },
+  {
+    "id": "concept:inverse-kinematics",
+    "slug": "inverse-kinematics",
+    "name": "Inverse Kinematics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Computing joint parameters that achieve a desired end-effector pose.",
+    "aliases": [
+      "IK"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Inverse kinematics"
+  },
+  {
+    "id": "concept:robot-dynamics",
+    "slug": "robot-dynamics",
+    "name": "Robot Dynamics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "The study of forces and torques that produce robot motion.",
+    "importance": 0.6,
+    "wikipedia_title": "Dynamics (mechanics)"
+  },
+  {
+    "id": "concept:control-theory",
+    "slug": "control-theory",
+    "name": "Control Theory",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "The mathematics of influencing dynamical systems toward desired behavior.",
+    "importance": 0.6,
+    "wikipedia_title": "Control theory"
+  },
+  {
+    "id": "concept:feedback-control",
+    "slug": "feedback-control",
+    "name": "Feedback Control",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Control that uses measured output to adjust system input.",
+    "aliases": [
+      "Closed-loop control"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Control theory"
+  },
+  {
+    "id": "concept:pid-control",
+    "slug": "pid-control",
+    "name": "PID Control",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A feedback controller combining proportional, integral, and derivative terms.",
+    "aliases": [
+      "PID controller"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "PID controller"
+  },
+  {
+    "id": "concept:state-estimation",
+    "slug": "state-estimation",
+    "name": "State Estimation",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Inferring a system's internal state from noisy sensor measurements.",
+    "importance": 0.6,
+    "wikipedia_title": "State observer"
+  },
+  {
+    "id": "concept:robot-localization",
+    "slug": "robot-localization",
+    "name": "Robot Localization",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Determining a robot's position within a known or learned map.",
+    "importance": 0.6,
+    "wikipedia_title": "Robot localization"
+  },
+  {
+    "id": "concept:motion-planning",
+    "slug": "motion-planning",
+    "name": "Motion Planning",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Computing a sequence of valid motions to move a robot from start to goal.",
+    "importance": 0.6,
+    "wikipedia_title": "Motion planning"
+  },
+  {
+    "id": "concept:path-planning",
+    "slug": "path-planning",
+    "name": "Path Planning",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Finding a collision-free geometric path between two configurations.",
+    "importance": 0.6,
+    "wikipedia_title": "Motion planning"
+  },
+  {
+    "id": "concept:trajectory-planning",
+    "slug": "trajectory-planning",
+    "name": "Trajectory Planning",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Planning time-parameterized motion respecting dynamic constraints.",
+    "importance": 0.6,
+    "wikipedia_title": "Trajectory optimization"
+  },
+  {
+    "id": "concept:robot-perception",
+    "slug": "robot-perception",
+    "name": "Robot Perception",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Interpreting sensor data so a robot can understand its environment.",
+    "importance": 0.6,
+    "wikipedia_title": "Machine perception"
+  },
+  {
+    "id": "concept:slam",
+    "slug": "slam",
+    "name": "Simultaneous Localization and Mapping",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Building a map of an unknown environment while tracking the robot's location within it.",
+    "aliases": [
+      "SLAM"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Simultaneous localization and mapping"
+  },
+  {
+    "id": "concept:visual-slam",
+    "slug": "visual-slam",
+    "name": "Visual SLAM",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "SLAM that estimates pose and map primarily from camera imagery.",
+    "aliases": [
+      "vSLAM"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Simultaneous localization and mapping"
+  },
+  {
+    "id": "concept:lidar",
+    "slug": "lidar",
+    "name": "LiDAR",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A ranging sensor that measures distance using reflected laser light.",
+    "aliases": [
+      "Lidar"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Lidar"
+  },
+  {
+    "id": "concept:sensor-fusion",
+    "slug": "sensor-fusion",
+    "name": "Sensor Fusion",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Combining data from multiple sensors to improve state estimates.",
+    "importance": 0.6,
+    "wikipedia_title": "Sensor fusion"
+  },
+  {
+    "id": "concept:kalman-filter",
+    "slug": "kalman-filter",
+    "name": "Kalman Filters",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A recursive estimator optimal for linear systems with Gaussian noise.",
+    "importance": 0.6,
+    "wikipedia_title": "Kalman filter"
+  },
+  {
+    "id": "concept:extended-kalman-filter",
+    "slug": "extended-kalman-filter",
+    "name": "Extended Kalman Filters",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A Kalman filter variant linearizing nonlinear system models.",
+    "aliases": [
+      "EKF"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Extended Kalman filter"
+  },
+  {
+    "id": "concept:particle-filter",
+    "slug": "particle-filter",
+    "name": "Particle Filters",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A sampling-based estimator for nonlinear, non-Gaussian systems.",
+    "importance": 0.6,
+    "wikipedia_title": "Particle filter"
+  },
+  {
+    "id": "concept:occupancy-grid",
+    "slug": "occupancy-grid",
+    "name": "Occupancy Grids",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A map representation dividing space into cells marked occupied or free.",
+    "importance": 0.6,
+    "wikipedia_title": "Occupancy grid mapping"
+  },
+  {
+    "id": "concept:autonomous-navigation",
+    "slug": "autonomous-navigation",
+    "name": "Autonomous Navigation",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A robot's ability to move safely toward goals without human control.",
+    "importance": 0.6,
+    "wikipedia_title": "Robot navigation"
+  },
+  {
+    "id": "concept:obstacle-avoidance",
+    "slug": "obstacle-avoidance",
+    "name": "Obstacle Avoidance",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Adjusting motion in real time to avoid collisions with obstacles.",
+    "importance": 0.6,
+    "wikipedia_title": "Obstacle avoidance"
+  },
+  {
+    "id": "concept:visual-odometry",
+    "slug": "visual-odometry",
+    "name": "Visual Odometry",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Estimating motion by analyzing changes in sequential camera images.",
+    "aliases": [
+      "VO"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Visual odometry"
+  },
+  {
+    "id": "concept:rrt",
+    "slug": "rrt",
+    "name": "Rapidly-Exploring Random Trees",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "A sampling-based algorithm for planning paths in high-dimensional spaces.",
+    "aliases": [
+      "RRT",
+      "RRT*"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Rapidly exploring random tree"
+  },
+  {
+    "id": "concept:model-predictive-control",
+    "slug": "model-predictive-control",
+    "name": "Model Predictive Control",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Control that optimizes a system model over a receding time horizon.",
+    "aliases": [
+      "MPC"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Model predictive control"
+  },
+  {
+    "id": "concept:a-star-search",
+    "slug": "a-star-search",
+    "name": "A* Search",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A best-first graph search algorithm using heuristics to find shortest paths.",
+    "aliases": [
+      "A-star"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "A* search algorithm"
+  },
+  {
+    "id": "concept:dijkstra",
+    "slug": "dijkstra",
+    "name": "Dijkstra's Algorithm",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A graph algorithm computing shortest paths from a source to all vertices.",
+    "importance": 0.6,
+    "wikipedia_title": "Dijkstra's algorithm"
+  },
+  {
+    "id": "concept:human-computer-interaction",
+    "slug": "human-computer-interaction",
+    "name": "Human-Computer Interaction",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "The study and design of how people interact with computers.",
+    "aliases": [
+      "HCI"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Human–computer interaction"
+  },
+  {
+    "id": "concept:user-experience",
+    "slug": "user-experience",
+    "name": "User Experience",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "The overall experience and satisfaction of a person using a product.",
+    "aliases": [
+      "UX"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "User experience"
+  },
+  {
+    "id": "concept:interaction-design",
+    "slug": "interaction-design",
+    "name": "Interaction Design",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Designing interactive products focused on user behavior and flow.",
+    "aliases": [
+      "IxD"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Interaction design"
+  },
+  {
+    "id": "concept:augmented-reality",
+    "slug": "augmented-reality",
+    "name": "Augmented Reality",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Overlaying computer-generated content onto a view of the real world.",
+    "aliases": [
+      "AR"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Augmented reality"
+  },
+  {
+    "id": "concept:virtual-reality",
+    "slug": "virtual-reality",
+    "name": "Virtual Reality",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "An immersive computer-generated environment replacing the real world.",
+    "aliases": [
+      "VR"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Virtual reality"
+  },
+  {
+    "id": "concept:computational-geometry",
+    "slug": "computational-geometry",
+    "name": "Computational Geometry",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "The study of algorithms for geometric problems.",
+    "importance": 0.6,
+    "wikipedia_title": "Computational geometry"
+  },
+  {
+    "id": "concept:physics-simulation",
+    "slug": "physics-simulation",
+    "name": "Physics Simulation",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Numerically modeling physical behavior such as rigid-body dynamics.",
+    "importance": 0.6,
+    "wikipedia_title": "Physics engine"
+  },
+  {
+    "id": "concept:data-visualization",
+    "slug": "data-visualization",
+    "name": "Data Visualization",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Representing data graphically to reveal patterns and support understanding.",
+    "aliases": [
+      "Dataviz"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Data and information visualization"
+  },
+  {
+    "id": "concept:scientific-visualization",
+    "slug": "scientific-visualization",
+    "name": "Scientific Visualization",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Visualizing scientific data such as simulations and volumetric fields.",
+    "importance": 0.6,
+    "wikipedia_title": "Scientific visualization"
+  },
+  {
+    "id": "concept:scientific-computing",
+    "slug": "scientific-computing",
+    "name": "Scientific Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Using computation and numerical methods to solve scientific problems.",
+    "aliases": [
+      "Computational science"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Computational science"
+  },
+  {
+    "id": "concept:numerical-analysis",
+    "slug": "numerical-analysis",
+    "name": "Numerical Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "The study of algorithms for approximating solutions to mathematical problems.",
+    "importance": 0.6,
+    "wikipedia_title": "Numerical analysis"
+  },
+  {
+    "id": "concept:bioinformatics",
+    "slug": "bioinformatics",
+    "name": "Bioinformatics",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Applying computation to understand biological data such as genomes.",
+    "importance": 0.6,
+    "wikipedia_title": "Bioinformatics"
+  },
+  {
+    "id": "concept:quantum-computing",
+    "slug": "quantum-computing",
+    "name": "Quantum Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Computation that exploits quantum-mechanical phenomena like superposition and entanglement.",
+    "aliases": [
+      "QC"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Quantum computing"
+  },
+  {
+    "id": "concept:qubit",
+    "slug": "qubit",
+    "name": "Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The basic unit of quantum information, able to exist in superposition.",
+    "aliases": [
+      "Qubit"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Qubit"
+  },
+  {
+    "id": "concept:quantum-gate",
+    "slug": "quantum-gate",
+    "name": "Quantum Gates",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Basic operations that manipulate the state of qubits.",
+    "importance": 0.6,
+    "wikipedia_title": "Quantum logic gate"
+  },
+  {
+    "id": "concept:quantum-algorithms",
+    "slug": "quantum-algorithms",
+    "name": "Quantum Algorithms",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Algorithms designed to run on quantum computers.",
+    "importance": 0.6,
+    "wikipedia_title": "Quantum algorithm"
   }
 ]

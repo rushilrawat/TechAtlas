@@ -4190,5 +4190,61 @@
     ],
     "wikipedia_title": "TLA+",
     "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:ros2",
+    "slug": "ros2",
+    "name": "ROS 2",
+    "node_type": "technology",
+    "node_subtype": "framework",
+    "primary_domain": "domain:robotics",
+    "short_description": "An open-source middleware framework for building robot applications.",
+    "aliases": [
+      "ROS",
+      "ROS2",
+      "Robot Operating System"
+    ],
+    "official_url": "https://www.ros.org",
+    "wikipedia_title": "Robot Operating System",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:gazebo",
+    "slug": "gazebo",
+    "name": "Gazebo",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:robotics",
+    "short_description": "An open-source 3D robotics simulator.",
+    "official_url": "https://gazebosim.org",
+    "wikipedia_title": "Gazebo simulator",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:moveit",
+    "slug": "moveit",
+    "name": "MoveIt",
+    "node_type": "technology",
+    "node_subtype": "library",
+    "primary_domain": "domain:robotics",
+    "short_description": "A motion-planning framework for robotic manipulation in ROS.",
+    "aliases": [
+      "MoveIt 2"
+    ],
+    "official_url": "https://moveit.ai",
+    "wikipedia_title": "MoveIt",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:qiskit",
+    "slug": "qiskit",
+    "name": "Qiskit",
+    "node_type": "technology",
+    "node_subtype": "library",
+    "primary_domain": "domain:systems",
+    "short_description": "An open-source SDK for programming quantum computers.",
+    "official_url": "https://www.ibm.com/quantum/qiskit",
+    "wikipedia_title": "Qiskit",
+    "lifecycle_status": "active"
   }
 ]
