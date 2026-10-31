@@ -139,12 +139,39 @@ test.describe("Stack View rendering regressions", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(String(e)));
     await gotoExplore(page);
-    // A representative sample of canonical nodes must map onto the canvas and be un-hidden.
+    // Collision-free overview (atlas-overview-collision-free): the default view shows the
+    // 14 domain SECTOR MARKERS, not all 607 individual nodes. The canonical nodes are not
+    // drawn at rest but remain fully REACHABLE — zooming into the detail band reveals the
+    // individual bubbles. This proves real rendering (canvas draws something meaningful) and
+    // that no node was discarded, without reintroducing the overlap the fix removed.
     const sample = ["technology:react", "technology:python", "domain:frontend", "domain:ai-ml"];
+    // All sampled nodes exist on the canvas (reachable), and markers render at the overview.
+    const markerShown = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      let markers = 0;
+      g.forEachNode((_id: string, a: any) => {
+        if (a.isAggregate !== true) return;
+        const dd = s.getNodeDisplayData(a.id ?? _id);
+        if (dd && dd.hidden !== true) markers++;
+      });
+      return markers;
+    });
+    expect(markerShown, "sector markers should render at the default overview").toBeGreaterThan(0);
+    // Zoom into the detail band; the sampled canonical nodes are revealed (progressive
+    // disclosure), proving they are present and reachable — not discarded.
+    await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      s.getCamera().setState({ ratio: 0.3 });
+      s.refresh();
+    });
+    await page.waitForTimeout(400);
     const probes = await probeNodes(page, sample);
     for (const p of probes) {
-      expect(p.hidden, `${p.id} should be visible in Explore`).toBe(false);
-      expect(p.onCanvas, `${p.id} should map onto the canvas`).toBe(true);
+      // Revealed (un-hidden) on zoom — proving the node is present and reachable, not
+      // discarded. Exact on-screen position depends on the sector the node sits in, so we
+      // assert reachability (not hidden), which is the collision-free overview's guarantee.
+      expect(p.hidden, `${p.id} should be revealed when zoomed in`).toBe(false);
     }
     expect(errors).toEqual([]);
   });

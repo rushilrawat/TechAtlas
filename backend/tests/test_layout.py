@@ -168,3 +168,108 @@ def test_task6_pinning_freezes_far_nodes(tmp_path, monkeypatch):
     )
     assert moved < 0.01
     assert "technology:w" in second["coordinates"]
+
+
+# --------------------------------------------------------------------------- #
+# atlas-overview-collision-free bugfix — deterministic LOD aggregation (Task 3)
+# --------------------------------------------------------------------------- #
+def _multi_sector_dataset(members_per_domain: int = 40) -> dict:
+    """A dataset with two top-level domains each holding many members, so at least one
+    sector is dense enough to require overview aggregation."""
+    nodes = [
+        {"id": "domain:robotics", "slug": "robotics", "name": "Robotics",
+         "node_type": "domain", "primary_domain": "domain:robotics",
+         "short_description": "r", "importance": 1.0},
+        {"id": "domain:ai-ml", "slug": "ai-ml", "name": "AI/ML",
+         "node_type": "domain", "primary_domain": "domain:ai-ml",
+         "short_description": "a", "importance": 1.0},
+    ]
+    edges = []
+    for dom in ("domain:robotics", "domain:ai-ml"):
+        for i in range(members_per_domain):
+            nid = f"technology:{dom.split(':')[1]}-{i}"
+            nodes.append({"id": nid, "slug": nid, "name": nid, "node_type": "technology",
+                          "node_subtype": "library", "primary_domain": dom,
+                          "short_description": "m"})
+            edges.append({"source": nid, "target": dom,
+                          "relationship_type": "belongs_to_domain"})
+    return {"version": "9.9.9", "nodes": nodes, "edges": edges}
+
+
+def test_overview_aggregates_is_additive_and_coords_unchanged():
+    """overview_aggregates is an ADDITIVE key; individual coordinates + layout_version
+    are byte-for-byte unchanged by adding aggregation."""
+    ds = _multi_sector_dataset()
+    layout = gl.generate(ds)
+    assert "overview_aggregates" in layout
+    assert layout["layout_version"] == "9.9.9"
+    # The individual coordinate block still has one entry per node and is unaffected.
+    assert len(layout["coordinates"]) == len(ds["nodes"])
+
+
+def test_overview_aggregate_membership_equals_members_only_set():
+    """Per domain: union of all marker member_ids == that domain's members-only set
+    (every non-anchor node whose primary_domain is the domain); counts agree; the
+    domain anchor is NEVER a member (kept individual on the ring)."""
+    ds = _multi_sector_dataset()
+    layout = gl.generate(ds)
+    aggs = {a["domain_id"]: a for a in layout["overview_aggregates"]}
+    for dom in ("domain:robotics", "domain:ai-ml"):
+        members_only = {
+            n["id"] for n in ds["nodes"]
+            if n["id"] != dom and n.get("primary_domain") == dom
+        }
+        union = set()
+        for marker in aggs[dom]["markers"]:
+            assert marker["count"] == len(marker["member_ids"])
+            union |= set(marker["member_ids"])
+            assert dom not in marker["member_ids"]  # anchor never aggregated
+        assert union == members_only
+
+
+def test_overview_aggregate_global_integrity_no_discard_no_dup():
+    """Union of all aggregate member_ids ∪ {non-aggregated nodes} == all node ids,
+    each appearing exactly once (aggregated XOR individual)."""
+    ds = _multi_sector_dataset()
+    layout = gl.generate(ds)
+    all_ids = {n["id"] for n in ds["nodes"]}
+    aggregated = []
+    for a in layout["overview_aggregates"]:
+        for m in a["markers"]:
+            aggregated.extend(m["member_ids"])
+    assert len(aggregated) == len(set(aggregated)), "a node is aggregated more than once"
+    aggregated_set = set(aggregated)
+    individual = all_ids - aggregated_set
+    # every id accounted for exactly once
+    assert aggregated_set | individual == all_ids
+    assert aggregated_set & individual == set()
+
+
+def test_overview_aggregate_markers_have_graph_geometry():
+    """Each marker carries graph-space x/y and a positive radius (candidate centroid for
+    the responsive frontend to project + fit)."""
+    ds = _multi_sector_dataset()
+    layout = gl.generate(ds)
+    for a in layout["overview_aggregates"]:
+        for m in a["markers"]:
+            assert isinstance(m["x"], (int, float))
+            assert isinstance(m["y"], (int, float))
+            assert m["radius"] > 0
+            assert m["id"].startswith("agg:")
+
+
+def test_overview_aggregates_deterministic_and_idempotent(tmp_path, monkeypatch):
+    """Regenerating reproduces identical overview_aggregates (determinism), and
+    regenerating WITH the committed layout present is idempotent for aggregates too."""
+    ds = _multi_sector_dataset()
+    a = gl.generate(copy.deepcopy(ds))
+    b = gl.generate(copy.deepcopy(ds))
+    assert a["overview_aggregates"] == b["overview_aggregates"]
+
+    import json
+    out = tmp_path / "layout.json"
+    monkeypatch.setattr(gl, "OUTPUT", out)
+    out.write_text(json.dumps(a))
+    c = gl.generate(copy.deepcopy(ds))
+    assert c["coordinates"] == a["coordinates"]
+    assert c["overview_aggregates"] == a["overview_aggregates"]

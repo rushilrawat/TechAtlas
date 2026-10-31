@@ -57,6 +57,7 @@ def main() -> None:
         "layout_version": svc.layout_version,
         "nodes": [_model(n) for n in nodes],
         "edges": [_model(e) for e in edges],
+        "overview_aggregates": [_model(a) for a in svc.overview_aggregates()],
     }
     _dump(OUT / "graph.json", graph_payload)
 

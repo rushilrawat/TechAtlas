@@ -269,6 +269,53 @@ def _load_previous() -> tuple[str | None, dict[str, dict]]:
     return prev.get("layout_version"), prev.get("coordinates", {})
 
 
+def _build_overview_aggregates(
+    ordered: list[str],
+    shell_members: dict[str, list[list[str]]],
+    pos: dict[str, list[float]],
+    radius: dict[str, float],
+    domain_pos: dict[str, list[float]],
+) -> list[dict]:
+    """Deterministic overview LOD grouping (atlas-overview-collision-free bugfix).
+
+    For each top-level sector, emit ONE aggregate MARKER that stands in for ALL of the
+    sector's members at the default overview. This keeps the overview collision-free and
+    legible: one counted bubble per domain, laid out radially outward from each anchor in
+    the wedge centre (anchors stay on the ring; markers sit just beyond them).
+
+    The per-shell `shell_members` ordering (hubs first) is preserved inside `member_ids` so
+    a future finer LOD can split a marker; the frontend currently collapses the whole sector
+    into this single marker and expands straight to individuals on zoom/selection
+    (progressive disclosure). The domain anchor is never a member.
+
+    Additive and pure: does not touch any individual coordinate. Deterministic (ordered
+    input, rounded output).
+    """
+    out: list[dict] = []
+    for d in ordered:
+        shells = shell_members.get(d, [])
+        member_ids = [m for shell in shells for m in shell]
+        if not member_ids:
+            continue
+        # Marker sits exactly at the domain anchor's ring slot, so the 14 sector markers
+        # FORM the domain ring at overview — equidistant and non-overlapping. The bare anchor
+        # is hidden at overview by the frontend and returns (with members) on zoom/selection.
+        mx, my = domain_pos[d]
+        rr = 40.0 + math.sqrt(len(member_ids)) * 14.0
+        markers = [
+            {
+                "id": f"agg:{d}:all",
+                "x": round(mx, 2),
+                "y": round(my, 2),
+                "radius": round(rr, 2),
+                "member_ids": list(member_ids),
+                "count": len(member_ids),
+            }
+        ]
+        out.append({"domain_id": d, "markers": markers})
+    return out
+
+
 def generate(dataset: dict) -> dict:
     """Structured-hybrid "atlas" layout (Explore-view redesign).
 
@@ -390,6 +437,10 @@ def generate(dataset: dict) -> dict:
     SHELL0 = RING + 150.0        # first member shell sits just OUTSIDE the anchor ring
     SHELL_STEP = 150.0           # radial spacing between shells (graph units), growing out
     PER_SHELL_BASE = 6           # nodes in the first shell; shells widen outward
+    # Capture per-sector shell membership (deterministic) so the overview LOD layer can group
+    # members into aggregate markers (one candidate marker per shell). ADDITIVE — does not
+    # affect any individual coordinate.
+    shell_members: dict[str, list[list[str]]] = {d: [] for d in ordered}
     for d in ordered:
         ms = members[d]
         if not ms:
@@ -407,6 +458,7 @@ def generate(dataset: dict) -> dict:
             shell_r = SHELL0 + shell * SHELL_STEP
             row = ms[i:i + cap]
             k = len(row)
+            shell_members[d].append(list(row))   # record this shell's members (LOD grouping)
             # spread this shell's nodes evenly across the (gapped) wedge arc
             for j, nid in enumerate(row):
                 if k == 1:
@@ -453,11 +505,35 @@ def generate(dataset: dict) -> dict:
         for nid in ids
     }
 
+    # ---- Overview LOD aggregates (ADDITIVE; individual coords untouched) ----
+    # Build from the SAME rounded coordinates written to `coords` (not the full-precision
+    # working `pos`), so a fresh build and a cross-version pin-reuse rebuild — which reads
+    # coordinates back rounded to 2 dp from the committed layout — produce identical markers.
+    rounded_pos = {nid: [coords[nid]["x"], coords[nid]["y"]] for nid in ids}
+    domain_pos = {d: [coords[d]["x"], coords[d]["y"]] for d in ordered}
+    overview_aggregates = _build_overview_aggregates(
+        ordered, shell_members, rounded_pos, radius, domain_pos
+    )
+    # Membership-integrity invariant: every aggregated id appears exactly once and never
+    # names a top-level domain anchor; the union of aggregated ids is a subset of the
+    # non-anchor nodes, so individual-shown ∪ aggregated == all nodes with no overlap. A
+    # corrupt grouping fails the build here rather than silently discarding a node.
+    _aggregated: list[str] = []
+    for _a in overview_aggregates:
+        for _m in _a["markers"]:
+            _aggregated.extend(_m["member_ids"])
+    assert len(_aggregated) == len(set(_aggregated)), "overview aggregate double-counts a node"
+    _agg_set = set(_aggregated)
+    _top = set(top_domains)
+    assert not (_agg_set & _top), "overview aggregate must never contain a top-level domain anchor"
+    assert _agg_set <= set(ids), "overview aggregate references an unknown node"
+
     return {
         "layout_version": dataset["version"],
         "layout_algorithm": "structured-atlas-ring+radial-fan",
         "domain_ring_order": ordered,
         "coordinates": coords,
+        "overview_aggregates": overview_aggregates,
     }
 
 

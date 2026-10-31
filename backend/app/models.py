@@ -39,11 +39,36 @@ class GraphEdge(BaseModel):
     weight: float | None = None
 
 
+class OverviewAggregateMarker(BaseModel):
+    """A precomputed overview level-of-detail marker: a presentation stand-in for a group
+    of member nodes within a domain sector (atlas-overview-collision-free). Graph-space
+    centroid + covering radius; member_ids/count are the exact underlying canonical nodes.
+    A marker is NOT a canonical node or relationship — it only drives the collision-free
+    overview, and the frontend expands it to its members on zoom/focus."""
+
+    id: str
+    x: float
+    y: float
+    radius: float
+    member_ids: list[str]
+    count: int
+
+
+class OverviewAggregate(BaseModel):
+    """All overview LOD markers for one top-level domain sector."""
+
+    domain_id: str
+    markers: list[OverviewAggregateMarker]
+
+
 class GraphResponse(BaseModel):
     version: str
     layout_version: str | None = None
     nodes: list[GraphNode]
     edges: list[GraphEdge]
+    # Additive overview LOD groupings (deterministic, from layout.json). Empty when the
+    # layout predates aggregation. Never alters nodes/edges/canonical truth.
+    overview_aggregates: list[OverviewAggregate] = Field(default_factory=list)
 
 
 class NeighborEdge(BaseModel):

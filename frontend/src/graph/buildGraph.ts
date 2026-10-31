@@ -53,7 +53,56 @@ export function buildGraph(data: GraphResponse): Graph {
     });
   }
 
+  // ---- Overview LOD aggregate markers (atlas-overview-collision-free) ----
+  // Additive presentation nodes. The canonical 607 nodes + 1116 edges above are built
+  // exactly as before; markers are EXTRA nodes tagged `isAggregate` so Sigma's node
+  // program, hit-testing, label, and click plumbing are reused with no new render program.
+  // Markers start HIDDEN — the GraphCanvas render layer decides responsively (from live
+  // screen-space fit) when a marker REPLACES its members. A marker is never a canonical
+  // node or relationship; its id is namespaced `agg:` and it carries the exact member ids.
+  for (const agg of data.overview_aggregates ?? []) {
+    const anchorColor = graph.hasNode(agg.domain_id)
+      ? (graph.getNodeAttribute(agg.domain_id, "color") as string)
+      : "#9aa5ce";
+    for (const m of agg.markers) {
+      if (graph.hasNode(m.id)) continue;
+      graph.addNode(m.id, {
+        label: "",            // label is composed at render time (name + count)
+        x: m.x,
+        y: m.y,
+        // Render radius hint; the render layer rescales against live screen space.
+        size: Math.max(12, Math.min(34, Math.sqrt(m.count) * 6)),
+        color: anchorColor,
+        nodeType: "aggregate",
+        primaryDomain: agg.domain_id,
+        type: "circle",
+        borderColor: anchorColor,
+        isAggregate: true,
+        domainId: agg.domain_id,
+        memberIds: [...m.member_ids],
+        count: m.count,
+        // start hidden: the overview render logic unhides markers for collapsed sectors.
+        hidden: true,
+      });
+    }
+  }
+
   return graph;
+}
+
+/**
+ * All canonical member ids represented by a domain's overview aggregate markers — the
+ * union across that domain's markers. Mirrors `domainMemberIds` but sourced from the
+ * precomputed LOD groupings, so a collapsed sector hides exactly these member nodes.
+ */
+export function aggregateMemberIds(graph: Graph, domainId: string): Set<string> {
+  const set = new Set<string>();
+  graph.forEachNode((_nid, a) => {
+    if (a.isAggregate === true && a.domainId === domainId) {
+      for (const m of (a.memberIds as string[] | undefined) ?? []) set.add(m);
+    }
+  });
+  return set;
 }
 
 

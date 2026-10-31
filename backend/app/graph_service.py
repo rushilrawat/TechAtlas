@@ -21,6 +21,8 @@ from .models import (
     GraphNode,
     NeighborEdge,
     NodeDetail,
+    OverviewAggregate,
+    OverviewAggregateMarker,
     SearchResult,
 )
 
@@ -83,9 +85,11 @@ class GraphService:
             layout = json.loads(layout_path.read_text(encoding="utf-8"))
             self.layout_version: str | None = layout.get("layout_version")
             self._coords: dict[str, dict] = layout.get("coordinates", {})
+            self._overview_aggregates: list[dict] = layout.get("overview_aggregates", [])
         else:
             self.layout_version = None
             self._coords = {}
+            self._overview_aggregates = []
 
         # adjacency: node id -> list of (relationship_type, direction, other_id)
         self._adj: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
@@ -187,6 +191,28 @@ class GraphService:
     def graph(self) -> tuple[list[GraphNode], list[GraphEdge]]:
         nodes = [self._to_graph_node(n) for n in self._raw_nodes.values()]
         return nodes, self._edges
+
+    def overview_aggregates(self) -> list[OverviewAggregate]:
+        """Overview LOD groupings from the layout snapshot (additive; empty if absent).
+
+        Pure pass-through of the deterministic precomputed markers — the responsive
+        frontend decides at render time which to collapse. Never invents canonical data.
+        """
+        out: list[OverviewAggregate] = []
+        for a in self._overview_aggregates:
+            markers = [
+                OverviewAggregateMarker(
+                    id=m["id"],
+                    x=m["x"],
+                    y=m["y"],
+                    radius=m["radius"],
+                    member_ids=list(m["member_ids"]),
+                    count=m["count"],
+                )
+                for m in a.get("markers", [])
+            ]
+            out.append(OverviewAggregate(domain_id=a["domain_id"], markers=markers))
+        return out
 
     def all_nodes(self) -> list[dict]:
         """Raw node dicts (id, slug, name, node_type, package, repo, aliases, ...).

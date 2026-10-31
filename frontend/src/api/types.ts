@@ -25,11 +25,33 @@ export interface GraphEdge {
   weight: number | null;
 }
 
+/** Overview level-of-detail marker: a presentation stand-in for a group of member nodes
+ * within a domain sector (atlas-overview-collision-free). Graph-space centroid + covering
+ * radius; member_ids/count are the exact underlying canonical nodes. NOT a canonical node or
+ * relationship — it only drives the collision-free overview and expands to members on
+ * zoom/focus. */
+export interface OverviewAggregateMarker {
+  id: string;
+  x: number;
+  y: number;
+  radius: number;
+  member_ids: string[];
+  count: number;
+}
+
+export interface OverviewAggregate {
+  domain_id: string;
+  markers: OverviewAggregateMarker[];
+}
+
 export interface GraphResponse {
   version: string;
   layout_version: string | null;
   nodes: GraphNode[];
   edges: GraphEdge[];
+  /** Additive overview LOD groupings (deterministic, from the layout). May be absent on
+   * older payloads; treat as empty then. Never alters nodes/edges. */
+  overview_aggregates?: OverviewAggregate[];
 }
 
 export type EdgeDirection = "in" | "out" | "undirected";
