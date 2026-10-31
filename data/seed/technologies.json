@@ -4131,5 +4131,64 @@
     ],
     "wikipedia_title": "Message Passing Interface",
     "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:lean",
+    "slug": "lean",
+    "name": "Lean",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:theory",
+    "short_description": "An interactive theorem prover and functional programming language.",
+    "aliases": [
+      "Lean prover"
+    ],
+    "official_url": "https://leanprover.github.io",
+    "wikipedia_title": "Lean (proof assistant)",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:coq",
+    "slug": "coq",
+    "name": "Coq",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:theory",
+    "short_description": "An interactive theorem prover for formal proofs.",
+    "aliases": [
+      "Rocq"
+    ],
+    "official_url": "https://coq.inria.fr",
+    "wikipedia_title": "Coq",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:z3",
+    "slug": "z3",
+    "name": "Z3",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:theory",
+    "short_description": "A high-performance SMT solver from Microsoft Research.",
+    "aliases": [
+      "Z3 theorem prover"
+    ],
+    "wikipedia_title": "Z3 Theorem Prover",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:tla-plus",
+    "slug": "tla-plus",
+    "name": "TLA+",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:theory",
+    "short_description": "A formal specification language for modeling concurrent and distributed systems.",
+    "aliases": [
+      "TLA+",
+      "TLAplus"
+    ],
+    "wikipedia_title": "TLA+",
+    "lifecycle_status": "active"
   }
 ]

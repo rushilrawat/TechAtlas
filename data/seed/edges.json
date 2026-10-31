@@ -4903,5 +4903,315 @@
     "source": "concept:message-passing",
     "target": "concept:distributed-systems",
     "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:algorithm-design",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:algorithm-design",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:algorithm-analysis",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:time-complexity",
+    "target": "concept:algorithm-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:space-complexity",
+    "target": "concept:algorithm-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:asymptotic-analysis",
+    "target": "concept:time-complexity",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:divide-and-conquer",
+    "target": "concept:algorithm-design",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:dynamic-programming",
+    "target": "concept:algorithm-design",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:greedy-algorithms",
+    "target": "concept:algorithm-design",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:graph-algorithms",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:shortest-path",
+    "target": "concept:graph-algorithms",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:minimum-spanning-tree",
+    "target": "concept:graph-algorithms",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:search-algorithms",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sorting-algorithms",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:randomized-algorithms",
+    "target": "concept:algorithm-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:approximation-algorithms",
+    "target": "concept:np-completeness",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-structures",
+    "target": "domain:theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-complexity",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:complexity-class-p",
+    "target": "concept:computational-complexity",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:complexity-class-np",
+    "target": "concept:computational-complexity",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:np-completeness",
+    "target": "concept:complexity-class-np",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:np-hardness",
+    "target": "concept:np-completeness",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:automata-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:finite-automata",
+    "target": "concept:automata-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:pushdown-automata",
+    "target": "concept:automata-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:turing-machine",
+    "target": "concept:automata-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:formal-languages",
+    "target": "concept:automata-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:regular-languages",
+    "target": "concept:finite-automata",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:context-free-grammar",
+    "target": "concept:pushdown-automata",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computability-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:decidability",
+    "target": "concept:computability-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:undecidability",
+    "target": "concept:decidability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:compiler-theory",
+    "target": "concept:compilation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:parsing",
+    "target": "concept:context-free-grammar",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:formal-verification",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:model-checking",
+    "target": "concept:formal-verification",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:type-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hoare-logic",
+    "target": "concept:formal-verification",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:temporal-logic",
+    "target": "concept:model-checking",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:automated-theorem-proving",
+    "target": "concept:formal-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sat-solving",
+    "target": "concept:np-completeness",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:smt-solving",
+    "target": "concept:sat-solving",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:proof-assistant",
+    "target": "concept:automated-theorem-proving",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:static-analysis",
+    "target": "concept:formal-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:symbolic-execution",
+    "target": "concept:static-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:information-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:entropy",
+    "target": "concept:information-theory",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:error-correcting-codes",
+    "target": "concept:information-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cryptography",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cryptography",
+    "target": "domain:theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:public-key-cryptography",
+    "target": "concept:cryptography",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:symmetric-key-cryptography",
+    "target": "concept:cryptography",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:digital-signature",
+    "target": "concept:cryptography",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:hashing",
+    "target": "concept:cryptography",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:key-exchange",
+    "target": "concept:cryptography",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:zero-knowledge-proof",
+    "target": "concept:cryptography",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:homomorphic-encryption",
+    "target": "concept:cryptography",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:post-quantum-cryptography",
+    "target": "concept:cryptography",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:lean",
+    "target": "concept:proof-assistant",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:coq",
+    "target": "concept:proof-assistant",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:z3",
+    "target": "concept:smt-solving",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:tla-plus",
+    "target": "concept:formal-verification",
+    "relationship_type": "used_for"
   }
 ]

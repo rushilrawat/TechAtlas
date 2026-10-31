@@ -2608,6 +2608,575 @@
       "wikipedia_title": "Message passing"
     },
     {
+      "id": "concept:algorithm-design",
+      "slug": "algorithm-design",
+      "name": "Algorithm Design",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The craft of devising step-by-step procedures to solve computational problems.",
+      "importance": 0.6,
+      "wikipedia_title": "Algorithm"
+    },
+    {
+      "id": "concept:algorithm-analysis",
+      "slug": "algorithm-analysis",
+      "name": "Algorithm Analysis",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Determining the resource requirements of algorithms, especially time and space.",
+      "importance": 0.6,
+      "wikipedia_title": "Analysis of algorithms"
+    },
+    {
+      "id": "concept:time-complexity",
+      "slug": "time-complexity",
+      "name": "Time Complexity",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A measure of how an algorithm's running time grows with input size.",
+      "importance": 0.6,
+      "wikipedia_title": "Time complexity"
+    },
+    {
+      "id": "concept:space-complexity",
+      "slug": "space-complexity",
+      "name": "Space Complexity",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A measure of how an algorithm's memory use grows with input size.",
+      "importance": 0.6,
+      "wikipedia_title": "Space complexity"
+    },
+    {
+      "id": "concept:asymptotic-analysis",
+      "slug": "asymptotic-analysis",
+      "name": "Asymptotic Analysis",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Describing algorithm growth rates using Big-O and related notation.",
+      "aliases": [
+        "Big-O notation"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Asymptotic analysis"
+    },
+    {
+      "id": "concept:divide-and-conquer",
+      "slug": "divide-and-conquer",
+      "name": "Divide and Conquer",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "An algorithmic paradigm that recursively breaks a problem into subproblems.",
+      "importance": 0.6,
+      "wikipedia_title": "Divide-and-conquer algorithm"
+    },
+    {
+      "id": "concept:dynamic-programming",
+      "slug": "dynamic-programming",
+      "name": "Dynamic Programming",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Solving problems by combining solutions to overlapping subproblems.",
+      "aliases": [
+        "DP"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Dynamic programming"
+    },
+    {
+      "id": "concept:greedy-algorithms",
+      "slug": "greedy-algorithms",
+      "name": "Greedy Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms that make the locally optimal choice at each step.",
+      "importance": 0.6,
+      "wikipedia_title": "Greedy algorithm"
+    },
+    {
+      "id": "concept:graph-algorithms",
+      "slug": "graph-algorithms",
+      "name": "Graph Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms operating on graph structures of vertices and edges.",
+      "importance": 0.6,
+      "wikipedia_title": "Graph theory"
+    },
+    {
+      "id": "concept:shortest-path",
+      "slug": "shortest-path",
+      "name": "Shortest Path Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms that find minimum-cost paths between vertices in a graph.",
+      "importance": 0.6,
+      "wikipedia_title": "Shortest path problem"
+    },
+    {
+      "id": "concept:minimum-spanning-tree",
+      "slug": "minimum-spanning-tree",
+      "name": "Minimum Spanning Trees",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms finding a lowest-weight tree connecting all graph vertices.",
+      "aliases": [
+        "MST"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Minimum spanning tree"
+    },
+    {
+      "id": "concept:search-algorithms",
+      "slug": "search-algorithms",
+      "name": "Search Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms for locating items or states within a data set or state space.",
+      "importance": 0.6,
+      "wikipedia_title": "Search algorithm"
+    },
+    {
+      "id": "concept:sorting-algorithms",
+      "slug": "sorting-algorithms",
+      "name": "Sorting Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms that arrange elements of a list into order.",
+      "importance": 0.6,
+      "wikipedia_title": "Sorting algorithm"
+    },
+    {
+      "id": "concept:randomized-algorithms",
+      "slug": "randomized-algorithms",
+      "name": "Randomized Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms that use random choices as part of their logic.",
+      "importance": 0.6,
+      "wikipedia_title": "Randomized algorithm"
+    },
+    {
+      "id": "concept:approximation-algorithms",
+      "slug": "approximation-algorithms",
+      "name": "Approximation Algorithms",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Algorithms that find near-optimal solutions to hard optimization problems.",
+      "importance": 0.6,
+      "wikipedia_title": "Approximation algorithm"
+    },
+    {
+      "id": "concept:computational-complexity",
+      "slug": "computational-complexity",
+      "name": "Computational Complexity Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The study of the resources required to solve computational problems.",
+      "importance": 0.6,
+      "wikipedia_title": "Computational complexity theory"
+    },
+    {
+      "id": "concept:complexity-class-p",
+      "slug": "complexity-class-p",
+      "name": "P",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The class of problems solvable in polynomial time by a deterministic machine.",
+      "aliases": [
+        "Complexity class P"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "P (complexity)"
+    },
+    {
+      "id": "concept:complexity-class-np",
+      "slug": "complexity-class-np",
+      "name": "NP",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The class of problems verifiable in polynomial time by a deterministic machine.",
+      "aliases": [
+        "Complexity class NP"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "NP (complexity)"
+    },
+    {
+      "id": "concept:np-completeness",
+      "slug": "np-completeness",
+      "name": "NP-Completeness",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The hardest problems in NP, to which all NP problems reduce.",
+      "importance": 0.6,
+      "wikipedia_title": "NP-completeness"
+    },
+    {
+      "id": "concept:np-hardness",
+      "slug": "np-hardness",
+      "name": "NP-Hardness",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A property of problems at least as hard as the hardest problems in NP.",
+      "importance": 0.6,
+      "wikipedia_title": "NP-hardness"
+    },
+    {
+      "id": "concept:automata-theory",
+      "slug": "automata-theory",
+      "name": "Automata Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The study of abstract machines and the problems they can solve.",
+      "importance": 0.6,
+      "wikipedia_title": "Automata theory"
+    },
+    {
+      "id": "concept:finite-automata",
+      "slug": "finite-automata",
+      "name": "Finite Automata",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Abstract machines with finitely many states recognizing regular languages.",
+      "aliases": [
+        "DFA",
+        "NFA"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Finite-state machine"
+    },
+    {
+      "id": "concept:pushdown-automata",
+      "slug": "pushdown-automata",
+      "name": "Pushdown Automata",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Automata with a stack, recognizing context-free languages.",
+      "aliases": [
+        "PDA"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Pushdown automaton"
+    },
+    {
+      "id": "concept:turing-machine",
+      "slug": "turing-machine",
+      "name": "Turing Machines",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A foundational abstract model defining the limits of computation.",
+      "importance": 0.6,
+      "wikipedia_title": "Turing machine"
+    },
+    {
+      "id": "concept:formal-languages",
+      "slug": "formal-languages",
+      "name": "Formal Languages",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Sets of strings defined by precise mathematical rules.",
+      "importance": 0.6,
+      "wikipedia_title": "Formal language"
+    },
+    {
+      "id": "concept:regular-languages",
+      "slug": "regular-languages",
+      "name": "Regular Languages",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Languages recognizable by finite automata or regular expressions.",
+      "importance": 0.6,
+      "wikipedia_title": "Regular language"
+    },
+    {
+      "id": "concept:context-free-grammar",
+      "slug": "context-free-grammar",
+      "name": "Context-Free Grammars",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Grammars generating context-free languages, foundational to parsing.",
+      "aliases": [
+        "CFG"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Context-free grammar"
+    },
+    {
+      "id": "concept:computability-theory",
+      "slug": "computability-theory",
+      "name": "Computability Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The study of what problems can in principle be solved by computation.",
+      "importance": 0.6,
+      "wikipedia_title": "Computability theory"
+    },
+    {
+      "id": "concept:decidability",
+      "slug": "decidability",
+      "name": "Decidability",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Whether a decision problem can be solved by an algorithm that always halts.",
+      "importance": 0.6,
+      "wikipedia_title": "Decidability (logic)"
+    },
+    {
+      "id": "concept:undecidability",
+      "slug": "undecidability",
+      "name": "Undecidability",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The property of problems for which no always-halting algorithm exists.",
+      "importance": 0.6,
+      "wikipedia_title": "Undecidable problem"
+    },
+    {
+      "id": "concept:compiler-theory",
+      "slug": "compiler-theory",
+      "name": "Compiler Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The theory of translating programming languages into executable form.",
+      "importance": 0.6,
+      "wikipedia_title": "Compiler"
+    },
+    {
+      "id": "concept:parsing",
+      "slug": "parsing",
+      "name": "Parsing",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Analyzing a string of symbols according to the rules of a grammar.",
+      "importance": 0.6,
+      "wikipedia_title": "Parsing"
+    },
+    {
+      "id": "concept:formal-verification",
+      "slug": "formal-verification",
+      "name": "Formal Verification",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Proving or disproving the correctness of systems against formal specifications.",
+      "importance": 0.6,
+      "wikipedia_title": "Formal verification"
+    },
+    {
+      "id": "concept:model-checking",
+      "slug": "model-checking",
+      "name": "Model Checking",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Automatically verifying whether a system model satisfies a specification.",
+      "importance": 0.6,
+      "wikipedia_title": "Model checking"
+    },
+    {
+      "id": "concept:type-theory",
+      "slug": "type-theory",
+      "name": "Type Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A formal system of types underpinning programming languages and logic.",
+      "importance": 0.6,
+      "wikipedia_title": "Type theory"
+    },
+    {
+      "id": "concept:hoare-logic",
+      "slug": "hoare-logic",
+      "name": "Hoare Logic",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A formal system for reasoning about program correctness using pre/postconditions.",
+      "importance": 0.6,
+      "wikipedia_title": "Hoare logic"
+    },
+    {
+      "id": "concept:temporal-logic",
+      "slug": "temporal-logic",
+      "name": "Temporal Logic",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A logic for reasoning about propositions qualified over time.",
+      "importance": 0.6,
+      "wikipedia_title": "Temporal logic"
+    },
+    {
+      "id": "concept:automated-theorem-proving",
+      "slug": "automated-theorem-proving",
+      "name": "Automated Theorem Proving",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Using software to prove mathematical theorems automatically.",
+      "aliases": [
+        "ATP"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Automated theorem proving"
+    },
+    {
+      "id": "concept:sat-solving",
+      "slug": "sat-solving",
+      "name": "SAT Solving",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Deciding the satisfiability of Boolean formulas.",
+      "aliases": [
+        "Boolean satisfiability"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Boolean satisfiability problem"
+    },
+    {
+      "id": "concept:smt-solving",
+      "slug": "smt-solving",
+      "name": "SMT Solving",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Deciding satisfiability modulo background theories like arithmetic.",
+      "aliases": [
+        "Satisfiability modulo theories"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Satisfiability modulo theories"
+    },
+    {
+      "id": "concept:proof-assistant",
+      "slug": "proof-assistant",
+      "name": "Proof Assistants",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Software tools that help construct and mechanically check formal proofs.",
+      "aliases": [
+        "Interactive theorem prover"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Proof assistant"
+    },
+    {
+      "id": "concept:symbolic-execution",
+      "slug": "symbolic-execution",
+      "name": "Symbolic Execution",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Analyzing programs by executing them with symbolic rather than concrete inputs.",
+      "importance": 0.6,
+      "wikipedia_title": "Symbolic execution"
+    },
+    {
+      "id": "concept:information-theory",
+      "slug": "information-theory",
+      "name": "Information Theory",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "The mathematical study of quantifying, storing, and communicating information.",
+      "importance": 0.6,
+      "wikipedia_title": "Information theory"
+    },
+    {
+      "id": "concept:entropy",
+      "slug": "entropy",
+      "name": "Entropy",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "A measure of uncertainty or information content in a random variable.",
+      "aliases": [
+        "Shannon entropy"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Entropy (information theory)"
+    },
+    {
+      "id": "concept:error-correcting-codes",
+      "slug": "error-correcting-codes",
+      "name": "Error-Correcting Codes",
+      "node_type": "concept",
+      "primary_domain": "domain:theory",
+      "short_description": "Codes that detect and correct errors in transmitted or stored data.",
+      "aliases": [
+        "ECC"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Error correction code"
+    },
+    {
+      "id": "concept:cryptography",
+      "slug": "cryptography",
+      "name": "Cryptography",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "The science of securing information through encoding and mathematical techniques.",
+      "importance": 0.6,
+      "wikipedia_title": "Cryptography"
+    },
+    {
+      "id": "concept:symmetric-key-cryptography",
+      "slug": "symmetric-key-cryptography",
+      "name": "Symmetric-Key Cryptography",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Encryption where the same key encrypts and decrypts data.",
+      "importance": 0.6,
+      "wikipedia_title": "Symmetric-key algorithm"
+    },
+    {
+      "id": "concept:digital-signature",
+      "slug": "digital-signature",
+      "name": "Digital Signatures",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Cryptographic schemes verifying the authenticity and integrity of messages.",
+      "importance": 0.6,
+      "wikipedia_title": "Digital signature"
+    },
+    {
+      "id": "concept:key-exchange",
+      "slug": "key-exchange",
+      "name": "Key Exchange",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Protocols for securely establishing shared secret keys over a public channel.",
+      "importance": 0.6,
+      "wikipedia_title": "Key exchange"
+    },
+    {
+      "id": "concept:zero-knowledge-proof",
+      "slug": "zero-knowledge-proof",
+      "name": "Zero-Knowledge Proofs",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Protocols proving a statement is true without revealing why.",
+      "aliases": [
+        "ZKP"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Zero-knowledge proof"
+    },
+    {
+      "id": "concept:homomorphic-encryption",
+      "slug": "homomorphic-encryption",
+      "name": "Homomorphic Encryption",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Encryption allowing computation directly on ciphertext.",
+      "importance": 0.6,
+      "wikipedia_title": "Homomorphic encryption"
+    },
+    {
+      "id": "concept:post-quantum-cryptography",
+      "slug": "post-quantum-cryptography",
+      "name": "Post-Quantum Cryptography",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Cryptography designed to resist attacks by quantum computers.",
+      "aliases": [
+        "PQC"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Post-quantum cryptography"
+    },
+    {
       "id": "technology:python",
       "slug": "python",
       "name": "Python",
@@ -6738,6 +7307,65 @@
         "Message Passing Interface"
       ],
       "wikipedia_title": "Message Passing Interface",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:lean",
+      "slug": "lean",
+      "name": "Lean",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:theory",
+      "short_description": "An interactive theorem prover and functional programming language.",
+      "aliases": [
+        "Lean prover"
+      ],
+      "official_url": "https://leanprover.github.io",
+      "wikipedia_title": "Lean (proof assistant)",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:coq",
+      "slug": "coq",
+      "name": "Coq",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:theory",
+      "short_description": "An interactive theorem prover for formal proofs.",
+      "aliases": [
+        "Rocq"
+      ],
+      "official_url": "https://coq.inria.fr",
+      "wikipedia_title": "Coq",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:z3",
+      "slug": "z3",
+      "name": "Z3",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:theory",
+      "short_description": "A high-performance SMT solver from Microsoft Research.",
+      "aliases": [
+        "Z3 theorem prover"
+      ],
+      "wikipedia_title": "Z3 Theorem Prover",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:tla-plus",
+      "slug": "tla-plus",
+      "name": "TLA+",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:theory",
+      "short_description": "A formal specification language for modeling concurrent and distributed systems.",
+      "aliases": [
+        "TLA+",
+        "TLAplus"
+      ],
+      "wikipedia_title": "TLA+",
       "lifecycle_status": "active"
     }
   ],
@@ -11646,6 +12274,316 @@
       "source": "concept:message-passing",
       "target": "concept:distributed-systems",
       "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:algorithm-design",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:algorithm-design",
+      "target": "concept:algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:algorithm-analysis",
+      "target": "concept:algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:time-complexity",
+      "target": "concept:algorithm-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:space-complexity",
+      "target": "concept:algorithm-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:asymptotic-analysis",
+      "target": "concept:time-complexity",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:divide-and-conquer",
+      "target": "concept:algorithm-design",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:dynamic-programming",
+      "target": "concept:algorithm-design",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:greedy-algorithms",
+      "target": "concept:algorithm-design",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:graph-algorithms",
+      "target": "concept:algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shortest-path",
+      "target": "concept:graph-algorithms",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:minimum-spanning-tree",
+      "target": "concept:graph-algorithms",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:search-algorithms",
+      "target": "concept:algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:sorting-algorithms",
+      "target": "concept:algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:randomized-algorithms",
+      "target": "concept:algorithm-design",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:approximation-algorithms",
+      "target": "concept:np-completeness",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:data-structures",
+      "target": "domain:theory",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:computational-complexity",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:complexity-class-p",
+      "target": "concept:computational-complexity",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:complexity-class-np",
+      "target": "concept:computational-complexity",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:np-completeness",
+      "target": "concept:complexity-class-np",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:np-hardness",
+      "target": "concept:np-completeness",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:automata-theory",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:finite-automata",
+      "target": "concept:automata-theory",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:pushdown-automata",
+      "target": "concept:automata-theory",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:turing-machine",
+      "target": "concept:automata-theory",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:formal-languages",
+      "target": "concept:automata-theory",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:regular-languages",
+      "target": "concept:finite-automata",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:context-free-grammar",
+      "target": "concept:pushdown-automata",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:computability-theory",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:decidability",
+      "target": "concept:computability-theory",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:undecidability",
+      "target": "concept:decidability",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:compiler-theory",
+      "target": "concept:compilation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:parsing",
+      "target": "concept:context-free-grammar",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:formal-verification",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:model-checking",
+      "target": "concept:formal-verification",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:type-theory",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:hoare-logic",
+      "target": "concept:formal-verification",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:temporal-logic",
+      "target": "concept:model-checking",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:automated-theorem-proving",
+      "target": "concept:formal-verification",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:sat-solving",
+      "target": "concept:np-completeness",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:smt-solving",
+      "target": "concept:sat-solving",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:proof-assistant",
+      "target": "concept:automated-theorem-proving",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:static-analysis",
+      "target": "concept:formal-verification",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:symbolic-execution",
+      "target": "concept:static-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:information-theory",
+      "target": "domain:theory",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:entropy",
+      "target": "concept:information-theory",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:error-correcting-codes",
+      "target": "concept:information-theory",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:cryptography",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cryptography",
+      "target": "domain:theory",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:public-key-cryptography",
+      "target": "concept:cryptography",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:symmetric-key-cryptography",
+      "target": "concept:cryptography",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:digital-signature",
+      "target": "concept:cryptography",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:hashing",
+      "target": "concept:cryptography",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:key-exchange",
+      "target": "concept:cryptography",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:zero-knowledge-proof",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:homomorphic-encryption",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:post-quantum-cryptography",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:lean",
+      "target": "concept:proof-assistant",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:coq",
+      "target": "concept:proof-assistant",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:z3",
+      "target": "concept:smt-solving",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:tla-plus",
+      "target": "concept:formal-verification",
+      "relationship_type": "used_for"
     }
   ]
 }
