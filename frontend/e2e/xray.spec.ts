@@ -121,8 +121,8 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible();
-    // The persistent top-bar "Explore Universe" action exits X-Ray entirely.
-    await page.getByRole("button", { name: /Explore Universe/ }).click();
+    // The persistent top-bar "Back to Explore" action exits X-Ray entirely.
+    await page.getByRole("button", { name: /Back to Explore/ }).click();
     // Homepage fully restored: X-Ray panel gone, entry point back, no detection legend.
     await expect(page.locator(".xray-panel")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();

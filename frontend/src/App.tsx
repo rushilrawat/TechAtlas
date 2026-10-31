@@ -300,7 +300,7 @@ export default function App() {
             className="explore-back"
             onClick={exitXray}
           >
-            ← Explore Universe
+            ← Back to Explore
           </button>
         )}
         {SCANNER_ENABLED && !xrayOpen && (
