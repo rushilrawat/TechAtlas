@@ -358,6 +358,59 @@ test.describe("Stack View rendering regressions", () => {
     }
   });
 
+  test("mobile: scan defaults to a minimized sheet (graph-first) with a results control", async ({ page }) => {
+    await gotoExplore(page, { width: 390, height: 844 });
+    const ids = pick({ frontend: 5, backend: 4, databases: 2 });
+    await runScan(page, ids);
+    // Graph-first: the sheet is minimized by default after a mobile scan, and the detected
+    // nodes render in the now-full-height graph band.
+    await expect(page.locator(".xray-panel.collapsed")).toBeVisible();
+    await expect(page.getByRole("button", { name: /View scan results/ })).toBeVisible();
+    const probes = await probeNodes(page, ids);
+    const shown = probes.filter((p) => !p.hidden && p.onCanvas).length;
+    expect(shown, "nodes must render in the graph-first minimized default").toBeGreaterThanOrEqual(ids.length - 1);
+  });
+
+  test("mobile: View scan results expands the full detection list; Minimize restores the graph", async ({ page }) => {
+    await gotoExplore(page, { width: 390, height: 844 });
+    const ids = pick({ frontend: 5, backend: 4, databases: 2 });
+    await runScan(page, ids);
+    // Expand -> full list reachable (a tech deep in the list is present).
+    await page.getByRole("button", { name: /View scan results/ }).click();
+    await page.waitForTimeout(500);
+    await expect(page.locator(".xray-panel").getByRole("button", { name: /FastAPI/ })).toBeVisible();
+    // Selecting a tech still reveals its details (evidence accessible, no hover needed).
+    await page.locator(".xray-panel").getByRole("button", { name: /FastAPI/ }).click();
+    await expect(page.locator(".details").getByRole("heading", { name: "FastAPI" })).toBeVisible();
+    await expect(page.locator(".details").getByText("Found in this repository")).toBeVisible();
+    await page.locator(".details").getByRole("button", { name: "Close details" }).click();
+    // Minimize -> graph restored with synchronized headings (at least one heading visible,
+    // positioned above the (now minimized) sheet).
+    await page.getByRole("button", { name: /Minimize/ }).click();
+    await page.waitForTimeout(700);
+    const headings = await page.locator(".stack-heading").count();
+    expect(headings, "headings restored on minimize").toBeGreaterThan(0);
+    const probes = await probeNodes(page, ids);
+    expect(probes.filter((p) => !p.hidden && p.onCanvas).length).toBeGreaterThanOrEqual(ids.length - 1);
+  });
+
+  test("mobile: headings never overlap the results panel controls (measured)", async ({ page }) => {
+    await gotoExplore(page, { width: 390, height: 667 });
+    const ids = pick({ frontend: 5, backend: 4, databases: 2, aiml: 3 });
+    await runScan(page, ids);
+    await page.getByRole("button", { name: /View scan results/ }).click();
+    await page.waitForTimeout(600);
+    // Every VISIBLE heading overlay must sit above the open sheet's top edge.
+    const bad = await page.evaluate(() => {
+      const panel = document.querySelector(".xray-panel") as HTMLElement | null;
+      const top = panel ? panel.getBoundingClientRect().top : Infinity;
+      return Array.from(document.querySelectorAll(".stack-heading"))
+        .map((el) => (el as HTMLElement).getBoundingClientRect())
+        .filter((r) => r.bottom > top).length;
+    });
+    expect(bad, "no visible heading may overlap the results sheet").toBe(0);
+  });
+
   test("reduced-motion: stack renders instantly and Universe restores exactly", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await gotoExplore(page);

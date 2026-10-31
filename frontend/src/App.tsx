@@ -177,8 +177,14 @@ export default function App() {
 
   // Default to Stack View whenever a new scan completes; reset when leaving X-Ray.
   useEffect(() => {
-    if (activeScan) setXrayView("stack");
-  }, [activeScan]);
+    if (activeScan) {
+      setXrayView("stack");
+      // Graph-first on narrow mobile: default the results sheet to MINIMIZED after a
+      // scan so the Stack View is immediately visible and not covered. The obvious
+      // "View scan results" control expands it. Desktop has no sheet, so keep it open.
+      setSheetCollapsed(narrow);
+    }
+  }, [activeScan, narrow]);
 
   // Temporary Stack-View projection: cluster detected nodes by canonical primary_domain.
   // Pure + deterministic; never mutates canonical coordinates (GraphCanvas restores them).

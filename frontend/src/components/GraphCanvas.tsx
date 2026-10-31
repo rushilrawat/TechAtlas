@@ -220,7 +220,7 @@ export function GraphCanvas({
   const ratioRef = useRef<number>(1);
   // Projected screen positions for Stack View domain headings (DOM overlay).
   const [headingScreens, setHeadingScreens] = useState<
-    { domainId: string; label: string; color: string; left: number; top: number }[]
+    { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
   >([]);
 
   // Build the Sigma instance once per dataset.
@@ -706,9 +706,25 @@ export function GraphCanvas({
       return;
     }
     const project = () => {
+      const el = renderer.getContainer();
+      const cw = el.clientWidth || window.innerWidth;
+      const ch = el.clientHeight || window.innerHeight;
+      // Usable band excludes the OPEN panel (right rail or bottom sheet). A heading is
+      // hidden when it would land outside this band (off-screen or behind the panel) —
+      // so on a tiny expanded-sheet preview we simplify by dropping labels rather than
+      // overlapping them, without any extra state.
+      const panel = document.querySelector(".details, .xray-panel") as HTMLElement | null;
+      const pr = panel ? panel.getBoundingClientRect() : null;
+      const cr = el.getBoundingClientRect();
+      let bandRight = cw, bandBottom = ch;
+      if (pr && pr.width > 0 && pr.height > 0) {
+        if (pr.width >= cw * 0.85) bandBottom = Math.max(80, pr.top - cr.top - 8); // bottom sheet
+        else bandRight = Math.max(120, pr.left - cr.left - 8); // right rail
+      }
       const next = stackHeadings.map((h) => {
         const p = renderer.graphToViewport({ x: h.x, y: h.y });
-        return { domainId: h.domainId, label: h.label, color: h.color, left: p.x, top: p.y };
+        const visible = p.x > 4 && p.y > 4 && p.x < bandRight && p.y < bandBottom;
+        return { domainId: h.domainId, label: h.label, color: h.color, left: p.x, top: p.y, visible };
       });
       setHeadingScreens(next);
     };
@@ -742,7 +758,7 @@ export function GraphCanvas({
         role="application"
         aria-label="Interactive technology graph. Use the search box or the node list for keyboard access."
       />
-      {headingScreens.map((h) => (
+      {headingScreens.filter((h) => h.visible).map((h) => (
         <div
           key={h.domainId}
           className="stack-heading"

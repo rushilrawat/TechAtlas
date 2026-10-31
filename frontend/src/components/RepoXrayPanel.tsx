@@ -61,16 +61,26 @@ export function RepoXrayPanel({
       aria-label="Repo X-Ray"
     >
       <div className="xray-header">
-        <h2>Analyze a GitHub Repository</h2>
+        <h2>{phase.kind === "done" && collapsed ? "Repo X-Ray" : "Analyze a GitHub Repository"}</h2>
         <button
           type="button"
           className="xray-collapse"
           aria-expanded={!collapsed}
-          aria-label={collapsed ? "Expand repository panel" : "Minimize repository panel"}
-          title={collapsed ? "Expand panel" : "Minimize panel to explore the graph"}
+          aria-label={
+            collapsed
+              ? phase.kind === "done" ? "View scan results" : "Expand repository panel"
+              : "Minimize panel to explore the graph"
+          }
+          title={
+            collapsed
+              ? phase.kind === "done" ? "View the full scan results" : "Expand panel"
+              : "Minimize panel to explore the graph"
+          }
           onClick={onToggleCollapsed}
         >
-          {collapsed ? "▴ Expand" : "▾ Minimize"}
+          {collapsed
+            ? phase.kind === "done" ? "▴ View scan results" : "▴ Expand"
+            : "▾ Minimize"}
         </button>
         {phase.kind !== "idle" && phase.kind !== "done" && (
           <button type="button" className="xray-exit" onClick={onExit}>
