@@ -108,5 +108,65 @@
     "short_description": "Game engines, real-time rendering, physics, and computer graphics.",
     "importance": 0.75,
     "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:networks",
+    "slug": "networks",
+    "name": "Computer Networks",
+    "node_type": "domain",
+    "primary_domain": "domain:networks",
+    "short_description": "How computers communicate: protocols, routing, addressing, and the layered architecture of the internet.",
+    "importance": 0.85,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:theory",
+    "slug": "theory",
+    "name": "Theoretical Computer Science",
+    "node_type": "domain",
+    "primary_domain": "domain:theory",
+    "short_description": "The mathematical foundations of computation: algorithms, complexity, automata, computability, logic, and formal methods.",
+    "importance": 0.85,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:robotics",
+    "slug": "robotics",
+    "name": "Robotics & Autonomous Systems",
+    "node_type": "domain",
+    "primary_domain": "domain:robotics",
+    "short_description": "Designing machines that sense, plan, and act in the physical world: kinematics, control, perception, SLAM, and motion planning.",
+    "importance": 0.8,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:computer-architecture",
+    "slug": "computer-architecture",
+    "name": "Computer Architecture",
+    "node_type": "domain",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The design of processors and memory systems: ISAs, pipelining, caches, and the hardware/software interface.",
+    "importance": 0.75,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:embedded",
+    "slug": "embedded",
+    "name": "Embedded & Real-Time Systems",
+    "node_type": "domain",
+    "primary_domain": "domain:embedded",
+    "short_description": "Software for dedicated hardware under real-time and resource constraints: firmware, RTOS, and microcontrollers.",
+    "importance": 0.72,
+    "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:computer-graphics",
+    "slug": "computer-graphics",
+    "name": "Computer Graphics",
+    "node_type": "domain",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Generating and manipulating images: rendering pipelines, ray tracing, shaders, and geometric modeling.",
+    "importance": 0.72,
+    "lifecycle_status": "mature"
   }
 ]

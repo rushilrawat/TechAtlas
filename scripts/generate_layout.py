@@ -315,8 +315,15 @@ def generate(dataset: dict) -> dict:
     anchor_target = {nid: (pos[nid][0], pos[nid][1]) for nid in pinned}
     dirty: set[str] = set(ids) - pinned
     if reuse_prev:
+        # Structural domain-ring edges (`has_subdomain`) must NOT propagate "dirtiness":
+        # attaching a brand-new subdomain to an existing domain should let the subdomain
+        # find its spot WITHOUT dragging the parent domain's pinned members. Only content
+        # edges spread the dirty frontier, so unrelated clusters keep their coordinates.
+        _STRUCTURAL = {"has_subdomain"}
         neighbors_of: dict[str, set[str]] = {nid: set() for nid in ids}
         for e in edges:
+            if e.get("relationship_type") in _STRUCTURAL:
+                continue
             if e["source"] in neighbors_of and e["target"] in neighbors_of:
                 neighbors_of[e["source"]].add(e["target"])
                 neighbors_of[e["target"]].add(e["source"])

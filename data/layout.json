@@ -1,5 +1,5 @@
 {
-  "layout_version": "0.3.0",
+  "layout_version": "0.4.0",
   "layout_algorithm": "deterministic-barnes-hut-fr+overlap",
   "domain_ring_order": [
     "domain:ai-ml",
@@ -12,7 +12,13 @@
     "domain:gamedev",
     "domain:frontend",
     "domain:mobile",
-    "domain:security"
+    "domain:computer-architecture",
+    "domain:computer-graphics",
+    "domain:embedded",
+    "domain:networks",
+    "domain:robotics",
+    "domain:security",
+    "domain:theory"
   ],
   "coordinates": {
     "domain:software-engineering": {
@@ -80,6 +86,42 @@
       "y": -483.99,
       "radius": 23.0,
       "cluster": "domain:gamedev"
+    },
+    "domain:networks": {
+      "x": 65.75,
+      "y": -641.14,
+      "radius": 24.2,
+      "cluster": "domain:networks"
+    },
+    "domain:theory": {
+      "x": 596.8,
+      "y": -231.21,
+      "radius": 24.2,
+      "cluster": "domain:theory"
+    },
+    "domain:robotics": {
+      "x": 310.77,
+      "y": -560.5,
+      "radius": 23.6,
+      "cluster": "domain:robotics"
+    },
+    "domain:computer-architecture": {
+      "x": -526.89,
+      "y": -347.84,
+      "radius": 23.0,
+      "cluster": "domain:computer-architecture"
+    },
+    "domain:embedded": {
+      "x": -175.16,
+      "y": -615.56,
+      "radius": 22.64,
+      "cluster": "domain:embedded"
+    },
+    "domain:computer-graphics": {
+      "x": -380.73,
+      "y": -514.71,
+      "radius": 22.64,
+      "cluster": "domain:computer-graphics"
     },
     "concept:object-oriented-programming": {
       "x": 249.1,

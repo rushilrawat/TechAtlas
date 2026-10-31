@@ -4498,5 +4498,20 @@
     "source": "technology:orbstack",
     "target": "technology:docker",
     "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "domain:systems",
+    "target": "domain:computer-architecture",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:systems",
+    "target": "domain:embedded",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:gamedev",
+    "target": "domain:computer-graphics",
+    "relationship_type": "has_subdomain"
   }
 ]

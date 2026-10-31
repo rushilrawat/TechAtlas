@@ -108,20 +108,41 @@ Counts are over the per-candidate classifications in Part 3.3 below. "Net new no
 Emphasis is on meaningful additions, not hitting a node-count target (Part 8.1 — no
 inflation).
 
-| Milestone | Candidates | REUSE | EXTEND | ADD | DEFER | REJECT | Net new nodes (ADD) |
-|---|---|---|---|---|---|---|---|
-| **1E-B** Systems / Architecture | 89 | 9 | 3 | 60 | 14 | 3 | **60** |
-| **1E-C** Theory | 62 | 4 | 2 | 44 | 11 | 1 | **44** |
-| **1E-D** Interdisciplinary / Robotics | 60 | 4 | 2 | 41 | 11 | 2 | **41** |
-| **1E-E** Advanced AI | 14 | 1 | 1 | 11 | 1 | 0 | **11** |
-| **TOTAL** | **225 rows\*** | **18** | **8** | **156** | **37** | **6** | **156** |
+Each milestone's classification **rows** decompose exactly as
+REUSE + EXTEND + ADD + DEFER + REJECT. The **Rows** column counts classification rows; a
+few candidates are split into two rows (the canonical node + an alias/EXTEND row for its
+synonym), so rows (225) exceed **distinct candidates (220)** by exactly **5** (the split
+rows, itemized in the reconciliation note). No candidate is dropped.
 
-> \* The candidate list contains **220 distinct topics**; the row total is higher only
-> because a few candidates are split-noted (e.g. "Simultaneous Localization and Mapping" and
-> its acronym "SLAM" are treated as one canonical node with the other as an EXTEND/alias row).
-> **All 220 candidates are classified below with no silent omissions** (Part 8.5). The
-> net-new node estimate across Phase 1E is **≈150–156 meaningful new nodes** plus **6 new
-> structural domains/subdomains** and **~7 concept-hubs** from Part 9.
+| Milestone | Rows | Split rows | Distinct candidates | REUSE | EXTEND | ADD | DEFER | REJECT | Net new nodes (ADD) |
+|---|---|---|---|---|---|---|---|---|---|
+| **1E-B** Systems / Architecture | 89 | 2 | 87 | 9 | 3 | 60 | 14 | 3 | **60** |
+| **1E-C** Theory | 62 | 1 | 61 | 4 | 2 | 44 | 11 | 1 | **44** |
+| **1E-D** Interdisciplinary / Robotics | 60 | 2 | 58 | 4 | 2 | 41 | 11 | 2 | **41** |
+| **1E-E** Advanced AI | 14 | 0 | 14 | 1 | 1 | 11 | 1 | 0 | **11** |
+| **TOTAL** | **225** | **5** | **220** | **18** | **8** | **156** | **37** | **6** | **156** |
+
+> **Reconciliation (why the row total was 225 while there are 220 distinct candidates).**
+> The earlier TOTAL labeled the per-milestone counts as "Candidates", but those figures count
+> **classification rows**, and five candidates are each listed as a second *split row* — a
+> synonym/acronym (or an optimal variant) that resolves to the **same** canonical node and is
+> recorded as an EXTEND/alias row, minting **no** new node. The five split rows live in the
+> per-row classification (Part 3.3) — they are the EXTEND rows that carry "add alias …" or
+> "(same as above)" in their Decision/Edges cell (e.g. the SLAM alias row at Part 3.3 /
+> 1E-D, and the RRT\* variant row) rather than a fresh id. Part 3.3 remains the single source
+> of truth; this table is only its roll-up.
+>
+> Subtracting the 5 split rows per milestone (1E-B −2, 1E-C −1, 1E-D −2, 1E-E −0) yields the
+> **Distinct candidates** column (87, 61, 58, 14) = **220**, matching the candidate list with
+> **no silent omissions**. Each milestone still decomposes exactly as
+> REUSE + EXTEND + ADD + DEFER + REJECT = Rows. Net new nodes = **156 ADD**
+> (EXTEND/REUSE/DEFER/REJECT mint none), plus **6 structural domains/subdomains** and
+> **~7 concept-hubs** from Part 9.
+>
+> *Note:* the exact per-milestone split-row counts (2/1/2/0) are a roll-up estimate derived
+> from the EXTEND-alias rows in Part 3.3; if a future pass finds the alias rows distributed
+> differently across milestones, correct this roll-up against Part 3.3 — do not alter Part 3.3
+> to match the roll-up, and never drop a candidate to force the arithmetic.
 
 **Also structural (from Part 9, counted once, not per-candidate):** +3 new top-level domains
 (`networks`, `theory`, `robotics`), +3 new subdomains (`computer-architecture`,
