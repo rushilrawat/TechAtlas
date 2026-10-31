@@ -4007,5 +4007,129 @@
     "documentation_url": "https://nixos.org/manual/nix/stable/",
     "wikipedia_title": "Nix (package manager)",
     "wikidata_id": "Q79290442"
+  },
+  {
+    "id": "technology:risc-v",
+    "slug": "risc-v",
+    "name": "RISC-V",
+    "node_type": "technology",
+    "node_subtype": "architecture",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "An open-standard reduced instruction set architecture.",
+    "aliases": [
+      "RISCV"
+    ],
+    "official_url": "https://riscv.org",
+    "wikipedia_title": "RISC-V",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:arm",
+    "slug": "arm",
+    "name": "ARM Architecture",
+    "node_type": "technology",
+    "node_subtype": "architecture",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A family of RISC instruction set architectures dominant in mobile and embedded devices.",
+    "aliases": [
+      "ARM"
+    ],
+    "wikipedia_title": "ARM architecture family",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:x86-64",
+    "slug": "x86-64",
+    "name": "x86-64",
+    "node_type": "technology",
+    "node_subtype": "architecture",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The 64-bit extension of the x86 instruction set architecture.",
+    "aliases": [
+      "x64",
+      "AMD64"
+    ],
+    "wikipedia_title": "x86-64",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:fpga",
+    "slug": "fpga",
+    "name": "FPGA",
+    "node_type": "technology",
+    "node_subtype": "platform",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A reconfigurable integrated circuit programmed after manufacturing.",
+    "aliases": [
+      "Field-Programmable Gate Array"
+    ],
+    "wikipedia_title": "Field-programmable gate array",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:verilog",
+    "slug": "verilog",
+    "name": "Verilog",
+    "node_type": "technology",
+    "node_subtype": "programming_language",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A hardware description language for modeling digital circuits.",
+    "wikipedia_title": "Verilog",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:vhdl",
+    "slug": "vhdl",
+    "name": "VHDL",
+    "node_type": "technology",
+    "node_subtype": "programming_language",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A hardware description language used for digital system design.",
+    "aliases": [
+      "VHSIC Hardware Description Language"
+    ],
+    "wikipedia_title": "VHDL",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:esp32",
+    "slug": "esp32",
+    "name": "ESP32",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:embedded",
+    "short_description": "A low-cost microcontroller family with integrated Wi-Fi and Bluetooth.",
+    "official_url": "https://www.espressif.com",
+    "wikipedia_title": "ESP32",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:zephyr",
+    "slug": "zephyr",
+    "name": "Zephyr",
+    "node_type": "technology",
+    "node_subtype": "operating_system",
+    "primary_domain": "domain:embedded",
+    "short_description": "An open-source real-time operating system for resource-constrained devices.",
+    "aliases": [
+      "Zephyr RTOS"
+    ],
+    "official_url": "https://www.zephyrproject.org",
+    "wikipedia_title": "Zephyr (operating system)",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "technology:mpi",
+    "slug": "mpi",
+    "name": "MPI",
+    "node_type": "technology",
+    "node_subtype": "standard",
+    "primary_domain": "domain:systems",
+    "short_description": "A standardized message-passing interface for parallel and distributed computing.",
+    "aliases": [
+      "Message Passing Interface"
+    ],
+    "wikipedia_title": "Message Passing Interface",
+    "lifecycle_status": "active"
   }
 ]

@@ -4513,5 +4513,395 @@
     "source": "domain:gamedev",
     "target": "domain:computer-graphics",
     "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "concept:isa",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:risc-v",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:risc-v",
+    "target": "concept:isa",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:arm",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:arm",
+    "target": "concept:isa",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:x86-64",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cpu-pipelining",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:superscalar",
+    "target": "concept:cpu-pipelining",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:out-of-order-execution",
+    "target": "concept:superscalar",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:branch-prediction",
+    "target": "concept:cpu-pipelining",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cache-hierarchy",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:memory-hierarchy",
+    "target": "concept:cache-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:virtual-memory",
+    "target": "concept:memory-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:memory-consistency",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multiprocessor-architecture",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gpu-architecture",
+    "target": "concept:gpu-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:simd",
+    "target": "concept:parallel-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mimd",
+    "target": "concept:parallel-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:digital-logic",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:combinational-logic",
+    "target": "concept:digital-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sequential-logic",
+    "target": "concept:digital-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:finite-state-machine",
+    "target": "concept:sequential-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:asic",
+    "target": "concept:digital-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hdl",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:verilog",
+    "target": "concept:hdl",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:vhdl",
+    "target": "concept:hdl",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:microcontroller",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:firmware",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:rtos",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:freertos",
+    "target": "concept:rtos",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:zephyr",
+    "target": "concept:rtos",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:interrupt-handling",
+    "target": "concept:rtos",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:device-driver",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bare-metal-programming",
+    "target": "concept:firmware",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:esp32",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:esp32",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:i2c",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:spi",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:uart",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:can-bus",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:real-time-scheduling",
+    "target": "concept:rtos",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:process-scheduling",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:synchronization",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:thread",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:deadlock",
+    "target": "concept:synchronization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:file-system",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:system-call",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:kernel-architecture",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ipc",
+    "target": "concept:operating-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:parallel-algorithms",
+    "target": "concept:parallel-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-performance-computing",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cluster-computing",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:mpi",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:openmp",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:cuda",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:tcp-ip",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ipv4",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ipv6",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:routing",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:switching",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dns",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:http",
+    "target": "domain:networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:tls",
+    "target": "domain:networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:congestion-control",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:packet-switching",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sdn",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quic",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quic",
+    "target": "concept:http",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:distributed-systems",
+    "target": "domain:backend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:microservices",
+    "target": "concept:distributed-systems",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:consensus",
+    "target": "concept:distributed-systems",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:raft",
+    "target": "concept:consensus",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:paxos",
+    "target": "concept:consensus",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:distributed-transaction",
+    "target": "concept:database-transaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:replication",
+    "target": "concept:distributed-systems",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:fault-tolerance",
+    "target": "concept:high-availability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:message-passing",
+    "target": "concept:distributed-systems",
+    "relationship_type": "related_to"
   }
 ]

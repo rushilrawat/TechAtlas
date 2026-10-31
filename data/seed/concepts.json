@@ -1796,5 +1796,643 @@
       "rtc"
     ],
     "wikipedia_title": "Real-time communication"
+  },
+  {
+    "id": "concept:isa",
+    "slug": "isa",
+    "name": "Instruction Set Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The contract between hardware and software defining a processor's instructions, registers, and memory model.",
+    "aliases": [
+      "ISA"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Instruction set architecture"
+  },
+  {
+    "id": "concept:cpu-pipelining",
+    "slug": "cpu-pipelining",
+    "name": "CPU Pipelining",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Overlapping the execution stages of successive instructions to increase processor throughput.",
+    "importance": 0.6,
+    "wikipedia_title": "Instruction pipelining"
+  },
+  {
+    "id": "concept:superscalar",
+    "slug": "superscalar",
+    "name": "Superscalar Execution",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Issuing multiple instructions per clock cycle across parallel execution units.",
+    "importance": 0.6,
+    "wikipedia_title": "Superscalar processor"
+  },
+  {
+    "id": "concept:out-of-order-execution",
+    "slug": "out-of-order-execution",
+    "name": "Out-of-Order Execution",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Executing instructions as their operands become ready rather than in program order.",
+    "importance": 0.6,
+    "wikipedia_title": "Out-of-order execution"
+  },
+  {
+    "id": "concept:branch-prediction",
+    "slug": "branch-prediction",
+    "name": "Branch Prediction",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Guessing the outcome of conditional branches to keep the pipeline full.",
+    "importance": 0.6,
+    "wikipedia_title": "Branch predictor"
+  },
+  {
+    "id": "concept:cache-hierarchy",
+    "slug": "cache-hierarchy",
+    "name": "Cache Hierarchies",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The layered arrangement of progressively larger, slower caches between the CPU and main memory.",
+    "importance": 0.6,
+    "wikipedia_title": "Cache hierarchy"
+  },
+  {
+    "id": "concept:memory-hierarchy",
+    "slug": "memory-hierarchy",
+    "name": "Memory Hierarchy",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The organization of storage by speed and cost, from registers to disk.",
+    "importance": 0.6,
+    "wikipedia_title": "Memory hierarchy"
+  },
+  {
+    "id": "concept:memory-consistency",
+    "slug": "memory-consistency",
+    "name": "Memory Consistency",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The rules governing the order in which memory operations become visible across processors.",
+    "importance": 0.6,
+    "wikipedia_title": "Consistency model"
+  },
+  {
+    "id": "concept:multiprocessor-architecture",
+    "slug": "multiprocessor-architecture",
+    "name": "Multiprocessor Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "System designs that integrate multiple processors sharing memory or interconnects.",
+    "importance": 0.6,
+    "wikipedia_title": "Multiprocessing"
+  },
+  {
+    "id": "concept:gpu-architecture",
+    "slug": "gpu-architecture",
+    "name": "GPU Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The massively parallel hardware design of graphics processing units.",
+    "importance": 0.6,
+    "wikipedia_title": "Graphics processing unit"
+  },
+  {
+    "id": "concept:simd",
+    "slug": "simd",
+    "name": "SIMD",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A parallelism model applying one instruction to multiple data elements at once.",
+    "aliases": [
+      "Single Instruction Multiple Data"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Single instruction, multiple data"
+  },
+  {
+    "id": "concept:mimd",
+    "slug": "mimd",
+    "name": "MIMD",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A parallelism model where processors run different instructions on different data.",
+    "aliases": [
+      "Multiple Instruction Multiple Data"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "MIMD"
+  },
+  {
+    "id": "concept:digital-logic",
+    "slug": "digital-logic",
+    "name": "Digital Logic",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The design of circuits that operate on binary signals using logic gates.",
+    "importance": 0.6,
+    "wikipedia_title": "Logic gate"
+  },
+  {
+    "id": "concept:combinational-logic",
+    "slug": "combinational-logic",
+    "name": "Combinational Logic",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Digital logic whose output depends only on current inputs, with no memory.",
+    "importance": 0.6,
+    "wikipedia_title": "Combinational logic"
+  },
+  {
+    "id": "concept:sequential-logic",
+    "slug": "sequential-logic",
+    "name": "Sequential Logic",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Digital logic whose output depends on current inputs and stored state.",
+    "importance": 0.6,
+    "wikipedia_title": "Sequential logic"
+  },
+  {
+    "id": "concept:finite-state-machine",
+    "slug": "finite-state-machine",
+    "name": "Finite-State Machine",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A model of computation with a finite set of states and transitions between them.",
+    "aliases": [
+      "FSM"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Finite-state machine"
+  },
+  {
+    "id": "concept:asic",
+    "slug": "asic",
+    "name": "ASIC",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "An integrated circuit customized for a specific application rather than general use.",
+    "aliases": [
+      "Application-Specific Integrated Circuit"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Application-specific integrated circuit"
+  },
+  {
+    "id": "concept:hdl",
+    "slug": "hdl",
+    "name": "Hardware Description Languages",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Languages used to model and describe digital hardware circuits.",
+    "aliases": [
+      "HDL"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Hardware description language"
+  },
+  {
+    "id": "concept:microcontroller",
+    "slug": "microcontroller",
+    "name": "Microcontrollers",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A compact integrated circuit combining a processor, memory, and peripherals for embedded control.",
+    "aliases": [
+      "MCU"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Microcontroller"
+  },
+  {
+    "id": "concept:firmware",
+    "slug": "firmware",
+    "name": "Firmware",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Low-level software stored on a device that controls its hardware.",
+    "importance": 0.6,
+    "wikipedia_title": "Firmware"
+  },
+  {
+    "id": "concept:rtos",
+    "slug": "rtos",
+    "name": "Real-Time Operating Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "An operating system designed to guarantee timing deadlines for tasks.",
+    "aliases": [
+      "RTOS"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Real-time operating system"
+  },
+  {
+    "id": "concept:interrupt-handling",
+    "slug": "interrupt-handling",
+    "name": "Interrupt Handling",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Responding to asynchronous hardware or software events by pausing normal execution.",
+    "importance": 0.6,
+    "wikipedia_title": "Interrupt handler"
+  },
+  {
+    "id": "concept:bare-metal-programming",
+    "slug": "bare-metal-programming",
+    "name": "Bare-Metal Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Writing software that runs directly on hardware without an operating system.",
+    "importance": 0.6,
+    "wikipedia_title": "Bare machine"
+  },
+  {
+    "id": "concept:i2c",
+    "slug": "i2c",
+    "name": "I2C",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A two-wire serial bus for connecting low-speed peripherals to processors.",
+    "aliases": [
+      "I2C bus"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "I²C"
+  },
+  {
+    "id": "concept:spi",
+    "slug": "spi",
+    "name": "SPI",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A synchronous serial bus for short-distance communication with peripherals.",
+    "aliases": [
+      "Serial Peripheral Interface"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Serial Peripheral Interface"
+  },
+  {
+    "id": "concept:uart",
+    "slug": "uart",
+    "name": "UART",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A hardware device for asynchronous serial communication.",
+    "aliases": [
+      "Universal Asynchronous Receiver-Transmitter"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Universal asynchronous receiver-transmitter"
+  },
+  {
+    "id": "concept:can-bus",
+    "slug": "can-bus",
+    "name": "CAN Bus",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A robust serial bus standard widely used in vehicles and industrial systems.",
+    "aliases": [
+      "Controller Area Network"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "CAN bus"
+  },
+  {
+    "id": "concept:real-time-scheduling",
+    "slug": "real-time-scheduling",
+    "name": "Real-Time Scheduling",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Scheduling algorithms that guarantee tasks meet timing deadlines.",
+    "importance": 0.6,
+    "wikipedia_title": "Real-time computing"
+  },
+  {
+    "id": "concept:virtual-memory",
+    "slug": "virtual-memory",
+    "name": "Virtual Memory",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "An abstraction giving each process its own large, contiguous address space backed by physical memory and disk.",
+    "importance": 0.6,
+    "wikipedia_title": "Virtual memory"
+  },
+  {
+    "id": "concept:process-scheduling",
+    "slug": "process-scheduling",
+    "name": "Process Scheduling",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The operating-system activity of deciding which process runs on the CPU and when.",
+    "importance": 0.6,
+    "wikipedia_title": "Scheduling (computing)"
+  },
+  {
+    "id": "concept:synchronization",
+    "slug": "synchronization",
+    "name": "Synchronization",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Coordinating concurrent execution using locks, semaphores, and other primitives.",
+    "importance": 0.6,
+    "wikipedia_title": "Synchronization (computer science)"
+  },
+  {
+    "id": "concept:thread",
+    "slug": "thread",
+    "name": "Threads",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The smallest unit of CPU scheduling within a process.",
+    "aliases": [
+      "Thread (computing)"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Thread (computing)"
+  },
+  {
+    "id": "concept:deadlock",
+    "slug": "deadlock",
+    "name": "Deadlocks",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A state where processes are blocked forever each waiting on resources held by the others.",
+    "importance": 0.6,
+    "wikipedia_title": "Deadlock"
+  },
+  {
+    "id": "concept:file-system",
+    "slug": "file-system",
+    "name": "File Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The methods and structures an operating system uses to store and organize files.",
+    "importance": 0.6,
+    "wikipedia_title": "File system"
+  },
+  {
+    "id": "concept:system-call",
+    "slug": "system-call",
+    "name": "System Calls",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The programmatic interface through which a program requests services from the kernel.",
+    "aliases": [
+      "syscall"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "System call"
+  },
+  {
+    "id": "concept:kernel-architecture",
+    "slug": "kernel-architecture",
+    "name": "Kernel Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The structural design of an operating-system kernel, such as monolithic or microkernel.",
+    "importance": 0.6,
+    "wikipedia_title": "Kernel (operating system)"
+  },
+  {
+    "id": "concept:ipc",
+    "slug": "ipc",
+    "name": "Inter-Process Communication",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Mechanisms that let separate processes exchange data and signals.",
+    "aliases": [
+      "IPC"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Inter-process communication"
+  },
+  {
+    "id": "concept:device-driver",
+    "slug": "device-driver",
+    "name": "Device Drivers",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Software that lets the operating system communicate with hardware devices.",
+    "importance": 0.6,
+    "wikipedia_title": "Device driver"
+  },
+  {
+    "id": "concept:parallel-algorithms",
+    "slug": "parallel-algorithms",
+    "name": "Parallel Algorithms",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Algorithms designed to execute across multiple processors simultaneously.",
+    "importance": 0.6,
+    "wikipedia_title": "Parallel algorithm"
+  },
+  {
+    "id": "concept:high-performance-computing",
+    "slug": "high-performance-computing",
+    "name": "High-Performance Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Aggregating computing power to solve large problems via parallelism and clusters.",
+    "aliases": [
+      "HPC"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Supercomputer"
+  },
+  {
+    "id": "concept:cluster-computing",
+    "slug": "cluster-computing",
+    "name": "Cluster Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Connecting multiple computers to work together as a single system.",
+    "importance": 0.6,
+    "wikipedia_title": "Computer cluster"
+  },
+  {
+    "id": "concept:tcp-ip",
+    "slug": "tcp-ip",
+    "name": "TCP/IP",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The foundational protocol suite of the internet, layering transport over internet addressing.",
+    "aliases": [
+      "TCP/IP",
+      "Internet protocol suite"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Internet protocol suite"
+  },
+  {
+    "id": "concept:ipv4",
+    "slug": "ipv4",
+    "name": "IPv4",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The fourth version of the Internet Protocol, using 32-bit addresses.",
+    "importance": 0.6,
+    "wikipedia_title": "IPv4"
+  },
+  {
+    "id": "concept:ipv6",
+    "slug": "ipv6",
+    "name": "IPv6",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The sixth version of the Internet Protocol, using 128-bit addresses.",
+    "importance": 0.6,
+    "wikipedia_title": "IPv6"
+  },
+  {
+    "id": "concept:routing",
+    "slug": "routing",
+    "name": "Routing",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Selecting paths across networks to forward packets toward their destination.",
+    "importance": 0.6,
+    "wikipedia_title": "Routing"
+  },
+  {
+    "id": "concept:switching",
+    "slug": "switching",
+    "name": "Switching",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Forwarding frames within a local network based on hardware addresses.",
+    "importance": 0.6,
+    "wikipedia_title": "Network switch"
+  },
+  {
+    "id": "concept:dns",
+    "slug": "dns",
+    "name": "DNS",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The hierarchical naming system that maps domain names to IP addresses.",
+    "aliases": [
+      "Domain Name System"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Domain Name System"
+  },
+  {
+    "id": "concept:congestion-control",
+    "slug": "congestion-control",
+    "name": "Congestion Control",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Techniques that regulate traffic to avoid overwhelming a network.",
+    "importance": 0.6,
+    "wikipedia_title": "Network congestion"
+  },
+  {
+    "id": "concept:packet-switching",
+    "slug": "packet-switching",
+    "name": "Packet Switching",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Transmitting data as independently routed packets rather than dedicated circuits.",
+    "importance": 0.6,
+    "wikipedia_title": "Packet switching"
+  },
+  {
+    "id": "concept:sdn",
+    "slug": "sdn",
+    "name": "Software-Defined Networking",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Decoupling the network control plane from the data plane for programmable control.",
+    "aliases": [
+      "SDN"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Software-defined networking"
+  },
+  {
+    "id": "concept:quic",
+    "slug": "quic",
+    "name": "QUIC",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "A modern UDP-based transport protocol reducing latency for web traffic.",
+    "importance": 0.6,
+    "wikipedia_title": "QUIC"
+  },
+  {
+    "id": "concept:distributed-systems",
+    "slug": "distributed-systems",
+    "name": "Distributed Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Systems whose components run on networked computers and coordinate by passing messages.",
+    "importance": 0.6,
+    "wikipedia_title": "Distributed computing"
+  },
+  {
+    "id": "concept:consensus",
+    "slug": "consensus",
+    "name": "Consensus Algorithms",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Protocols by which distributed nodes agree on a single value despite failures.",
+    "importance": 0.6,
+    "wikipedia_title": "Consensus (computer science)"
+  },
+  {
+    "id": "concept:raft",
+    "slug": "raft",
+    "name": "Raft",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "An understandable consensus algorithm for managing a replicated log.",
+    "importance": 0.6,
+    "wikipedia_title": "Raft (algorithm)"
+  },
+  {
+    "id": "concept:paxos",
+    "slug": "paxos",
+    "name": "Paxos",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A family of protocols for reaching consensus in an unreliable network.",
+    "importance": 0.6,
+    "wikipedia_title": "Paxos (computer science)"
+  },
+  {
+    "id": "concept:distributed-transaction",
+    "slug": "distributed-transaction",
+    "name": "Distributed Transactions",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Transactions spanning multiple networked data stores while preserving atomicity.",
+    "importance": 0.6,
+    "wikipedia_title": "Distributed transaction"
+  },
+  {
+    "id": "concept:fault-tolerance",
+    "slug": "fault-tolerance",
+    "name": "Fault Tolerance",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A system's ability to keep operating correctly despite component failures.",
+    "importance": 0.6,
+    "wikipedia_title": "Fault tolerance"
+  },
+  {
+    "id": "concept:message-passing",
+    "slug": "message-passing",
+    "name": "Message Passing",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A communication model where processes coordinate by sending and receiving messages.",
+    "importance": 0.6,
+    "wikipedia_title": "Message passing"
   }
 ]

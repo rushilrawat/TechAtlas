@@ -30,11 +30,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
 
-# Phase 1B milestone targets (requirements.md 1.1). Checked only when
-# --require-targets is passed, so intermediate commits are not blocked.
+# Dataset milestone targets. Checked only when --require-targets is passed, so
+# intermediate commits are not blocked.
+#  - Phase 1B floors (>=250 technologies, >=150 concepts) are retained.
+#  - The concept ceiling was 170 for Phase 1B; Phase 1E (CS-domain expansion, approved)
+#    deliberately adds ~100 curated concepts (networks/theory/robotics/systems/advanced-AI),
+#    so the ceiling is raised to a bounded 320 to keep guarding against runaway inflation
+#    while admitting the planned expansion. Node count is still curation-gated, not a target.
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
-MAX_CONCEPTS = 170
+MAX_CONCEPTS = 320
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 
