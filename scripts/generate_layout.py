@@ -292,7 +292,22 @@ def generate(dataset: dict) -> dict:
     # incremental update). When versions match (or no previous file), recompute from
     # the deterministic seed so a fresh run is fully reproducible and CI-stable.
     prev_version, prev_coords = _load_previous()
-    reuse_prev = prev_version is not None and prev_version != dataset["version"]
+    # Pin to the previous layout whenever one exists and shares nodes with the current
+    # dataset. This makes the layout an INCREMENTAL, idempotent function of (dataset,
+    # previous layout): re-running with the committed layout as input reproduces it exactly
+    # (CI determinism), and adding nodes preserves every existing coordinate while placing
+    # only the new nodes. A first-ever build (no previous file) falls back to the seeded
+    # from-scratch layout.
+    reuse_prev = bool(prev_coords) and any(n in prev_coords for n in ids)
+
+    # Incremental expansion: hold EXISTING domains at their previous ring anchors so the map
+    # does not rotate when new domains enlarge the ring. New domains keep their freshly
+    # computed ring slot. On a from-scratch build (no previous layout) this is a no-op.
+    if reuse_prev:
+        for d in domains:
+            prev = prev_coords.get(d)
+            if prev and "x" in prev and "y" in prev:
+                anchor[d] = (float(prev["x"]), float(prev["y"]))
 
     pos: dict[str, list[float]] = {}
     pinned: set[str] = set()
@@ -398,14 +413,26 @@ def generate(dataset: dict) -> dict:
                 ax, ay = anchor[nid]
                 pos[nid][0] = 0.85 * pos[nid][0] + 0.15 * ax
                 pos[nid][1] = 0.85 * pos[nid][1] + 0.15 * ay
+            elif nid in anchor_target and reuse_prev:
+                # PINNED node during an incremental expansion: hold it EXACTLY at its previous
+                # coordinate so the existing map is preserved. New (un-pinned) nodes relax
+                # freely around this fixed frame. (On a from-scratch build reuse_prev is False
+                # and this branch is skipped, so the canonical deterministic layout is unchanged.)
+                tx, ty = anchor_target[nid]
+                pos[nid][0] = tx
+                pos[nid][1] = ty
             max_move = max(max_move, math.hypot(mx, my))
 
         temp *= 0.98
         if max_move < CONVERGENCE_EPS:  # Task 5: early stop
             break
 
-    # Task 2: final radius-aware overlap resolution. Frozen nodes stay put.
-    frozen = {nid for nid in pinned if nid not in dirty}
+    # Task 2: final radius-aware overlap resolution. During an incremental expansion
+    # (reuse_prev) freeze ALL pinned nodes so previously-placed coordinates are preserved
+    # exactly — only new (un-pinned) nodes absorb overlap adjustments. On a from-scratch
+    # build (no previous layout) nothing is pinned, so this is a no-op and the full relaxation
+    # still produces the canonical deterministic layout.
+    frozen = set(pinned) if reuse_prev else {nid for nid in pinned if nid not in dirty}
     _resolve_overlaps(ids, pos, radius, anchor, frozen=frozen)
 
     coords = {
