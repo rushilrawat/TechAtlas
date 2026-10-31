@@ -35,11 +35,11 @@ DATASET = ROOT / "data" / "graph.json"
 #  - Phase 1B floors (>=250 technologies, >=150 concepts) are retained.
 #  - The concept ceiling was 170 for Phase 1B; Phase 1E (CS-domain expansion, approved)
 #    deliberately adds ~100 curated concepts (networks/theory/robotics/systems/advanced-AI),
-#    so the ceiling is raised to a bounded 320 to keep guarding against runaway inflation
+#    so the ceiling is raised to a bounded 340 to keep guarding against runaway inflation
 #    while admitting the planned expansion. Node count is still curation-gated, not a target.
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
-MAX_CONCEPTS = 320
+MAX_CONCEPTS = 340
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 

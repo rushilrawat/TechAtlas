@@ -5503,5 +5503,80 @@
     "source": "technology:qiskit",
     "target": "concept:quantum-computing",
     "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:markov-decision-process",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:deep-rl",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:deep-rl",
+    "target": "concept:deep-learning",
+    "relationship_type": "depends_on"
+  },
+  {
+    "source": "concept:multi-agent-systems",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:probabilistic-graphical-models",
+    "target": "concept:bayesian-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bayesian-inference",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:representation-learning",
+    "target": "concept:vector-embeddings",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:self-supervised-learning",
+    "target": "concept:unsupervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multimodal-learning",
+    "target": "concept:deep-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:graph-neural-networks",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:geometric-deep-learning",
+    "target": "concept:graph-neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:embodied-ai",
+    "target": "domain:robotics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:embodied-ai",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ai-planning",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:neuro-symbolic-ai",
+    "target": "concept:deep-learning",
+    "relationship_type": "related_to"
   }
 ]

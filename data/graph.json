@@ -3678,6 +3678,164 @@
       "wikipedia_title": "Quantum algorithm"
     },
     {
+      "id": "concept:markov-decision-process",
+      "slug": "markov-decision-process",
+      "name": "Markov Decision Processes",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A mathematical framework for sequential decision-making under uncertainty.",
+      "aliases": [
+        "MDP"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Markov decision process"
+    },
+    {
+      "id": "concept:deep-rl",
+      "slug": "deep-rl",
+      "name": "Deep Reinforcement Learning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Reinforcement learning that uses deep neural networks to approximate value or policy functions.",
+      "aliases": [
+        "Deep RL",
+        "DRL"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Deep reinforcement learning"
+    },
+    {
+      "id": "concept:multi-agent-systems",
+      "slug": "multi-agent-systems",
+      "name": "Multi-Agent Systems",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Systems of multiple interacting intelligent agents.",
+      "aliases": [
+        "MAS"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Multi-agent system"
+    },
+    {
+      "id": "concept:probabilistic-graphical-models",
+      "slug": "probabilistic-graphical-models",
+      "name": "Probabilistic Graphical Models",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Models representing probabilistic relationships via graphs of random variables.",
+      "aliases": [
+        "PGM"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Graphical model"
+    },
+    {
+      "id": "concept:bayesian-inference",
+      "slug": "bayesian-inference",
+      "name": "Bayesian Inference",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Updating probability estimates as new evidence is observed, via Bayes' theorem.",
+      "importance": 0.6,
+      "wikipedia_title": "Bayesian inference"
+    },
+    {
+      "id": "concept:representation-learning",
+      "slug": "representation-learning",
+      "name": "Representation Learning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Automatically discovering useful features or representations from raw data.",
+      "aliases": [
+        "Feature learning"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Feature learning"
+    },
+    {
+      "id": "concept:self-supervised-learning",
+      "slug": "self-supervised-learning",
+      "name": "Self-Supervised Learning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Learning representations from unlabeled data by generating supervisory signals from the data itself.",
+      "importance": 0.6,
+      "wikipedia_title": "Self-supervised learning"
+    },
+    {
+      "id": "concept:multimodal-learning",
+      "slug": "multimodal-learning",
+      "name": "Multimodal Learning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Learning from multiple data modalities such as text, image, and audio together.",
+      "importance": 0.6,
+      "wikipedia_title": "Multimodal learning"
+    },
+    {
+      "id": "concept:graph-neural-networks",
+      "slug": "graph-neural-networks",
+      "name": "Graph Neural Networks",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Neural networks that operate directly on graph-structured data.",
+      "aliases": [
+        "GNN"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Graph neural network"
+    },
+    {
+      "id": "concept:geometric-deep-learning",
+      "slug": "geometric-deep-learning",
+      "name": "Geometric Deep Learning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "A framework unifying deep learning on non-Euclidean domains like graphs and manifolds.",
+      "aliases": [
+        "GDL"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Geometric deep learning"
+    },
+    {
+      "id": "concept:embodied-ai",
+      "slug": "embodied-ai",
+      "name": "Embodied AI",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "AI agents that learn and act through a physical or simulated body in an environment.",
+      "importance": 0.6,
+      "wikipedia_title": "Embodied cognition"
+    },
+    {
+      "id": "concept:ai-planning",
+      "slug": "ai-planning",
+      "name": "AI Planning",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Automatically generating sequences of actions to achieve goals.",
+      "aliases": [
+        "Automated planning"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Automated planning and scheduling"
+    },
+    {
+      "id": "concept:neuro-symbolic-ai",
+      "slug": "neuro-symbolic-ai",
+      "name": "Neuro-Symbolic AI",
+      "node_type": "concept",
+      "primary_domain": "domain:ai-ml",
+      "short_description": "Approaches combining neural learning with symbolic reasoning.",
+      "aliases": [
+        "Neurosymbolic AI"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Neuro-symbolic AI"
+    },
+    {
       "id": "technology:python",
       "slug": "python",
       "name": "Python",
@@ -13431,6 +13589,81 @@
       "source": "technology:qiskit",
       "target": "concept:quantum-computing",
       "relationship_type": "used_for"
+    },
+    {
+      "source": "concept:markov-decision-process",
+      "target": "concept:reinforcement-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:deep-rl",
+      "target": "concept:reinforcement-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:deep-rl",
+      "target": "concept:deep-learning",
+      "relationship_type": "depends_on"
+    },
+    {
+      "source": "concept:multi-agent-systems",
+      "target": "concept:reinforcement-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:probabilistic-graphical-models",
+      "target": "concept:bayesian-inference",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:bayesian-inference",
+      "target": "domain:ai-ml",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:representation-learning",
+      "target": "concept:vector-embeddings",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:self-supervised-learning",
+      "target": "concept:unsupervised-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:multimodal-learning",
+      "target": "concept:deep-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:graph-neural-networks",
+      "target": "concept:neural-networks",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:geometric-deep-learning",
+      "target": "concept:graph-neural-networks",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:embodied-ai",
+      "target": "domain:robotics",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:embodied-ai",
+      "target": "concept:reinforcement-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ai-planning",
+      "target": "concept:reinforcement-learning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:neuro-symbolic-ai",
+      "target": "concept:deep-learning",
+      "relationship_type": "related_to"
     }
   ]
 }
