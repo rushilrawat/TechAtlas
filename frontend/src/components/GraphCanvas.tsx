@@ -37,6 +37,9 @@ interface Props {
   // Explore "Home" reframe: bump this nonce to smoothly re-fit the default atlas camera
   // (used when returning from Repo X-Ray so the homepage camera is fully restored).
   exploreNonce?: number;
+  // Top-level domain metadata (id/name/color) for the Explore sector backplates + legend
+  // sync. Only used to DRAW the atmospheric overlay — never alters graph data.
+  domains?: { id: string; name: string; color: string; node_count: number }[] | null;
 }
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
@@ -238,6 +241,7 @@ export function GraphCanvas({
   stackPositions = null,
   stackHeadings = null,
   exploreNonce = 0,
+  domains = null,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sigmaRef = useRef<Sigma | null>(null);
@@ -275,6 +279,18 @@ export function GraphCanvas({
   const [headingScreens, setHeadingScreens] = useState<
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
   >([]);
+
+  // Explore atlas overlay: soft domain-sector backplates + the centre identity, projected
+  // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
+  // none); never touches graph data. Each sector is drawn at its members' projected centroid
+  // with a radius covering the cluster — so it reads as the domain's "territory".
+  const [backdrop, setBackdrop] = useState<{
+    sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
+    center: { cx: number; cy: number; r: number } | null;
+  }>({ sectors: [], center: null });
+  const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number }> | null>(null);
+  const domainsRef = useRef(domains);
+  domainsRef.current = domains;
 
   // Build the Sigma instance once per dataset.
   useEffect(() => {
@@ -858,10 +874,123 @@ export function GraphCanvas({
     // re-sync even when fitStack uses setCustomBBox (which may not emit camera 'updated').
   }, [stackHeadings, stackPositions, fitSignal?.nonce]);
 
+  // ---- Explore atlas backdrop: domain-sector backplates + centre identity ----
+  // Decorative overlay only (pointer-events:none). Projects each domain's member-cluster
+  // centroid/radius and the atlas centre to screen on every camera move, so the tinted
+  // sectors and centre mark track pan/zoom without per-frame cost (recompute on 'updated').
+  useEffect(() => {
+    const renderer = sigmaRef.current;
+    const graph = graphRef.current;
+    if (!renderer || !graph) return;
+
+    // Compute graph-space geometry per TOP-LEVEL domain ONCE (deterministic from coords).
+    // Members = nodes whose primaryDomain is the domain (same definition as the count).
+    const doms = domainsRef.current;
+    if (!doms || doms.length === 0) { setBackdrop({ sectors: [], center: null }); return; }
+    if (!domainGeomRef.current) {
+      const geom = new Map<string, { gx: number; gy: number; gr: number }>();
+      for (const d of doms) {
+        let sx = 0, sy = 0, n = 0;
+        graph.forEachNode((id, a) => {
+          if (a.primaryDomain === d.id || id === d.id) {
+            sx += a.x as number; sy += a.y as number; n++;
+          }
+        });
+        if (n === 0) continue;
+        const gx = sx / n, gy = sy / n;
+        let maxd = 0;
+        graph.forEachNode((id, a) => {
+          if (a.primaryDomain === d.id || id === d.id) {
+            maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy));
+          }
+        });
+        geom.set(d.id, { gx, gy, gr: maxd + 60 });
+      }
+      domainGeomRef.current = geom;
+    }
+
+    const project = () => {
+      // Suppress the atlas backdrop entirely during Repo X-Ray (Stack View owns the canvas).
+      if (stackActiveRef.current) { setBackdrop({ sectors: [], center: null }); return; }
+      const geom = domainGeomRef.current!;
+      const colorOf = new Map(doms.map((d) => [d.id, d.color]));
+      const sectors: { id: string; color: string; cx: number; cy: number; r: number }[] = [];
+      let gcx = 0, gcy = 0, gn = 0;
+      for (const [id, g] of geom) {
+        const c = renderer.graphToViewport({ x: g.gx, y: g.gy });
+        const edge = renderer.graphToViewport({ x: g.gx + g.gr, y: g.gy });
+        const r = Math.hypot(edge.x - c.x, edge.y - c.y);
+        sectors.push({ id, color: colorOf.get(id) ?? "#8a93ab", cx: c.x, cy: c.y, r });
+        gcx += g.gx; gcy += g.gy; gn++;
+      }
+      // Centre of the ring = mean of domain centroids, projected.
+      let center: { cx: number; cy: number; r: number } | null = null;
+      if (gn > 0) {
+        const cc = renderer.graphToViewport({ x: gcx / gn, y: gcy / gn });
+        const cr0 = renderer.graphToViewport({ x: gcx / gn + 300, y: gcy / gn });
+        center = { cx: cc.x, cy: cc.y, r: Math.hypot(cr0.x - cc.x, cr0.y - cc.y) };
+      }
+      setBackdrop({ sectors, center });
+    };
+    project();
+    const camera = renderer.getCamera();
+    camera.on("updated", project);
+    const onResize = () => project();
+    window.addEventListener("resize", onResize);
+    // span the entry framing animation so the backdrop settles with the camera.
+    let raf = 0; const t0 = performance.now();
+    const loop = (now: number) => { project(); if (now - t0 < 1400) raf = requestAnimationFrame(loop); };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      camera.removeListener("updated", project);
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(raf);
+    };
+  }, [domains, data, exploreNonce, stackPositions]);
+
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
 
   return (
     <div className="graph-canvas-wrap">
+      {/* Atlas backdrop: soft domain-sector tints + centre identity. Behind the WebGL canvas,
+          pointer-events:none, camera-synced. Decorative only — never affects graph events. */}
+      {(backdrop.sectors.length > 0 || backdrop.center) && (
+        <svg className="atlas-backdrop" aria-hidden>
+          <defs>
+            {backdrop.sectors.map((s) => (
+              <radialGradient key={s.id} id={`sect-${s.id}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={s.color} stopOpacity={0.16} />
+                <stop offset="55%" stopColor={s.color} stopOpacity={0.07} />
+                <stop offset="100%" stopColor={s.color} stopOpacity={0} />
+              </radialGradient>
+            ))}
+            <radialGradient id="atlas-centre" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#7aa2f7" stopOpacity={0.05} />
+              <stop offset="100%" stopColor="#7aa2f7" stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          {backdrop.sectors.map((s) => (
+            <circle key={s.id} cx={s.cx} cy={s.cy} r={s.r} fill={`url(#sect-${s.id})`} />
+          ))}
+          {backdrop.center && (
+            <g>
+              <circle cx={backdrop.center.cx} cy={backdrop.center.cy}
+                r={backdrop.center.r * 1.9} fill="url(#atlas-centre)" />
+              {[1.15, 1.5, 1.9].map((m, i) => (
+                <circle key={i} cx={backdrop.center!.cx} cy={backdrop.center!.cy}
+                  r={backdrop.center!.r * m} className="atlas-ring" />
+              ))}
+            </g>
+          )}
+        </svg>
+      )}
+      {backdrop.center && (
+        <div className="atlas-centre-id" aria-hidden
+          style={{ left: backdrop.center.cx, top: backdrop.center.cy }}>
+          <span className="atlas-centre-title">TechAtlas</span>
+          <span className="atlas-centre-sub">Technology Knowledge Graph</span>
+        </div>
+      )}
       <div
         ref={containerRef}
         className="graph-canvas"

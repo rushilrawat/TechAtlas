@@ -37,7 +37,7 @@ describe("domainMemberIds (count/highlight correctness)", () => {
   it("includes EVERY node whose primary_domain is the domain, plus the anchor", () => {
     const m = domainMemberIds(g, "domain:robotics");
     expect(m).toEqual(new Set([
-      "domain:robotics", "technology:ros2", "concept:slam", "concept:motion-planning",
+      "technology:ros2", "concept:slam", "concept:motion-planning",
     ]));
   });
 
@@ -46,8 +46,8 @@ describe("domainMemberIds (count/highlight correctness)", () => {
       (n) => n.node_type !== "domain" && n.primary_domain === "domain:robotics",
     ).length; // = 3, the sidebar's node_count
     const members = domainMemberIds(g, "domain:robotics");
-    // members includes the anchor; the member COUNT (excluding anchor) equals the sidebar count
-    expect(members.size - 1).toBe(roboticsCount);
+    // members-only set (no anchor) equals the sidebar count exactly.
+    expect(members.size).toBe(roboticsCount);
   });
 
   it("does NOT highlight only edge-neighbours (the old bug)", () => {

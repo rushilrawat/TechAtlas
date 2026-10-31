@@ -67,7 +67,7 @@ export function FilterPanel({ domains, filter, onChange, mobileOpen = false }: P
       <fieldset className="filter-group">
         <legend>Domain</legend>
         {domains.map((d) => (
-          <label key={d.id} className="filter-check">
+          <label key={d.id} className="filter-check filter-domain">
             <input
               type="checkbox"
               checked={filter.domains.has(d.id)}
@@ -76,7 +76,8 @@ export function FilterPanel({ domains, filter, onChange, mobileOpen = false }: P
               }
             />
             <span className="filter-dot" style={{ background: d.color }} aria-hidden />
-            <span>{d.name}</span>
+            <span className="filter-domain-name">{d.name}</span>
+            <span className="filter-domain-count">{d.node_count}</span>
           </label>
         ))}
       </fieldset>

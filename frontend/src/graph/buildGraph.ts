@@ -64,10 +64,12 @@ export function buildGraph(data: GraphResponse): Graph {
  * (redesign §13/§26/§36 — count/highlight correctness). Deterministic; order-independent.
  */
 export function domainMemberIds(graph: Graph, domainId: string): Set<string> {
+  // MEMBER nodes only (primary_domain === domain), excluding the domain anchor itself — the
+  // same definition as the sidebar count, so a domain focus highlights exactly `count` nodes.
+  // (The anchor is kept visually prominent separately as the active/selected node.)
   const set = new Set<string>();
-  if (graph.hasNode(domainId)) set.add(domainId);
   graph.forEachNode((nid, a) => {
-    if (a.primaryDomain === domainId) set.add(nid);
+    if (nid !== domainId && a.primaryDomain === domainId) set.add(nid);
   });
   return set;
 }

@@ -200,9 +200,23 @@ class GraphService:
         return node_id in self._raw_nodes
 
     def domains(self) -> list[DomainSummary]:
+        # Count = MEMBER nodes of each domain (concepts + technologies whose primary_domain is
+        # the domain). The domain anchor node is NOT counted (it has primary_domain == its own
+        # id), so "Robotics 29" means its 29 members — matching the on-canvas highlight set and
+        # resolving the earlier 29-vs-30 ambiguity (count excludes the anchor).
         counts: dict[str, int] = defaultdict(int)
         for n in self._raw_nodes.values():
+            if n["node_type"] == "domain":
+                continue
             counts[n["primary_domain"]] += 1
+        # Parent map for NESTED subdomains: a `has_subdomain` edge whose source is NOT the
+        # taxonomic root (software-engineering) marks the target as a true subdomain. Lets the
+        # UI nest it under its parent instead of listing it as a 15th-17th top-level peer.
+        root = "domain:software-engineering"
+        parent_of: dict[str, str] = {}
+        for e in self._raw_edges:
+            if e.get("relationship_type") == "has_subdomain" and e.get("source") != root:
+                parent_of[e["target"]] = e["source"]
         out = []
         for n in self._raw_nodes.values():
             if n["node_type"] != "domain":
@@ -215,6 +229,7 @@ class GraphService:
                     short_description=n["short_description"],
                     color=self._color(n),
                     node_count=counts[n["id"]],
+                    parent_id=parent_of.get(n["id"]),
                 )
             )
         return sorted(out, key=lambda d: d.name)

@@ -333,6 +333,7 @@ export default function App() {
           stackPositions={stackPositions}
           stackHeadings={stackHeadings}
           exploreNonce={exploreNonce}
+          domains={state.domains}
           fitSignal={
             overlay && fitNonce > 0
               ? {
@@ -387,6 +388,7 @@ export default function App() {
         {overlay && <XrayLegend />}
         <DomainLegend
           domains={state.domains}
+          selectedId={selected}
           onPick={navigate}
           collapsed={legendCollapsed}
           onToggle={() => setLegendCollapsed((v) => !v)}

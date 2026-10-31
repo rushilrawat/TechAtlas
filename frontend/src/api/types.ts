@@ -87,6 +87,8 @@ export interface DomainSummary {
   short_description: string;
   color: string;
   node_count: number;
+  /** Parent domain id for nested subdomains; null for top-level domains. */
+  parent_id?: string | null;
 }
 
 // ---- Repo X-Ray scanner (Phase 1.5B) ----
