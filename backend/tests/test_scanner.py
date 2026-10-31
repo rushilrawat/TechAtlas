@@ -269,13 +269,28 @@ def test_evidence_links_are_commit_pinned(matcher):
                for e in scan.evidence)
 
 
-def test_source_file_budget_marks_partial(matcher):
+def test_source_sampling_is_not_partial_but_is_reported(matcher):
+    # Coverage correction (1.5D): bounded SOURCE sampling does not reduce dependency
+    # detection quality (manifests are always fully inspected), so it must NOT mark the scan
+    # partial. It is still reported honestly via source_files_skipped + a note.
     files = {f"src/f{i}.ts": 'import React from "react";' for i in range(10)}
     files["package.json"] = '{"dependencies":{"react":"1"}}'
     fake = FakeGitHub(files=files)
     scan = _run(fake, matcher, max_source_files=3)
-    assert scan.coverage.files_skipped_limit > 0
-    assert scan.coverage.partial is True
+    assert scan.coverage.source_files_skipped > 0
+    assert scan.coverage.partial is False, "source sampling alone must not be 'partial'"
+    assert scan.coverage.all_important_inspected is True
+    # The single declared manifest was fully inspected.
+    assert scan.coverage.manifests_inspected == 1
+    assert any("representative subset" in n for n in scan.coverage.notes)
+
+
+def test_truncated_tree_reports_important_not_fully_inspected(matcher):
+    # Complement to test_truncated_tree_marks_partial: a truncated tree can hide manifests,
+    # so the honest "all important inspected" signal must be False.
+    fake = FakeGitHub(files={"package.json": '{"dependencies":{"react":"1"}}'}, truncated=True)
+    scan = _run(fake, matcher)
+    assert scan.coverage.all_important_inspected is False
 
 
 def test_cache_roundtrip(tmp_path, matcher):

@@ -396,7 +396,18 @@ function Results({
 
       <p className="muted xray-coverage">
         Inspected {scan.coverage.files_inspected} file(s)
-        {scan.coverage.tree_truncated ? " · tree truncated" : ""}.
+        {scan.coverage.manifests_inspected > 0
+          ? ` · ${scan.coverage.manifests_inspected} manifest/config file(s)`
+          : ""}
+        {scan.coverage.all_important_inspected === false || scan.coverage.tree_truncated
+          ? " · some manifests not seen (tree truncated)"
+          : ""}
+        .
+        {typeof scan.coverage.source_files_skipped === "number" &&
+          scan.coverage.source_files_skipped > 0 && (
+            <> A representative subset of source files was analyzed; dependency detection
+              relies on the fully-inspected manifests.</>
+          )}
       </p>
     </div>
   );

@@ -240,6 +240,11 @@ def build_scan(
         for (eco, name), d in unmapped.items()
     ]
 
+    important_skipped = getattr(selection, "important_files_skipped", 0)
+    source_skipped = getattr(selection, "source_files_skipped", selection.skipped_limit)
+    manifests_discovered = getattr(selection, "manifests_total", manifests)
+    all_important = (not selection.truncated) and important_skipped == 0
+
     cov = ScanCoverage(
         files_listed=selection.files_listed,
         files_inspected=len(file_texts),
@@ -247,17 +252,42 @@ def build_scan(
         source_files_inspected=sources,
         files_skipped_limit=selection.skipped_limit,
         tree_truncated=selection.truncated,
+        source_files_skipped=source_skipped,
+        important_files_skipped=important_skipped,
+        manifests_discovered=manifests_discovered,
+        all_important_inspected=all_important,
     )
     if coverage_extra:
         for k, v in coverage_extra.items():
             setattr(cov, k, v)
-    cov.partial = bool(cov.tree_truncated or cov.files_skipped_limit > 0
-                       or (coverage_extra or {}).get("partial"))
+
+    # A scan is PARTIAL only when detection quality may actually be reduced: a truncated
+    # tree (manifests may be invisible) or important (manifest/config) files dropped by the
+    # hard cap, or an upstream budget hit. Bounded SOURCE sampling alone is expected and
+    # does NOT make a scan partial — manifests are always fully inspected (design 1.5D).
+    budget_partial = bool((coverage_extra or {}).get("partial"))
+    cov.partial = bool(cov.tree_truncated or important_skipped > 0 or budget_partial)
+    if not cov.all_important_inspected:
+        cov.all_important_inspected = not cov.partial
+
     if cov.tree_truncated:
-        cov.notes.append("GitHub returned a truncated file tree; coverage is incomplete.")
-    if cov.files_skipped_limit > 0:
         cov.notes.append(
-            f"{cov.files_skipped_limit} file(s) skipped due to scan budgets."
+            "GitHub returned a truncated file tree; some manifests may not have been seen."
+        )
+    if important_skipped > 0:
+        cov.notes.append(
+            f"{important_skipped} manifest/config file(s) exceeded the scan budget and "
+            "were not inspected."
+        )
+    # Always report meaningful, reassuring coverage of the high-signal set.
+    if manifests_discovered > 0 and important_skipped == 0 and not cov.tree_truncated:
+        cov.notes.append(
+            f"All {manifests_discovered} dependency manifest/config file(s) were inspected."
+        )
+    if source_skipped > 0:
+        cov.notes.append(
+            f"{source_skipped} additional source file(s) were not sampled "
+            "(a representative subset was analyzed; this does not affect dependency detection)."
         )
 
     scan_id = "scan_" + hashlib.sha1(

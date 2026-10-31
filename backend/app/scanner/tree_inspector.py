@@ -89,7 +89,15 @@ class TreeSelection:
     files: list[SelectedFile] = field(default_factory=list)
     files_listed: int = 0
     truncated: bool = False
-    skipped_limit: int = 0
+    skipped_limit: int = 0            # total files not inspected (back-compat)
+    # Coverage detail (1.5D): distinguish high-signal "important" files (manifests,
+    # lockfiles, configs, workflows) from bounded SOURCE sampling. Capping source
+    # samples does not reduce detection quality, so it must not be reported the same
+    # way as a genuinely missed manifest.
+    source_files_skipped: int = 0     # source beyond the sampling budget (benign)
+    important_files_skipped: int = 0  # manifests/configs dropped by max_files (real)
+    manifests_total: int = 0          # manifests+workflows discovered in the tree
+    manifests_selected: int = 0       # of those, how many are inspected
 
 
 def select_files(
@@ -135,18 +143,94 @@ def select_files(
             if ext in SOURCE_EXT and ext not in _BINARY_EXT:
                 sources.append(SelectedFile(path, size, "source"))
 
-    # Manifests + workflows are always included (bounded high-signal set).
-    # Source files are capped (prefer shallower paths = likelier app entrypoints).
-    sources.sort(key=lambda f: (f.path.count("/"), f.path))
-    kept_sources = sources[:max_source_files]
-    sel.skipped_limit += len(sources) - len(kept_sources)
+    # High-signal files (manifests, lockfiles, configs, workflows) are ALWAYS inspected —
+    # they drive confirmed/declared detection. Source files are a bounded SAMPLE only.
+    high_signal = manifests + workflows
+    sel.manifests_total = len(high_signal)
 
-    combined = manifests + workflows + kept_sources
+    # Source sampling (design 1.5D): instead of "shallowest N", spread the budget ACROSS
+    # top-level directories and prefer entrypoint-like filenames, so the sample represents
+    # the whole repo (incl. monorepo packages) rather than just the root. This changes
+    # WHICH source files are read, not HOW MANY — the per-scan work stays bounded, so it is
+    # fully compatible with Render Free + the GitHub request budget.
+    kept_sources = _prioritize_sources(sources, max_source_files)
+    sel.source_files_skipped = len(sources) - len(kept_sources)
+
+    # Enforce the overall file cap. High-signal files win the budget over source samples;
+    # only if the high-signal set alone exceeds max_files do we drop important files (rare,
+    # and reported distinctly so coverage is honest).
+    combined = high_signal + kept_sources
     if len(combined) > max_files:
-        sel.skipped_limit += len(combined) - max_files
-        combined = combined[:max_files]
+        overflow = len(combined) - max_files
+        # Trim source samples first.
+        trim_src = min(overflow, len(kept_sources))
+        if trim_src:
+            kept_sources = kept_sources[: len(kept_sources) - trim_src]
+            sel.source_files_skipped += trim_src
+            overflow -= trim_src
+        # Only then drop important files (counts as a real coverage gap).
+        if overflow > 0:
+            high_signal = high_signal[: len(high_signal) - overflow]
+            sel.important_files_skipped += overflow
+        combined = high_signal + kept_sources
+
+    sel.manifests_selected = sum(1 for f in combined if f.kind in ("manifest", "workflow"))
+    sel.skipped_limit = sel.source_files_skipped + sel.important_files_skipped
     sel.files = combined
     return sel
+
+
+# Entrypoint-ish basenames (stem match) that are the highest-signal source files for
+# import/usage detection. Case-insensitive stem comparison.
+_ENTRYPOINT_STEMS = {
+    "main", "index", "app", "__init__", "server", "cli", "mod", "lib", "setup",
+    "application", "manage", "wsgi", "asgi", "entry", "bootstrap",
+}
+
+
+def _prioritize_sources(
+    sources: list[SelectedFile], budget: int
+) -> list[SelectedFile]:
+    """Pick up to `budget` source files that best represent the repo.
+
+    Deterministic. Strategy:
+      1. Rank each file: entrypoint-stem first, then shallower path, then path (stable).
+      2. Distribute the budget round-robin across top-level directories so one giant
+         package cannot starve the others (monorepo/workspace coverage).
+    """
+    if budget <= 0 or not sources:
+        return []
+
+    def top_dir(path: str) -> str:
+        return path.split("/", 1)[0] if "/" in path else ""
+
+    def stem(path: str) -> str:
+        base = path.rsplit("/", 1)[-1]
+        return base.rsplit(".", 1)[0].lower() if "." in base else base.lower()
+
+    def rank(f: SelectedFile) -> tuple:
+        return (0 if stem(f.path) in _ENTRYPOINT_STEMS else 1,
+                f.path.count("/"), f.path)
+
+    # Bucket by top-level directory, each bucket internally ranked.
+    buckets: dict[str, list[SelectedFile]] = {}
+    for f in sources:
+        buckets.setdefault(top_dir(f.path), []).append(f)
+    for b in buckets.values():
+        b.sort(key=rank)
+
+    # Round-robin across buckets ordered by name for determinism.
+    order = sorted(buckets.keys())
+    picked: list[SelectedFile] = []
+    idx = 0
+    while len(picked) < budget and any(buckets[k] for k in order):
+        k = order[idx % len(order)]
+        if buckets[k]:
+            picked.append(buckets[k].pop(0))
+        idx += 1
+        if idx > len(order) * 10000:  # safety against pathological loops
+            break
+    return picked[:budget]
 
 
 def fetch_text(

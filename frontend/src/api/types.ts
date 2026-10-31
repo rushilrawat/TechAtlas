@@ -146,6 +146,11 @@ export interface ScanCoverage {
   files_skipped_limit: number;
   tree_truncated: boolean;
   partial: boolean;
+  /** Coverage detail (1.5D). Optional for backward-compatibility with cached scans. */
+  source_files_skipped?: number;
+  important_files_skipped?: number;
+  manifests_discovered?: number;
+  all_important_inspected?: boolean;
   notes: string[];
 }
 

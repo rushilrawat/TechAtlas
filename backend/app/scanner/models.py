@@ -85,6 +85,13 @@ class ScanCoverage(BaseModel):
     files_skipped_limit: int = 0
     tree_truncated: bool = False
     partial: bool = False
+    # Coverage detail (1.5D): source sampling is bounded by design and does NOT reduce
+    # detection quality, so it is reported separately from genuinely missed important
+    # files. `all_important_inspected` is the honest "did we read every manifest" signal.
+    source_files_skipped: int = 0
+    important_files_skipped: int = 0
+    manifests_discovered: int = 0
+    all_important_inspected: bool = True
     notes: list[str] = Field(default_factory=list)
 
 

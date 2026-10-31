@@ -85,3 +85,44 @@ def test_each_selected_file_is_unique_bounded_work():
     assert len(paths) == len(set(paths)), "a file was selected more than once"
     assert len(sel.files) <= 20
     assert sum(1 for f in sel.files if f.kind == "source") <= 15
+
+
+def test_source_sampling_spreads_across_monorepo_packages():
+    # Coverage improvement (1.5D): with many packages and a small source budget, the
+    # sampler must represent MULTIPLE top-level packages, not drain the budget on one.
+    files = {}
+    for pkg in ("apps", "packages", "services", "libs"):
+        for i in range(20):
+            files[f"{pkg}/mod{i}/index.ts"] = 'import React from "react";'
+    files["package.json"] = '{"workspaces":["apps/*","packages/*"]}'
+    sel = _select(files, max_source_files=8)
+    srcs = [f.path for f in sel.files if f.kind == "source"]
+    top_dirs = {p.split("/", 1)[0] for p in srcs}
+    assert len(srcs) == 8
+    # All four packages are represented (round-robin), not just one.
+    assert top_dirs == {"apps", "packages", "services", "libs"}, top_dirs
+
+
+def test_source_sampling_prefers_entrypoints():
+    # Entrypoint-like filenames rank above incidental files at the same depth.
+    files = {
+        "src/zzz_util.ts": "export const x = 1;",
+        "src/main.ts": 'import React from "react";',
+        "src/helpers.ts": "export const y = 2;",
+        "package.json": '{"dependencies":{"react":"1"}}',
+    }
+    sel = _select(files, max_source_files=1)
+    srcs = [f.path for f in sel.files if f.kind == "source"]
+    assert srcs == ["src/main.ts"], srcs
+
+
+def test_manifests_always_inspected_even_under_tiny_source_budget():
+    # The honest coverage signal: all discovered manifests inspected; only source sampled.
+    files = {f"src/f{i}.py": "import flask" for i in range(50)}
+    files.update({"pyproject.toml": "[project]\ndependencies=['flask']",
+                  "Dockerfile": "FROM python:3.12", "requirements.txt": "flask\n"})
+    sel = _select(files, max_source_files=2)
+    man = {f.path for f in sel.files if f.kind == "manifest"}
+    assert {"pyproject.toml", "Dockerfile", "requirements.txt"} <= man
+    assert sel.important_files_skipped == 0
+    assert sel.source_files_skipped == 48
