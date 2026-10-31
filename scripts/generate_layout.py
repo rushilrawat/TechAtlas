@@ -348,7 +348,8 @@ def generate(dataset: dict) -> dict:
         # walk up subdomain -> parent until a top-level domain
         seen = 0
         while d in parent_of and seen < 5:
-            d = parent_of[d]; seen += 1
+            d = parent_of[d]
+            seen += 1
         return d
 
     # Members per TOP-LEVEL sector (includes the subdomain anchor nodes + their members).
