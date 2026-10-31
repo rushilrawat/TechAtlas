@@ -49,6 +49,13 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:systems": "#ff9e64",
     "domain:testing-tooling": "#c0caf5",
     "domain:gamedev": "#ff75a0",
+    # Phase 1E domains/subdomains — distinct, accessible hues in the same theme family.
+    "domain:networks": "#2ac3de",          # bright cyan (distinct from cloud #7dcfff)
+    "domain:theory": "#b48ead",            # muted mauve (distinct from ai-ml #bb9af7)
+    "domain:robotics": "#e5c07b",          # warm gold (distinct from databases #e0af68)
+    "domain:computer-architecture": "#d19a66",  # amber-brown (distinct from systems #ff9e64)
+    "domain:embedded": "#98c379",          # sage green (distinct from backend #9ece6a)
+    "domain:computer-graphics": "#c678dd", # orchid (distinct from gamedev #ff75a0)
 }
 FALLBACK_COLOR = "#9aa5ce"
 
