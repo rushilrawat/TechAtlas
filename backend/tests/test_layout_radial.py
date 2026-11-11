@@ -1,9 +1,11 @@
 """Canonical radial-atlas geometry and edge-backbone invariants."""
+
 import json
 import math
 from collections import Counter
 
 import generate_layout as gl
+
 from app.graph_service import GraphService
 
 

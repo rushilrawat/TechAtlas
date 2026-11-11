@@ -40,7 +40,7 @@ export function pathsConflict(a: Path, b: Path, clearance = 70): boolean {
 }
 
 /** A deterministic subset of short, genuine edges with no overlapping curve paths. */
-export function selectClearEdges(data: GraphResponse, maxPerDomain = 2, limit = 28, includeDetail = false): Set<string> {
+export function selectClearEdges(data: GraphResponse, maxPerDomain = 2, limit = 28, includeDetail = false, clearance = 70): Set<string> {
   const nodes = new Map(data.nodes.map((node) => [node.id, node]));
   const candidates = data.edges.filter((edge) => {
     const source = nodes.get(edge.source), target = nodes.get(edge.target);
@@ -48,21 +48,29 @@ export function selectClearEdges(data: GraphResponse, maxPerDomain = 2, limit = 
       edge.source !== "domain:software-engineering" && edge.target !== "domain:software-engineering";
   }).map((edge) => {
     const a = nodes.get(edge.source)!, b = nodes.get(edge.target)!;
+    const cross = a.primary_domain !== b.primary_domain &&
+      edge.relationship_type !== "belongs_to_domain" && edge.relationship_type !== "has_subdomain";
     const domain = a.node_type === "domain" && a.ring === 0 ? a.id
       : b.node_type === "domain" && b.ring === 0 ? b.id : a.primary_domain;
-    return { edge, domain, tier: data.edge_tiers?.[edge.id] ?? "TierD",
+    return { edge, domain, cross,
+      pair: [a.primary_domain, b.primary_domain].sort().join("|"),
+      tier: data.edge_tiers?.[edge.id] ?? "TierD",
       length: Math.hypot((a.x ?? 0) - (b.x ?? 0), (a.y ?? 0) - (b.y ?? 0)),
       points: curve({ x: a.x ?? 0, y: a.y ?? 0 }, { x: b.x ?? 0, y: b.y ?? 0 }) };
-  }).filter((item) => includeDetail || item.tier !== "TierD")
-    .sort((a, b) => (a.tier === "TierA" ? 0 : a.tier === "TierB" ? 1 : 2) -
-      (b.tier === "TierA" ? 0 : b.tier === "TierB" ? 1 : 2) || a.length - b.length || a.edge.id.localeCompare(b.edge.id));
+  }).filter((item) => includeDetail || item.tier !== "TierD" || (item.cross && item.length < 2200))
+    .sort((a, b) => (a.tier === "TierC" ? 0 : a.cross ? 1 : a.tier === "TierA" ? 2 : 3) -
+      (b.tier === "TierC" ? 0 : b.cross ? 1 : b.tier === "TierA" ? 2 : 3) ||
+      a.length - b.length || a.edge.id.localeCompare(b.edge.id));
   const accepted: typeof candidates = [], counts = new Map<string, number>();
+  const pairs = new Map<string, number>();
   for (const candidate of candidates) {
     if (accepted.length >= limit) break;
     if ((counts.get(candidate.domain) ?? 0) >= maxPerDomain) continue;
-    if (accepted.some((other) => pathsConflict(candidate, other))) continue;
+    if (candidate.cross && (pairs.get(candidate.pair) ?? 0) >= 2) continue;
+    if (accepted.some((other) => pathsConflict(candidate, other, clearance))) continue;
     accepted.push(candidate);
     counts.set(candidate.domain, (counts.get(candidate.domain) ?? 0) + 1);
+    if (candidate.cross) pairs.set(candidate.pair, (pairs.get(candidate.pair) ?? 0) + 1);
   }
   return new Set(accepted.map((item) => item.edge.id));
 }

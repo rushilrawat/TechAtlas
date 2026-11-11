@@ -279,7 +279,7 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
         });
       });
       for (let i = 0; i < paths.length; i++) for (let j = i + 1; j < paths.length; j++) {
-        expect(pathsConflict(paths[i] as never, paths[j] as never),
+        expect(pathsConflict(paths[i] as never, paths[j] as never, 14),
           `visible curves ${i} and ${j} cross or run together`).toBe(false);
       }
 
@@ -297,8 +297,8 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
         expect(m.priorityLabelCollisions, "overview label conflicts").toBeLessThanOrEqual(8);
         expect(m.visibleDomainLabels, "readable domain names at overview").toBeGreaterThanOrEqual(8);
         expect(m.importantContentBehindPanels).toBe(0);
-        expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(14);
-        expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(28);
+        expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(70);
+        expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(110);
       } else {
         expect(m.visibleIndividualNodes).toBe(607);
       }

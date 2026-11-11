@@ -22,8 +22,10 @@ around the graph and its visual hierarchy, not the truth of the data.
 1. A slim header contains the brand, a single search field, Explore and Repo
    X-Ray navigation, and a compact graph count.
 2. The graph fills the remaining viewport. Domain names are legible at overview;
-   14–28 genuine curves form a noncrossing backbone. The center brand text and
-   decorative rings are removed. The map never becomes a row of domain markers.
+   roughly 70–110 genuine curves show local relationships and cross-domain
+   bridges without crossings. More clear connections appear on zoom. The center
+   brand text and decorative rings are removed. The map never becomes a row of
+   domain markers.
 3. A compact left rail stacks domain browsing and filters. The rail leaves the
    radial atlas visually dominant.
 4. A bottom corner control explains edge colors and zoom/keyboard actions.

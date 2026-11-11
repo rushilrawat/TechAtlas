@@ -50,7 +50,9 @@ interface Props {
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
-const REST_EDGE = "rgba(130,140,160,0.03)";            // Explore at-rest cross-node edges (barely-there; map-first)
+const STRUCTURE_EDGE = "rgba(194,218,255,0.94)";
+const LOCAL_EDGE = "rgba(100,194,255,0.88)";
+const CROSS_EDGE = "rgba(255,194,104,0.96)";
 
 // Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
 // node's domain color). confirmed=green, declared=blue, inferred=amber, related=neutral.
@@ -202,9 +204,8 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
   const vw = el.clientWidth || window.innerWidth;
   // Narrow screens get extra padding so domain labels near the rim are not clipped by the
   // viewport edge (labels extend well beyond their node); wide screens use a tight frame.
-  // At the collision-free overview only the 14 sector markers show (not 607 nodes), so the
-  // ring can fill more of a narrow viewport — less padding keeps the compressed ring's
-  // markers well separated on mobile while still leaving room for rim labels.
+  // Every canonical node stays visible at overview. A tighter mobile frame keeps the
+  // clusters large enough to explore while leaving room for rim labels.
   const padFrac = vw < 641 ? 0.1 : 0.06;
   const padX = (mxX - mnX) * padFrac + 40;
   const padY = (mxY - mnY) * padFrac + 40;
@@ -301,7 +302,7 @@ export function GraphCanvas({
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
   >([]);
 
-  // Explore atlas overlay: soft domain-sector backplates + the centre identity, projected
+  // Explore atlas overlay: soft domain-sector backplates, projected
   // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
   // none); never touches graph data. Each sector is centered on its domain anchor.
   const [backdrop, setBackdrop] = useState<{
@@ -316,8 +317,8 @@ export function GraphCanvas({
   useEffect(() => {
     if (!containerRef.current) return;
     const graph = buildGraph(data);
-    const overviewEdges = selectClearEdges(data);
-    const detailEdges = selectClearEdges(data, 4, 56, true);
+    const overviewEdges = selectClearEdges(data, 8, 120, false, 14);
+    const detailEdges = selectClearEdges(data, 12, 150, true, 10);
     graphRef.current = graph;
 
     const renderer = new Sigma(graph, containerRef.current, {
@@ -602,13 +603,17 @@ export function GraphCanvas({
       }
       const active = activeRef.current;
       if (!active) {
+        const [source, target] = graph.extremities(edge);
+        const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
+        const relation = graph.getEdgeAttribute(edge, "relationshipType");
+        const structural = relation === "belongs_to_domain" || relation === "has_subdomain";
+        const color = cross ? CROSS_EDGE : structural ? STRUCTURE_EDGE : LOCAL_EDGE;
         if (bandOf(ratioRef.current) <= 1) {
-          return overviewEdges.has(edge)
-            ? { ...dataIn, color: "rgba(160,185,225,0.55)", size: 1.2, curvature: 0.04 }
-            : { ...dataIn, hidden: true };
+          if (!overviewEdges.has(edge)) return { ...dataIn, hidden: true };
+          return { ...dataIn, color, size: cross ? 2.2 : 1.9, curvature: 0.04 };
         }
         return detailEdges.has(edge)
-          ? { ...dataIn, color: REST_EDGE, size: 0.9, curvature: 0.04 }
+          ? { ...dataIn, color, size: 1.35, curvature: 0.04 }
           : { ...dataIn, hidden: true };
       }
       return { ...dataIn, hidden: true };
