@@ -4,7 +4,6 @@ import math
 from collections import Counter
 
 import generate_layout as gl
-
 from app.graph_service import GraphService
 
 
@@ -43,3 +42,17 @@ def test_api_threads_radial_fields():
     assert len(service._edge_tiers) == 1116
     assert service.overview_aggregates() == []
     assert all(node.ring in (0, 1, 2, 3) for node in nodes)
+
+
+def test_local_slot_assignment_shortens_genuine_connections():
+    pos = {"a": [-10.0, 0.0], "b": [10.0, 0.0],
+           "left": [-12.0, 2.0], "right": [12.0, 2.0]}
+    edges = [
+        {"source": "a", "target": "right", "relationship_type": "commonly_used_with"},
+        {"source": "b", "target": "left", "relationship_type": "commonly_used_with"},
+    ]
+    before = sum(math.dist(pos[e["source"]], pos[e["target"]]) for e in edges)
+    gl._shorten_local_connections([["a", "b"]], pos, edges)
+    after = sum(math.dist(pos[e["source"]], pos[e["target"]]) for e in edges)
+    assert after < before * 0.2
+    assert {tuple(pos["a"]), tuple(pos["b"])} == {(-10.0, 0.0), (10.0, 0.0)}

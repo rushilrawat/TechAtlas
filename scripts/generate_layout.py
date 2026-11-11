@@ -186,6 +186,49 @@ def _place_ring(
     return radius
 
 
+def _shorten_local_connections(
+    groups: list[list[str]], pos: dict[str, list[float]], edges: list[dict],
+) -> None:
+    """Assign nodes to existing radial slots to shorten canonical connections.
+
+    Swaps stay inside one parent's ring, so the full-circle distribution, local
+    radius, and fixed parent/domain centers are preserved. Only real edges enter
+    the objective; root-to-domain spokes are excluded because their macro length
+    is fixed by the atlas and would overwhelm useful local relationships.
+    """
+    usable = [(e["source"], e["target"],
+               REL_ATTRACTION.get(e["relationship_type"], DEFAULT_ATTRACTION))
+              for e in edges if e["source"] in pos and e["target"] in pos
+              and not (e["source"] == ROOT_DOMAIN and e["relationship_type"] == "has_subdomain")]
+    incident: dict[str, set[int]] = {nid: set() for nid in pos}
+    for index, (source, target, _) in enumerate(usable):
+        incident[source].add(index)
+        incident[target].add(index)
+
+    def cost(indices: set[int]) -> float:
+        return sum(weight * math.dist(pos[source], pos[target])
+                   for index in indices for source, target, weight in [usable[index]])
+
+    for group in groups:
+        if len(group) < 2:
+            continue
+        # Deterministic coordinate descent. Four sweeps are enough for the small
+        # local rings; a swap is retained only if it improves weighted edge length.
+        for _ in range(4):
+            changed = False
+            for i, a in enumerate(group):
+                for b in group[i + 1:]:
+                    affected = incident[a] | incident[b]
+                    before = cost(affected)
+                    pos[a], pos[b] = pos[b], pos[a]
+                    if cost(affected) < before - 1e-6:
+                        changed = True
+                    else:
+                        pos[a], pos[b] = pos[b], pos[a]
+            if not changed:
+                break
+
+
 def generate(dataset: dict) -> dict:
     """Derive a full-circle atlas and a deterministic canonical-edge backbone."""
     import sys
@@ -256,6 +299,7 @@ def generate(dataset: dict) -> dict:
         ring[sub] = preferred_ring
         reservations[parent].append((angle + math.pi / 2, 0.48))
 
+    local_groups: list[list[str]] = []
     for d in ordered + sorted(parent_of):
         direct = [nid for nid in ids if nid not in domain_ids and domain_of[nid] == d]
         direct.sort(key=lambda nid: (by_id[nid].get("node_subtype") or "", -intra[nid], nid))
@@ -267,6 +311,9 @@ def generate(dataset: dict) -> dict:
             group = [n for n in direct if ring[n] == band]
             _place_ring(group, centers[d], base * scale, radius, f"{d}:{band}", pos,
                         reservations.get(d) if band >= 2 else None)
+            local_groups.append(group)
+
+    _shorten_local_connections(local_groups, pos, edges)
 
     # A small deterministic collision pass corrects pairs across neighboring rings.
     # Anchors remain fixed; re-pin afterward to guarantee the macro geometry.
