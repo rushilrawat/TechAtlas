@@ -6,8 +6,7 @@ import type { DetectionStatus, GraphResponse } from "../api/types";
 import { buildGraph, domainMemberIds } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
 import type { LabelContext } from "../graph/semanticZoom";
-import { isOverviewEdgeHidden, placeLabels, sectorIsAggregatedAtOverview } from "../graph/overviewLod";
-import type { Box, KeyedBox, LabelCandidate } from "../graph/overviewLod";
+import EdgeCurveProgram from "@sigma/edge-curve";
 import { computeFit } from "../graph/cameraFit";
 
 interface Props {
@@ -46,7 +45,6 @@ interface Props {
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
-const DIM_EDGE = "rgba(120,130,150,0.035)";           // <=0.05 non-touching (UI-A R2.2)
 const REST_EDGE = "rgba(130,140,160,0.03)";            // Explore at-rest cross-node edges (barely-there; map-first)
 const ACTIVE_EDGE = "rgba(150,180,255,0.55)";          // 0.50-0.60 touching (UI-A R2.1)
 
@@ -187,29 +185,14 @@ function fitStack(
 function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
   const graph = renderer.getGraph();
   let mnX = Infinity, mnY = Infinity, mxX = -Infinity, mxY = -Infinity, any = false;
-  // At the collision-free overview the visible content is the 14 aggregate MARKERS (on the
-  // domain ring), not the 607 hidden members that sprawl far into the sector shells. Frame to
-  // the MARKER extent when markers exist, so the ring fills the canvas instead of floating
-  // small in the centre (fixes the "too empty" overview). Fall back to all nodes otherwise
-  // (e.g. a layout with no aggregates), preserving the prior behaviour.
-  let hasMarkers = false;
+  // Frame the full radial atlas, including every canonical node.
   graph.forEachNode((_n, a) => {
-    if (a.isAggregate !== true) return;
     const x = a.x as number, y = a.y as number;
     if (typeof x !== "number" || typeof y !== "number") return;
-    hasMarkers = true; any = true;
+    any = true;
     mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
     mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
   });
-  if (!hasMarkers) {
-    graph.forEachNode((_n, a) => {
-      const x = a.x as number, y = a.y as number;
-      if (typeof x !== "number" || typeof y !== "number") return;
-      any = true;
-      mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
-      mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
-    });
-  }
   if (!any) return;
   const el = renderer.getContainer();
   const vw = el.clientWidth || window.innerWidth;
@@ -284,6 +267,7 @@ export function GraphCanvas({
   const persistentLabelsRef = useRef<Set<string> | null>(null);
   // Saved canonical coordinates while Stack View is active (restored on exit).
   const savedCoordsRef = useRef<Map<string, { x: number; y: number }> | null>(null);
+  const focusBBoxRef = useRef(false);
   const stackAnimRef = useRef<number | null>(null);
   const stackActiveRef = useRef<boolean>(false);
   const framedStackRef = useRef<number | null>(null);
@@ -296,20 +280,7 @@ export function GraphCanvas({
   // set (not just a bare renderer.refresh()).
   const scheduleRefreshRef = useRef<(() => void) | null>(null);
   const ratioRef = useRef<number>(1);
-  // Overview LOD (atlas-overview-collision-free): aggregate marker ids per domain, member ->
-  // its domain, and all marker ids. Computed once per dataset. Drives the collision-free
-  // overview where aggregate markers REPLACE their member nodes until the user zooms/selects.
-  const sectorMarkerIdsRef = useRef<Map<string, string[]>>(new Map());
-  const memberToDomainRef = useRef<Map<string, string>>(new Map());
-  const aggregateIdsRef = useRef<Set<string>>(new Set());
-  const aggregateLabelRef = useRef<Map<string, string>>(new Map());
-  // Ids of overview labels SUPPRESSED by the screen-space placement pass (Layer 3).
-  const suppressedLabelsRef = useRef<Set<string>>(new Set());
-  const labelSettleRef = useRef<number | null>(null);
   const recomputeLabelsRef = useRef<(() => void) | null>(null);
-  // The domain id of the active selection (if a domain or one of its members is selected),
-  // so that sector expands to individuals while the rest stay aggregated.
-  const activeDomainRef = useRef<string | null>(null);
   // Projected screen positions for Stack View domain headings (DOM overlay).
   const [headingScreens, setHeadingScreens] = useState<
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
@@ -317,8 +288,7 @@ export function GraphCanvas({
 
   // Explore atlas overlay: soft domain-sector backplates + the centre identity, projected
   // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
-  // none); never touches graph data. Each sector is drawn at its members' projected centroid
-  // with a radius covering the cluster — so it reads as the domain's "territory".
+  // none); never touches graph data. Each sector is centered on its domain anchor.
   const [backdrop, setBackdrop] = useState<{
     sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
     center: { cx: number; cy: number; r: number } | null;
@@ -333,45 +303,10 @@ export function GraphCanvas({
     const graph = buildGraph(data);
     graphRef.current = graph;
 
-    // ---- Overview LOD precompute (once per dataset) ----
-    // Catalog aggregate markers, map each aggregated member to its domain, and compose each
-    // marker's label ("<Domain> · <count>") from the domains prop. The actual decision to
-    // show a marker vs its members is made RESPONSIVELY in the node reducer below.
-    {
-      const sectorMarkers = new Map<string, string[]>();
-      const memberToDomain = new Map<string, string>();
-      const aggIds = new Set<string>();
-      const aggLabel = new Map<string, string>();
-      const nameByDomain = new Map<string, string>(
-        (domainsRef.current ?? []).map((d) => [d.id, d.name]),
-      );
-      graph.forEachNode((id, a) => {
-        if (a.isAggregate !== true) return;
-        const dom = a.domainId as string;
-        aggIds.add(id);
-        const arr = sectorMarkers.get(dom);
-        if (arr) arr.push(id);
-        else sectorMarkers.set(dom, [id]);
-        for (const m of (a.memberIds as string[] | undefined) ?? []) {
-          memberToDomain.set(m, dom);
-        }
-        const nm = nameByDomain.get(dom) ?? dom.replace(/^domain:/, "");
-        // Label shows DIRECT members (matches the sidebar members-only count). When the
-        // spatial territory also holds nested-subdomain members, append the extra as "(+N)"
-        // so the two populations are clearly distinguished (both from canonical membership).
-        const direct = (a.directCount as number | undefined) ?? (a.count as number);
-        const total = a.count as number;
-        aggLabel.set(id, total > direct ? `${nm} · ${direct} (+${total - direct})` : `${nm} · ${direct}`);
-      });
-      sectorMarkerIdsRef.current = sectorMarkers;
-      memberToDomainRef.current = memberToDomain;
-      aggregateIdsRef.current = aggIds;
-      aggregateLabelRef.current = aggLabel;
-    }
-
     const renderer = new Sigma(graph, containerRef.current, {
       renderEdgeLabels: false,
-      defaultEdgeType: "line",
+      defaultEdgeType: "curved",
+      edgeProgramClasses: { curved: EdgeCurveProgram },
       labelColor: { color: "#c8d0e8" },
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
@@ -430,136 +365,16 @@ export function GraphCanvas({
       activeRef.current = active;
       if (!active || !graph.hasNode(active)) {
         neighborSetRef.current = null;
-        activeDomainRef.current = null;
         return;
       }
       const set = new Set<string>([active]);
       const nodeType = graph.getNodeAttribute(active, "nodeType");
-      if (graph.getNodeAttribute(active, "isAggregate") === true) {
-        // Selecting an aggregate MARKER expands its sector: resolve to the domain and
-        // highlight that domain's members (the marker stands in for them at overview).
-        const dom = graph.getNodeAttribute(active, "domainId") as string;
-        activeDomainRef.current = dom;
-        if (graph.hasNode(dom)) set.add(dom);
-        for (const id of domainMemberIds(graph, dom)) set.add(id);
-      } else if (nodeType === "domain") {
-        // Selecting a DOMAIN highlights ALL its members (shared helper = same definition as
-        // the sidebar count) so the highlight set matches the count exactly, not just the few
-        // nodes joined to the anchor by an edge (count/highlight correctness §13/§26/§36).
-        activeDomainRef.current = active;
+      if (nodeType === "domain") {
         for (const id of domainMemberIds(graph, active)) set.add(id);
       } else {
-        // A member node selected -> expand its own sector so it is visible as an individual.
-        activeDomainRef.current =
-          memberToDomainRef.current.get(active) ??
-          (graph.getNodeAttribute(active, "primaryDomain") as string | undefined) ??
-          null;
         graph.forEachNeighbor(active, (nb) => set.add(nb));
       }
       neighborSetRef.current = set;
-    };
-
-    // Overview priority-label placement (atlas-overview-collision-free Layer 3). Measures
-    // each shown overview marker's label box in SCREEN space (canvas measureText at the real
-    // label font) and keeps it only if it does not overlap another kept label, a visible node
-    // circle, a side-panel rect, or the viewport edge — dropping the lower-priority label on
-    // conflict. Populates suppressedLabelsRef, consulted by the node reducer. Runs on camera
-    // settle / selection change (NOT per frame). Only relevant at the aggregated overview.
-    const labelCanvas = typeof document !== "undefined" ? document.createElement("canvas") : null;
-    const labelCtx = labelCanvas ? labelCanvas.getContext("2d") : null;
-    const recomputeOverviewLabels = () => {
-      const sup = new Set<string>();
-      if (!labelCtx || scanStatusRef.current != null || activeRef.current) {
-        suppressedLabelsRef.current = sup; // no overview labels to place
-        return;
-      }
-      const el = containerRef.current;
-      if (!el) { suppressedLabelsRef.current = sup; return; }
-      const vwp = el.clientWidth || window.innerWidth;
-      const vhp = el.clientHeight || window.innerHeight;
-      const cr = el.getBoundingClientRect();
-      if (vwp < 641) {
-        // Phone overview: the compressed ring has no room for labels without grazing a
-        // neighbour; suppress all marker labels (markers remain tappable; names live in the
-        // legend/filter panels). Consistent with the existing mobile minimal-label rule.
-        const all = new Set<string>();
-        for (const [, ids] of sectorMarkerIdsRef.current) for (const id of ids) all.add(id);
-        suppressedLabelsRef.current = all;
-        return;
-      }
-      labelCtx.font = "12px Inter, system-ui, sans-serif";
-      const LABEL_H = 14;
-      // Visible node circle boxes (markers shown at overview) for label/node overlap tests.
-      const nodeBoxes: KeyedBox[] = [];
-      const candidates: LabelCandidate[] = [];
-      let prio = 1000;
-      for (const [dom, ids] of sectorMarkerIdsRef.current) {
-        const aggregated = sectorIsAggregatedAtOverview({
-          ratio: ratioRef.current,
-          activeId: activeRef.current,
-          activeDomainId: activeDomainRef.current,
-          domainId: dom,
-          inScan: false,
-        });
-        if (!aggregated) continue;
-        for (const id of ids) {
-          if (!graph.hasNode(id)) continue;
-          const dd = renderer.getNodeDisplayData(id);
-          if (!dd) continue;
-          const vp = renderer.graphToViewport({
-            x: graph.getNodeAttribute(id, "x") as number,
-            y: graph.getNodeAttribute(id, "y") as number,
-          });
-          const r = renderer.scaleSize(dd.size);
-          // Inflate the box used for label/node overlap tests by a margin so the placement
-          // pass is strictly stricter than the measured collision check (no marginal graze).
-          const MARGIN = (containerRef.current?.clientWidth ?? 1200) < 900 ? 12 : 6;
-          nodeBoxes.push({
-            key: id,
-            x: vp.x - r - MARGIN,
-            y: vp.y - r - MARGIN,
-            w: (r + MARGIN) * 2,
-            h: (r + MARGIN) * 2,
-          });
-          const text = aggregateLabelRef.current.get(id) ?? "";
-          const PAD = 4; // breathing room; keeps the pass stricter than the measure
-          // Use the LARGER of the measured width and a conservative per-character estimate.
-          // Headless/first-paint runs may measure before the Inter web font loads (narrower
-          // metrics); the estimate keeps the pass's box >= the finally-rendered label, so
-          // panel/label/node suppression never under-fires due to font-load timing.
-          const w =
-            Math.max(labelCtx.measureText(text).width, text.length * 7.2) + PAD * 2;
-          candidates.push({
-            id,
-            priority: prio--, // larger sectors first (markers iterated in sector order)
-            box: { x: vp.x + r + 2 - PAD, y: vp.y - LABEL_H / 2 - PAD, w, h: LABEL_H + PAD * 2 },
-            ownerKey: id,
-          });
-        }
-      }
-      // Side panels in container-local coordinates.
-      const panels: Box[] = [];
-      // Inflate each panel rect by a margin so a label is suppressed BEFORE it visibly grazes
-      // the panel edge (absorbs sub-pixel camera drift between this pass and the final frame).
-      const PANEL_MARGIN = 10;
-      for (const sel of [".legend", "#graph-filters", ".filter-panel"]) {
-        const n = document.querySelector(sel) as HTMLElement | null;
-        if (!n) continue;
-        const rr = n.getBoundingClientRect();
-        if (rr.width <= 0 || rr.height <= 0 || rr.width > vwp * 0.6) continue; // ignore bottom sheets
-        panels.push({
-          x: rr.left - cr.left - PANEL_MARGIN,
-          y: rr.top - cr.top - PANEL_MARGIN,
-          w: rr.width + PANEL_MARGIN * 2,
-          h: rr.height + PANEL_MARGIN * 2,
-        });
-      }
-      suppressedLabelsRef.current = placeLabels({
-        candidates,
-        nodeBoxes,
-        panels,
-        viewport: { w: vwp, h: vhp },
-      });
     };
 
     // Coalesced refresh: at most one per animation frame (Task 7).
@@ -568,12 +383,11 @@ export function GraphCanvas({
       rafRef.current = requestAnimationFrame(() => {
         rafRef.current = null;
         recomputeActive();
-        recomputeOverviewLabels();
         renderer.refresh();
       });
     };
     scheduleRefreshRef.current = scheduleRefresh;
-    recomputeLabelsRef.current = () => { recomputeOverviewLabels(); renderer.refresh(); };
+    recomputeLabelsRef.current = () => renderer.refresh();
 
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
     // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
@@ -581,11 +395,7 @@ export function GraphCanvas({
     // are suppressed until the user zooms in, so domain names never fight each other for
     // space. Sigma's enlarged collision grid then drops any domain labels that still touch.
     const labelVisible = (nodeType: string, size: number): boolean => {
-      const narrowView =
-        (containerRef.current?.clientWidth ?? window.innerWidth) < 641;
-      // The Explore custom-bbox fit frames the whole atlas at camera ratio ~1 (band 1),
-      // so treat bands 0 AND 1 as "overview" on narrow screens: domain labels only.
-      if (narrowView && bandOf(ratioRef.current) <= 1) return nodeType === "domain";
+      if (bandOf(ratioRef.current) <= 1) return nodeType === "domain";
       return labelVisibleAtRatio(nodeType as never, size, ratioRef.current);
     };
 
@@ -598,96 +408,6 @@ export function GraphCanvas({
       // AND the zoom level would show it. Coordinates are untouched.
       const vis = visibleNodesRef.current;
       if (vis && !vis.has(node)) {
-        res.hidden = true;
-        return res;
-      }
-
-      // ---- Overview LOD (atlas-overview-collision-free) ----
-      // At the overview band with nothing selected (and not in Repo X-Ray), dense sectors
-      // collapse: their member nodes are HIDDEN and a single aggregate MARKER stands in for
-      // each shell. This is what makes the default atlas collision-free. The marker REPLACES
-      // its members (never alongside). Selecting a domain/marker, or zooming into the detail
-      // band, expands that sector back to individuals (progressive disclosure). Markers are
-      // decided per-sector responsively via the pure helper (live camera band + selection).
-      const inScan = scanStatusRef.current != null;
-      const isAgg = dataIn.isAggregate === true;
-      if (!inScan) {
-        if (isAgg) {
-          const dom = dataIn.domainId as string;
-          const show = sectorIsAggregatedAtOverview({
-            ratio: ratioRef.current,
-            activeId: active,
-            activeDomainId: activeDomainRef.current,
-            domainId: dom,
-            inScan,
-          });
-          if (!show) {
-            res.hidden = true;
-            return res;
-          }
-          // Marker is shown: label it (domain name + count). The ACTIVE or HOVERED marker
-          // ALWAYS shows its label (so a single tap/hover identifies the domain on every
-          // viewport — including phones where at-rest labels are suppressed). Otherwise the
-          // label shows unless the screen-space placement pass suppressed it to avoid a
-          // collision / panel occlusion (Layer 3).
-          res.hidden = false;
-          const isFocusedMarker = node === active || node === hoveredRef.current;
-          if (isFocusedMarker || !suppressedLabelsRef.current.has(node)) {
-            res.label = aggregateLabelRef.current.get(node) ?? "";
-            res.forceLabel = true;
-            if (isFocusedMarker) res.zIndex = 3;
-          } else {
-            res.label = "";
-            res.forceLabel = false;
-          }
-          if (res.zIndex === undefined) res.zIndex = 1;
-          // Responsive marker size: the 14 markers sit on a ring that fitExplore frames
-          // smaller on narrow viewports (extra padding), so cap the marker's base size there
-          // to keep the compressed ring collision-free without making desktop markers tiny.
-          const vwNow = containerRef.current?.clientWidth ?? window.innerWidth;
-          if (vwNow < 641) {
-            // phone: the 14-marker ring is very compressed — cap small so it stays clear.
-            res.size = Math.min((dataIn.size as number) ?? 18, 9);
-          } else if (vwNow < 900) {
-            res.size = Math.min((dataIn.size as number) ?? 18, 15);
-          }
-          return res;
-        }
-        // A regular node whose sector is currently aggregated at overview is hidden — the
-        // marker represents it. (Its domain anchor stays visible: anchors are not members.)
-        const memberDom = memberToDomainRef.current.get(node);
-        if (
-          memberDom &&
-          sectorIsAggregatedAtOverview({
-            ratio: ratioRef.current,
-            activeId: active,
-            activeDomainId: activeDomainRef.current,
-            domainId: memberDom,
-            inScan,
-          })
-        ) {
-          res.hidden = true;
-          return res;
-        }
-        // Hide the bare DOMAIN ANCHOR when its sector is aggregated: the marker (placed at
-        // the same ring slot, labelled "<Domain> · <count>") stands in for it, so the 14
-        // markers FORM the ring. The anchor returns on zoom / when its domain is selected.
-        if (
-          dataIn.nodeType === "domain" &&
-          sectorMarkerIdsRef.current.has(node) &&
-          sectorIsAggregatedAtOverview({
-            ratio: ratioRef.current,
-            activeId: active,
-            activeDomainId: activeDomainRef.current,
-            domainId: node,
-            inScan,
-          })
-        ) {
-          res.hidden = true;
-          return res;
-        }
-      } else if (isAgg) {
-        // In Repo X-Ray, aggregate markers never participate.
         res.hidden = true;
         return res;
       }
@@ -736,18 +456,39 @@ export function GraphCanvas({
         res.label = "";
       }
 
-      if (!active) return res;
+      if (!active) {
+        const ring = (dataIn.ring as number | undefined) ?? 0;
+        const isDomain = dataIn.nodeType === "domain";
+        res.zIndex = isDomain ? 2 : ring === 1 ? 1 : 0;
+        if (bandOf(ratioRef.current) <= 1) {
+          const base = dataIn.size as number;
+          res.size = isDomain ? Math.min(base, 9.5)
+            : ring === 1 ? Math.min(base, 4.2)
+            : ring === 2 ? Math.min(base, 3) : Math.min(base, 2.4);
+          if (isDomain && ring > 0) res.label = "";
+        }
+        if (!isDomain && ring > 0 && typeof dataIn.color === "string" && /^#[0-9a-f]{6}$/i.test(dataIn.color)) {
+          const hex = dataIn.color;
+          const alpha = ring === 1 ? 0.9 : ring === 2 ? 0.75 : 0.5;
+          res.color = `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${alpha})`;
+        }
+        return res;
+      }
       const set = neighborSetRef.current;
       if (set && set.has(node)) {
         if (node === active) {
           res.zIndex = 2;
           res.highlighted = true;
           res.label = dataIn.label; // always label the active node
+        } else {
+          const ring = (dataIn.ring as number | undefined) ?? 2;
+          res.size = Math.min(dataIn.size as number, ring === 1 ? 8 : 6);
         }
         return res;
       }
       res.color = DIM_NODE;
       res.label = "";
+      res.size = Math.min(dataIn.size as number, 2.2);
       res.zIndex = 0;
       return res;
     });
@@ -796,34 +537,36 @@ export function GraphCanvas({
       }
       const active = activeRef.current;
       if (!active) {
-        // Explore default (nothing selected): the view must read first as a MAP OF DOMAINS,
-        // not a web of relationships (redesign §14 + atlas-overview-collision-free Layer 2).
-        // At the OVERVIEW band, hide EVERY ordinary edge (intra-domain, cross-domain,
-        // membership, subdomain-structural) so the default atlas is truly edge-free — a
-        // true `hidden` state, not a faint alpha that still accumulates into a web. All 1116
-        // edges remain in the graph and reappear the moment a node is selected/hovered or
-        // the user zooms in. When zoomed into the DETAIL band with nothing selected, keep
-        // the prior behaviour (structural spokes hidden, cross-node edges barely-there).
-        if (
-          isOverviewEdgeHidden({
-            ratio: ratioRef.current,
-            activeId: null,
-            inScan: scanStatusRef.current != null,
-          })
-        ) {
-          return { ...dataIn, hidden: true };
+        const tier = dataIn.tier as string | undefined;
+        if (bandOf(ratioRef.current) <= 1) {
+          if (tier === "TierD") return { ...dataIn, hidden: true };
+          if (tier === "TierA") {
+            const [source, target] = graph.extremities(edge);
+            const rootBridge = source === "domain:software-engineering" || target === "domain:software-engineering";
+            // The root's long taxonomic spokes cross the whole map. Reveal them on
+            // selection or zoom; local structural edges carry the overview hierarchy.
+            if (rootBridge) return { ...dataIn, hidden: true };
+            return { ...dataIn, color: "rgba(160,180,220,0.35)", size: 0.45, zIndex: 1 };
+          }
+          if (tier === "TierB") return { ...dataIn, color: "rgba(140,160,200,0.25)", size: 0.35, zIndex: 0 };
+          return { ...dataIn, color: "rgba(220,180,120,0.18)", size: 0.25, zIndex: 0 };
         }
         const rt = dataIn.relationshipType as string | undefined;
-        if (rt === "belongs_to_domain" || rt === "has_subdomain") {
-          return { ...dataIn, hidden: true };
-        }
+        if (rt === "belongs_to_domain" || rt === "has_subdomain") return { ...dataIn, hidden: true };
         return { ...dataIn, color: REST_EDGE, zIndex: 0 };
       }
       const [s, t] = graph.extremities(edge);
       if (s === active || t === active) {
+        if (graph.getNodeAttribute(active, "nodeType") === "domain" &&
+            dataIn.relationshipType === "belongs_to_domain") {
+          const member = s === active ? t : s;
+          if (graph.getNodeAttribute(member, "ring") !== 1) {
+            return { ...dataIn, hidden: true };
+          }
+        }
         return { ...dataIn, color: ACTIVE_EDGE, size: 1.4, zIndex: 1 };
       }
-      return { ...dataIn, color: DIM_EDGE, zIndex: 0 };
+      return { ...dataIn, hidden: true };
     });
 
     renderer.on("enterNode", ({ node }) => {
@@ -837,12 +580,6 @@ export function GraphCanvas({
       if (containerRef.current) containerRef.current.style.cursor = "default";
     });
     renderer.on("clickNode", ({ node }) => {
-      // Clicking an aggregate MARKER selects its domain: the sector expands to individual
-      // members and the details panel shows the domain (markers are not canonical nodes).
-      if (graph.hasNode(node) && graph.getNodeAttribute(node, "isAggregate") === true) {
-        onSelect(graph.getNodeAttribute(node, "domainId") as string);
-        return;
-      }
       onSelect(node);
     });
     renderer.on("clickStage", () => onSelect(null));
@@ -854,24 +591,7 @@ export function GraphCanvas({
       const crossed =
         bandOf(r) !== bandOf(ratioRef.current); // refresh on band change
       ratioRef.current = r;
-      // At the aggregated overview (no selection, not scanning) the screen-space label
-      // placement depends on the exact projected marker positions, so re-run the collision
-      // pass on ANY camera move there (rAF-coalesced to one per frame — cheap for 14
-      // markers). Elsewhere, only a band change needs a refresh.
-      const atOverview =
-        !activeRef.current && scanStatusRef.current == null && bandOf(r) <= 1;
-      if (crossed || atOverview) scheduleRefresh();
-      // Settle-debounced final pass: after the camera stops moving, re-place labels from the
-      // FINAL projected positions (the last 'updated' can arrive after the last rAF), then
-      // refresh once. Keeps the static overview exactly collision-free.
-      if (atOverview) {
-        if (labelSettleRef.current !== null) window.clearTimeout(labelSettleRef.current);
-        labelSettleRef.current = window.setTimeout(() => {
-          labelSettleRef.current = null;
-          recomputeOverviewLabels();
-          renderer.refresh();
-        }, 160);
-      }
+      if (crossed) scheduleRefresh();
     };
     camera.on("updated", onCameraUpdate);
     ratioRef.current = camera.getState().ratio;
@@ -879,8 +599,6 @@ export function GraphCanvas({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
-      if (labelSettleRef.current !== null) window.clearTimeout(labelSettleRef.current);
-      labelSettleRef.current = null;
       camera.removeListener("updated", onCameraUpdate);
       renderer.kill();
       sigmaRef.current = null;
@@ -1126,17 +844,80 @@ export function GraphCanvas({
   useEffect(() => {
     const renderer = sigmaRef.current;
     const graph = graphRef.current;
-    if (!renderer || !graph || !focusId || !graph.hasNode(focusId)) return;
+    if (!renderer || !graph) return;
+    if (!focusId || !graph.hasNode(focusId)) {
+      if (focusBBoxRef.current) {
+        focusBBoxRef.current = false;
+        renderer.setCustomBBox(null);
+        fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      }
+      return;
+    }
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const display = renderer.getNodeDisplayData(focusId);
     if (!display) return;
     const camera = renderer.getCamera();
+    const container = renderer.getContainer();
+    const narrow = container.clientWidth < 641;
+    const isDomain = graph.getNodeAttribute(focusId, "nodeType") === "domain";
+    const ratio = narrow ? (isDomain ? 0.8 : 0.55) : 0.35;
+    const targetX = display.x;
+    const targetY = display.y;
+    if (narrow) {
+      // Frame the selected family into the usable band above the bottom sheet. Sigma
+      // clamps camera movement to graph bounds, so fitting this local set avoids trying
+      // to pan a full-atlas camera past those bounds.
+      const focusNodes = new Set<string>([focusId]);
+      if (isDomain) {
+        graph.forEachNode((id, attrs) => {
+          if (attrs.primaryDomain === focusId) focusNodes.add(id);
+        });
+      } else {
+        for (const id of graph.neighbors(focusId)) focusNodes.add(id);
+      }
+      const positions = [...focusNodes]
+        .filter((id) => graph.hasNode(id))
+        .map((id) => ({
+          x: graph.getNodeAttribute(id, "x") as number,
+          y: graph.getNodeAttribute(id, "y") as number,
+        }));
+      fitStack(renderer, positions, prefersReducedMotion);
+      focusBBoxRef.current = true;
+      const sheet = document.querySelector(".details") as HTMLElement | null;
+      const sheetTop = sheet
+        ? sheet.getBoundingClientRect().top - container.getBoundingClientRect().top
+        : container.clientHeight * 0.48;
+      const desiredY = Math.max(52, (sheetTop - 20) / 2);
+      const framed = renderer.getNodeDisplayData(focusId);
+      const focusBBox = renderer.getCustomBBox();
+      if (framed && focusBBox) {
+        const desiredPoint = renderer.viewportToFramedGraph(
+          { x: container.clientWidth / 2, y: desiredY },
+          { cameraState: { x: 0.5, y: 0.5, ratio: 1, angle: 0 } },
+        );
+        const span = Math.max(
+          focusBBox.x[1] - focusBBox.x[0],
+          focusBBox.y[1] - focusBBox.y[0],
+        );
+        // Translate the focus frame itself. On portrait screens Sigma clamps a camera
+        // pan against the local bbox; shifting the bbox keeps the requested screen target
+        // reachable while preserving the family scale and shape.
+        const shiftY = (desiredPoint.y - framed.y) * span;
+        renderer.setCustomBBox({
+          x: focusBBox.x,
+          y: [focusBBox.y[0] - shiftY, focusBBox.y[1] - shiftY],
+        });
+        camera.setState({ x: 0.5, y: 0.5, ratio: 1, angle: 0 });
+        renderer.refresh();
+      }
+      return;
+    }
     // starting a new animation implicitly supersedes the previous target; calling
     // animate again is safe, but we null-out the callback timer by not chaining.
     camera.animate(
-      { x: display.x, y: display.y, ratio: 0.35 },
+      { x: targetX, y: targetY, ratio },
       { duration: prefersReducedMotion ? 0 : 500 },
     );
   }, [focusId]);
@@ -1210,23 +991,16 @@ export function GraphCanvas({
     if (!domainGeomRef.current) {
       const geom = new Map<string, { gx: number; gy: number; gr: number }>();
       for (const d of doms) {
-        let sx = 0, sy = 0, n = 0;
-        graph.forEachNode((id, a) => {
-          if (a.primaryDomain === d.id || id === d.id) {
-            sx += a.x as number; sy += a.y as number; n++;
-          }
-        });
-        if (n === 0) continue;
-        const gx = sx / n, gy = sy / n;
+        if (!graph.hasNode(d.id)) continue;
+        const gx = graph.getNodeAttribute(d.id, "x") as number;
+        const gy = graph.getNodeAttribute(d.id, "y") as number;
         let maxd = 0;
         graph.forEachNode((id, a) => {
           if (a.primaryDomain === d.id || id === d.id) {
             maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy));
           }
         });
-        // Tighter radius (atlas-overview-collision-free Layer 5) so adjacent sector
-        // tints overlap less and the map does not wash into a single colour splash.
-        geom.set(d.id, { gx, gy, gr: maxd * 0.8 + 40 });
+        geom.set(d.id, { gx, gy, gr: maxd * 1.08 + 40 });
       }
       domainGeomRef.current = geom;
     }
@@ -1260,10 +1034,7 @@ export function GraphCanvas({
     const onResize = () => project();
     window.addEventListener("resize", onResize);
     // span the entry framing animation so the backdrop settles with the camera.
-    // Also re-place the overview priority labels at the END of the span, i.e. once the
-    // camera has fully settled at its final ratio-1 framing — the camera-event debounce can
-    // run a frame early (mid-animation), so this guarantees a final collision pass from the
-    // true final projected marker positions (no label grazes a panel/neighbour).
+    // Refresh labels once after the entry animation settles.
     let raf = 0; const t0 = performance.now();
     const loop = (now: number) => {
       project();

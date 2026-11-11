@@ -17,6 +17,7 @@
     "build:xray-test": "VITE_BASE=/TechAtlas/ VITE_STATIC_API=true VITE_SCANNER_API=/api/v1 VITE_TEST_HOOKS=true vite build && rm -rf dist-xray-test && mv dist dist-xray-test"
   },
   "dependencies": {
+    "@sigma/edge-curve": "^3.1.0",
     "@sigma/node-border": "^3.0.0",
     "graphology": "^0.26.0",
     "react": "^18.3.1",

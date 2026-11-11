@@ -76,6 +76,7 @@ def get_graph() -> GraphResponse:
         nodes=nodes,
         edges=edges,
         overview_aggregates=svc.overview_aggregates(),
+        edge_tiers=svc._edge_tiers,
     )
 
 

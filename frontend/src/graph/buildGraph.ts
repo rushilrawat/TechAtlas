@@ -36,6 +36,7 @@ export function buildGraph(data: GraphResponse): Graph {
       primaryDomain: n.primary_domain,
       slug: n.slug,
       cluster: n.cluster,
+      ring: n.ring ?? 0,
       type: TYPE_TO_SHAPE[n.node_type],
       // domains get a visible border to read as anchors
       borderColor: n.node_type === "domain" ? "#ffffff" : n.color,
@@ -50,62 +51,27 @@ export function buildGraph(data: GraphResponse): Graph {
       relationshipType: e.relationship_type,
       size: BASE_EDGE_SIZE,
       color: BASE_EDGE_COLOR,
+      tier: data.edge_tiers?.[key] ?? "TierD",
+      curvature: ({ TierA: 0.25, TierB: 0.2, TierC: 0.12, TierD: 0.2 } as Record<string, number>)[data.edge_tiers?.[key] ?? "TierD"] ?? 0.2,
+      type: "curved",
     });
   }
 
-  // ---- Overview LOD aggregate markers (atlas-overview-collision-free) ----
-  // Additive presentation nodes. The canonical 607 nodes + 1116 edges above are built
-  // exactly as before; markers are EXTRA nodes tagged `isAggregate` so Sigma's node
-  // program, hit-testing, label, and click plumbing are reused with no new render program.
-  // Markers start HIDDEN — the GraphCanvas render layer decides responsively (from live
-  // screen-space fit) when a marker REPLACES its members. A marker is never a canonical
-  // node or relationship; its id is namespaced `agg:` and it carries the exact member ids.
-  for (const agg of data.overview_aggregates ?? []) {
-    const anchorColor = graph.hasNode(agg.domain_id)
-      ? (graph.getNodeAttribute(agg.domain_id, "color") as string)
-      : "#9aa5ce";
-    for (const m of agg.markers) {
-      if (graph.hasNode(m.id)) continue;
-      graph.addNode(m.id, {
-        label: "",            // label is composed at render time (name + count)
-        x: m.x,
-        y: m.y,
-        // Render radius hint; the render layer rescales against live screen space.
-        size: Math.max(12, Math.min(34, Math.sqrt(m.count) * 6)),
-        color: anchorColor,
-        nodeType: "aggregate",
-        primaryDomain: agg.domain_id,
-        type: "circle",
-        borderColor: anchorColor,
-        isAggregate: true,
-        domainId: agg.domain_id,
-        memberIds: [...m.member_ids],
-        count: m.count,
-        directCount: m.direct_count,
-        // start hidden: the overview render logic unhides markers for collapsed sectors.
-        hidden: true,
-      });
-    }
+  // Parallel canonical relationships remain separate and visually distinguishable.
+  const pairs = new Map<string, string[]>();
+  graph.forEachEdge((key, _attrs, source, target) => {
+    const pair = [source, target].sort().join("|");
+    const group = pairs.get(pair) ?? [];
+    group.push(key);
+    pairs.set(pair, group);
+  });
+  for (const group of pairs.values()) {
+    if (group.length < 2) continue;
+    group.sort().forEach((key, index) => graph.setEdgeAttribute(key, "curvature", 0.15 + index * 0.15));
   }
 
   return graph;
 }
-
-/**
- * All canonical member ids represented by a domain's overview aggregate markers — the
- * union across that domain's markers. Mirrors `domainMemberIds` but sourced from the
- * precomputed LOD groupings, so a collapsed sector hides exactly these member nodes.
- */
-export function aggregateMemberIds(graph: Graph, domainId: string): Set<string> {
-  const set = new Set<string>();
-  graph.forEachNode((_nid, a) => {
-    if (a.isAggregate === true && a.domainId === domainId) {
-      for (const m of (a.memberIds as string[] | undefined) ?? []) set.add(m);
-    }
-  });
-  return set;
-}
-
 
 /**
  * All member node ids of a domain = every node whose `primaryDomain` is that domain, plus

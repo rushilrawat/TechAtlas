@@ -21,6 +21,7 @@ class GraphNode(BaseModel):
     x: float | None = None
     y: float | None = None
     cluster: str | None = None
+    ring: int = 0
     size: float = Field(description="Render radius hint, bounded by the layout scale.")
     color: str
     # Phase 1D: optional popularity signals. `popularity` is a 0..1 sourced adoption
@@ -72,6 +73,7 @@ class GraphResponse(BaseModel):
     # Additive overview LOD groupings (deterministic, from layout.json). Empty when the
     # layout predates aggregation. Never alters nodes/edges/canonical truth.
     overview_aggregates: list[OverviewAggregate] = Field(default_factory=list)
+    edge_tiers: dict[str, str] = Field(default_factory=dict)
 
 
 class NeighborEdge(BaseModel):

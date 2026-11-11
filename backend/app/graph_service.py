@@ -86,10 +86,12 @@ class GraphService:
             self.layout_version: str | None = layout.get("layout_version")
             self._coords: dict[str, dict] = layout.get("coordinates", {})
             self._overview_aggregates: list[dict] = layout.get("overview_aggregates", [])
+            self._edge_tiers: dict[str, str] = layout.get("edge_tiers", {})
         else:
             self.layout_version = None
             self._coords = {}
             self._overview_aggregates = []
+            self._edge_tiers = {}
 
         # adjacency: node id -> list of (relationship_type, direction, other_id)
         self._adj: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
@@ -172,6 +174,7 @@ class GraphService:
             x=coord.get("x"),
             y=coord.get("y"),
             cluster=coord.get("cluster", node.get("primary_domain")),
+            ring=coord.get("ring", 0),
             size=self._size(node),
             color=self._color(node),
             popularity=self._popularity_of(node),

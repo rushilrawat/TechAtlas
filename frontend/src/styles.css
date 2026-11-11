@@ -872,8 +872,13 @@ body {
   /* Detail panel is also a bottom sheet on mobile, above the X-Ray sheet, own scroll. */
   .details {
     top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none;
-    max-height: 70%; border-radius: var(--radius) var(--radius) 0 0;
+    max-height: 42%; border-radius: var(--radius) var(--radius) 0 0;
     overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  main:has(.details) .legend {
+    bottom: calc(42% + 8px);
+    max-height: calc(58vh - 120px);
+    overflow-y: auto;
   }
   .xray-legend {
     font-size: 10px; gap: 6px; padding: 6px 8px;

@@ -58,6 +58,7 @@ def main() -> None:
         "nodes": [_model(n) for n in nodes],
         "edges": [_model(e) for e in edges],
         "overview_aggregates": [_model(a) for a in svc.overview_aggregates()],
+        "edge_tiers": svc._edge_tiers,
     }
     _dump(OUT / "graph.json", graph_payload)
 

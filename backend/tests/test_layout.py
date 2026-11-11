@@ -135,7 +135,7 @@ def test_task5_runtime_budget_at_scale():
     assert elapsed < 8.0, f"layout took {elapsed:.1f}s, over budget"
 
 
-def test_task6_pinning_freezes_far_nodes(tmp_path, monkeypatch):
+def test_task6_layout_rederives_from_canonical_graph(tmp_path, monkeypatch):
     ds = _toy_dataset()
     # add a genuinely far node in domain C, only linked within C (>2 hops from A)
     ds["nodes"].append({"id": "technology:far", "slug": "far", "name": "Far",
@@ -161,12 +161,9 @@ def test_task6_pinning_freezes_far_nodes(tmp_path, monkeypatch):
                          "relationship_type": "commonly_used_with"})
     second = gl.generate(ds2)
 
-    # 'far' is in domain C, far more than 2 hops from the domain-A change => frozen
-    moved = math.hypot(
-        second["coordinates"]["technology:far"]["x"] - far["x"],
-        second["coordinates"]["technology:far"]["y"] - far["y"],
-    )
-    assert moved < 0.01
+    # A changed graph is re-derived; the previous file is never a pinning input.
+    assert second == gl.generate(ds2)
+    assert far["ring"] == second["coordinates"]["technology:far"]["ring"]
     assert "technology:w" in second["coordinates"]
 
 
@@ -207,24 +204,18 @@ def test_overview_aggregates_is_additive_and_coords_unchanged():
     assert len(layout["coordinates"]) == len(ds["nodes"])
 
 
-def test_overview_aggregate_membership_equals_members_only_set():
-    """Per domain: union of all marker member_ids == that domain's members-only set
-    (every non-anchor node whose primary_domain is the domain); counts agree; the
-    domain anchor is NEVER a member (kept individual on the ring)."""
+def test_overview_keeps_every_member_individual():
+    """Dense domains retain one positioned node per canonical member."""
     ds = _multi_sector_dataset()
     layout = gl.generate(ds)
-    aggs = {a["domain_id"]: a for a in layout["overview_aggregates"]}
+    assert layout["overview_aggregates"] == []
     for dom in ("domain:robotics", "domain:ai-ml"):
         members_only = {
             n["id"] for n in ds["nodes"]
             if n["id"] != dom and n.get("primary_domain") == dom
         }
-        union = set()
-        for marker in aggs[dom]["markers"]:
-            assert marker["count"] == len(marker["member_ids"])
-            union |= set(marker["member_ids"])
-            assert dom not in marker["member_ids"]  # anchor never aggregated
-        assert union == members_only
+        assert members_only <= set(layout["coordinates"])
+        assert all(layout["coordinates"][n]["ring"] in (1, 2, 3) for n in members_only)
 
 
 def test_overview_aggregate_global_integrity_no_discard_no_dup():

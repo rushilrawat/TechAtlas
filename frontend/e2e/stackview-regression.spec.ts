@@ -139,25 +139,19 @@ test.describe("Stack View rendering regressions", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(String(e)));
     await gotoExplore(page);
-    // Collision-free overview (atlas-overview-collision-free): the default view shows the
-    // 14 domain SECTOR MARKERS, not all 607 individual nodes. The canonical nodes are not
-    // drawn at rest but remain fully REACHABLE — zooming into the detail band reveals the
-    // individual bubbles. This proves real rendering (canvas draws something meaningful) and
-    // that no node was discarded, without reintroducing the overlap the fix removed.
+    // The radial overview draws every canonical node individually at rest.
     const sample = ["technology:react", "technology:python", "domain:frontend", "domain:ai-ml"];
-    // All sampled nodes exist on the canvas (reachable), and markers render at the overview.
-    const markerShown = await page.evaluate(() => {
+    const shown = await page.evaluate(() => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
       const g = s.getGraph();
-      let markers = 0;
-      g.forEachNode((_id: string, a: any) => {
-        if (a.isAggregate !== true) return;
-        const dd = s.getNodeDisplayData(a.id ?? _id);
-        if (dd && dd.hidden !== true) markers++;
+      let individuals = 0;
+      g.forEachNode((id: string, a: any) => {
+        const dd = s.getNodeDisplayData(id);
+        if (a.isAggregate !== true && dd && dd.hidden !== true) individuals++;
       });
-      return markers;
+      return individuals;
     });
-    expect(markerShown, "sector markers should render at the default overview").toBeGreaterThan(0);
+    expect(shown, "all canonical nodes should render at the default overview").toBe(607);
     // Zoom into the detail band; the sampled canonical nodes are revealed (progressive
     // disclosure), proving they are present and reachable — not discarded.
     await page.evaluate(() => {

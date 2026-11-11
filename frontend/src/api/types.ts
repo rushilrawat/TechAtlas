@@ -13,6 +13,7 @@ export interface GraphNode {
   x: number | null;
   y: number | null;
   cluster: string | null;
+  ring?: number;
   size: number;
   color: string;
 }
@@ -55,6 +56,7 @@ export interface GraphResponse {
   /** Additive overview LOD groupings (deterministic, from the layout). May be absent on
    * older payloads; treat as empty then. Never alters nodes/edges. */
   overview_aggregates?: OverviewAggregate[];
+  edge_tiers?: Record<string, string>;
 }
 
 export type EdgeDirection = "in" | "out" | "undirected";
