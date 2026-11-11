@@ -496,31 +496,6 @@ body {
   stroke: rgba(150, 170, 210, 0.06);
   stroke-width: 1;
 }
-/* Centre identity: quiet brand mark that scales/moves with the camera-projected centre. */
-.atlas-centre-id {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 0;
-  text-align: center;
-  user-select: none;
-  white-space: nowrap;
-}
-.atlas-centre-title {
-  display: block;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: rgba(200, 210, 235, 0.22);
-}
-.atlas-centre-sub {
-  display: block;
-  margin-top: 2px;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(170, 182, 210, 0.16);
-}
 .graph-empty-state {
   position: absolute;
   top: 50%;
@@ -534,6 +509,7 @@ body {
   backdrop-filter: blur(6px);
   pointer-events: none;
 }
+
 .graph-empty-state p {
   margin: 0 0 4px;
 }
@@ -939,5 +915,42 @@ body {
     max-height: 50%; border-radius: var(--radius) var(--radius) 0 0;
     display: none;
   }
+  .filter-panel.mobile-open { display: block; }
+}
+
+/* Atlas-first shell: graph stays dominant; controls share one compact left rail. */
+:root { --bg: #080d18; --panel: #101a2a; --panel-border: #29364b;
+  --text: #dce5f4; --text-dim: #9aaac1; --accent: #8bb6ff; }
+.topbar { min-height: 56px; gap: 18px; background: rgba(10,17,30,.98); }
+.brand-name { font-size: 15px; letter-spacing: .2px; }
+.search { max-width: 520px; }
+.search-input { background: #0b1423; border-color: #334159; }
+.legend, .filter-panel, .details, .xray-panel, .relationship-legend {
+  background: rgba(16,26,42,.96); border-color: #334159;
+  box-shadow: 0 12px 32px rgba(0,0,0,.24);
+}
+.rel-group li { display: flex; align-items: center; gap: 4px; }
+.rel-group .rel-link { flex: 1; }
+.rel-open { flex: none; min-height: 32px; border: 1px solid #334159;
+  border-radius: 6px; padding: 4px 7px; background: #14243a;
+  color: var(--accent); cursor: pointer; font-size: 11px; }
+.rel-open:hover, .rel-open:focus-visible { background: #1c3454; }
+.xray-panel h2, .details h2 { letter-spacing: -.02em; }
+.xray-viewswitch { border-color: #3a4b66; }
+.xray-viewswitch button.active { background: #24436c; color: #f0f6ff; }
+@media (min-width: 1024px) {
+  .legend { top: 14px; bottom: auto; max-height: calc(50% - 22px); overflow-y: auto; }
+  .legend-reopen { top: 14px; bottom: auto; }
+  .filter-panel { left: 14px; right: auto; top: auto; bottom: 14px;
+    max-height: calc(50% - 22px); overflow-y: auto; }
+}
+@media (min-width: 641px) and (max-width: 1023px) {
+  .topbar { flex-wrap: wrap; row-gap: 8px; }
+  .search { order: 3; flex: 1 1 100%; max-width: none; }
+  .filters-toggle { display: inline-flex; position: absolute; bottom: 60px; left: 14px;
+    z-index: 11; border: 1px solid var(--panel-border); border-radius: 8px;
+    padding: 8px 12px; background: var(--panel); color: var(--text); }
+  .filter-panel { display: none; top: auto; left: 14px; right: auto; bottom: 56px;
+    max-height: 55%; }
   .filter-panel.mobile-open { display: block; }
 }

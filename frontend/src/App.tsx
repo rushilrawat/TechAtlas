@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "./api/client";
-import type { DomainSummary, GraphNode, GraphResponse } from "./api/types";
+import type { DomainSummary, GraphNode, GraphResponse, NeighborEdge } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
 import { SearchCommand } from "./components/SearchCommand";
 import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
@@ -53,6 +53,7 @@ export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
+  const [previewEdge, setPreviewEdge] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterState>(emptyFilter());
   const [xrayOpen, setXrayOpen] = useState(false);
@@ -147,6 +148,7 @@ export default function App() {
         state.graph.nodes.find((n) => n.slug === slugOrId);
       if (!node) return;
       setSelectedEdge(null);
+      setPreviewEdge(null);
       setSelected(node.id);
       setFocus(node.id);
       window.history.replaceState(null, "", pathForNode(node.node_type, node.slug));
@@ -157,6 +159,7 @@ export default function App() {
   const handleSelect = useCallback(
     (id: string | null) => {
       setSelectedEdge(null);
+      setPreviewEdge(null);
       if (id === null) {
         setSelected(null);
         setFocus(null);
@@ -174,6 +177,16 @@ export default function App() {
     setFocus(null);
     setSelectedEdge(id);
   }, [state]);
+
+  const previewRelationship = useCallback((neighbor: NeighborEdge | null) => {
+    if (!neighbor || !selected || state.status !== "ready") { setPreviewEdge(null); return; }
+    const edge = state.graph.edges.find((item) => item.relationship_type === neighbor.relationship_type &&
+      (neighbor.direction === "out" ? item.source === selected && item.target === neighbor.node.id
+        : neighbor.direction === "in" ? item.target === selected && item.source === neighbor.node.id
+          : (item.source === selected && item.target === neighbor.node.id) ||
+            (item.target === selected && item.source === neighbor.node.id)));
+    setPreviewEdge(edge?.id ?? null);
+  }, [selected, state]);
 
   // Compute visible node/edge sets from the active filter. null = no filter (show all),
   // so GraphCanvas skips hiding entirely. Memoized so we don't recompute per render.
@@ -339,6 +352,7 @@ export default function App() {
           data={state.graph}
           selectedId={selected}
           selectedEdgeId={selectedEdge}
+          previewEdgeId={previewEdge}
           focusId={focus}
           onSelect={handleSelect}
           onSelectEdge={handleSelectEdge}
@@ -421,6 +435,7 @@ export default function App() {
               state.graph.nodes.find((n) => n.id === selected)?.slug ?? selected
             }
             nodeId={selected}
+            onPreviewRelationship={previewRelationship}
             scan={activeScan}
             // When a DOMAIN is selected, pass its members-only count (same figure as the
             // sidebar / aggregate "direct" count) so the panel shows name AND count — key

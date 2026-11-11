@@ -7,6 +7,7 @@ import { buildGraph, domainMemberIds } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
 import type { LabelContext } from "../graph/semanticZoom";
 import { placeLabels } from "../graph/overviewLod";
+import { selectClearEdges } from "../graph/clearEdges";
 import EdgeCurveProgram from "@sigma/edge-curve";
 import { computeFit } from "../graph/cameraFit";
 
@@ -14,6 +15,7 @@ interface Props {
   data: GraphResponse;
   selectedId: string | null;
   selectedEdgeId?: string | null;
+  previewEdgeId?: string | null;
   focusId: string | null;
   onSelect: (id: string | null) => void;
   onSelectEdge?: (id: string) => void;
@@ -49,7 +51,6 @@ interface Props {
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
 const REST_EDGE = "rgba(130,140,160,0.03)";            // Explore at-rest cross-node edges (barely-there; map-first)
-const ACTIVE_EDGE = "rgba(150,180,255,0.55)";          // 0.50-0.60 touching (UI-A R2.1)
 
 // Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
 // node's domain color). confirmed=green, declared=blue, inferred=amber, related=neutral.
@@ -218,10 +219,13 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
       const r = n ? n.getBoundingClientRect() : null;
       return r && r.width > 0 && r.width < vw * 0.6 ? r : null;  // ignore bottom sheets
     };
-    const left = q(".legend");
-    const right = q("#graph-filters, .filter-panel");
-    leftW = left ? Math.max(0, left.right - cr.left) : 0;
-    rightW = right ? Math.max(0, cr.right - right.left) : 0;
+    const legend = q(".legend");
+    const filters = q("#graph-filters, .filter-panel");
+    for (const panel of [legend, filters]) {
+      if (!panel) continue;
+      if (panel.left - cr.left < vw / 2) leftW = Math.max(leftW, panel.right - cr.left);
+      else rightW = Math.max(rightW, cr.right - panel.left);
+    }
   }
   const bMinX = mnX - leftW * gpx;
   const bMaxX = mxX + rightW * gpx;
@@ -238,6 +242,7 @@ export function GraphCanvas({
   data,
   selectedId,
   selectedEdgeId = null,
+  previewEdgeId = null,
   focusId,
   onSelect,
   onSelectEdge,
@@ -259,6 +264,7 @@ export function GraphCanvas({
   const hoveredRef = useRef<string | null>(null);
   const selectedRef = useRef<string | null>(selectedId);
   const selectedEdgeRef = useRef<string | null>(selectedEdgeId);
+  const previewEdgeRef = useRef<string | null>(previewEdgeId);
   const keyboardIndexRef = useRef(-1);
   const [keyboardDomain, setKeyboardDomain] = useState("");
   // Precomputed highlight set for the current active node (Task 7).
@@ -310,6 +316,8 @@ export function GraphCanvas({
   useEffect(() => {
     if (!containerRef.current) return;
     const graph = buildGraph(data);
+    const overviewEdges = selectClearEdges(data);
+    const detailEdges = selectClearEdges(data, 4, 56, true);
     graphRef.current = graph;
 
     const renderer = new Sigma(graph, containerRef.current, {
@@ -415,7 +423,7 @@ export function GraphCanvas({
         if (!display || display.hidden) return;
         const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
         const radius = renderer.scaleSize(display.size);
-        if (attrs.nodeType === "domain") {
+        if (attrs.nodeType === "domain" || (el.clientWidth >= 641 && (attrs.ring as number) === 1 && (attrs.size as number) > 10)) {
           nodeBoxes.push({ key: id, x: point.x - radius, y: point.y - radius, w: radius * 2, h: radius * 2 });
         }
         if (attrs.nodeType !== "domain" || attrs.ring !== 0) return;
@@ -568,6 +576,14 @@ export function GraphCanvas({
       if (vedges && !vedges.has(edge)) {
         return { ...dataIn, hidden: true };
       }
+      const shownEdge = selectedEdgeRef.current ?? previewEdgeRef.current;
+      if (shownEdge) {
+        if (edge !== shownEdge) return { ...dataIn, hidden: true };
+        const [source, target] = graph.extremities(edge);
+        const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
+        return { ...dataIn, color: cross ? "rgba(251,191,36,0.95)" : "rgba(150,180,255,0.9)",
+          size: 2.4, zIndex: 4, curvature: 0.04 };
+      }
       // Repo X-Ray overlay: highlight only existing edges between two detected nodes.
       const scanEdges = scanEdgesRef.current;
       if (scanEdges) {
@@ -575,71 +591,25 @@ export function GraphCanvas({
           // Stack View default: suppress edges so domain grouping is not mistaken for a
           // dependency (spec SS3). BUT when a node is SELECTED, reveal only its VERIFIED
           // canonical edges to other detected nodes (spec SS2) — never co-occurrence edges.
-          const act = activeRef.current;
-          if (act && scanEdges.has(edge)) {
-            const [es, et] = graph.extremities(edge);
-            if (es === act || et === act) {
-              // Cross-domain verified edges are styled distinctly (amber) from same-domain
-              // (blue) so a grouping line is never confused with a real relationship.
-              const sd = graph.getNodeAttribute(es, "primaryDomain");
-              const td = graph.getNodeAttribute(et, "primaryDomain");
-              const crossDomain = sd !== td;
-              return {
-                ...dataIn,
-                color: crossDomain ? "rgba(251,191,36,0.85)" : "rgba(150,180,255,0.75)",
-                size: crossDomain ? 2.0 : 1.6,
-                zIndex: 3,
-              };
-            }
-          }
           return { ...dataIn, hidden: true };
         }
-        if (scanEdges.has(edge)) {
-          return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2 };
-        }
-        if (scanContextRef.current?.has(edge)) {
-          return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1 };
-        }
+        if (activeRef.current || !detailEdges.has(edge)) return { ...dataIn, hidden: true };
+        if (scanEdges.has(edge)) return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2, curvature: 0.04 };
+        if (scanContextRef.current?.has(edge)) return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1, curvature: 0.04 };
         // Unrelated edges: hide outright. They are the majority and only add noise in a
         // scan read; hiding (not just alpha~0) also saves overdraw (perf R30).
         return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
       const active = activeRef.current;
-      const selectedEdge = selectedEdgeRef.current;
-      if (selectedEdge) {
-        return edge === selectedEdge
-          ? { ...dataIn, color: "rgba(255,211,130,0.95)", size: 3, zIndex: 4 }
-          : { ...dataIn, hidden: true };
-      }
       if (!active) {
-        const tier = dataIn.tier as string | undefined;
         if (bandOf(ratioRef.current) <= 1) {
-          if (tier === "TierD") return { ...dataIn, hidden: true };
-          if (tier === "TierA") {
-            const [source, target] = graph.extremities(edge);
-            const rootBridge = source === "domain:software-engineering" || target === "domain:software-engineering";
-            // The root's long taxonomic spokes cross the whole map. Reveal them on
-            // selection or zoom; local structural edges carry the overview hierarchy.
-            if (rootBridge) return { ...dataIn, hidden: true };
-            return { ...dataIn, color: "rgba(160,180,220,0.52)", size: 1.15, zIndex: 1 };
-          }
-          if (tier === "TierB") return { ...dataIn, color: "rgba(140,160,200,0.38)", size: 0.9, zIndex: 0 };
-          return { ...dataIn, color: "rgba(220,180,120,0.4)", size: 1, zIndex: 0 };
+          return overviewEdges.has(edge)
+            ? { ...dataIn, color: "rgba(160,185,225,0.55)", size: 1.2, curvature: 0.04 }
+            : { ...dataIn, hidden: true };
         }
-        const rt = dataIn.relationshipType as string | undefined;
-        if (rt === "belongs_to_domain" || rt === "has_subdomain") return { ...dataIn, hidden: true };
-        return { ...dataIn, color: REST_EDGE, zIndex: 0 };
-      }
-      const [s, t] = graph.extremities(edge);
-      if (s === active || t === active) {
-        if (graph.getNodeAttribute(active, "nodeType") === "domain" &&
-            dataIn.relationshipType === "belongs_to_domain") {
-          const member = s === active ? t : s;
-          if (graph.getNodeAttribute(member, "ring") !== 1) {
-            return { ...dataIn, hidden: true };
-          }
-        }
-        return { ...dataIn, color: ACTIVE_EDGE, size: 1.4, zIndex: 1 };
+        return detailEdges.has(edge)
+          ? { ...dataIn, color: REST_EDGE, size: 0.9, curvature: 0.04 }
+          : { ...dataIn, hidden: true };
       }
       return { ...dataIn, hidden: true };
     });
@@ -659,6 +629,26 @@ export function GraphCanvas({
     });
     renderer.on("clickEdge", ({ edge }) => onSelectEdge?.(edge));
     renderer.on("clickStage", ({ event }) => {
+      let nearEdge: string | null = null, bestEdgeDistance = 5;
+      if (onSelectEdge) graph.forEachEdge((id, _attrs, source, target) => {
+        if (renderer.getEdgeDisplayData(id)?.hidden) return;
+        const a = renderer.graphToViewport(graph.getNodeAttributes(source) as { x: number; y: number });
+        const b = renderer.graphToViewport(graph.getNodeAttributes(target) as { x: number; y: number });
+        const c = { x: (a.x + b.x) / 2 + (b.y - a.y) * 0.04,
+          y: (a.y + b.y) / 2 - (b.x - a.x) * 0.04 };
+        let previous = a;
+        for (let i = 1; i <= 16; i++) {
+          const t = i / 16, u = 1 - t;
+          const next = { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
+            y: u * u * a.y + 2 * u * t * c.y + t * t * b.y };
+          const dx = next.x - previous.x, dy = next.y - previous.y;
+          const v = Math.max(0, Math.min(1, ((event.x - previous.x) * dx + (event.y - previous.y) * dy) / (dx * dx + dy * dy || 1)));
+          const distance = Math.hypot(event.x - previous.x - v * dx, event.y - previous.y - v * dy);
+          if (distance < bestEdgeDistance) { bestEdgeDistance = distance; nearEdge = id; }
+          previous = next;
+        }
+      });
+      if (nearEdge && onSelectEdge) { onSelectEdge(nearEdge); return; }
       if (containerRef.current && containerRef.current.clientWidth < 641) {
         let nearest: string | null = null;
         let best = 18;
@@ -727,6 +717,11 @@ export function GraphCanvas({
       ratio: narrow ? 0.7 : 0.45,
     }, { duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450 });
   }, [selectedEdgeId]);
+
+  useEffect(() => {
+    previewEdgeRef.current = previewEdgeId;
+    scheduleRefreshRef.current?.();
+  }, [previewEdgeId]);
 
   // React to filter changes: update the live sets the reducers read, then refresh.
   // We never rebuild the graph or touch coordinates (requirement 1.7).
@@ -1193,32 +1188,11 @@ export function GraphCanvas({
                 <stop offset="100%" stopColor={s.color} stopOpacity={0} />
               </radialGradient>
             ))}
-            <radialGradient id="atlas-centre" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#7aa2f7" stopOpacity={0.05} />
-              <stop offset="100%" stopColor="#7aa2f7" stopOpacity={0} />
-            </radialGradient>
           </defs>
           {backdrop.sectors.map((s) => (
             <circle key={s.id} cx={s.cx} cy={s.cy} r={s.r} fill={`url(#sect-${s.id})`} />
           ))}
-          {backdrop.center && (
-            <g>
-              <circle cx={backdrop.center.cx} cy={backdrop.center.cy}
-                r={backdrop.center.r * 1.9} fill="url(#atlas-centre)" />
-              {[1.15, 1.5, 1.9].map((m, i) => (
-                <circle key={i} cx={backdrop.center!.cx} cy={backdrop.center!.cy}
-                  r={backdrop.center!.r * m} className="atlas-ring" />
-              ))}
-            </g>
-          )}
         </svg>
-      )}
-      {backdrop.center && (
-        <div className="atlas-centre-id" aria-hidden
-          style={{ left: backdrop.center.cx, top: backdrop.center.cy }}>
-          <span className="atlas-centre-title">TechAtlas</span>
-          <span className="atlas-centre-sub">Technology Knowledge Graph</span>
-        </div>
       )}
       <div
         ref={containerRef}

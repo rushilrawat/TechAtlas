@@ -15,13 +15,15 @@ interface Props {
   // For a DOMAIN selection: its members-only count (sidebar / aggregate "direct" figure),
   // shown in the header so a single tap identifies the domain's name AND size. Null otherwise.
   memberCount?: number | null;
+  onPreviewRelationship?: (neighbor: NeighborEdge | null) => void;
 }
 
 /** Detail sidebar for a selected node. Loads rich data on demand (spec §6, §10). */
-export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null }: Props) {
+export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null, onPreviewRelationship }: Props) {
   const [detail, setDetail] = useState<NodeDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lockedNeighbor, setLockedNeighbor] = useState<NeighborEdge | null>(null);
   const panelRef = useRef<HTMLElement | null>(null);
 
   // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
@@ -43,6 +45,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   }, [onClose]);
 
   useEffect(() => {
+    setLockedNeighbor(null);
     const controller = new AbortController();
     setLoading(true);
     setError(null);
@@ -163,7 +166,16 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                     <li key={`${phrase}-${n.node.id}`}>
                       <button
                         className="rel-link"
-                        onClick={() => onNavigate(n.node.slug)}
+                        onMouseEnter={() => onPreviewRelationship?.(n)}
+                        onMouseLeave={() => onPreviewRelationship?.(lockedNeighbor)}
+                        onFocus={() => onPreviewRelationship?.(n)}
+                        onBlur={() => onPreviewRelationship?.(lockedNeighbor)}
+                        onClick={() => {
+                          const next = lockedNeighbor === n ? null : n;
+                          setLockedNeighbor(next);
+                          onPreviewRelationship?.(next);
+                        }}
+                        aria-label={`Show connection with ${n.node.label}`}
                       >
                         <span
                           className="rel-dot"
@@ -176,6 +188,8 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                           · {n.node.node_type}
                         </span>
                       </button>
+                      <button className="rel-open" onClick={() => onNavigate(n.node.slug)}
+                        aria-label={`Open ${n.node.label}`}>Open ↗</button>
                     </li>
                   ))}
                 </ul>

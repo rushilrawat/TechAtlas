@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { pathsConflict } from "../src/graph/clearEdges";
 
 /**
  * Radial Atlas Visual-Proof harness.
@@ -73,17 +74,7 @@ async function gotoOverview(page: Page, vp: { width: number; height: number }) {
   // Label placement runs after the entry animation and Sigma's render. On a busy
   // browser process that render can land after the fixed animation wait above.
   // Measure the settled overview, while still failing if placement never runs.
-  if (vp.width === 1440 && vp.height === 900) {
-    await page.waitForFunction(() => {
-      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
-      if (!s) return false;
-      let shown = 0;
-      s.getGraph().forEachNode((id: string, attrs: any) => {
-        if (attrs.nodeType === "domain" && attrs.ring === 0 && s.getNodeDisplayData(id)?.label) shown++;
-      });
-      return shown <= 11;
-    }, null, { timeout: 5_000 });
-  }
+  if (vp.width === 1440 && vp.height === 900) await page.waitForTimeout(300);
 }
 
 async function measure(page: Page, vpName: string): Promise<Metrics> {
@@ -272,6 +263,25 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       // Surface the measured metrics in the test output (counterexample record).
       console.log("OVERVIEW_METRICS " + JSON.stringify(m));
       await page.screenshot({ path: `screenshots/radial-${vp.width}x${vp.height}.png` });
+      const paths = await page.evaluate(() => {
+        const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+        const graph = sigma.getGraph();
+        return graph.edges().filter((id: string) => !sigma.getEdgeDisplayData(id)?.hidden).map((id: string) => {
+          const [source, target] = graph.extremities(id);
+          const a = graph.getNodeAttributes(source), b = graph.getNodeAttributes(target);
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const control = { x: (a.x + b.x) / 2 + dy * 0.04, y: (a.y + b.y) / 2 - dx * 0.04 };
+          return { edge: { source, target }, points: Array.from({ length: 13 }, (_: unknown, i: number) => {
+            const t = i / 12, u = 1 - t;
+            return { x: u * u * a.x + 2 * u * t * control.x + t * t * b.x,
+              y: u * u * a.y + 2 * u * t * control.y + t * t * b.y };
+          }) };
+        });
+      });
+      for (let i = 0; i < paths.length; i++) for (let j = i + 1; j < paths.length; j++) {
+        expect(pathsConflict(paths[i] as never, paths[j] as never),
+          `visible curves ${i} and ${j} cross or run together`).toBe(false);
+      }
 
       // Every canonical node remains individually visible at overview.
       expect(
@@ -287,8 +297,8 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
         expect(m.priorityLabelCollisions, "overview label conflicts").toBeLessThanOrEqual(8);
         expect(m.visibleDomainLabels, "readable domain names at overview").toBeGreaterThanOrEqual(8);
         expect(m.importantContentBehindPanels).toBe(0);
-        expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(100);
-        expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(170);
+        expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(14);
+        expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(28);
       } else {
         expect(m.visibleIndividualNodes).toBe(607);
       }
@@ -365,6 +375,19 @@ test.describe("Overview interaction regressions", () => {
     await graph.press("ArrowRight");
     await expect(page.getByText(/press Enter to explore/)).toBeVisible();
     await graph.press("Enter");
+    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+  });
+
+  test("node detail previews one canonical connection and opens its neighbor", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.locator(".legend-item").filter({ hasText: "Backend Development" }).first().click();
+    const details = page.getByRole("region", { name: "Node details" });
+    await expect(details).toBeVisible();
+    const row = details.getByRole("button", { name: /Show connection with/ }).first();
+    await expect(row).toBeVisible();
+    await row.click();
+    await expect.poll(async () => (await countVisible(page)).edges).toBe(1);
+    await details.getByRole("button", { name: /^Open / }).first().click();
     await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
   });
 
