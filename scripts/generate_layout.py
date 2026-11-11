@@ -11,18 +11,13 @@ import json
 import math
 from pathlib import Path
 
-from sizing import load_popularity, radii_for_dataset
+from sizing import SIZE_CONCEPT, SIZE_TECH, load_popularity, radii_for_dataset
 
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
 OUTPUT = ROOT / "data" / "layout.json"
 POPULARITY = ROOT / "data" / "popularity.json"
 
-ITERATIONS = 400
-WIDTH = 2000.0
-AREA = WIDTH * WIDTH
-CONVERGENCE_EPS = 0.05  # stop when the largest node movement falls below this
-BARNES_HUT_THETA = 0.9  # quadtree approximation threshold (larger = faster/looser)
 OVERLAP_MARGIN = 4.0  # extra px gap enforced between bubble edges
 OVERLAP_ITERATIONS = 60
 
@@ -58,6 +53,16 @@ def _seeded_unit(key: str) -> float:
 # --------------------------------------------------------------------------- #
 def _domain_of(node: dict) -> str:
     return node["id"] if node["node_type"] == "domain" else node.get("primary_domain", node["id"])
+
+
+def _connectivity_rings(members: list[str], intra: dict[str, int],
+                        degree: dict[str, int], radius: dict[str, float]) -> dict[str, int]:
+    """Keep the most connected and visually prominent members nearest their parent."""
+    ranked = sorted(members, key=lambda nid: (-intra[nid], -degree[nid], -radius[nid], nid))
+    inner = max(1, math.ceil(len(ranked) * 0.18))
+    middle = max(inner, math.ceil(len(ranked) * 0.50))
+    return {nid: 1 if i < inner else 2 if i < middle else 3
+            for i, nid in enumerate(ranked)}
 
 
 def _resolve_overlaps(
@@ -131,61 +136,6 @@ def _resolve_overlaps(
 # --------------------------------------------------------------------------- #
 # Main layout.
 # --------------------------------------------------------------------------- #
-MACRO_RING_R = 3900.0
-CLUSTER_R1 = 220.0
-CLUSTER_R2 = 410.0
-CLUSTER_R3 = 650.0
-RING1_THRESH = 4
-RING2_THRESH = 2
-GAP_PX = 8.0
-EP_W1, EP_W2, EP_W3, EP_W4, EP_W5 = 2.0, 1.5, 1.0, 0.8, 0.3
-TIER_C_THRESHOLD = 0.6
-TIER_C_CAP = 8
-TIER_B_PER_DOMAIN = 2
-ROOT_DOMAIN = "domain:software-engineering"
-CURATED = [
-    "domain:software-engineering", "domain:testing-tooling", "domain:frontend",
-    "domain:mobile", "domain:gamedev", "domain:ai-ml", "domain:robotics",
-    "domain:databases", "domain:backend", "domain:cloud-devops",
-    "domain:networks", "domain:systems", "domain:theory", "domain:security",
-]
-
-
-def _place_ring(
-    members: list[str], center: tuple[float, float], base_radius: float,
-    sizes: dict[str, float], key: str, pos: dict[str, list[float]],
-    reserved: list[tuple[float, float]] | None = None,
-) -> float:
-    """Place a semantic group around its anchor with radius-aware angular spacing."""
-    if not members:
-        return base_radius
-    # Sigma places the anchor's label to its right. Leave a narrow radial corridor
-    # there, while still populating more than 300 degrees around every parent.
-    reserved = [*(reserved or []), (math.pi / 2, 0.4)]
-    # Leave room for nested subclusters; slots are otherwise spread over the full circle.
-    angles = [2 * math.pi * i / len(members) for i in range(len(members))]
-    if reserved:
-        allowed = [2 * math.pi * i / (len(members) * 8) for i in range(len(members) * 8)
-                   if all(abs(math.atan2(math.sin(2 * math.pi * i / (len(members) * 8) - a),
-                                         math.cos(2 * math.pi * i / (len(members) * 8) - a)))
-                          > width
-                          for a, width in reserved)]
-        angles = [allowed[min(len(allowed) - 1, int((i + 0.5) * len(allowed) / len(members)))]
-                    for i in range(len(members))] if allowed else angles
-    min_radius = sum(sizes[n] * 2 + GAP_PX for n in members) / (2 * math.pi)
-    radius = max(base_radius, min_radius * 1.1)
-    start = -math.pi / 2 + _seeded_unit(key) * 0.12
-    for index, (nid, angle) in enumerate(zip(members, angles, strict=False)):
-        a = angle + start
-        # Three shallow lanes fill the territory instead of stacking every leaf on
-        # a single thin circumference. Ring identity remains 1/2/3.
-        lane = (index % 3 - 1) * min(radius * 0.14, 72.0)
-        local_radius = radius + lane
-        pos[nid] = [center[0] + local_radius * math.cos(a),
-                    center[1] + local_radius * math.sin(a)]
-    return radius
-
-
 def _shorten_local_connections(
     groups: list[list[str]], pos: dict[str, list[float]], edges: list[dict],
 ) -> None:
@@ -229,8 +179,206 @@ def _shorten_local_connections(
                 break
 
 
+# --------------------------------------------------------------------------- #
+# Main layout. Units are nominal screen pixels at the 1440x900 default fit, so the
+# spacing guaranteed here is the spacing the renderer actually draws (`r` is the
+# drawn overview radius; `radius` stays the API sizing hint).
+# --------------------------------------------------------------------------- #
+LAYOUT_ALGORITHM = "parent-centered-radial-atlas-v2"
+DOMAIN_R = 11.0                 # top-level anchor
+SUBDOMAIN_R = 8.0               # nested subdomain anchor
+RING_BASE_R = {1: 4.4, 2: 3.5, 3: 2.9}  # member radius by ring (technology)
+CONCEPT_BONUS = 0.4             # concepts read slightly larger than leaf tools
+GAP_PX = OVERLAP_MARGIN         # min edge-to-edge gap along a ring
+RADIAL_GAP_PX = 5.0             # min gap between consecutive ring bands
+ANCHOR_GAP_PX = 9.0             # clearance around a parent anchor
+MACRO_GAP_PX = 16.0             # clearance between neighboring cluster territories
+LANE_MIN_COUNT = 14             # rings this populated zigzag across two lanes
+SUBRING_TOLERANCE = 1.08        # ring 2 wins unless it grows the cluster > 8 % more
+# Edge priority S(e) = W1*H + W2*W + W3*C + W4*B - W5*K, every feature in [0, 1].
+#   H canonical hierarchy, W relationship strength, C endpoint centrality,
+#   B cross-domain bridge, K visual cost (curve length relative to its territory).
+EP_W1, EP_W2, EP_W3, EP_W4, EP_W5 = 2.0, 1.5, 1.0, 0.8, 1.2
+BACKBONE_FRACTION = 0.21        # Tier B budget per territory, share of its members
+TIER_C_CAP = 18
+TIER_C_PER_PAIR = 2
+ROOT_DOMAIN = "domain:software-engineering"
+CURATED = [
+    "domain:software-engineering", "domain:testing-tooling", "domain:frontend",
+    "domain:mobile", "domain:gamedev", "domain:ai-ml", "domain:robotics",
+    "domain:databases", "domain:backend", "domain:cloud-devops",
+    "domain:networks", "domain:systems", "domain:theory", "domain:security",
+]
+
+
+def _display_radius(node: dict, ring: int, api_radius: float) -> float:
+    """Drawn overview radius: a bounded hierarchy, lightly varied by importance."""
+    if node["node_type"] == "domain":
+        return DOMAIN_R if ring == 0 else SUBDOMAIN_R
+    concept = node["node_type"] == "concept"
+    lo, hi = SIZE_CONCEPT if concept else SIZE_TECH
+    t = max(0.0, min(1.0, (api_radius - lo) / (hi - lo)))
+    base = RING_BASE_R[ring] + (CONCEPT_BONUS if concept else 0.0)
+    return round(base * (0.85 + 0.3 * t), 2)
+
+
+def _place_ring(
+    items: list[str], r: dict[str, float], inner: float, key: str,
+    pos: dict[str, list[float]] | None = None, sats: dict[str, float] | None = None,
+    blocked: list[tuple[float | None, float]] | None = None,
+) -> tuple[float, list[tuple[str, float]]]:
+    """Place one ring band around the origin over the full circle.
+
+    Angular shares come from the chord bound dtheta >= 2*asin((r_i + r_j + g) / 2R)
+    (wraparound included); the band grows until its members fit. Dense bands zigzag
+    across two lanes, which halves the circumference they need. `sats` are nested
+    subclusters (id -> extent) whose inner edge sits on the band's inner edge;
+    `blocked` are (angle, half-width) sectors an inner band's subcluster already fills.
+    Returns (outer radius of the ordinary members, [(subcluster, outer radius)]).
+    `pos=None` is a dry run.
+    """
+    sats = sats or {}
+    blocked = blocked or []
+    free = 2 * math.pi - sum(2 * half for _, half in blocked)
+    ordinary = [n for n in items if n not in sats]
+    maxr = max((r[n] for n in ordinary), default=0.0)
+    lanes = len(ordinary) >= LANE_MIN_COUNT
+    lane = 0.45 * (2 * maxr + GAP_PX) if lanes else 0.0
+    base = inner
+    while True:
+        ring_r = base + lane + maxr
+        shares = []
+        for n in items:
+            if n in sats:
+                shares.append(2 * math.asin(min(1.0, (sats[n] + GAP_PX / 2) / (base + sats[n]))))
+            else:
+                half = math.asin(min(1.0, (2 * r[n] + GAP_PX) / (2 * ring_r)))
+                shares.append(half if lanes else 2 * half)
+        if sum(shares) <= free or base > inner * 50:
+            break
+        base *= 1.03
+    outer = ring_r + lane if ordinary else inner - RADIAL_GAP_PX
+    sat_outer = [(s, base + 2 * e) for s, e in sats.items()]
+    if pos is None or not items:
+        return outer, sat_outer
+    slack = (free - sum(shares)) / len(items)
+    # Walk the free arc only: positions are laid out in "free" angle u, then mapped past
+    # each blocked sector so no member lands inside an inner subcluster's territory.
+    if blocked:
+        spans = sorted((a - h, 2 * h) for a, h in blocked)
+        start = spans[0][0] + spans[0][1]
+        gaps, used = [], 0.0
+        for a0, width in spans[1:]:
+            gaps.append(((a0 - start) % (2 * math.pi) - used, width))
+            used += width
+    else:
+        start = -math.pi / 2 + _seeded_unit(key) * 2 * math.pi / len(items)
+        gaps = []
+
+    def real(u: float) -> float:
+        return start + u + sum(width for at, width in gaps if at <= u)
+
+    u, k = 0.0, 0
+    for n, share in zip(items, shares, strict=True):
+        step = share + slack
+        # Bounded organic rhythm: a little angular and radial play, never a collision.
+        mid = real(u + step / 2 + (_seeded_unit(f"{key}:{n}:a") - 0.5) * 0.35 * slack)
+        if n in sats:
+            rad = base + sats[n]
+        else:
+            rad = ring_r + ((lane if k % 2 else -lane) if lanes else 0.0)
+            rad += (_seeded_unit(f"{key}:{n}:r") - 0.5) * 2.4
+            k += 1
+        pos[n] = [rad * math.cos(mid), rad * math.sin(mid)]
+        u += step
+    return outer, sat_outer
+
+
+def _bands(direct: dict[int, list[str]], subs: dict[str, float], band_of: dict[str, int],
+           ) -> list[tuple[list[str], dict[str, float]]]:
+    """Ring items per band with subclusters interleaved evenly among the members."""
+    out = []
+    for band in (1, 2, 3):
+        items = list(direct[band])
+        inline = sorted(s for s in subs if band_of[s] == band)
+        for k, sub in enumerate(inline):
+            items.insert(int((k + 0.5) * len(items) / len(inline)) + k, sub)
+        out.append((items, {s: subs[s] for s in inline}))
+    return out
+
+
+def _lay_bands(anchor: str, direct: dict[int, list[str]], subs: dict[str, float],
+               band_of: dict[str, int], r: dict[str, float],
+               pos: dict[str, list[float]] | None) -> float:
+    """Place (or dry-run) every band; return the cluster's outer radius.
+
+    A subcluster seated in ring 2 does not push the whole of ring 3 outward: ring 3
+    flows around it, leaving the subcluster's own sector free.
+    """
+    outer = r[anchor] + ANCHOR_GAP_PX - RADIAL_GAP_PX
+    extent = outer
+    seated: list[tuple[str, float]] = []  # (subcluster, outer radius) from inner bands
+    for band, (items, sats) in enumerate(_bands(direct, subs, band_of), start=1):
+        if not items:
+            continue
+        inner = outer + RADIAL_GAP_PX
+        blocked = [(math.atan2(pos[s][1], pos[s][0]) if pos is not None else None,
+                    math.asin(min(1.0, (subs[s] + GAP_PX) / math.hypot(*pos[s])))
+                    if pos is not None else
+                    math.asin(min(1.0, (subs[s] + GAP_PX) / max(so - subs[s], subs[s] + GAP_PX))))
+                   for s, so in seated if so > inner]
+        outer, sat_outer = _place_ring(items, r, inner, f"{anchor}:{band}", pos, sats, blocked)
+        seated += sat_outer
+        extent = max([extent, outer] + [so for _, so in sat_outer])
+    return extent
+
+
+def _build_cluster(
+    anchor: str, direct: dict[int, list[str]], subs: dict[str, tuple[dict, float]],
+    band_of: dict[str, int], r: dict[str, float], edges: list[dict],
+) -> tuple[dict[str, list[float]], float]:
+    """Lay one ecosystem out around its anchor at the origin; return (pos, extent)."""
+    pos: dict[str, list[float]] = {anchor: [0.0, 0.0]}
+    _lay_bands(anchor, direct, {s: e for s, (_, e) in subs.items()}, band_of, r, pos)
+    groups = [[n for n in direct[b] if n not in subs] for b in (1, 2, 3)]
+    _shorten_local_connections(groups, pos, edges)
+    for sub, (local, _) in subs.items():
+        cx, cy = pos[sub]
+        for nid, (x, y) in local.items():
+            pos[nid] = [cx + x, cy + y]
+    _resolve_overlaps(list(pos), pos, r, {}, frozen={anchor, *subs})
+    extent = max(math.hypot(*pos[n]) + r[n] for n in pos)
+    return pos, extent
+
+
+def _solve_macro_radius(order: list[str], ext: dict[str, float]) -> float:
+    """Smallest ring radius whose adjacent cluster territories all clear each other."""
+    if len(order) < 2:
+        return 0.0
+    pairs = [(ext[a] + ext[b] + MACRO_GAP_PX) for a, b in zip(order, order[1:] + order[:1],
+                                                                strict=True)]
+
+    def total(radius: float) -> float:
+        return sum(2 * math.asin(min(1.0, p / (2 * radius))) for p in pairs)
+
+    lo, hi = max(pairs) / 2, max(pairs) * len(order)
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        lo, hi = (lo, mid) if total(mid) <= 2 * math.pi else (mid, hi)
+    return hi
+
+
+def _segments_cross(a: tuple, b: tuple, c: tuple, d: tuple) -> bool:
+    if len({a, b, c, d}) < 4:
+        return False  # edges meeting at a shared node do not cross
+
+    def side(p: tuple, q: tuple, s: tuple) -> float:
+        return (q[0] - p[0]) * (s[1] - p[1]) - (q[1] - p[1]) * (s[0] - p[0])
+    return (side(a, b, c) * side(a, b, d) < 0) and (side(c, d, a) * side(c, d, b) < 0)
+
+
 def generate(dataset: dict) -> dict:
-    """Derive a full-circle atlas and a deterministic canonical-edge backbone."""
+    """Derive the parent-centered radial atlas and its canonical-edge backbone."""
     import sys
     nodes, edges = dataset["nodes"], dataset["edges"]
     if len(nodes) != 607 or len(edges) != 1116:
@@ -245,15 +393,14 @@ def generate(dataset: dict) -> dict:
                  and e["source"] != ROOT_DOMAIN}
     top = domain_ids - parent_of.keys()
     ordered = [d for d in CURATED if d in top] + sorted(top - set(CURATED))
+
     def territory(nid: str) -> str:
         d = domain_of[nid]
         while d in parent_of:
             d = parent_of[d]
         return d
     territory_of = {nid: territory(nid) for nid in ids}
-    members = {d: [nid for nid in ids if nid not in domain_ids and territory_of[nid] == d]
-               for d in ordered}
-    radius = radii_for_dataset(nodes, edges, load_popularity(POPULARITY))
+    api_radius = radii_for_dataset(nodes, edges, load_popularity(POPULARITY))
     degree = {nid: 0 for nid in ids}
     intra = {nid: 0 for nid in ids}
     for edge in edges:
@@ -263,107 +410,150 @@ def generate(dataset: dict) -> dict:
         if domain_of[s] == domain_of[t]:
             intra[s] += 1
             intra[t] += 1
-    ring = {nid: 0 if nid in domain_ids else
-            (1 if intra[nid] >= RING1_THRESH else 2 if intra[nid] >= RING2_THRESH else 3)
-            for nid in ids}
-    weights = {d: math.sqrt(max(len(members[d]), 1)) for d in ordered}
-    total = sum(weights.values())
-    pos: dict[str, list[float]] = {}
-    centers: dict[str, tuple[float, float]] = {}
-    angle_by_domain: dict[str, float] = {}
-    sweep = -math.pi / 2
-    for d in ordered:
-        span = 2 * math.pi * weights[d] / total
-        angle = sweep + span / 2
-        sweep += span
-        angle_by_domain[d] = angle
-        center = (MACRO_RING_R * math.cos(angle), MACRO_RING_R * math.sin(angle))
-        centers[d] = center
-        pos[d] = list(center)
 
-    # Nested anchors occupy the least busy outer angular sectors. Their own children
-    # have complete local rings; direct parent members reserve the same sectors.
-    reservations: dict[str, list[tuple[float, float]]] = {d: [] for d in ordered}
-    for sub in sorted(parent_of):
-        parent = parent_of[sub]
-        direct = [n for n in members[parent] if domain_of[n] == parent]
-        population = len([n for n in ids if domain_of[n] == sub])
-        preferred_ring = 3 if len(direct) > 42 or population > 18 else 2
-        k = len(reservations[parent])
-        angle = angle_by_domain[parent] + math.pi + (k - 0.5) * 1.6
-        distance = (CLUSTER_R3 if preferred_ring == 3 else CLUSTER_R2) * 0.95
-        center = (centers[parent][0] + distance * math.cos(angle),
-                  centers[parent][1] + distance * math.sin(angle))
-        centers[sub] = center
-        pos[sub] = list(center)
-        ring[sub] = preferred_ring
-        reservations[parent].append((angle + math.pi / 2, 0.48))
-
-    local_groups: list[list[str]] = []
-    for d in ordered + sorted(parent_of):
+    # Rings: 0 anchor; 1 foundational hubs; 2 intermediate; 3 specialized leaves.
+    ring = {nid: 0 for nid in domain_ids}
+    direct_of: dict[str, list[str]] = {}
+    for d in sorted(domain_ids):
         direct = [nid for nid in ids if nid not in domain_ids and domain_of[nid] == d]
         direct.sort(key=lambda nid: (by_id[nid].get("node_subtype") or "", -intra[nid], nid))
-        counts = len(direct)
-        scale = 0.68 if counts <= 15 else 1.18 if counts > 50 else 1.0
-        if d in parent_of:
-            scale *= max(0.7, min(0.85, math.sqrt(counts / max(len(members[parent_of[d]]), 1))))
-        for band, base in ((1, CLUSTER_R1), (2, CLUSTER_R2), (3, CLUSTER_R3)):
-            group = [n for n in direct if ring[n] == band]
-            _place_ring(group, centers[d], base * scale, radius, f"{d}:{band}", pos,
-                        reservations.get(d) if band >= 2 else None)
-            local_groups.append(group)
+        direct_of[d] = direct
+        ring.update(_connectivity_rings(direct, intra, degree, api_radius))
+    r = {nid: _display_radius(by_id[nid], ring[nid], api_radius[nid]) for nid in ids}
+    for sub in parent_of:
+        r[sub] = SUBDOMAIN_R
 
-    _shorten_local_connections(local_groups, pos, edges)
+    def bands(d: str) -> dict[int, list[str]]:
+        return {b: [n for n in direct_of[d] if ring[n] == b] for b in (1, 2, 3)}
 
-    # A small deterministic collision pass corrects pairs across neighboring rings.
-    # Anchors remain fixed; re-pin afterward to guarantee the macro geometry.
-    _resolve_overlaps(ids, pos, radius, {}, frozen=set(centers))
-    for nid, center in centers.items():
-        pos[nid] = list(center)
+    # Nested subdomains are complete small constellations first; each is then seated in
+    # its parent's ring 2 or 3, whichever keeps the parent ecosystem more compact.
+    built: dict[str, tuple[dict, float]] = {}
+    for sub in sorted(parent_of):
+        built[sub] = _build_cluster(sub, bands(sub), {}, {}, r, edges)
+    clusters: dict[str, tuple[dict, float]] = {}
+    for d in ordered:
+        subs = {s: built[s] for s in sorted(parent_of) if parent_of[s] == d}
+        band_of: dict[str, int] = {}
+        for sub in sorted(subs, key=lambda s: (-subs[s][1], s)):
+            ext = {s: subs[s][1] for s in [*band_of, sub]}
+            in2 = _lay_bands(d, bands(d), ext, {**band_of, sub: 2}, r, None)
+            in3 = _lay_bands(d, bands(d), ext, {**band_of, sub: 3}, r, None)
+            band_of[sub] = 2 if in2 <= in3 * SUBRING_TOLERANCE else 3
+            ring[sub] = band_of[sub]
+        clusters[d] = _build_cluster(d, bands(d), subs, band_of, r, edges)
 
-    max_radius = max(radius.values(), default=1)
-    scored: list[tuple[float, str, str, bool]] = []
-    tiers = {f"e{i}": "TierD" for i in range(len(edges))}
-    for i, edge in enumerate(edges):
-        s, t, rt = edge["source"], edge["target"], edge["relationship_type"]
-        structural = rt == "has_subdomain" or (rt == "belongs_to_domain" and
-                                                  (ring[s] == 1 or ring[t] == 1) and
-                                                  (s in domain_ids or t in domain_ids))
-        if structural:
-            tiers[f"e{i}"] = "TierA"
-            continue
-        hierarchy = 0.5 if rt == "belongs_to_domain" and (ring[s] == 2 or ring[t] == 2) else 0
-        strength = REL_ATTRACTION.get(rt, DEFAULT_ATTRACTION) / 2.2
-        importance = (radius[s] + radius[t]) / (2 * max_radius)
-        cross = territory_of[s] != territory_of[t]
-        crowding = min(0.5, (degree[s] + degree[t]) * 0.05)
-        score = EP_W1 * hierarchy + EP_W2 * strength + EP_W3 * importance
-        score += EP_W4 * (0.3 if cross else 0) - EP_W5 * crowding
-        # A long bridge across the empty center creates a false visual impression of
-        # local proximity. Reserve the overview bridge tier for nearby territories.
-        length = math.dist(pos[s], pos[t])
-        if cross and length > MACRO_RING_R * 0.9:
-            score = -1.0
-        scored.append((score, f"e{i}", territory_of[s], cross))
-    ranked = sorted(scored, key=lambda x: (-x[0], x[1]))
-    local_counts: dict[str, int] = {}
-    cross_count = 0
-    for score, eid, dom, cross in ranked:
-        if cross:
-            if score >= TIER_C_THRESHOLD and cross_count < TIER_C_CAP:
-                tiers[eid] = "TierC"
-                cross_count += 1
-        elif local_counts.get(dom, 0) < TIER_B_PER_DOMAIN:
-            tiers[eid] = "TierB"
-            local_counts[dom] = local_counts.get(dom, 0) + 1
+    # Macro composition: whole ecosystems (not anchors) are spaced around the ring.
+    extent = {d: clusters[d][1] for d in ordered}
+    macro_r = _solve_macro_radius(ordered, extent)
+    slack = 0.0
+    if len(ordered) > 1:
+        used = sum(2 * math.asin(min(1.0, (extent[a] + extent[b] + MACRO_GAP_PX) / (2 * macro_r)))
+                   for a, b in zip(ordered, ordered[1:] + ordered[:1], strict=True))
+        slack = (2 * math.pi - used) / len(ordered)
+    pos: dict[str, list[float]] = {}
+    theta = -math.pi / 2
+    for i, d in enumerate(ordered):
+        cx, cy = macro_r * math.cos(theta), macro_r * math.sin(theta)
+        for nid, (x, y) in clusters[d][0].items():
+            pos[nid] = [cx + x, cy + y]
+        if len(ordered) > 1:
+            nxt = ordered[(i + 1) % len(ordered)]
+            theta += 2 * math.asin(min(1.0, (extent[d] + extent[nxt] + MACRO_GAP_PX)
+                                      / (2 * macro_r))) + slack
+    for nid in ids:  # isolated ids without a territory never occur, but never drop one
+        pos.setdefault(nid, [0.0, 0.0])
+
+    tiers = _edge_tiers(edges, pos, ring, territory_of, degree, extent, ordered, parent_of)
     coords = {nid: {"x": round(pos[nid][0], 2), "y": round(pos[nid][1], 2),
-                    "radius": radius[nid], "cluster": domain_of[nid], "ring": ring[nid]}
+                    "radius": api_radius[nid], "r": r[nid],
+                    "cluster": domain_of[nid], "ring": ring[nid]}
               for nid in ids}
-    return {"layout_version": dataset["version"],
-            "layout_algorithm": "two-level-radial-cluster",
+    return {"layout_version": dataset["version"], "layout_algorithm": LAYOUT_ALGORITHM,
+            "macro_ring_radius": round(macro_r, 2),
+            "domain_extents": {d: round(extent[d], 2) for d in ordered},
             "domain_ring_order": ordered, "coordinates": coords,
             "edge_tiers": tiers, "overview_aggregates": []}
 
+
+def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
+                degree: dict, extent: dict, ordered: list[str], parent_of: dict,
+                ) -> dict[str, str]:
+    """Tier A hierarchy, Tier B per-territory spanning forest, Tier C bridges, D rest.
+
+    Only canonical edges are ever tiered. Canonical weights may be null; the
+    relationship type then supplies the documented default strength (W).
+    """
+    tiers = {f"e{i}": "TierD" for i in range(len(edges))}
+    max_deg = max((v for k, v in degree.items() if ring.get(k) != 0), default=1) or 1
+    index = {d: i for i, d in enumerate(ordered)}
+    point = {nid: (p[0], p[1]) for nid, p in pos.items()}
+    scored = []
+    for i, edge in enumerate(edges):
+        s, t, rt = edge["source"], edge["target"], edge["relationship_type"]
+        if rt == "has_subdomain" and s == ROOT_DOMAIN:
+            continue  # taxonomic root spokes would cut through the whole atlas
+        if rt == "has_subdomain" and parent_of.get(t) == s:
+            tiers[f"e{i}"] = "TierA"
+            continue
+        ts, tt = territory_of[s], territory_of[t]
+        member = t if ring.get(s) == 0 else s
+        h = ({1: 0.3, 2: 0.15}.get(ring[member], 0.1) if rt == "belongs_to_domain" else 0.0)
+        w = edge.get("weight")
+        w = min(1.0, float(w)) if isinstance(w, (int, float)) else \
+            REL_ATTRACTION.get(rt, DEFAULT_ATTRACTION) / 2.2
+        # Centrality of the members involved: an anchor's degree is just its member count
+        # and would make every membership spoke look important.
+        ends = [degree[x] for x in (s, t) if ring.get(x) != 0] or [0]
+        c = sum(ends) / (len(ends) * max_deg)
+        cross = ts != tt
+        k = min(1.0, math.dist(point[s], point[t]) / (extent[ts] + extent[tt]))
+        if rt == "belongs_to_domain":
+            k = min(1.0, k + 0.5)  # membership is already drawn by radial position
+        score = EP_W1 * h + EP_W2 * w + EP_W3 * c + EP_W4 * (1.0 if cross else 0.0) - EP_W5 * k
+        scored.append((-score, f"e{i}", s, t, ts, tt))
+    scored.sort()
+
+    parent: dict[str, str] = {}
+
+    def find(x: str) -> str:
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    members = {d: sum(1 for n, td in territory_of.items() if td == d and ring[n] != 0)
+               for d in ordered}
+    budget = {d: max(2, round(BACKBONE_FRACTION * members[d])) for d in ordered}
+    accepted: dict[str, list[tuple]] = {d: [] for d in ordered}
+    for _, eid, s, t, ts, tt in scored:
+        if ts != tt or len(accepted[ts]) >= budget[ts] or find(s) == find(t):
+            continue
+        seg = (point[s], point[t])
+        if any(_segments_cross(*seg, *other) for other in accepted[ts]):
+            continue
+        parent[find(s)] = find(t)
+        accepted[ts].append(seg)
+        tiers[eid] = "TierB"
+
+    bridges: list[tuple] = []
+    per_pair: dict[tuple, int] = {}
+    n = len(ordered)
+    for _, eid, s, t, ts, tt in scored:
+        if ts == tt or len(bridges) >= TIER_C_CAP:
+            continue
+        gap = abs(index[ts] - index[tt])
+        if min(gap, n - gap) != 1:
+            continue  # only neighboring ecosystems; long bridges would cross the atlas
+        pair = tuple(sorted((ts, tt)))
+        seg = (point[s], point[t])
+        if per_pair.get(pair, 0) >= TIER_C_PER_PAIR or \
+                any(_segments_cross(*seg, *other) for other in bridges):
+            continue
+        per_pair[pair] = per_pair.get(pair, 0) + 1
+        bridges.append(seg)
+        tiers[eid] = "TierC"
+    return tiers
 
 def main() -> None:
     if not DATASET.exists():

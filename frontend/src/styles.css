@@ -954,3 +954,18 @@ body {
     max-height: 55%; }
   .filter-panel.mobile-open { display: block; }
 }
+
+/* Explore domain headings: one per top-level ecosystem, outside its rim (DOM overlay). */
+.atlas-heading {
+  position: absolute; z-index: 4; max-width: 150px; padding: 2px 0; border: 0;
+  background: none; cursor: pointer; text-align: left;
+  font: 600 11.5px/1.25 Inter, system-ui, sans-serif; letter-spacing: 0.2px;
+  color: color-mix(in srgb, var(--domain) 55%, #eef2fb);
+  text-shadow: 0 1px 3px rgba(6, 8, 14, 0.9);
+}
+.atlas-heading:hover, .atlas-heading.is-active { color: #fff; }
+.atlas-heading:focus-visible { outline: 2px solid var(--domain); outline-offset: 2px; }
+.atlas-heading-right { transform: translate(0, -50%); }
+.atlas-heading-left { transform: translate(-100%, -50%); text-align: right; }
+.atlas-heading-up { transform: translate(-50%, -100%); text-align: center; }
+.atlas-heading-down { transform: translate(-50%, 0); text-align: center; }

@@ -175,6 +175,7 @@ class GraphService:
             y=coord.get("y"),
             cluster=coord.get("cluster", node.get("primary_domain")),
             ring=coord.get("ring", 0),
+            display_size=coord.get("r"),
             size=self._size(node),
             color=self._color(node),
             popularity=self._popularity_of(node),

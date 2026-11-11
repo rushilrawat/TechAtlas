@@ -14,6 +14,7 @@ export interface GraphNode {
   y: number | null;
   cluster: string | null;
   ring?: number;
+  display_size?: number | null;
   size: number;
   color: string;
 }

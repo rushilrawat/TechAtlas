@@ -3,10 +3,9 @@ import Graph from "graphology";
 import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
 import type { DetectionStatus, GraphResponse } from "../api/types";
-import { buildGraph, domainMemberIds } from "../graph/buildGraph";
+import { buildGraph, curvePoint, domainMemberIds } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
 import type { LabelContext } from "../graph/semanticZoom";
-import { placeLabels } from "../graph/overviewLod";
 import { selectClearEdges } from "../graph/clearEdges";
 import EdgeCurveProgram from "@sigma/edge-curve";
 import { computeFit } from "../graph/cameraFit";
@@ -50,9 +49,17 @@ interface Props {
 
 // Explore state: the selected node's neighborhood is prominent; everything else recedes.
 const DIM_NODE = "rgba(120,130,150,0.12)";
-const STRUCTURE_EDGE = "rgba(194,218,255,0.94)";
-const LOCAL_EDGE = "rgba(100,194,255,0.88)";
-const CROSS_EDGE = "rgba(255,194,104,0.96)";
+// Edges stay subordinate to nodes: thin, low-alpha strokes in the owning domain's color.
+// Cross-domain bridges are a quiet neutral, the faintest overview layer.
+const CROSS_EDGE = "rgba(214,200,170,0.3)";
+const ACTIVE_CROSS_EDGE = "rgba(240,214,160,0.85)";
+const RING_ALPHA = [1, 0.95, 0.86, 0.74];
+
+/** `#rrggbb` -> rgba() with the given alpha; non-hex colors pass through unchanged. */
+function withAlpha(color: unknown, alpha: number): string {
+  if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) return String(color);
+  return `rgba(${parseInt(color.slice(1, 3), 16)},${parseInt(color.slice(3, 5), 16)},${parseInt(color.slice(5, 7), 16)},${alpha})`;
+}
 
 // Repo X-Ray detection-status ring colors (spec §5: a SEPARATE visual channel from the
 // node's domain color). confirmed=green, declared=blue, inferred=amber, related=neutral.
@@ -188,7 +195,7 @@ function fitStack(
 // Sidebar-aware Explore framing: optically centre the FULL atlas in the usable canvas
 // (viewport minus the left legend + right filter side-rails on wide screens; symmetric on
 // mobile where panels are bottom sheets). Pure geometry, deterministic, no hardcoded offsets.
-function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
+function fitExplore(renderer: Sigma, prefersReduced: boolean): number {
   const graph = renderer.getGraph();
   let mnX = Infinity, mnY = Infinity, mxX = -Infinity, mxY = -Infinity, any = false;
   // Frame the full radial atlas, including every canonical node.
@@ -199,16 +206,17 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
     mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
     mxX = Math.max(mxX, x); mxY = Math.max(mxY, y);
   });
-  if (!any) return;
+  if (!any) return 1;
   const el = renderer.getContainer();
   const vw = el.clientWidth || window.innerWidth;
   // Narrow screens get extra padding so domain labels near the rim are not clipped by the
   // viewport edge (labels extend well beyond their node); wide screens use a tight frame.
   // Every canonical node stays visible at overview. A tighter mobile frame keeps the
   // clusters large enough to explore while leaving room for rim labels.
-  const padFrac = vw < 641 ? 0.1 : 0.06;
-  const padX = (mxX - mnX) * padFrac + 40;
-  const padY = (mxY - mnY) * padFrac + 40;
+  // Domain headings sit just outside each ecosystem, so the frame reserves their band.
+  const narrow = vw < 641;
+  const padX = narrow ? (mxX - mnX) * 0.1 + 40 : 130;
+  const padY = narrow ? (mxY - mnY) * 0.1 + 40 : 34;
   mnX -= padX; mxX += padX; mnY -= padY; mxY += padY;
   const vh = el.clientHeight || window.innerHeight;
   const cr = el.getBoundingClientRect();
@@ -237,6 +245,8 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
   } else {
     void renderer.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1, angle: 0 }, { duration: 500 });
   }
+  // Layout units are px at the reference fit; scale drawn sizes to this viewport's fit.
+  return Math.max(0.42, Math.min(1.25, 1 / gpx));
 }
 
 export function GraphCanvas({
@@ -295,8 +305,8 @@ export function GraphCanvas({
   // set (not just a bare renderer.refresh()).
   const scheduleRefreshRef = useRef<(() => void) | null>(null);
   const ratioRef = useRef<number>(1);
-  const recomputeLabelsRef = useRef<(() => void) | null>(null);
-  const suppressedLabelsRef = useRef<Set<string>>(new Set());
+  // Drawn-size multiplier for the current viewport's atlas fit (1 = 1440x900 reference).
+  const sizeScaleRef = useRef<number>(1);
   // Projected screen positions for Stack View domain headings (DOM overlay).
   const [headingScreens, setHeadingScreens] = useState<
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
@@ -307,8 +317,8 @@ export function GraphCanvas({
   // none); never touches graph data. Each sector is centered on its domain anchor.
   const [backdrop, setBackdrop] = useState<{
     sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
-    center: { cx: number; cy: number; r: number } | null;
-  }>({ sectors: [], center: null });
+    headings: { id: string; label: string; color: string; left: number; top: number; align: string }[];
+  }>({ sectors: [], headings: [] });
   const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number }> | null>(null);
   const domainsRef = useRef(domains);
   domainsRef.current = domains;
@@ -317,8 +327,9 @@ export function GraphCanvas({
   useEffect(() => {
     if (!containerRef.current) return;
     const graph = buildGraph(data);
-    const overviewEdges = selectClearEdges(data, 8, 120, false, 14);
-    const detailEdges = selectClearEdges(data, 12, 150, true, 10);
+    // Repo X-Ray Universe keeps its own clear, non-overlapping edge subset; Explore uses the
+    // generator's edge tiers instead (the two modes never share an edge filter).
+    const scanClearEdges = selectClearEdges(data, 12, 150, true, 10);
     graphRef.current = graph;
 
     const renderer = new Sigma(graph, containerRef.current, {
@@ -362,7 +373,8 @@ export function GraphCanvas({
     // hardcoded offsets; skipped when a scan (Stack View) owns the camera.
     requestAnimationFrame(() => {
       if (stackActiveRef.current) return;
-      fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      sizeScaleRef.current = fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      renderer.refresh();
     });
 
     // Test-only renderer handle, compiled in ONLY when VITE_TEST_HOOKS is set at build
@@ -406,51 +418,6 @@ export function GraphCanvas({
       });
     };
     scheduleRefreshRef.current = scheduleRefresh;
-    const recomputeOverviewLabels = () => {
-      const previous = suppressedLabelsRef.current;
-      if (scanStatusRef.current || activeRef.current || selectedEdgeRef.current || bandOf(ratioRef.current) > 1) {
-        if (previous.size) { suppressedLabelsRef.current = new Set(); renderer.refresh(); }
-        return;
-      }
-      const el = renderer.getContainer();
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      ctx.font = "12px Inter, system-ui, sans-serif";
-      const nodeBoxes: { key: string; x: number; y: number; w: number; h: number }[] = [];
-      const candidates: { id: string; priority: number; ownerKey: string; box: { x: number; y: number; w: number; h: number } }[] = [];
-      graph.forEachNode((id, attrs) => {
-        const display = renderer.getNodeDisplayData(id);
-        if (!display || display.hidden) return;
-        const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
-        const radius = renderer.scaleSize(display.size);
-        if (attrs.nodeType === "domain" || (el.clientWidth >= 641 && (attrs.ring as number) === 1 && (attrs.size as number) > 10)) {
-          nodeBoxes.push({ key: id, x: point.x - radius, y: point.y - radius, w: radius * 2, h: radius * 2 });
-        }
-        if (attrs.nodeType !== "domain" || attrs.ring !== 0) return;
-        const label = attrs.label as string;
-        candidates.push({
-          id, ownerKey: id,
-          priority: domainsRef.current?.find((domain) => domain.id === id)?.node_count ?? 0,
-          box: { x: point.x + radius + 2, y: point.y - 7,
-            w: Math.max(ctx.measureText(label).width, label.length * 6.8) + 4, h: 14 },
-        });
-      });
-      const containerRect = el.getBoundingClientRect();
-      const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend"]
-        .map((selector) => document.querySelector(selector)?.getBoundingClientRect())
-        .filter((rect): rect is DOMRect => !!rect && rect.width > 0 && rect.height > 0)
-        .map((rect) => ({ x: rect.left - containerRect.left, y: rect.top - containerRect.top,
-          w: rect.width, h: rect.height }));
-      const suppressed = placeLabels({ candidates, nodeBoxes, panels,
-        viewport: { w: el.clientWidth, h: el.clientHeight } });
-      if (previous.size !== suppressed.size || [...previous].some((id) => !suppressed.has(id))) {
-        suppressedLabelsRef.current = suppressed;
-        renderer.refresh();
-      }
-    };
-    recomputeLabelsRef.current = recomputeOverviewLabels;
-
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
     // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
     // overview band shows ONLY top-level domain labels (redesign §3): even the large hubs
@@ -528,45 +495,35 @@ export function GraphCanvas({
         return res;
       }
 
-      // Semantic-zoom label gating.
-      if (!labelVisible(dataIn.nodeType as string, dataIn.size as number)) {
+      // Semantic-zoom label gating. Top-level domain names are DOM headings, so their
+      // anchors never carry a competing WebGL label.
+      const isDomain = dataIn.nodeType === "domain";
+      const ring = (dataIn.ring as number | undefined) ?? 0;
+      // Nested subdomain names join the labels once the camera reaches detail zoom.
+      if (!labelVisible(dataIn.nodeType as string, dataIn.size as number) || (isDomain && ring === 0)
+        || (isDomain && bandOf(ratioRef.current) <= 1)) {
         res.label = "";
       }
+      // One size table in every state: emphasis is color and alpha, never a size jump.
+      res.size = (dataIn.size as number) * sizeScaleRef.current;
 
       if (!active) {
-        const ring = (dataIn.ring as number | undefined) ?? 0;
-        const isDomain = dataIn.nodeType === "domain";
         res.zIndex = isDomain ? 2 : ring === 1 ? 1 : 0;
-        if (bandOf(ratioRef.current) <= 1) {
-          const base = dataIn.size as number;
-          res.size = isDomain ? Math.min(base, 8.5)
-            : ring === 1 ? Math.min(base, 3.6)
-            : ring === 2 ? Math.min(base, 2.5) : Math.min(base, 2);
-          if (isDomain && ring > 0) res.label = "";
-          if (suppressedLabelsRef.current.has(node)) res.label = "";
-        }
-        if (!isDomain && ring > 0 && typeof dataIn.color === "string" && /^#[0-9a-f]{6}$/i.test(dataIn.color)) {
-          const hex = dataIn.color;
-          const alpha = ring === 1 ? 0.9 : ring === 2 ? 0.75 : 0.5;
-          res.color = `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${alpha})`;
-        }
+        if (!isDomain) res.color = withAlpha(dataIn.color, RING_ALPHA[ring] ?? 0.8);
         return res;
       }
       const set = neighborSetRef.current;
       if (set && set.has(node)) {
+        res.zIndex = node === active ? 3 : 2;
         if (node === active) {
-          res.zIndex = 2;
           res.highlighted = true;
-          res.label = dataIn.label; // always label the active node
-        } else {
-          const ring = (dataIn.ring as number | undefined) ?? 2;
-          res.size = Math.min(dataIn.size as number, ring === 1 ? 8 : 6);
+          if (!(isDomain && ring === 0)) res.label = dataIn.label; // always label the active node
         }
         return res;
       }
-      res.color = DIM_NODE;
+      // Context recedes but keeps its domain hue, so the map stays readable around a focus.
+      res.color = withAlpha(dataIn.color, 0.2);
       res.label = "";
-      res.size = Math.min(dataIn.size as number, 2.2);
       res.zIndex = 0;
       return res;
     });
@@ -583,7 +540,7 @@ export function GraphCanvas({
         const [source, target] = graph.extremities(edge);
         const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
         return { ...dataIn, color: cross ? "rgba(251,191,36,0.95)" : "rgba(150,180,255,0.9)",
-          size: 2.4, zIndex: 4, curvature: 0.04 };
+          size: 2.4, zIndex: 4 };
       }
       // Repo X-Ray overlay: highlight only existing edges between two detected nodes.
       const scanEdges = scanEdgesRef.current;
@@ -594,29 +551,45 @@ export function GraphCanvas({
           // canonical edges to other detected nodes (spec SS2) — never co-occurrence edges.
           return { ...dataIn, hidden: true };
         }
-        if (activeRef.current || !detailEdges.has(edge)) return { ...dataIn, hidden: true };
-        if (scanEdges.has(edge)) return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2, curvature: 0.04 };
-        if (scanContextRef.current?.has(edge)) return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1, curvature: 0.04 };
+        if (activeRef.current || !scanClearEdges.has(edge)) return { ...dataIn, hidden: true };
+        if (scanEdges.has(edge)) return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2 };
+        if (scanContextRef.current?.has(edge)) return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1 };
         // Unrelated edges: hide outright. They are the majority and only add noise in a
         // scan read; hiding (not just alpha~0) also saves overdraw (perf R30).
         return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
+      const tier = dataIn.tier as string;
+      const cross = dataIn.crossDomain as boolean;
+      const [source, target] = graph.extremities(edge);
+      const tint = graph.getNodeAttribute(source, "color");
       const active = activeRef.current;
+      const overview = bandOf(ratioRef.current) <= 1;
+      const backbone = tier === "TierA" || tier === "TierB" || tier === "TierC";
+      // Explore zoom disclosure: the sparse backbone at overview, plus the remaining
+      // local (Tier D) relationships once zoomed into detail. Cross-domain Tier D edges
+      // and plain membership spokes (already conveyed by radial position) appear only
+      // for a selection that touches them.
+      const spoke = dataIn.relationshipType === "belongs_to_domain";
+      const zoomVisible = backbone || (!overview && !cross && !spoke);
+      const quiet = cross ? CROSS_EDGE
+        : withAlpha(tint, tier === "TierA" ? 0.6 : tier === "TierB" ? 0.48 : 0.2);
+      const quietSize = tier === "TierA" ? 1.1 : tier === "TierD" ? 0.6 : cross ? 0.8 : 1;
       if (!active) {
-        const [source, target] = graph.extremities(edge);
-        const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
-        const relation = graph.getEdgeAttribute(edge, "relationshipType");
-        const structural = relation === "belongs_to_domain" || relation === "has_subdomain";
-        const color = cross ? CROSS_EDGE : structural ? STRUCTURE_EDGE : LOCAL_EDGE;
-        if (bandOf(ratioRef.current) <= 1) {
-          if (!overviewEdges.has(edge)) return { ...dataIn, hidden: true };
-          return { ...dataIn, color, size: cross ? 2.2 : 1.9, curvature: 0.04 };
-        }
-        return detailEdges.has(edge)
-          ? { ...dataIn, color, size: 1.35, curvature: 0.04 }
+        return zoomVisible ? { ...dataIn, color: quiet, size: quietSize, zIndex: cross ? 0 : 1 }
           : { ...dataIn, hidden: true };
       }
-      return { ...dataIn, hidden: true };
+      const set = neighborSetRef.current;
+      const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
+      const related = domainFocus
+        ? !!set && set.has(source) && set.has(target) && (zoomVisible || source === active || target === active)
+        : source === active || target === active;
+      if (related) {
+        return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.85),
+          size: domainFocus ? 0.9 : 1.3, zIndex: 3 };
+      }
+      // Unrelated relationships stay as the faintest context while something is focused.
+      return zoomVisible ? { ...dataIn, color: withAlpha(tint, 0.07), size: 0.45, zIndex: 0 }
+        : { ...dataIn, hidden: true };
     });
 
     renderer.on("enterNode", ({ node }) => {
@@ -637,15 +610,12 @@ export function GraphCanvas({
       let nearEdge: string | null = null, bestEdgeDistance = 5;
       if (onSelectEdge) graph.forEachEdge((id, _attrs, source, target) => {
         if (renderer.getEdgeDisplayData(id)?.hidden) return;
-        const a = renderer.graphToViewport(graph.getNodeAttributes(source) as { x: number; y: number });
-        const b = renderer.graphToViewport(graph.getNodeAttributes(target) as { x: number; y: number });
-        const c = { x: (a.x + b.x) / 2 + (b.y - a.y) * 0.04,
-          y: (a.y + b.y) / 2 - (b.x - a.x) * 0.04 };
-        let previous = a;
+        const ga = graph.getNodeAttributes(source) as { x: number; y: number };
+        const gb = graph.getNodeAttributes(target) as { x: number; y: number };
+        const k = (graph.getEdgeAttribute(id, "curvature") as number) ?? 0;
+        let previous = renderer.graphToViewport(ga);
         for (let i = 1; i <= 16; i++) {
-          const t = i / 16, u = 1 - t;
-          const next = { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
-            y: u * u * a.y + 2 * u * t * c.y + t * t * b.y };
+          const next = renderer.graphToViewport(curvePoint(ga, gb, k, i / 16));
           const dx = next.x - previous.x, dy = next.y - previous.y;
           const v = Math.max(0, Math.min(1, ((event.x - previous.x) * dx + (event.y - previous.y) * dy) / (dx * dx + dy * dy || 1)));
           const distance = Math.hypot(event.x - previous.x - v * dx, event.y - previous.y - v * dy);
@@ -671,15 +641,12 @@ export function GraphCanvas({
 
     // Re-gate labels when the zoom level crosses a threshold (Task 8).
     const camera = renderer.getCamera();
-    let labelTimer: ReturnType<typeof setTimeout> | null = null;
     const onCameraUpdate = () => {
       const r = camera.getState().ratio;
       const crossed =
         bandOf(r) !== bandOf(ratioRef.current); // refresh on band change
       ratioRef.current = r;
       if (crossed) scheduleRefresh();
-      if (labelTimer) clearTimeout(labelTimer);
-      labelTimer = setTimeout(recomputeOverviewLabels, 150);
     };
     camera.on("updated", onCameraUpdate);
     ratioRef.current = camera.getState().ratio;
@@ -688,7 +655,6 @@ export function GraphCanvas({
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       camera.removeListener("updated", onCameraUpdate);
-      if (labelTimer) clearTimeout(labelTimer);
       renderer.kill();
       sigmaRef.current = null;
       graphRef.current = null;
@@ -948,7 +914,8 @@ export function GraphCanvas({
     if (!renderer) return;
     renderer.setCustomBBox(null);
     requestAnimationFrame(() => {
-      fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      sizeScaleRef.current = fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      renderer.refresh();
     });
   }, [exploreNonce]);
 
@@ -961,7 +928,7 @@ export function GraphCanvas({
       if (focusBBoxRef.current) {
         focusBBoxRef.current = false;
         renderer.setCustomBBox(null);
-        fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+        sizeScaleRef.current = fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
       }
       return;
     }
@@ -1096,49 +1063,59 @@ export function GraphCanvas({
     const graph = graphRef.current;
     if (!renderer || !graph) return;
 
-    // Compute graph-space geometry per TOP-LEVEL domain ONCE (deterministic from coords).
-    // Members = nodes whose primaryDomain is the domain (same definition as the count).
+    // Graph-space territory per TOP-LEVEL domain, computed once: the anchor is the center
+    // and the radius covers every member, nested subdomain constellations included.
     const doms = domainsRef.current;
-    if (!doms || doms.length === 0) { setBackdrop({ sectors: [], center: null }); return; }
+    if (!doms || doms.length === 0) { setBackdrop({ sectors: [], headings: [] }); return; }
+    const topLevel = doms.filter((d) => graph.hasNode(d.id) && graph.getNodeAttribute(d.id, "ring") === 0);
     if (!domainGeomRef.current) {
       const geom = new Map<string, { gx: number; gy: number; gr: number }>();
-      for (const d of doms) {
-        if (!graph.hasNode(d.id)) continue;
+      for (const d of topLevel) {
         const gx = graph.getNodeAttribute(d.id, "x") as number;
         const gy = graph.getNodeAttribute(d.id, "y") as number;
+        const owned = new Set([d.id]);
+        if (d.id !== "domain:software-engineering") {
+          graph.forEachOutEdge(d.id, (_e, attrs, _s, t) => {
+            if (attrs.relationshipType === "has_subdomain") owned.add(t);
+          });
+        }
         let maxd = 0;
         graph.forEachNode((id, a) => {
-          if (a.primaryDomain === d.id || id === d.id) {
-            maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy));
+          if (owned.has(a.cluster as string) || id === d.id) {
+            maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number));
           }
         });
-        geom.set(d.id, { gx, gy, gr: maxd * 1.08 + 40 });
+        geom.set(d.id, { gx, gy, gr: maxd });
       }
       domainGeomRef.current = geom;
     }
 
     const project = () => {
       // Suppress the atlas backdrop entirely during Repo X-Ray (Stack View owns the canvas).
-      if (stackActiveRef.current) { setBackdrop({ sectors: [], center: null }); return; }
+      if (stackActiveRef.current || scanStatusRef.current) { setBackdrop({ sectors: [], headings: [] }); return; }
       const geom = domainGeomRef.current!;
-      const colorOf = new Map(doms.map((d) => [d.id, d.color]));
+      let ax = 0, ay = 0;
+      for (const g of geom.values()) { ax += g.gx / geom.size; ay += g.gy / geom.size; }
       const sectors: { id: string; color: string; cx: number; cy: number; r: number }[] = [];
-      let gcx = 0, gcy = 0, gn = 0;
-      for (const [id, g] of geom) {
+      const headings: { id: string; label: string; color: string; left: number; top: number; align: string }[] = [];
+      const vis = visibleNodesRef.current;
+      for (const d of topLevel) {
+        const g = geom.get(d.id);
+        if (!g) continue;
         const c = renderer.graphToViewport({ x: g.gx, y: g.gy });
-        const edge = renderer.graphToViewport({ x: g.gx + g.gr, y: g.gy });
-        const r = Math.hypot(edge.x - c.x, edge.y - c.y);
-        sectors.push({ id, color: colorOf.get(id) ?? "#8a93ab", cx: c.x, cy: c.y, r });
-        gcx += g.gx; gcy += g.gy; gn++;
+        const rim = renderer.graphToViewport({ x: g.gx + g.gr, y: g.gy });
+        const r = Math.hypot(rim.x - c.x, rim.y - c.y);
+        sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
+        if (vis && !vis.has(d.id)) continue;
+        // Each heading sits just outside its ecosystem on the side facing away from the
+        // atlas center, so it never covers member nodes or a neighboring domain's name.
+        const ux = g.gx - ax, uy = g.gy - ay, len = Math.hypot(ux, uy) || 1;
+        const p = renderer.graphToViewport({ x: g.gx + (ux / len) * g.gr, y: g.gy + (uy / len) * g.gr });
+        const sx = (p.x - c.x) / (r || 1), sy = (p.y - c.y) / (r || 1);
+        const align = Math.abs(sx) > 0.55 ? (sx > 0 ? "right" : "left") : sy < 0 ? "up" : "down";
+        headings.push({ id: d.id, label: d.name, color: d.color, left: p.x + sx * 8, top: p.y + sy * 8, align });
       }
-      // Centre of the ring = mean of domain centroids, projected.
-      let center: { cx: number; cy: number; r: number } | null = null;
-      if (gn > 0) {
-        const cc = renderer.graphToViewport({ x: gcx / gn, y: gcy / gn });
-        const cr0 = renderer.graphToViewport({ x: gcx / gn + 300, y: gcy / gn });
-        center = { cx: cc.x, cy: cc.y, r: Math.hypot(cr0.x - cc.x, cr0.y - cc.y) };
-      }
-      setBackdrop({ sectors, center });
+      setBackdrop({ sectors, headings });
     };
     project();
     const camera = renderer.getCamera();
@@ -1151,7 +1128,6 @@ export function GraphCanvas({
     const loop = (now: number) => {
       project();
       if (now - t0 < 1400) raf = requestAnimationFrame(loop);
-      else recomputeLabelsRef.current?.();
     };
     raf = requestAnimationFrame(loop);
     return () => {
@@ -1159,7 +1135,7 @@ export function GraphCanvas({
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
-  }, [domains, data, exploreNonce, stackPositions]);
+  }, [domains, data, exploreNonce, stackPositions, scanStatusByNode, visibleNodes]);
 
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
   const keyboardDomains = data.nodes.filter((node) => node.node_type === "domain" && node.ring === 0);
@@ -1183,13 +1159,13 @@ export function GraphCanvas({
     <div className="graph-canvas-wrap">
       {/* Atlas backdrop: soft domain-sector tints + centre identity. Behind the WebGL canvas,
           pointer-events:none, camera-synced. Decorative only — never affects graph events. */}
-      {(backdrop.sectors.length > 0 || backdrop.center) && (
+      {backdrop.sectors.length > 0 && (
         <svg className="atlas-backdrop" aria-hidden>
           <defs>
             {backdrop.sectors.map((s) => (
               <radialGradient key={s.id} id={`sect-${s.id}`} cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor={s.color} stopOpacity={0.11} />
-                <stop offset="50%" stopColor={s.color} stopOpacity={0.045} />
+                <stop offset="0%" stopColor={s.color} stopOpacity={0.085} />
+                <stop offset="60%" stopColor={s.color} stopOpacity={0.03} />
                 <stop offset="100%" stopColor={s.color} stopOpacity={0} />
               </radialGradient>
             ))}
@@ -1207,6 +1183,17 @@ export function GraphCanvas({
         onKeyDown={onGraphKeyDown}
         aria-label="Technology graph. Use arrow keys to browse domains, Enter to open one, or Escape to clear selection. Search and the domain list provide access to every node."
       />
+      {backdrop.headings.map((h) => (
+        <button
+          key={h.id}
+          type="button"
+          className={`atlas-heading atlas-heading-${h.align}${selectedId === h.id ? " is-active" : ""}`}
+          style={{ left: h.left, top: h.top, ["--domain" as string]: h.color }}
+          onClick={() => onSelect(h.id)}
+        >
+          {h.label}
+        </button>
+      ))}
       {keyboardDomain && <div className="graph-keyboard-hint" aria-live="polite">{keyboardDomain} · press Enter to explore</div>}
       {headingScreens.filter((h) => h.visible).map((h) => (
         <div

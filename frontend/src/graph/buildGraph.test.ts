@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGraph } from "./buildGraph";
+import { buildGraph, curvePoint, outwardCurvature } from "./buildGraph";
 import type { GraphResponse } from "../api/types";
 
 const fixture: GraphResponse = {
@@ -59,7 +59,7 @@ describe("buildGraph", () => {
     expect(g.hasEdge("e0")).toBe(true);
     expect(g.getEdgeAttribute("e0", "relationshipType")).toBe("written_in");
     expect(g.getEdgeAttribute("e0", "tier")).toBe("TierD");
-    expect(g.getEdgeAttribute("e0", "curvature")).toBeGreaterThan(0);
+    expect(Math.abs(g.getEdgeAttribute("e0", "curvature"))).toBeGreaterThan(0.1);
   });
 
   it("copies ring and tier metadata without changing canonical topology", () => {
@@ -198,5 +198,23 @@ describe("legacy aggregate metadata", () => {
     const graph = buildGraph(legacy);
     expect(graph.order).toBe(2);
     expect(graph.hasNode("agg:domain:frontend:all")).toBe(false);
+  });
+});
+
+describe("curved edge geometry", () => {
+  it("bows curves away from the reference point", () => {
+    const ref = { x: 0, y: 0 };
+    for (const [a, b] of [[{ x: 10, y: 10 }, { x: 20, y: 0 }], [{ x: 20, y: 0 }, { x: 10, y: 10 }],
+      [{ x: -10, y: -10 }, { x: -20, y: 5 }]]) {
+      const k = outwardCurvature(a, b, ref, 0.2);
+      const apex = curvePoint(a, b, k, 0.5);
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      expect(Math.hypot(apex.x, apex.y)).toBeGreaterThan(Math.hypot(mid.x, mid.y));
+    }
+  });
+
+  it("uses the layout's drawn radius when present", () => {
+    const g = buildGraph({ ...fixture, nodes: fixture.nodes.map((n) => ({ ...n, display_size: 3.2 })) });
+    expect(g.getNodeAttribute("technology:react", "size")).toBe(3.2);
   });
 });

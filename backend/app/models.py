@@ -22,6 +22,8 @@ class GraphNode(BaseModel):
     y: float | None = None
     cluster: str | None = None
     ring: int = 0
+    # Drawn overview radius in screen px at the default atlas fit (layout `r`).
+    display_size: float | None = None
     size: float = Field(description="Render radius hint, bounded by the layout scale.")
     color: str
     # Phase 1D: optional popularity signals. `popularity` is a 0..1 sourced adoption

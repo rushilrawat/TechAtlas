@@ -69,7 +69,7 @@ def test_task2_no_overlaps():
     for i, a in enumerate(ids):
         for b in ids[i + 1:]:
             dist = math.hypot(c[a]["x"] - c[b]["x"], c[a]["y"] - c[b]["y"])
-            need = c[a]["radius"] + c[b]["radius"] + gl.OVERLAP_MARGIN
+            need = c[a]["r"] + c[b]["r"] + gl.OVERLAP_MARGIN
             assert dist >= need - 1.0, f"{a} and {b} overlap: {dist:.1f} < {need:.1f}"
 
 

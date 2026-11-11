@@ -5,6 +5,24 @@
 import Graph from "graphology";
 import type { GraphResponse, NodeType } from "../api/types";
 
+type Point = { x: number; y: number };
+
+/**
+ * Signed curvature for @sigma/edge-curve so the curve bows away from `ref`. The program
+ * places its control point at mid + k * (-dy, dx) in y-up graph space.
+ */
+export function outwardCurvature(a: Point, b: Point, ref: Point, magnitude: number): number {
+  const mx = (a.x + b.x) / 2 - ref.x, my = (a.y + b.y) / 2 - ref.y;
+  return (-(b.y - a.y) * mx + (b.x - a.x) * my) >= 0 ? magnitude : -magnitude;
+}
+
+/** Point on the quadratic curve the edge program draws (graph space, t in [0, 1]). */
+export function curvePoint(a: Point, b: Point, curvature: number, t: number): Point {
+  const c = { x: (a.x + b.x) / 2 - (b.y - a.y) * curvature, y: (a.y + b.y) / 2 + (b.x - a.x) * curvature };
+  const u = 1 - t;
+  return { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y };
+}
+
 // Phase 1.5 UI-A: quiet background edges. The base graph must read as a calm map, not a
 // bright spiderweb, so unpromoted edges sit in the 0.04-0.10 opacity band (per-state
 // reducers in GraphCanvas promote the relevant ones). See design LLD.
@@ -29,7 +47,8 @@ export function buildGraph(data: GraphResponse): Graph {
       label: n.label,
       x: n.x ?? 0,
       y: n.y ?? 0,
-      size: n.size,
+      // Layout-computed drawn radius (px at the default fit); API size is the fallback.
+      size: n.display_size ?? n.size,
       color: n.color,
       nodeType: n.node_type,
       nodeSubtype: n.node_subtype,
@@ -52,12 +71,14 @@ export function buildGraph(data: GraphResponse): Graph {
       size: BASE_EDGE_SIZE,
       color: BASE_EDGE_COLOR,
       tier: data.edge_tiers?.[key] ?? "TierD",
-      curvature: ({ TierA: 0.25, TierB: 0.2, TierC: 0.12, TierD: 0.2 } as Record<string, number>)[data.edge_tiers?.[key] ?? "TierD"] ?? 0.2,
+      crossDomain: graph.getNodeAttribute(e.source, "cluster") !== graph.getNodeAttribute(e.target, "cluster"),
       type: "curved",
     });
   }
 
-  // Parallel canonical relationships remain separate and visually distinguishable.
+  // Deterministic curvature. Local curves bow away from their ecosystem's anchor and
+  // cross-domain bridges bow away from the atlas center, so no curve sweeps through a
+  // cluster core. Parallel canonical relationships fan out with growing offsets.
   const pairs = new Map<string, string[]>();
   graph.forEachEdge((key, _attrs, source, target) => {
     const pair = [source, target].sort().join("|");
@@ -66,8 +87,16 @@ export function buildGraph(data: GraphResponse): Graph {
     pairs.set(pair, group);
   });
   for (const group of pairs.values()) {
-    if (group.length < 2) continue;
-    group.sort().forEach((key, index) => graph.setEdgeAttribute(key, "curvature", 0.15 + index * 0.15));
+    group.sort().forEach((key, index) => {
+      const [s, t] = graph.extremities(key);
+      const a = graph.getNodeAttributes(s), b = graph.getNodeAttributes(t);
+      const cross = graph.getEdgeAttribute(key, "crossDomain") as boolean;
+      const anchor = cross ? null : (a.cluster as string);
+      const ref = anchor && graph.hasNode(anchor) ? graph.getNodeAttributes(anchor) : { x: 0, y: 0 };
+      const base = (cross ? 0.18 : 0.22) + index * 0.12;
+      graph.setEdgeAttribute(key, "curvature",
+        outwardCurvature(a as Point, b as Point, ref as Point, base));
+    });
   }
 
   return graph;
