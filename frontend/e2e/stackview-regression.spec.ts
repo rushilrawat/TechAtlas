@@ -62,7 +62,11 @@ async function runScan(page: Page, ids: string[], opts: Partial<{ partial: boole
   await page.getByRole("button", { name: "Repo X-Ray" }).click();
   await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/repo");
   await page.getByRole("button", { name: "Analyze Repository" }).click();
-  await expect(page.getByText(/acme\/repo/)).toBeVisible({ timeout: 20_000 });
+  // The mobile results sheet minimizes after a scan; its repository link remains in the
+  // DOM but is intentionally hidden until the user expands the sheet.
+  const repo = page.getByText(/acme\/repo/);
+  await expect(repo).toBeAttached({ timeout: 20_000 });
+  if (page.viewportSize()!.width > 640) await expect(repo).toBeVisible();
   await page.waitForTimeout(1300); // let the stack projection + camera settle
 }
 

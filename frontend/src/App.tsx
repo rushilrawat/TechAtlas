@@ -4,6 +4,8 @@ import type { DomainSummary, GraphNode, GraphResponse } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
 import { SearchCommand } from "./components/SearchCommand";
 import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
+import { EdgeDetailsPanel } from "./components/EdgeDetailsPanel";
+import { RelationshipLegend } from "./components/RelationshipLegend";
 import { DomainLegend } from "./components/DomainLegend";
 import { FilterPanel } from "./components/FilterPanel";
 import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
@@ -50,6 +52,7 @@ function measureRightPanelWidth(): number {
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [selected, setSelected] = useState<string | null>(null);
+  const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterState>(emptyFilter());
   const [xrayOpen, setXrayOpen] = useState(false);
@@ -143,6 +146,7 @@ export default function App() {
         state.graph.nodes.find((n) => n.id === slugOrId) ??
         state.graph.nodes.find((n) => n.slug === slugOrId);
       if (!node) return;
+      setSelectedEdge(null);
       setSelected(node.id);
       setFocus(node.id);
       window.history.replaceState(null, "", pathForNode(node.node_type, node.slug));
@@ -152,8 +156,10 @@ export default function App() {
 
   const handleSelect = useCallback(
     (id: string | null) => {
+      setSelectedEdge(null);
       if (id === null) {
         setSelected(null);
+        setFocus(null);
         window.history.replaceState(null, "", BASE_PATH ? `${BASE_PATH}/` : "/");
         return;
       }
@@ -161,6 +167,13 @@ export default function App() {
     },
     [navigate],
   );
+
+  const handleSelectEdge = useCallback((id: string) => {
+    if (state.status !== "ready" || !state.graph.edges.some((edge) => edge.id === id)) return;
+    setSelected(null);
+    setFocus(null);
+    setSelectedEdge(id);
+  }, [state]);
 
   // Compute visible node/edge sets from the active filter. null = no filter (show all),
   // so GraphCanvas skips hiding entirely. Memoized so we don't recompute per render.
@@ -251,12 +264,14 @@ export default function App() {
     setSheetCollapsed(false);          // reset the mobile sheet state
     setXrayView("stack");              // reset the X-Ray view mode for next time
     setSelected(null);                 // drop scan-specific selection
+    setSelectedEdge(null);
     setFocus(null);
     setFilter(emptyFilter());          // clear any active filtering
     setExploreNonce((n) => n + 1);     // re-fit the default atlas camera (clears Stack bbox)
   }, [resetScan]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
+  const edgeDetail = graphData?.edges.find((edge) => edge.id === selectedEdge) ?? null;
 
   if (state.status === "loading") {
     return (
@@ -271,10 +286,10 @@ export default function App() {
       <div className="app-error" role="alert">
         <h1>TechAtlas</h1>
         <p>{state.message}</p>
-        <p className="muted">
+        {import.meta.env.VITE_STATIC_API !== "true" && <p className="muted">
           Start the backend (<code>uvicorn app.main:app</code> in <code>/backend</code>)
           and reload.
-        </p>
+        </p>}
       </div>
     );
   }
@@ -323,8 +338,10 @@ export default function App() {
         <GraphCanvas
           data={state.graph}
           selectedId={selected}
+          selectedEdgeId={selectedEdge}
           focusId={focus}
           onSelect={handleSelect}
+          onSelectEdge={handleSelectEdge}
           visibleNodes={visible ? visible.nodes : null}
           visibleEdges={visible ? visible.edges : null}
           scanStatusByNode={overlay ? overlay.statusByNode : null}
@@ -386,6 +403,7 @@ export default function App() {
           </>
         )}
         {overlay && <XrayLegend />}
+        {!xrayOpen && <RelationshipLegend />}
         <DomainLegend
           domains={state.domains}
           selectedId={selected}
@@ -409,6 +427,15 @@ export default function App() {
             // for mobile, where a single tap is the primary way to identify a domain.
             memberCount={domainsById.get(selected)?.node_count ?? null}
             onClose={() => handleSelect(null)}
+            onNavigate={navigate}
+          />
+        )}
+        {edgeDetail && nodesById.get(edgeDetail.source) && nodesById.get(edgeDetail.target) && (
+          <EdgeDetailsPanel
+            edge={edgeDetail}
+            source={nodesById.get(edgeDetail.source)!}
+            target={nodesById.get(edgeDetail.target)!}
+            onClose={() => setSelectedEdge(null)}
             onNavigate={navigate}
           />
         )}

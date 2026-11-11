@@ -6,14 +6,17 @@ import type { DetectionStatus, GraphResponse } from "../api/types";
 import { buildGraph, domainMemberIds } from "../graph/buildGraph";
 import { bandOf, labelVisibleAtRatio, selectPersistentLabels } from "../graph/semanticZoom";
 import type { LabelContext } from "../graph/semanticZoom";
+import { placeLabels } from "../graph/overviewLod";
 import EdgeCurveProgram from "@sigma/edge-curve";
 import { computeFit } from "../graph/cameraFit";
 
 interface Props {
   data: GraphResponse;
   selectedId: string | null;
+  selectedEdgeId?: string | null;
   focusId: string | null;
   onSelect: (id: string | null) => void;
+  onSelectEdge?: (id: string) => void;
   // Phase 1B filtering (requirements 1.6–1.10). null means "no filter: show all".
   // When present, only ids in these sets are shown; coordinates are never recomputed.
   visibleNodes?: Set<string> | null;
@@ -234,8 +237,10 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): void {
 export function GraphCanvas({
   data,
   selectedId,
+  selectedEdgeId = null,
   focusId,
   onSelect,
+  onSelectEdge,
   visibleNodes = null,
   visibleEdges = null,
   scanStatusByNode = null,
@@ -253,6 +258,9 @@ export function GraphCanvas({
 
   const hoveredRef = useRef<string | null>(null);
   const selectedRef = useRef<string | null>(selectedId);
+  const selectedEdgeRef = useRef<string | null>(selectedEdgeId);
+  const keyboardIndexRef = useRef(-1);
+  const [keyboardDomain, setKeyboardDomain] = useState("");
   // Precomputed highlight set for the current active node (Task 7).
   const activeRef = useRef<string | null>(null);
   const neighborSetRef = useRef<Set<string> | null>(null);
@@ -281,6 +289,7 @@ export function GraphCanvas({
   const scheduleRefreshRef = useRef<(() => void) | null>(null);
   const ratioRef = useRef<number>(1);
   const recomputeLabelsRef = useRef<(() => void) | null>(null);
+  const suppressedLabelsRef = useRef<Set<string>>(new Set());
   // Projected screen positions for Stack View domain headings (DOM overlay).
   const [headingScreens, setHeadingScreens] = useState<
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
@@ -307,6 +316,7 @@ export function GraphCanvas({
       renderEdgeLabels: false,
       defaultEdgeType: "curved",
       edgeProgramClasses: { curved: EdgeCurveProgram },
+      enableEdgeEvents: true,
       labelColor: { color: "#c8d0e8" },
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
@@ -387,7 +397,50 @@ export function GraphCanvas({
       });
     };
     scheduleRefreshRef.current = scheduleRefresh;
-    recomputeLabelsRef.current = () => renderer.refresh();
+    const recomputeOverviewLabels = () => {
+      const previous = suppressedLabelsRef.current;
+      if (scanStatusRef.current || activeRef.current || selectedEdgeRef.current || bandOf(ratioRef.current) > 1) {
+        if (previous.size) { suppressedLabelsRef.current = new Set(); renderer.refresh(); }
+        return;
+      }
+      const el = renderer.getContainer();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.font = "12px Inter, system-ui, sans-serif";
+      const nodeBoxes: { key: string; x: number; y: number; w: number; h: number }[] = [];
+      const candidates: { id: string; priority: number; ownerKey: string; box: { x: number; y: number; w: number; h: number } }[] = [];
+      graph.forEachNode((id, attrs) => {
+        const display = renderer.getNodeDisplayData(id);
+        if (!display || display.hidden) return;
+        const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
+        const radius = renderer.scaleSize(display.size);
+        if (attrs.nodeType === "domain") {
+          nodeBoxes.push({ key: id, x: point.x - radius, y: point.y - radius, w: radius * 2, h: radius * 2 });
+        }
+        if (attrs.nodeType !== "domain" || attrs.ring !== 0) return;
+        const label = attrs.label as string;
+        candidates.push({
+          id, ownerKey: id,
+          priority: domainsRef.current?.find((domain) => domain.id === id)?.node_count ?? 0,
+          box: { x: point.x + radius + 2, y: point.y - 7,
+            w: Math.max(ctx.measureText(label).width, label.length * 6.8) + 4, h: 14 },
+        });
+      });
+      const containerRect = el.getBoundingClientRect();
+      const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend"]
+        .map((selector) => document.querySelector(selector)?.getBoundingClientRect())
+        .filter((rect): rect is DOMRect => !!rect && rect.width > 0 && rect.height > 0)
+        .map((rect) => ({ x: rect.left - containerRect.left, y: rect.top - containerRect.top,
+          w: rect.width, h: rect.height }));
+      const suppressed = placeLabels({ candidates, nodeBoxes, panels,
+        viewport: { w: el.clientWidth, h: el.clientHeight } });
+      if (previous.size !== suppressed.size || [...previous].some((id) => !suppressed.has(id))) {
+        suppressedLabelsRef.current = suppressed;
+        renderer.refresh();
+      }
+    };
+    recomputeLabelsRef.current = recomputeOverviewLabels;
 
     // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
     // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
@@ -451,6 +504,21 @@ export function GraphCanvas({
         return res;
       }
 
+      const selectedEdge = selectedEdgeRef.current;
+      if (selectedEdge && graph.hasEdge(selectedEdge)) {
+        const [source, target] = graph.extremities(selectedEdge);
+        if (node === source || node === target) {
+          res.label = dataIn.label;
+          res.highlighted = true;
+          res.zIndex = 2;
+        } else {
+          res.color = DIM_NODE;
+          res.label = "";
+          res.size = Math.min(dataIn.size as number, 2.2);
+        }
+        return res;
+      }
+
       // Semantic-zoom label gating.
       if (!labelVisible(dataIn.nodeType as string, dataIn.size as number)) {
         res.label = "";
@@ -462,10 +530,11 @@ export function GraphCanvas({
         res.zIndex = isDomain ? 2 : ring === 1 ? 1 : 0;
         if (bandOf(ratioRef.current) <= 1) {
           const base = dataIn.size as number;
-          res.size = isDomain ? Math.min(base, 9.5)
-            : ring === 1 ? Math.min(base, 4.2)
-            : ring === 2 ? Math.min(base, 3) : Math.min(base, 2.4);
+          res.size = isDomain ? Math.min(base, 8.5)
+            : ring === 1 ? Math.min(base, 3.6)
+            : ring === 2 ? Math.min(base, 2.5) : Math.min(base, 2);
           if (isDomain && ring > 0) res.label = "";
+          if (suppressedLabelsRef.current.has(node)) res.label = "";
         }
         if (!isDomain && ring > 0 && typeof dataIn.color === "string" && /^#[0-9a-f]{6}$/i.test(dataIn.color)) {
           const hex = dataIn.color;
@@ -536,6 +605,12 @@ export function GraphCanvas({
         return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };
       }
       const active = activeRef.current;
+      const selectedEdge = selectedEdgeRef.current;
+      if (selectedEdge) {
+        return edge === selectedEdge
+          ? { ...dataIn, color: "rgba(255,211,130,0.95)", size: 3, zIndex: 4 }
+          : { ...dataIn, hidden: true };
+      }
       if (!active) {
         const tier = dataIn.tier as string | undefined;
         if (bandOf(ratioRef.current) <= 1) {
@@ -546,10 +621,10 @@ export function GraphCanvas({
             // The root's long taxonomic spokes cross the whole map. Reveal them on
             // selection or zoom; local structural edges carry the overview hierarchy.
             if (rootBridge) return { ...dataIn, hidden: true };
-            return { ...dataIn, color: "rgba(160,180,220,0.35)", size: 0.45, zIndex: 1 };
+            return { ...dataIn, color: "rgba(160,180,220,0.52)", size: 1.15, zIndex: 1 };
           }
-          if (tier === "TierB") return { ...dataIn, color: "rgba(140,160,200,0.25)", size: 0.35, zIndex: 0 };
-          return { ...dataIn, color: "rgba(220,180,120,0.18)", size: 0.25, zIndex: 0 };
+          if (tier === "TierB") return { ...dataIn, color: "rgba(140,160,200,0.38)", size: 0.9, zIndex: 0 };
+          return { ...dataIn, color: "rgba(220,180,120,0.4)", size: 1, zIndex: 0 };
         }
         const rt = dataIn.relationshipType as string | undefined;
         if (rt === "belongs_to_domain" || rt === "has_subdomain") return { ...dataIn, hidden: true };
@@ -582,16 +657,34 @@ export function GraphCanvas({
     renderer.on("clickNode", ({ node }) => {
       onSelect(node);
     });
-    renderer.on("clickStage", () => onSelect(null));
+    renderer.on("clickEdge", ({ edge }) => onSelectEdge?.(edge));
+    renderer.on("clickStage", ({ event }) => {
+      if (containerRef.current && containerRef.current.clientWidth < 641) {
+        let nearest: string | null = null;
+        let best = 18;
+        graph.forEachNode((id, attrs) => {
+          const display = renderer.getNodeDisplayData(id);
+          if (!display || display.hidden) return;
+          const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
+          const distance = Math.hypot(point.x - event.x, point.y - event.y);
+          if (distance < best) { best = distance; nearest = id; }
+        });
+        if (nearest) { onSelect(nearest); return; }
+      }
+      onSelect(null);
+    });
 
     // Re-gate labels when the zoom level crosses a threshold (Task 8).
     const camera = renderer.getCamera();
+    let labelTimer: ReturnType<typeof setTimeout> | null = null;
     const onCameraUpdate = () => {
       const r = camera.getState().ratio;
       const crossed =
         bandOf(r) !== bandOf(ratioRef.current); // refresh on band change
       ratioRef.current = r;
       if (crossed) scheduleRefresh();
+      if (labelTimer) clearTimeout(labelTimer);
+      labelTimer = setTimeout(recomputeOverviewLabels, 150);
     };
     camera.on("updated", onCameraUpdate);
     ratioRef.current = camera.getState().ratio;
@@ -600,13 +693,14 @@ export function GraphCanvas({
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       camera.removeListener("updated", onCameraUpdate);
+      if (labelTimer) clearTimeout(labelTimer);
       renderer.kill();
       sigmaRef.current = null;
       graphRef.current = null;
       activeRef.current = null;
       neighborSetRef.current = null;
     };
-  }, [data, onSelect]);
+  }, [data, onSelect, onSelectEdge]);
 
   // React to selection changes (recompute happens inside the scheduled refresh).
   useEffect(() => {
@@ -615,6 +709,24 @@ export function GraphCanvas({
     // from search, the legend, a deep link, or the detail panel update the graph.
     scheduleRefreshRef.current?.();
   }, [selectedId]);
+
+  useEffect(() => {
+    selectedEdgeRef.current = selectedEdgeId;
+    scheduleRefreshRef.current?.();
+    const renderer = sigmaRef.current;
+    const graph = graphRef.current;
+    if (!selectedEdgeId || !renderer || !graph?.hasEdge(selectedEdgeId)) return;
+    const [source, target] = graph.extremities(selectedEdgeId);
+    const a = renderer.getNodeDisplayData(source);
+    const b = renderer.getNodeDisplayData(target);
+    if (!a || !b) return;
+    const narrow = renderer.getContainer().clientWidth < 641;
+    renderer.getCamera().animate({
+      x: (a.x + b.x) / 2 + (narrow ? 0 : 0.14),
+      y: (a.y + b.y) / 2 - (narrow ? 0.12 : 0),
+      ratio: narrow ? 0.7 : 0.45,
+    }, { duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450 });
+  }, [selectedEdgeId]);
 
   // React to filter changes: update the live sets the reducers read, then refresh.
   // We never rebuild the graph or touch coordinates (requirement 1.7).
@@ -1050,6 +1162,22 @@ export function GraphCanvas({
   }, [domains, data, exploreNonce, stackPositions]);
 
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
+  const keyboardDomains = data.nodes.filter((node) => node.node_type === "domain" && node.ring === 0);
+  const onGraphKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const step = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
+      keyboardIndexRef.current = (keyboardIndexRef.current + step + keyboardDomains.length) % keyboardDomains.length;
+      setKeyboardDomain(keyboardDomains[keyboardIndexRef.current]?.label ?? "");
+    } else if (event.key === "Enter" && keyboardIndexRef.current >= 0) {
+      event.preventDefault();
+      onSelect(keyboardDomains[keyboardIndexRef.current].id);
+    } else if (event.key === "Escape") {
+      keyboardIndexRef.current = -1;
+      setKeyboardDomain("");
+      onSelect(null);
+    }
+  };
 
   return (
     <div className="graph-canvas-wrap">
@@ -1095,9 +1223,12 @@ export function GraphCanvas({
       <div
         ref={containerRef}
         className="graph-canvas"
-        role="application"
-        aria-label="Interactive technology graph. Use the search box or the node list for keyboard access."
+        role="group"
+        tabIndex={0}
+        onKeyDown={onGraphKeyDown}
+        aria-label="Technology graph. Use arrow keys to browse domains, Enter to open one, or Escape to clear selection. Search and the domain list provide access to every node."
       />
+      {keyboardDomain && <div className="graph-keyboard-hint" aria-live="polite">{keyboardDomain} · press Enter to explore</div>}
       {headingScreens.filter((h) => h.visible).map((h) => (
         <div
           key={h.domainId}

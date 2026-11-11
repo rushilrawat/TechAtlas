@@ -43,6 +43,7 @@ type Metrics = {
   visibleCircleIntersections: number;
   visibleCircleOverlaps: number;
   priorityLabelCollisions: number;
+  visibleDomainLabels: number;
   importantContentBehindPanels: number;
   ordinaryEdgesVisible: number;
   totalNodes: number;
@@ -69,6 +70,20 @@ async function gotoOverview(page: Page, vp: { width: number; height: number }) {
     const r2 = s.getCamera().getState().ratio;
     return Math.abs(r1 - r2) < 1e-3;
   });
+  // Label placement runs after the entry animation and Sigma's render. On a busy
+  // browser process that render can land after the fixed animation wait above.
+  // Measure the settled overview, while still failing if placement never runs.
+  if (vp.width === 1440 && vp.height === 900) {
+    await page.waitForFunction(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      if (!s) return false;
+      let shown = 0;
+      s.getGraph().forEachNode((id: string, attrs: any) => {
+        if (attrs.nodeType === "domain" && attrs.ring === 0 && s.getNodeDisplayData(id)?.label) shown++;
+      });
+      return shown <= 11;
+    }, null, { timeout: 5_000 });
+  }
 }
 
 async function measure(page: Page, vpName: string): Promise<Metrics> {
@@ -91,6 +106,7 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
         count: number;
         labelled: boolean;
         label: string;
+        nodeType: string;
       };
       const RATIO_UNIVERSE = 1.1;
       const RATIO_DOMAIN = 0.55;
@@ -123,7 +139,7 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
         const label = dd.label ?? a.label ?? "";
         const labelled =
           !!label && (isAggregate || labelShown(a.nodeType, dd.size));
-        visible.push({ id, cx: vp.x, cy: vp.y, r, isAggregate, count, labelled, label });
+        visible.push({ id, cx: vp.x, cy: vp.y, r, isAggregate, count, labelled, label, nodeType: a.nodeType });
       });
 
       // ---- circle intersections (spatial grid, near-linear) ----
@@ -226,6 +242,7 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
       });
 
       const sampleRadii = visible.slice(0, 5).map((v) => Math.round(v.r * 100) / 100);
+      const visibleDomainLabels = visible.filter((v) => v.nodeType === "domain" && v.labelled).length;
 
       return {
         viewport: vpName,
@@ -236,6 +253,7 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
         visibleCircleIntersections,
         visibleCircleOverlaps,
         priorityLabelCollisions,
+        visibleDomainLabels,
         importantContentBehindPanels,
         ordinaryEdgesVisible,
         totalNodes: g.order,
@@ -265,9 +283,10 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       expect(m.aggregatedNodeCount).toBe(0);
 
       if (vp.desktop) {
-        expect(m.visibleCircleOverlaps, "actual circle overlaps").toBeLessThanOrEqual(50);
-        expect(m.priorityLabelCollisions, "overview label conflicts").toBeLessThanOrEqual(12);
-        expect(m.importantContentBehindPanels).toBeLessThanOrEqual(2);
+        expect(m.visibleCircleOverlaps, "actual circle overlaps").toBeLessThanOrEqual(30);
+        expect(m.priorityLabelCollisions, "overview label conflicts").toBeLessThanOrEqual(8);
+        expect(m.visibleDomainLabels, "readable domain names at overview").toBeGreaterThanOrEqual(8);
+        expect(m.importantContentBehindPanels).toBe(0);
         expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(100);
         expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(170);
       } else {
@@ -303,6 +322,86 @@ async function countVisible(page: Page) {
 }
 
 test.describe("Overview interaction regressions", () => {
+  test("connection legend and a selected curve explain the canonical relationship", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.getByRole("button", { name: /Connections/ }).click();
+    await expect(page.getByText("Within an ecosystem")).toBeVisible();
+    const hit = await page.evaluate(() => {
+      const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const graph = sigma.getGraph();
+      const container = sigma.getContainer() as HTMLElement;
+      const rect = container.getBoundingClientRect();
+      for (const edge of graph.edges()) {
+        if (sigma.getEdgeDisplayData(edge)?.hidden) continue;
+        const [source, target] = graph.extremities(edge);
+        const a = graph.getNodeAttributes(source), b = graph.getNodeAttributes(target);
+        const p = sigma.graphToViewport({ x: a.x, y: a.y });
+        const q = sigma.graphToViewport({ x: b.x, y: b.y });
+        for (const t of [0.3, 0.5, 0.7]) {
+          for (let offset = -24; offset <= 24; offset += 4) {
+            const x = p.x + (q.x - p.x) * t + offset * (q.y - p.y) / Math.max(1, Math.hypot(q.x - p.x, q.y - p.y));
+            const y = p.y + (q.y - p.y) * t - offset * (q.x - p.x) / Math.max(1, Math.hypot(q.x - p.x, q.y - p.y));
+            const top = document.elementFromPoint(rect.left + x, rect.top + y);
+            if (container.contains(top) && !sigma.getNodeAtPosition({ x, y }) && sigma.getEdgeAtPoint(x, y) === edge) {
+              return { x, y, edge };
+            }
+          }
+        }
+      }
+      return null;
+    });
+    expect(hit).not.toBeNull();
+    const canvas = await page.locator(".graph-canvas").boundingBox();
+    await page.mouse.click(canvas!.x + hit!.x, canvas!.y + hit!.y);
+    await expect(page.getByRole("region", { name: "Relationship details" })).toBeVisible();
+    await expect(page.getByText(hit!.edge, { exact: true })).toBeVisible();
+    await page.screenshot({ path: "screenshots/edge-detail-1440x900.png" });
+  });
+
+  test("graph keyboard navigation opens a domain", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    const graph = page.getByRole("group", { name: /Technology graph/ });
+    await graph.focus();
+    await graph.press("ArrowRight");
+    await expect(page.getByText(/press Enter to explore/)).toBeVisible();
+    await graph.press("Enter");
+    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+  });
+
+  test("mobile near-node tap selects a dense graph node", async ({ page }) => {
+    await gotoOverview(page, { width: 390, height: 844 });
+    const hit = await page.evaluate(() => {
+      const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const graph = sigma.getGraph();
+      const container = sigma.getContainer() as HTMLElement;
+      const rect = container.getBoundingClientRect();
+      for (const id of graph.nodes()) {
+        const a = graph.getNodeAttributes(id);
+        const p = sigma.graphToViewport({ x: a.x, y: a.y });
+        const r = sigma.scaleSize(sigma.getNodeDisplayData(id)?.size ?? 0);
+        if (r >= 12) continue;
+        for (let i = 0; i < 16; i++) {
+          const angle = (i * Math.PI) / 8;
+          const x = p.x + 14 * Math.cos(angle), y = p.y + 14 * Math.sin(angle);
+          if (!container.contains(document.elementFromPoint(rect.left + x, rect.top + y))) continue;
+          if (sigma.getNodeAtPosition({ x, y }) || sigma.getEdgeAtPoint(x, y)) continue;
+          let nearest = id, distance = 14;
+          graph.forEachNode((other: string, b: any) => {
+            const q = sigma.graphToViewport({ x: b.x, y: b.y });
+            const d = Math.hypot(x - q.x, y - q.y);
+            if (d < distance) { nearest = other; distance = d; }
+          });
+          if (nearest === id) return { x, y, label: a.label };
+        }
+      }
+      return null;
+    });
+    expect(hit, "a clear point outside a drawn node but inside its 18px hit radius").not.toBeNull();
+    const canvas = await page.locator(".graph-canvas").boundingBox();
+    await page.mouse.click(canvas!.x + hit!.x, canvas!.y + hit!.y);
+    await expect(page.getByRole("region", { name: "Node details" }).getByRole("heading", { name: hit!.label })).toBeVisible();
+  });
+
   test("mobile domain focus stays above the detail sheet", async ({ page }) => {
     await gotoOverview(page, { width: 390, height: 844 });
     await page.getByRole("button", { name: "Show domain legend" }).click();

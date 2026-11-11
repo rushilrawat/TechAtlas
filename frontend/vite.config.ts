@@ -6,14 +6,14 @@ import react from "@vitejs/plugin-react";
 // Overridable via VITE_BASE; defaults to "/" for local dev and live-backend hosting.
 const base = process.env.VITE_BASE ?? "/";
 
-// The dev server proxies /api to the FastAPI backend so the frontend code can use
-// relative URLs in development and production alike.
+// Live development proxies /api to FastAPI. Static development serves the checked-in
+// public/api snapshot directly; proxying it would swallow those JSON files.
 export default defineConfig({
   base,
   plugins: [react()],
   server: {
     port: 5173,
-    proxy: {
+    proxy: process.env.VITE_STATIC_API === "true" ? undefined : {
       "/api": {
         target: process.env.TECHATLAS_API ?? "http://localhost:8000",
         changeOrigin: true,
