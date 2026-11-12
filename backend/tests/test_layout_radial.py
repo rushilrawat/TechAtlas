@@ -35,7 +35,8 @@ def test_fourteen_macro_clusters_on_solved_ring():
     coords = LAYOUT["coordinates"]
     order = LAYOUT["domain_ring_order"]
     assert len(order) == 14
-    radius = LAYOUT["macro_ring_radius"]
+    assert LAYOUT["macro_composition"] == "ring"
+    radius = math.hypot(coords[order[0]]["x"], coords[order[0]]["y"])
     for d in order:
         assert coords[d]["ring"] == 0
         assert abs(math.hypot(coords[d]["x"], coords[d]["y"]) - radius) < 0.02
@@ -154,3 +155,14 @@ def test_connected_members_are_assigned_closer_rings():
     radius = {nid: 8.0 for nid in members}
     rings = gl._connectivity_rings(members, intra, degree, radius)
     assert [rings[nid] for nid in members] == [1, 1, 2, 2, 2, 3, 3, 3, 3, 3]
+
+
+def test_alternative_compositions_keep_ecosystems_apart():
+    for composition in ("continents", "strata"):
+        layout = gl.generate(DATASET, composition)
+        coords, ext = layout["coordinates"], layout["domain_extents"]
+        order = layout["domain_ring_order"]
+        for i, a in enumerate(order):
+            for b in order[i + 1:]:
+                gap = math.dist((coords[a]["x"], coords[a]["y"]), (coords[b]["x"], coords[b]["y"]))
+                assert gap >= ext[a] + ext[b] + gl.MACRO_GAP_PX - 0.05, (composition, a, b)

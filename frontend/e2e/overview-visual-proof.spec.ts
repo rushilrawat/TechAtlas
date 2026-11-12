@@ -288,7 +288,9 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
         expect(m.visibleDomainLabels, "all 14 domain headings").toBe(14);
         expect(m.labelNodeCollisions, "headings clear of node circles").toBeLessThanOrEqual(2);
       } else {
-        expect(m.visibleDomainLabels).toBeGreaterThanOrEqual(5);
+        // Phones keep minimal overview labels: only headings that fit without covering
+        // another ecosystem; the Domains sheet names every one.
+        expect(m.visibleDomainLabels).toBeGreaterThanOrEqual(3);
       }
     });
   }

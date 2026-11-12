@@ -250,10 +250,16 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): number {
 }
 
 type Heading = { id: string; label: string; color: string; left: number; top: number; align: string;
-  alt?: { left: number; top: number; align: string } };
+  alt?: { left: number; top: number; align: string }[]; disc?: { x: number; y: number; r: number } };
 const HEADING_FONT = "600 11.5px Inter, system-ui, sans-serif";
 const HEADING_MAX_W = 150, HEADING_LINE_H = 14.4;
 let headingCtx: CanvasRenderingContext2D | null = null;
+
+/** Whether a box overlaps a circle (closest-point test). */
+function discHits(b: { x: number; y: number; w: number; h: number }, d: { x: number; y: number; r: number }) {
+  const nx = Math.max(b.x, Math.min(d.x, b.x + b.w)), ny = Math.max(b.y, Math.min(d.y, b.y + b.h));
+  return Math.hypot(nx - d.x, ny - d.y) < d.r * 0.92;
+}
 
 /**
  * Collision-aware domain headings: measure each heading's wrapped box, keep it inside the
@@ -282,7 +288,7 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     const w = Math.min(HEADING_MAX_W, text + 2);
     const bh = Math.ceil(text / HEADING_MAX_W + 0.05) * HEADING_LINE_H + 4;
     // Outer rim first; the inner rim (facing the open atlas center) is the fallback.
-    for (const spot of [h, ...(h.alt ? [h.alt] : [])]) {
+    for (const spot of [h, ...(h.alt ?? [])]) {
       let x = spot.align === "right" ? spot.left : spot.align === "left" ? spot.left - w : spot.left - w / 2;
       const y = spot.align === "up" ? spot.top - bh : spot.align === "down" ? spot.top : spot.top - bh / 2;
       // Nudge a heading that barely overflows; never drag an off-screen ecosystem's name in.
@@ -291,6 +297,8 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
       const box = { x, y, w, h: bh };
       if (y < 0 || y + bh > vh) continue;
       if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
+      // A heading never sits on top of another ecosystem.
+      if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc))) continue;
       // Re-express the clamped box in the heading's own alignment anchor.
       const left = spot.align === "right" ? x : spot.align === "left" ? x + w : x + w / 2;
       placed.push({ h: { id: h.id, label: h.label, color: h.color, top: spot.top, align: spot.align, left }, box });
@@ -1160,6 +1168,8 @@ export function GraphCanvas({
       const sectors: { id: string; color: string; cx: number; cy: number; r: number }[] = [];
       const headings: Heading[] = [];
       const vis = visibleNodesRef.current;
+      // Ring-like when the composition's center is open (no ecosystem covers it).
+      const ringLike = [...geom.values()].every((g) => Math.hypot(g.gx - ax, g.gy - ay) > g.gr * 1.5);
       for (const d of topLevel) {
         const g = geom.get(d.id);
         if (!g) continue;
@@ -1176,8 +1186,15 @@ export function GraphCanvas({
         const alignOf = (x: number, y: number) =>
           Math.abs(x) > 0.55 ? (x > 0 ? "right" : "left") : y < 0 ? "up" : "down";
         const q = { x: 2 * c.x - p.x, y: 2 * c.y - p.y };
-        headings.push({ id: d.id, label: d.name, color: d.color, left: p.x + sx * 8, top: p.y + sy * 8,
-          align: alignOf(sx, sy), alt: { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) } });
+        // A ring composition names each ecosystem on its outer rim; a packed map uses the
+        // cartographic convention of a name just above. Other spots are fallbacks when a
+        // neighbor, another name, or a panel is in the way.
+        const outer = { left: p.x + sx * 8, top: p.y + sy * 8, align: alignOf(sx, sy) };
+        const above = { left: c.x, top: c.y - r - 6, align: "up" };
+        const [first, second] = ringLike ? [outer, above] : [above, outer];
+        headings.push({ id: d.id, label: d.name, color: d.color, ...first, disc: { x: c.x, y: c.y, r },
+          alt: [second, { left: c.x, top: c.y + r + 6, align: "down" },
+            { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) }] });
       }
       setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel, selectedRef.current) });
     };

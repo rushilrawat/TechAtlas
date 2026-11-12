@@ -400,7 +400,89 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
                for i in range(len(pts) - 1) for j in range(len(qts) - 1))
 
 
-def generate(dataset: dict) -> dict:
+MACRO_COMPOSITION = "ring"
+NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
+# Editorial strata for the "strata" composition: foundations, platforms, applications.
+STRATA = [
+    ["domain:theory", "domain:systems", "domain:networks", "domain:security"],
+    ["domain:testing-tooling", "domain:backend", "domain:cloud-devops",
+     "domain:databases", "domain:software-engineering"],
+    ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev"],
+]
+LANDSCAPE = 1.6  # target width:height of the packed composition (desktop canvas)
+
+
+def _ring_centers(order: list[str], ext: dict[str, float], _aff: dict) -> dict:
+    """Ecosystems spaced around a ring solved from their measured extents."""
+    radius = _solve_macro_radius(order, ext)
+    if len(order) < 2:
+        return {d: (0.0, 0.0) for d in order}
+    nxt = order[1:] + order[:1]
+    steps = [2 * math.asin(min(1.0, (ext[a] + ext[b] + MACRO_GAP_PX) / (2 * radius)))
+             for a, b in zip(order, nxt, strict=True)]
+    slack = (2 * math.pi - sum(steps)) / len(order)
+    out, theta = {}, -math.pi / 2
+    for d, step in zip(order, steps, strict=True):
+        out[d] = (radius * math.cos(theta), radius * math.sin(theta))
+        theta += step + slack
+    return out
+
+
+HEADING_CLEARANCE_PX = 26  # room for a two-line domain heading between packed ecosystems
+
+
+def _continent_centers(order: list[str], ext: dict[str, float], aff: dict) -> dict:
+    """Pack whole ecosystems like continents: each lands touching the map, beside the
+    ecosystems it shares the most canonical relationships with, in a landscape outline.
+    Deterministic greedy packing (largest first); no hollow center."""
+    ext = {d: e + HEADING_CLEARANCE_PX / 2 for d, e in ext.items()}
+    weight = {d: sum(v for k, v in aff.items() if d in k) for d in order}
+    todo = sorted(order, key=lambda d: (-weight[d] - ext[d] / 10, d))
+    placed: dict[str, tuple[float, float]] = {todo[0]: (0.0, 0.0)}
+    for d in todo[1:]:
+        best = None
+        for other, (ox, oy) in placed.items():
+            for k in range(72):
+                a = 2 * math.pi * k / 72
+                dist = ext[other] + ext[d] + MACRO_GAP_PX
+                p = (ox + dist * math.cos(a), oy + dist * math.sin(a))
+                if any(math.dist(p, q) < ext[d] + ext[e] + MACRO_GAP_PX - 1e-6
+                       for e, q in placed.items()):
+                    continue
+                pull = sum(aff.get((min(d, e), max(d, e)), 0) * math.dist(p, q)
+                           for e, q in placed.items())
+                spread = math.hypot(p[0] / LANDSCAPE, p[1])
+                cost = pull / (1 + weight[d]) + 2.2 * spread
+                if best is None or cost < best[0] - 1e-9:
+                    best = (cost, p)
+        placed[d] = best[1]
+    cx = sum(x for x, _ in placed.values()) / len(placed)
+    cy = sum(y for _, y in placed.values()) / len(placed)
+    return {d: (x - cx, y - cy) for d, (x, y) in placed.items()}
+
+
+def _strata_centers(order: list[str], ext: dict[str, float], _aff: dict) -> dict:
+    """Three editorial bands (foundations, platforms, applications), read top to bottom."""
+    rows = [[d for d in row if d in ext] for row in STRATA]
+    rows.append([d for d in order if not any(d in row for row in rows)])
+    out, y = {}, 0.0
+    for row in [r for r in rows if r]:
+        height = max(ext[d] for d in row)
+        width = sum(2 * ext[d] for d in row) + MACRO_GAP_PX * 2.4 * (len(row) - 1)
+        x = -width / 2
+        for d in row:
+            out[d] = (x + ext[d], y - height)
+            x += 2 * ext[d] + MACRO_GAP_PX * 2.4
+        y -= 2 * height + MACRO_GAP_PX * 2 + 2 * HEADING_CLEARANCE_PX
+    cy = sum(v for _, v in out.values()) / len(out)
+    return {d: (x, v - cy) for d, (x, v) in out.items()}
+
+
+COMPOSITIONS = {"ring": _ring_centers, "continents": _continent_centers,
+                "strata": _strata_centers}
+
+
+def generate(dataset: dict, composition: str | None = None) -> dict:
     """Derive the parent-centered radial atlas and its canonical-edge backbone."""
     import sys
     nodes, edges = dataset["nodes"], dataset["edges"]
@@ -466,24 +548,20 @@ def generate(dataset: dict) -> dict:
             ring[sub] = band_of[sub]
         clusters[d] = _build_cluster(d, bands(d), subs, band_of, r, edges)
 
-    # Macro composition: whole ecosystems (not anchors) are spaced around the ring.
+    # Macro composition: whole ecosystems (not anchors) are placed as units.
     extent = {d: clusters[d][1] for d in ordered}
-    macro_r = _solve_macro_radius(ordered, extent)
-    slack = 0.0
-    if len(ordered) > 1:
-        used = sum(2 * math.asin(min(1.0, (extent[a] + extent[b] + MACRO_GAP_PX) / (2 * macro_r)))
-                   for a, b in zip(ordered, ordered[1:] + ordered[:1], strict=True))
-        slack = (2 * math.pi - used) / len(ordered)
+    affinity: dict[tuple[str, str], int] = {}
+    for edge in edges:
+        a, b = territory_of[edge["source"]], territory_of[edge["target"]]
+        if a != b and ROOT_DOMAIN not in (edge["source"], edge["target"]):
+            key = (min(a, b), max(a, b))
+            affinity[key] = affinity.get(key, 0) + 1
+    centers = COMPOSITIONS[composition or MACRO_COMPOSITION](ordered, extent, affinity)
     pos: dict[str, list[float]] = {}
-    theta = -math.pi / 2
-    for i, d in enumerate(ordered):
-        cx, cy = macro_r * math.cos(theta), macro_r * math.sin(theta)
+    for d in ordered:
+        cx, cy = centers[d]
         for nid, (x, y) in clusters[d][0].items():
             pos[nid] = [cx + x, cy + y]
-        if len(ordered) > 1:
-            nxt = ordered[(i + 1) % len(ordered)]
-            theta += 2 * math.asin(min(1.0, (extent[d] + extent[nxt] + MACRO_GAP_PX)
-                                      / (2 * macro_r))) + slack
     for nid in ids:  # isolated ids without a territory never occur, but never drop one
         pos.setdefault(nid, [0.0, 0.0])
 
@@ -494,7 +572,7 @@ def generate(dataset: dict) -> dict:
                     "cluster": domain_of[nid], "ring": ring[nid]}
               for nid in ids}
     return {"layout_version": dataset["version"], "layout_algorithm": LAYOUT_ALGORITHM,
-            "macro_ring_radius": round(macro_r, 2),
+            "macro_composition": composition or MACRO_COMPOSITION,
             "domain_extents": {d: round(extent[d], 2) for d in ordered},
             "domain_ring_order": ordered, "coordinates": coords,
             "edge_tiers": tiers, "overview_aggregates": []}
@@ -510,7 +588,6 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
     """
     tiers = {f"e{i}": "TierD" for i in range(len(edges))}
     max_deg = max((v for k, v in degree.items() if ring.get(k) != 0), default=1) or 1
-    index = {d: i for i, d in enumerate(ordered)}
     point = {nid: (p[0], p[1]) for nid, p in pos.items()}
 
     def drawn(s: str, t: str) -> tuple:
@@ -568,12 +645,10 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
 
     bridges: list[tuple] = []
     per_pair: dict[tuple, int] = {}
-    n = len(ordered)
     for _, eid, s, t, ts, tt in scored:
         if ts == tt or len(bridges) >= TIER_C_CAP:
             continue
-        gap = abs(index[ts] - index[tt])
-        if min(gap, n - gap) != 1:
+        if math.dist(point[ts], point[tt]) - extent[ts] - extent[tt] > NEIGHBOR_GAP_PX:
             continue  # only neighboring ecosystems; long bridges would cross the atlas
         pair = tuple(sorted((ts, tt)))
         path = drawn(s, t)

@@ -1,7 +1,7 @@
 {
   "layout_version": "0.4.0",
   "layout_algorithm": "parent-centered-radial-atlas-v2",
-  "macro_ring_radius": 322.1,
+  "macro_composition": "ring",
   "domain_extents": {
     "domain:software-engineering": 47.75,
     "domain:testing-tooling": 56.15,
