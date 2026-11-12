@@ -473,6 +473,21 @@ test.describe("Overview interaction regressions", () => {
       return n;
     });
     expect(visibleRoboticsMembers).toBe(29);
+    // Selection brightens the ecosystem: members keep their domain color, the rest recede.
+    const focus = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      let bright = 0, dimmed = 0;
+      g.forEachNode((id: string, a: any) => {
+        const color = s.getNodeDisplayData(id)?.color as string;
+        if (a.primaryDomain === "domain:robotics" && id !== "domain:robotics") { if (color === a.color) bright++; }
+        else if (/,0\.2\)$/.test(color)) dimmed++;
+      });
+      return { bright, dimmed };
+    });
+    expect(focus.bright).toBe(29);
+    expect(focus.dimmed).toBeGreaterThan(400);
+    await expect(page.locator(".atlas-heading.is-active", { hasText: "Robotics" })).toBeVisible();
     await page.screenshot({ path: "screenshots/radial-robotics-selected.png" });
   });
 
@@ -547,7 +562,8 @@ test.describe("Overview interaction regressions", () => {
     await page.mouse.move(box!.x + box!.width - 5, box!.y + 5); // end the hover, too
     await page.waitForTimeout(500);
     const ratio = await page.evaluate(() => (window as unknown as { __ta_sigma?: any }).__ta_sigma.getCamera().getState().ratio);
-    if (ratio <= 0.55) expect((await countVisible(page)).edges).toBe(zoomed.edges);
+    expect(ratio, "camera is still in the detail band").toBeLessThanOrEqual(0.55);
+    expect((await countVisible(page)).edges).toBe(zoomed.edges);
     await page.screenshot({ path: "screenshots/radial-deselected-zoom.png" });
   });
 

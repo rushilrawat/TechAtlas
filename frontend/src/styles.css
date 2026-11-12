@@ -940,6 +940,8 @@ body {
 @media (min-width: 1024px) {
   .legend { top: 14px; bottom: auto; max-height: calc(50% - 22px); overflow-y: auto; }
   .legend-reopen { top: 14px; bottom: auto; }
+  /* In Repo X-Ray the detection legend owns the top-left corner. */
+  main:has(.xray-legend) .legend-reopen { top: auto; bottom: 14px; }
   .filter-panel { left: 14px; right: auto; top: auto; bottom: 14px;
     max-height: calc(50% - 22px); overflow-y: auto; }
 }
