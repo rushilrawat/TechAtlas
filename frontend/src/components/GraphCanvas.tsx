@@ -274,28 +274,32 @@ function discHits(b: Box, d: { x: number; y: number; r: number }, fringe = 0.85)
 
 /** Screen-space obstacles (drawn nodes and sampled visible curves) bucketed in a grid. */
 class Obstacles {
-  private cells = new Map<string, { x: number; y: number; r: number; node: boolean }[]>();
+  private cells = new Map<string, { x: number; y: number; r: number; node: boolean; owner: string }[]>();
   constructor(private size = 24) {}
-  add(x: number, y: number, r: number, node: boolean) {
+  add(x: number, y: number, r: number, node: boolean, owner: string) {
     const k = Math.floor(x / this.size) + ":" + Math.floor(y / this.size);
     const list = this.cells.get(k);
-    if (list) list.push({ x, y, r, node }); else this.cells.set(k, [{ x, y, r, node }]);
+    if (list) list.push({ x, y, r, node, owner }); else this.cells.set(k, [{ x, y, r, node, owner }]);
   }
-  /** Nodes and curve samples touching the box (pad gives the label a little air). */
-  count(b: Box, pad = 6) {
-    let nodes = 0, curves = 0;
+  /**
+   * Nodes and curve samples touching the box (pad gives the label a little air), split
+   * into those of the labelled ecosystem itself and those of any other ecosystem.
+   */
+  count(b: Box, owner: string, pad = 6) {
+    let nodes = 0, curves = 0, own = 0, ownNodes = 0;
     const s = this.size;
     for (let gx = Math.floor((b.x - pad - 8) / s); gx <= Math.floor((b.x + b.w + pad + 8) / s); gx++) {
       for (let gy = Math.floor((b.y - pad - 8) / s); gy <= Math.floor((b.y + b.h + pad + 8) / s); gy++) {
         for (const o of this.cells.get(gx + ":" + gy) ?? []) {
           const m = pad + o.r;
           if (o.x > b.x - m && o.x < b.x + b.w + m && o.y > b.y - m && o.y < b.y + b.h + m) {
-            if (o.node) nodes++; else curves++;
+            if (o.owner.split("|").includes(owner)) { own++; if (o.node) ownNodes++; }
+            else if (o.node) nodes++; else curves++;
           }
         }
       }
     }
-    return { nodes, curves };
+    return { nodes, curves, own, ownNodes };
   }
 }
 
@@ -323,22 +327,39 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
     .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));
   const count = new Map(domains.map((d) => [d.id, d.node_count]));
-  const placed: { h: Heading; box: Box }[] = [];
   const hits = (a: Box, b: Box) =>
     a.x < b.x + b.w + 8 && a.x + a.w + 8 > b.x && a.y < b.y + b.h + 4 && a.y + a.h + 4 > b.y;
   const rank = (h: Heading) => (h.id === selected ? Infinity : count.get(h.id) ?? 0);
-  for (const h of [...headings].sort((a, b) => rank(b) - rank(a))) {
+  // Greedy placement depends on order. Place largest first; then re-run with any heading
+  // that had to cover another ecosystem moved to the front, and keep the cleanest result.
+  let order = [...headings].sort((a, b) => rank(b) - rank(a));
+  let result: { placed: { h: Heading; box: Box }[]; foreign: Map<string, number> } | null = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const run = placeInOrder(order);
+    const total = (r: typeof run) => [...r.foreign.values()].reduce((a, b) => a + b, 0) * 10
+      + (headings.length - r.placed.length) * 100;
+    if (!result || total(run) < total(result)) result = run;
+    const bad = order.filter((h) => (run.foreign.get(h.id) ?? 0) > 0 || !run.placed.some((p) => p.h.id === h.id));
+    if (!bad.length) break;
+    order = [...bad, ...order.filter((h) => !bad.includes(h))];
+  }
+  return result!.placed.map((p) => p.h);
+
+  function placeInOrder(sequence: Heading[]) {
+  const placed: { h: Heading; box: Box }[] = [];
+  const foreign = new Map<string, number>();
+  for (const h of sequence) {
     if (!h.disc) continue;
     const { x: cx, y: cy, r } = h.disc;
     // Canvas metrics can run narrower than the DOM's rendered font; keep a safety margin.
     const label = phone ? SHORT_NAMES[h.id] ?? h.label : h.label;
-    const text = headingCtx.measureText(label).width * 1.08;
+    const text = (headingCtx?.measureText(label).width ?? label.length * 6) * 1.08;
     const w = Math.min(maxW, text + 2);
     const bh = Math.ceil(text / maxW + 0.05) * lineH + (phone ? 2 : 4);
-    let best: { score: number; box: Box } | null = null;
-    for (const reach of phone ? [0.45, 0.6, 0.75, 0.9, 1.05] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
-      for (let k = 0; k < 16; k++) {
-        const a = -Math.PI / 2 + (k * Math.PI) / 8; // start straight above
+    let best: { score: number; box: Box; foreign: number } | null = null;
+    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+      for (let k = 0; k < 24; k++) {
+        const a = -Math.PI / 2 + (k * Math.PI) / 12; // start straight above
         const dx = Math.cos(a), dy = Math.sin(a);
         // The box's near edge touches the spot, so the label grows away from its cluster.
         const px = cx + dx * (r * reach + gap), py = cy + dy * (r * reach + gap);
@@ -346,20 +367,24 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
         if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
-        const { nodes, curves } = obstacles.count(box);
+        const { nodes, curves, own, ownNodes } = obstacles.count(box, h.id);
         // Ring compositions read best with names on the outer rim; maps prefer above.
         const outward = ringLike ? Math.hypot(px - vw / 2, py - vh / 2) < Math.hypot(cx - vw / 2, cy - vh / 2) ? 2 : 0 : 0;
         const below = dy > 0.35 ? 0.6 : 0;
-        const score = nodes * 8 + curves * 3 + reach * 4 + below + outward;
-        if (!best || score < best.score - 1e-9) best = { score, box };
+        // Covering another ecosystem's nodes or lines is what reads as a wrong label, so it
+        // costs far more than grazing its own cluster's sparse fringe or sitting farther out.
+        const score = nodes * 14 + curves * 9 + ownNodes * 4 + own * 0.6 + reach * 3 + below + outward;
+        if (!best || score < best.score - 1e-9) best = { score, box, foreign: nodes + curves };
       }
     }
     if (best) {
+      foreign.set(h.id, best.foreign);
       placed.push({ box: best.box,
         h: { id: h.id, label, color: h.color, left: best.box.x, top: best.box.y, align: phone ? "box phone" : "box" } });
     }
   }
-  return placed.map((p) => p.h);
+  return { placed, foreign };
+  }
 }
 
 export function GraphCanvas({
@@ -1243,16 +1268,19 @@ export function GraphCanvas({
         const dd = renderer.getNodeDisplayData(id);
         if (!dd || dd.hidden) return;
         const v = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
-        obstacles.add(v.x, v.y, renderer.scaleSize(dd.size), true);
+        obstacles.add(v.x, v.y, renderer.scaleSize(dd.size), true, attrs.territory as string);
       });
       graph.forEachEdge((id, attrs, source, target) => {
         const shown = renderer.getEdgeDisplayData(id);
         if (!shown || shown.hidden) return;
         const a = graph.getNodeAttributes(source) as { x: number; y: number };
         const b = graph.getNodeAttributes(target) as { x: number; y: number };
-        for (let i = 1; i < 12; i++) {
-          const v = renderer.graphToViewport(curvePoint(a, b, (attrs.curvature as number) ?? 0, i / 12));
-          obstacles.add(v.x, v.y, 1, false);
+        const owner = graph.getNodeAttribute(source, "territory") as string;
+        for (let i = 1; i < 16; i++) {
+          const v = renderer.graphToViewport(curvePoint(a, b, (attrs.curvature as number) ?? 0, i / 16));
+          // A bridge belongs to both of its ecosystems: either one's name may sit on it.
+          const other = graph.getNodeAttribute(target, "territory") as string;
+          obstacles.add(v.x, v.y, 1, false, attrs.crossDomain ? `${owner}|${other}` : owner);
         }
       });
       setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel,

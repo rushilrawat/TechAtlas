@@ -76,6 +76,8 @@ export function buildGraph(data: GraphResponse): Graph {
     return d;
   };
 
+  graph.forEachNode((id) => graph.setNodeAttribute(id, "territory", territoryOf(id)));
+
   for (const e of data.edges) {
     if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
     const key = e.id;
