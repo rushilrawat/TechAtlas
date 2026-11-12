@@ -970,3 +970,4 @@ body {
 .atlas-heading-left { transform: translate(-100%, -50%); text-align: right; }
 .atlas-heading-up { transform: translate(-50%, -100%); text-align: center; }
 .atlas-heading-down { transform: translate(-50%, 0); text-align: center; }
+.atlas-heading-box { transform: none; text-align: center; }

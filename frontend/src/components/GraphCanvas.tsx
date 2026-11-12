@@ -250,25 +250,55 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): number {
 }
 
 type Heading = { id: string; label: string; color: string; left: number; top: number; align: string;
-  alt?: { left: number; top: number; align: string }[]; disc?: { x: number; y: number; r: number } };
+  disc?: { x: number; y: number; r: number } };
+type Box = { x: number; y: number; w: number; h: number };
 const HEADING_FONT = "600 11.5px Inter, system-ui, sans-serif";
 const HEADING_MAX_W = 150, HEADING_LINE_H = 14.4;
 let headingCtx: CanvasRenderingContext2D | null = null;
 
 /** Whether a box overlaps a circle (closest-point test). */
-function discHits(b: { x: number; y: number; w: number; h: number }, d: { x: number; y: number; r: number },
-  fringe = 0.85) {
+function discHits(b: Box, d: { x: number; y: number; r: number }, fringe = 0.85) {
   const nx = Math.max(b.x, Math.min(d.x, b.x + b.w)), ny = Math.max(b.y, Math.min(d.y, b.y + b.h));
   return Math.hypot(nx - d.x, ny - d.y) < d.r * fringe;
 }
 
+/** Screen-space obstacles (drawn nodes and sampled visible curves) bucketed in a grid. */
+class Obstacles {
+  private cells = new Map<string, { x: number; y: number; r: number; node: boolean }[]>();
+  constructor(private size = 24) {}
+  add(x: number, y: number, r: number, node: boolean) {
+    const k = Math.floor(x / this.size) + ":" + Math.floor(y / this.size);
+    const list = this.cells.get(k);
+    if (list) list.push({ x, y, r, node }); else this.cells.set(k, [{ x, y, r, node }]);
+  }
+  /** Nodes and curve samples touching the box (pad gives the label a little air). */
+  count(b: Box, pad = 6) {
+    let nodes = 0, curves = 0;
+    const s = this.size;
+    for (let gx = Math.floor((b.x - pad - 8) / s); gx <= Math.floor((b.x + b.w + pad + 8) / s); gx++) {
+      for (let gy = Math.floor((b.y - pad - 8) / s); gy <= Math.floor((b.y + b.h + pad + 8) / s); gy++) {
+        for (const o of this.cells.get(gx + ":" + gy) ?? []) {
+          const m = pad + o.r;
+          if (o.x > b.x - m && o.x < b.x + b.w + m && o.y > b.y - m && o.y < b.y + b.h + m) {
+            if (o.node) nodes++; else curves++;
+          }
+        }
+      }
+    }
+    return { nodes, curves };
+  }
+}
+
 /**
- * Collision-aware domain headings: measure each heading's wrapped box, keep it inside the
- * viewport, and drop (lowest member count first) any that would collide with another
- * heading or a side panel. Desktop keeps all 14; narrow screens keep the ones that fit.
+ * Domain headings placed like map labels. Every heading tries spots all around its own
+ * ecosystem (16 directions, from inside its sparse outer ring to just past its rim) and
+ * takes the clearest one: it never overlaps another heading, a side panel, the viewport
+ * edge or another ecosystem's body, and it is scored against the drawn nodes and curves
+ * it would cover and its distance from its own cluster. Larger domains place first.
  */
 function placeHeadings(headings: Heading[], container: HTMLElement,
-  domains: { id: string; node_count: number }[], selected: string | null): Heading[] {
+  domains: { id: string; node_count: number }[], selected: string | null,
+  obstacles: Obstacles, ringLike: boolean): Heading[] {
   headingCtx ??= document.createElement("canvas").getContext("2d");
   if (!headingCtx) return headings;
   headingCtx.font = HEADING_FONT;
@@ -279,35 +309,39 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
     .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));
   const count = new Map(domains.map((d) => [d.id, d.node_count]));
-  const placed: { h: Heading; box: { x: number; y: number; w: number; h: number } }[] = [];
-  const hits = (a: { x: number; y: number; w: number; h: number }, b: typeof a) =>
+  const placed: { h: Heading; box: Box }[] = [];
+  const hits = (a: Box, b: Box) =>
     a.x < b.x + b.w + 8 && a.x + a.w + 8 > b.x && a.y < b.y + b.h + 4 && a.y + a.h + 4 > b.y;
   const rank = (h: Heading) => (h.id === selected ? Infinity : count.get(h.id) ?? 0);
   for (const h of [...headings].sort((a, b) => rank(b) - rank(a))) {
+    if (!h.disc) continue;
+    const { x: cx, y: cy, r } = h.disc;
     // Canvas metrics can run narrower than the DOM's rendered font; keep a safety margin.
     const text = headingCtx.measureText(h.label).width * 1.08;
     const w = Math.min(HEADING_MAX_W, text + 2);
     const bh = Math.ceil(text / HEADING_MAX_W + 0.05) * HEADING_LINE_H + 4;
-    // Preferred spot first, then fallbacks around its own cluster. A second pass lets a
-    // name graze a neighbor's sparse outer fringe rather than disappear entirely.
-    for (const fringe of [0.85, 0.6]) {
-      if (placed.some((p) => p.h.id === h.id)) break;
-      for (const spot of [h, ...(h.alt ?? [])]) {
-        let x = spot.align === "right" ? spot.left : spot.align === "left" ? spot.left - w : spot.left - w / 2;
-        const y = spot.align === "up" ? spot.top - bh : spot.align === "down" ? spot.top : spot.top - bh / 2;
-        // Nudge a heading that barely overflows; never drag an off-screen ecosystem's name in.
-        if (x < -24 || x + w > vw + 24) continue;
-        x = Math.max(4, Math.min(vw - w - 4, x));
-        const box = { x, y, w, h: bh };
-        if (y < 0 || y + bh > vh) continue;
+    let best: { score: number; box: Box } | null = null;
+    for (const reach of [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+      for (let k = 0; k < 16; k++) {
+        const a = -Math.PI / 2 + (k * Math.PI) / 8; // start straight above
+        const dx = Math.cos(a), dy = Math.sin(a);
+        // The box's near edge touches the spot, so the label grows away from its cluster.
+        const px = cx + dx * (r * reach + 6), py = cy + dy * (r * reach + 6);
+        const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
+        if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
-        // A heading never sits on top of another ecosystem's body.
-        if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, fringe))) continue;
-        // Re-express the clamped box in the heading's own alignment anchor.
-        const left = spot.align === "right" ? x : spot.align === "left" ? x + w : x + w / 2;
-        placed.push({ h: { id: h.id, label: h.label, color: h.color, top: spot.top, align: spot.align, left }, box });
-        break;
+        if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
+        const { nodes, curves } = obstacles.count(box);
+        // Ring compositions read best with names on the outer rim; maps prefer above.
+        const outward = ringLike ? Math.hypot(px - vw / 2, py - vh / 2) < Math.hypot(cx - vw / 2, cy - vh / 2) ? 2 : 0 : 0;
+        const below = dy > 0.35 ? 0.6 : 0;
+        const score = nodes * 8 + curves * 3 + reach * 4 + below + outward;
+        if (!best || score < best.score - 1e-9) best = { score, box };
       }
+    }
+    if (best) {
+      placed.push({ box: best.box,
+        h: { id: h.id, label: h.label, color: h.color, left: best.box.x, top: best.box.y, align: "box" } });
     }
   }
   return placed.map((p) => p.h);
@@ -1185,33 +1219,29 @@ export function GraphCanvas({
         const r = Math.hypot(rim.x - c.x, rim.y - c.y);
         sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
         if (vis && !vis.has(d.id)) continue;
-        // Each heading sits just outside its ecosystem on the side facing away from the
-        // atlas center, so it never covers member nodes or a neighboring domain's name.
-        const ux = g.gx - ax, uy = g.gy - ay, len = Math.hypot(ux, uy) || 1;
-        const p = renderer.graphToViewport({ x: g.gx + (ux / len) * g.gr, y: g.gy + (uy / len) * g.gr });
-        const sx = (p.x - c.x) / (r || 1), sy = (p.y - c.y) / (r || 1);
-        const alignOf = (x: number, y: number) =>
-          Math.abs(x) > 0.55 ? (x > 0 ? "right" : "left") : y < 0 ? "up" : "down";
-        const q = { x: 2 * c.x - p.x, y: 2 * c.y - p.y };
-        // A ring composition names each ecosystem on its outer rim; a packed map uses the
-        // cartographic convention of a name just above. Other spots are fallbacks when a
-        // neighbor, another name, or a panel is in the way.
-        const outer = { left: p.x + sx * 8, top: p.y + sy * 8, align: alignOf(sx, sy) };
-        const above = { left: c.x, top: c.y - r - 6, align: "up" };
-        // Every fallback stays hugging its own cluster, so a name is never closer to a
-        // neighbor than to the ecosystem it labels.
-        const hug = [{ left: c.x, top: c.y + r + 6, align: "down" },
-          { left: c.x + r * 0.75, top: c.y - r * 0.75, align: "right" },
-          { left: c.x - r * 0.75, top: c.y - r * 0.75, align: "left" },
-          { left: c.x + r * 0.75, top: c.y + r * 0.75, align: "right" },
-          { left: c.x - r * 0.75, top: c.y + r * 0.75, align: "left" },
-          { left: c.x + r + 8, top: c.y, align: "right" }, { left: c.x - r - 8, top: c.y, align: "left" }];
-        const [first, ...rest] = ringLike
-          ? [outer, above, ...hug, { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) }]
-          : [above, ...hug];
-        headings.push({ id: d.id, label: d.name, color: d.color, ...first, disc: { x: c.x, y: c.y, r }, alt: rest });
+        headings.push({ id: d.id, label: d.name, color: d.color, left: c.x, top: c.y, align: "box",
+          disc: { x: c.x, y: c.y, r } });
       }
-      setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel, selectedRef.current) });
+      // What a heading must not cover: every drawn node and the curves currently shown.
+      const obstacles = new Obstacles();
+      graph.forEachNode((id, attrs) => {
+        const dd = renderer.getNodeDisplayData(id);
+        if (!dd || dd.hidden) return;
+        const v = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
+        obstacles.add(v.x, v.y, renderer.scaleSize(dd.size), true);
+      });
+      graph.forEachEdge((id, attrs, source, target) => {
+        const shown = renderer.getEdgeDisplayData(id);
+        if (!shown || shown.hidden) return;
+        const a = graph.getNodeAttributes(source) as { x: number; y: number };
+        const b = graph.getNodeAttributes(target) as { x: number; y: number };
+        for (let i = 1; i < 12; i++) {
+          const v = renderer.graphToViewport(curvePoint(a, b, (attrs.curvature as number) ?? 0, i / 12));
+          obstacles.add(v.x, v.y, 1, false);
+        }
+      });
+      setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel,
+        selectedRef.current, obstacles, ringLike) });
     };
     // Re-project after every render: Sigma renders with the camera's final state, while
     // "updated" can be emitted mid-animation and leave headings on stale positions.
