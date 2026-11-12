@@ -22,10 +22,13 @@ around the graph and its visual hierarchy, not the truth of the data.
 1. A slim header contains the brand, a single search field, Explore and Repo
    X-Ray navigation, and a compact graph count.
 2. The graph fills the remaining viewport. Each of the 14 ecosystems is laid out
-   around its own domain anchor in 360 degrees, and all 14 domain headings sit
-   just outside their ecosystems. A backbone of 100–170 genuine curves (a scored
-   spanning forest per ecosystem plus at most 20 bridges between neighbors) is
-   drawn at overview; the remaining relationships appear on zoom or selection.
+   around its own domain anchor in 360 degrees, and the ecosystems are packed
+   like continents beside the domains they share the most relationships with
+   (ring and strata compositions remain available in the generator). Domain
+   headings sit just above their ecosystems. A backbone of roughly 250–360
+   genuine curves (a scored spanning forest per ecosystem plus bridges between
+   neighboring ecosystems) is drawn at overview; the remaining relationships
+   appear on zoom or selection.
 3. A compact left rail stacks domain browsing and filters. The rail leaves the
    radial atlas visually dominant.
 4. A bottom corner control explains edge colors and zoom/keyboard actions.

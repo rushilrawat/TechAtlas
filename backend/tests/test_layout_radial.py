@@ -31,20 +31,18 @@ def test_canonical_nodes_and_ids_preserved():
     assert len(_members(coords, "domain:robotics")) == 29
 
 
-def test_fourteen_macro_clusters_on_solved_ring():
-    coords = LAYOUT["coordinates"]
+def test_fourteen_whole_ecosystems_never_overlap():
+    coords, ext = LAYOUT["coordinates"], LAYOUT["domain_extents"]
     order = LAYOUT["domain_ring_order"]
     assert len(order) == 14
-    assert LAYOUT["macro_composition"] == "ring"
-    radius = math.hypot(coords[order[0]]["x"], coords[order[0]]["y"])
+    assert LAYOUT["macro_composition"] == gl.MACRO_COMPOSITION == "continents"
     for d in order:
         assert coords[d]["ring"] == 0
-        assert abs(math.hypot(coords[d]["x"], coords[d]["y"]) - radius) < 0.02
-    # neighboring ecosystems (whole territories, not just anchors) never overlap
-    ext = LAYOUT["domain_extents"]
-    for a, b in zip(order, order[1:] + order[:1], strict=True):
-        gap = math.dist((coords[a]["x"], coords[a]["y"]), (coords[b]["x"], coords[b]["y"]))
-        assert gap >= ext[a] + ext[b] + gl.MACRO_GAP_PX - 0.05
+    # whole territories (not just anchors) clear each other
+    for i, a in enumerate(order):
+        for b in order[i + 1:]:
+            gap = math.dist((coords[a]["x"], coords[a]["y"]), (coords[b]["x"], coords[b]["y"]))
+            assert gap >= ext[a] + ext[b] + gl.MACRO_GAP_PX - 0.05, (a, b)
 
 
 def test_nested_subdomains_are_centered_constellations():
@@ -110,8 +108,9 @@ def test_edge_tiers_are_a_sparse_canonical_backbone():
     assert set(tiers) == {f"e{i}" for i in range(1116)}
     assert set(tiers.values()) == {"TierA", "TierB", "TierC", "TierD"}
     counts = Counter(tiers.values())
-    assert 100 <= counts["TierA"] + counts["TierB"] + counts["TierC"] <= 170
-    assert counts["TierC"] <= 20
+    # Rush asked for more visible connections than the original 100-170 target.
+    assert 250 <= counts["TierA"] + counts["TierB"] + counts["TierC"] <= 360
+    assert counts["TierC"] <= gl.TIER_C_CAP
     for i, edge in enumerate(DATASET["edges"]):
         tier = tiers[f"e{i}"]
         if edge["relationship_type"] == "has_subdomain":
@@ -158,7 +157,7 @@ def test_connected_members_are_assigned_closer_rings():
 
 
 def test_alternative_compositions_keep_ecosystems_apart():
-    for composition in ("continents", "strata"):
+    for composition in ("ring", "strata"):
         layout = gl.generate(DATASET, composition)
         coords, ext = layout["coordinates"], layout["domain_extents"]
         order = layout["domain_ring_order"]

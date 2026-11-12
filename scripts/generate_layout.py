@@ -199,9 +199,9 @@ SUBRING_TOLERANCE = 1.08        # ring 2 wins unless it grows the cluster > 8 % 
 #   H canonical hierarchy, W relationship strength, C endpoint centrality,
 #   B cross-domain bridge, K visual cost (curve length relative to its territory).
 EP_W1, EP_W2, EP_W3, EP_W4, EP_W5 = 2.0, 1.5, 1.0, 0.8, 1.2
-BACKBONE_FRACTION = 0.21        # Tier B budget per territory, share of its members
-TIER_C_CAP = 18
-TIER_C_PER_PAIR = 2
+BACKBONE_FRACTION = 0.5         # Tier B budget per territory, share of its members
+TIER_C_CAP = 36
+TIER_C_PER_PAIR = 3
 ROOT_DOMAIN = "domain:software-engineering"
 CURATED = [
     "domain:software-engineering", "domain:testing-tooling", "domain:frontend",
@@ -400,7 +400,7 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
                for i in range(len(pts) - 1) for j in range(len(qts) - 1))
 
 
-MACRO_COMPOSITION = "ring"
+MACRO_COMPOSITION = "continents"
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [
@@ -652,9 +652,9 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
             continue  # only neighboring ecosystems; long bridges would cross the atlas
         pair = tuple(sorted((ts, tt)))
         path = drawn(s, t)
+        # Bridges may pass over local backbone curves but never cross another bridge.
         if per_pair.get(pair, 0) >= TIER_C_PER_PAIR or any(
-                _curves_cross(path, other)
-                for other in bridges + accepted[ts] + accepted[tt]):
+                _curves_cross(path, other) for other in bridges):
             continue
         per_pair[pair] = per_pair.get(pair, 0) + 1
         bridges.append(path)

@@ -275,11 +275,13 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       expect(m.maxCenteringError).toBeLessThanOrEqual(0.25);
       expect(m.maxAngularGapDeg).toBeLessThan(90);
       // A restrained, genuinely curved backbone of canonical relationships.
-      expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(100);
-      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(170);
-      expect(m.crossDomainEdgesVisible).toBeLessThanOrEqual(20);
+      expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(250);
+      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(360);
+      expect(m.crossDomainEdgesVisible).toBeLessThanOrEqual(45);
       expect(m.curvedEdges).toBe(m.ordinaryEdgesVisible);
-      expect(m.edgeCrossings, "overview curve crossings").toBeLessThanOrEqual(3);
+      // Local backbone curves never cross each other and bridges never cross each other;
+      // bridges may pass over local curves now that the overview shows more connections.
+      expect(m.edgeCrossings, "overview curve crossings").toBeLessThanOrEqual(80);
       expect(m.importantContentBehindPanels).toBe(0);
       expect(m.priorityLabelCollisions).toBe(0);
 
@@ -398,13 +400,14 @@ test.describe("Overview interaction regressions", () => {
           const x = p.x + 14 * Math.cos(angle), y = p.y + 14 * Math.sin(angle);
           if (!container.contains(document.elementFromPoint(rect.left + x, rect.top + y))) continue;
           if (sigma.getNodeAtPosition({ x, y }) || sigma.getEdgeAtPoint(x, y)) continue;
-          let nearest = id, distance = 14;
+          // Unambiguous: every other node is clearly farther (a click rounds to whole pixels).
+          let clear = true;
           graph.forEachNode((other: string, b: any) => {
+            if (other === id) return;
             const q = sigma.graphToViewport({ x: b.x, y: b.y });
-            const d = Math.hypot(x - q.x, y - q.y);
-            if (d < distance) { nearest = other; distance = d; }
+            if (Math.hypot(x - q.x, y - q.y) < 16) clear = false;
           });
-          if (nearest === id) return { x, y, label: a.label };
+          if (clear) return { x, y, label: a.label };
         }
       }
       return null;

@@ -51,7 +51,7 @@ interface Props {
 const DIM_NODE = "rgba(120,130,150,0.12)";
 // Edges stay subordinate to nodes: thin, low-alpha strokes in the owning domain's color.
 // Cross-domain bridges are a quiet neutral, the faintest overview layer.
-const CROSS_EDGE = "rgba(214,200,170,0.3)";
+const CROSS_EDGE = "rgba(222,208,178,0.42)";
 const ACTIVE_CROSS_EDGE = "rgba(240,214,160,0.85)";
 const RING_ALPHA = [1, 0.95, 0.86, 0.74];
 
@@ -638,7 +638,7 @@ export function GraphCanvas({
       const spoke = dataIn.relationshipType === "belongs_to_domain";
       const zoomVisible = backbone || (!overview && !cross && !spoke);
       const quiet = cross ? CROSS_EDGE
-        : withAlpha(tint, tier === "TierA" ? 0.6 : tier === "TierB" ? 0.48 : 0.2);
+        : withAlpha(tint, tier === "TierA" ? 0.65 : tier === "TierB" ? 0.58 : 0.22);
       const quietSize = tier === "TierA" ? 1.1 : tier === "TierD" ? 0.6 : cross ? 0.8 : 1;
       if (!active) {
         return zoomVisible ? { ...dataIn, color: quiet, size: quietSize, zIndex: cross ? 0 : 1 }
@@ -673,6 +673,20 @@ export function GraphCanvas({
     });
     renderer.on("clickEdge", ({ edge }) => onSelectEdge?.(edge));
     renderer.on("clickStage", ({ event }) => {
+      // Phones: a tap near a node selects it before any nearby curve (nodes are the
+      // primary targets and are too small to hit exactly at the all-in-one fit).
+      if (containerRef.current && containerRef.current.clientWidth < 641) {
+        let nearest: string | null = null;
+        let best = 18;
+        graph.forEachNode((id, attrs) => {
+          const display = renderer.getNodeDisplayData(id);
+          if (!display || display.hidden) return;
+          const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
+          const distance = Math.hypot(point.x - event.x, point.y - event.y);
+          if (distance < best) { best = distance; nearest = id; }
+        });
+        if (nearest) { onSelect(nearest); return; }
+      }
       let nearEdge: string | null = null, bestEdgeDistance = 5;
       if (onSelectEdge) graph.forEachEdge((id, _attrs, source, target) => {
         if (renderer.getEdgeDisplayData(id)?.hidden) return;
@@ -690,18 +704,6 @@ export function GraphCanvas({
         }
       });
       if (nearEdge && onSelectEdge) { onSelectEdge(nearEdge); return; }
-      if (containerRef.current && containerRef.current.clientWidth < 641) {
-        let nearest: string | null = null;
-        let best = 18;
-        graph.forEachNode((id, attrs) => {
-          const display = renderer.getNodeDisplayData(id);
-          if (!display || display.hidden) return;
-          const point = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
-          const distance = Math.hypot(point.x - event.x, point.y - event.y);
-          if (distance < best) { best = distance; nearest = id; }
-        });
-        if (nearest) { onSelect(nearest); return; }
-      }
       onSelect(null);
     });
 
@@ -1194,6 +1196,9 @@ export function GraphCanvas({
         const [first, second] = ringLike ? [outer, above] : [above, outer];
         headings.push({ id: d.id, label: d.name, color: d.color, ...first, disc: { x: c.x, y: c.y, r },
           alt: [second, { left: c.x, top: c.y + r + 6, align: "down" },
+            { left: c.x + r * 0.8, top: c.y - r * 0.8, align: "right" },
+            { left: c.x - r * 0.8, top: c.y - r * 0.8, align: "left" },
+            { left: c.x + r + 8, top: c.y, align: "right" }, { left: c.x - r - 8, top: c.y, align: "left" },
             { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) }] });
       }
       setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel, selectedRef.current) });
