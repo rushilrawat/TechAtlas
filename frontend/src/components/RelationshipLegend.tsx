@@ -12,7 +12,7 @@ export function RelationshipLegend() {
         <div><span className="edge-swatch edge-swatch-local" /> Within an ecosystem, in its domain color</div>
         <div><span className="edge-swatch edge-swatch-cross" /> Across neighboring ecosystems</div>
         <p>Zoom in to reveal more connections, or select a node to see all of its relationships.</p>
-        <p className="relationship-legend-keys">Keyboard: arrows move along connections · Shift + arrows pan · + / − zoom · 0 resets · Esc clears</p>
+        <p className="relationship-legend-keys">Keyboard: arrows move along connections · Shift + arrows pan · + / − zoom · 0 resets · F fullscreen · Esc clears</p>
       </div>}
     </section>
   );

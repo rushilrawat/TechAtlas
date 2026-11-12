@@ -1174,3 +1174,22 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 .hero { transition: opacity 200ms ease-out, transform 200ms ease-out; }
 .hero.is-leaving { opacity: 0; transform: translate(-50%, -6px); pointer-events: none; }
 .hero.is-leaving .hero-actions { pointer-events: none; }
+
+/* Fullscreen / immersive: the atlas fills the screen; only a quiet exit control remains. */
+.app.is-immersive .topbar,
+.app.is-immersive .atlas-rail,
+.app.is-immersive .legend,
+.app.is-immersive .legend-reopen,
+.app.is-immersive .filter-panel,
+.app.is-immersive .filters-toggle,
+.app.is-immersive .relationship-legend,
+.app.is-immersive .hero { display: none !important; }
+.fullscreen-exit {
+  position: absolute; top: 14px; right: 14px; z-index: 20; display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 12px; border: 1px solid var(--panel-border); border-radius: 8px;
+  background: rgba(17,21,31,.85); color: var(--text-dim); font: inherit; font-size: 12.5px; cursor: pointer;
+  backdrop-filter: blur(6px); transition: color 150ms ease-out, background-color 150ms ease-out;
+}
+.fullscreen-exit:hover { color: var(--text); background: rgba(17,21,31,.95); }
+.fullscreen-exit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:root[data-theme="light"] .fullscreen-exit { background: rgba(255,255,255,.92); }

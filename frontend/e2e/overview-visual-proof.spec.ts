@@ -706,3 +706,26 @@ test("filters and camera survive a shared URL", async ({ page }) => {
   await page.getByRole("button", { name: "Filters", exact: true }).click();
   await expect(page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies")).toBeChecked();
 });
+
+test("fullscreen hides the chrome and the atlas fills the window", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.getByRole("button", { name: "Enter fullscreen" }).click();
+    await expect(page.locator(".topbar")).toBeHidden();
+    await page.waitForTimeout(500);
+    const box = await page.locator(".graph-canvas").boundingBox();
+    expect(box!.height).toBeGreaterThan(880);
+    const nodes = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      let n = 0; s.getGraph().forEachNode((id: string) => { if (!s.getNodeDisplayData(id)?.hidden) n++; });
+      return n;
+    });
+    expect(nodes).toBe(CANONICAL_NODES);
+    await page.getByRole("button", { name: "Exit fullscreen" }).click();
+    await expect(page.locator(".topbar")).toBeVisible();
+    // The F key toggles it too.
+    await page.locator(".graph-canvas").focus();
+    await page.keyboard.press("f");
+    await expect(page.locator(".topbar")).toBeHidden();
+    await page.keyboard.press("f");
+    await expect(page.locator(".topbar")).toBeVisible();
+});
