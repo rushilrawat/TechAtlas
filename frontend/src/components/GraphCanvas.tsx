@@ -249,6 +249,57 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): number {
   return Math.max(0.42, Math.min(1.25, 1 / gpx));
 }
 
+type Heading = { id: string; label: string; color: string; left: number; top: number; align: string;
+  alt?: { left: number; top: number; align: string } };
+const HEADING_FONT = "600 11.5px Inter, system-ui, sans-serif";
+const HEADING_MAX_W = 150, HEADING_LINE_H = 14.4;
+let headingCtx: CanvasRenderingContext2D | null = null;
+
+/**
+ * Collision-aware domain headings: measure each heading's wrapped box, keep it inside the
+ * viewport, and drop (lowest member count first) any that would collide with another
+ * heading or a side panel. Desktop keeps all 14; narrow screens keep the ones that fit.
+ */
+function placeHeadings(headings: Heading[], container: HTMLElement,
+  domains: { id: string; node_count: number }[], selected: string | null): Heading[] {
+  headingCtx ??= document.createElement("canvas").getContext("2d");
+  if (!headingCtx) return headings;
+  headingCtx.font = HEADING_FONT;
+  const vw = container.clientWidth, vh = container.clientHeight;
+  const crect = container.getBoundingClientRect();
+  const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details"]
+    .map((sel) => document.querySelector(sel)?.getBoundingClientRect())
+    .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
+    .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));
+  const count = new Map(domains.map((d) => [d.id, d.node_count]));
+  const placed: { h: Heading; box: { x: number; y: number; w: number; h: number } }[] = [];
+  const hits = (a: { x: number; y: number; w: number; h: number }, b: typeof a) =>
+    a.x < b.x + b.w + 8 && a.x + a.w + 8 > b.x && a.y < b.y + b.h + 4 && a.y + a.h + 4 > b.y;
+  const rank = (h: Heading) => (h.id === selected ? Infinity : count.get(h.id) ?? 0);
+  for (const h of [...headings].sort((a, b) => rank(b) - rank(a))) {
+    // Canvas metrics can run narrower than the DOM's rendered font; keep a safety margin.
+    const text = headingCtx.measureText(h.label).width * 1.08;
+    const w = Math.min(HEADING_MAX_W, text + 2);
+    const bh = Math.ceil(text / HEADING_MAX_W + 0.05) * HEADING_LINE_H + 4;
+    // Outer rim first; the inner rim (facing the open atlas center) is the fallback.
+    for (const spot of [h, ...(h.alt ? [h.alt] : [])]) {
+      let x = spot.align === "right" ? spot.left : spot.align === "left" ? spot.left - w : spot.left - w / 2;
+      const y = spot.align === "up" ? spot.top - bh : spot.align === "down" ? spot.top : spot.top - bh / 2;
+      // Nudge a heading that barely overflows; never drag an off-screen ecosystem's name in.
+      if (x < -24 || x + w > vw + 24) continue;
+      x = Math.max(4, Math.min(vw - w - 4, x));
+      const box = { x, y, w, h: bh };
+      if (y < 0 || y + bh > vh) continue;
+      if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
+      // Re-express the clamped box in the heading's own alignment anchor.
+      const left = spot.align === "right" ? x : spot.align === "left" ? x + w : x + w / 2;
+      placed.push({ h: { id: h.id, label: h.label, color: h.color, top: spot.top, align: spot.align, left }, box });
+      break;
+    }
+  }
+  return placed.map((p) => p.h);
+}
+
 export function GraphCanvas({
   data,
   selectedId,
@@ -317,7 +368,7 @@ export function GraphCanvas({
   // none); never touches graph data. Each sector is centered on its domain anchor.
   const [backdrop, setBackdrop] = useState<{
     sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
-    headings: { id: string; label: string; color: string; left: number; top: number; align: string }[];
+    headings: Heading[];
   }>({ sectors: [], headings: [] });
   const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number }> | null>(null);
   const domainsRef = useRef(domains);
@@ -446,6 +497,11 @@ export function GraphCanvas({
       // before the hover/selection highlight so a scan read is stable.
       const scan = scanStatusRef.current;
       if (scan) {
+        // Stack View spaces its own positions for the larger API sizes; Universe View keeps
+        // the canonical atlas, whose spacing is laid out for the drawn sizes.
+        res.size = stackActiveRef.current
+          ? (dataIn.apiSize as number | undefined) ?? dataIn.size
+          : (dataIn.size as number) * sizeScaleRef.current;
         const status = scan.get(node);
         if (status) {
           res.type = "bordered";
@@ -515,9 +571,11 @@ export function GraphCanvas({
       const set = neighborSetRef.current;
       if (set && set.has(node)) {
         res.zIndex = node === active ? 3 : 2;
-        if (node === active) {
+        // Always label the active node; a top-level domain's name is its DOM heading, and
+        // Sigma's highlight box would otherwise draw an empty label plate beside it.
+        if (node === active && !(isDomain && ring === 0)) {
           res.highlighted = true;
-          if (!(isDomain && ring === 0)) res.label = dataIn.label; // always label the active node
+          res.label = dataIn.label;
         }
         return res;
       }
@@ -788,17 +846,20 @@ export function GraphCanvas({
         }
         renderer.refresh();
       };
-      if (prefersReduced) { apply(1); return; }
-      const dur = 600;
-      const t0 = performance.now();
-      const ease = (u: number) => 1 - Math.pow(1 - u, 3); // easeOutCubic
-      const step = (now: number) => {
-        const u = Math.min(1, (now - t0) / dur);
-        apply(ease(u));
-        if (u < 1) stackAnimRef.current = requestAnimationFrame(step);
-        else stackAnimRef.current = null;
-      };
-      stackAnimRef.current = requestAnimationFrame(step);
+      if (prefersReduced) {
+        apply(1);
+      } else {
+        const dur = 600;
+        const t0 = performance.now();
+        const ease = (u: number) => 1 - Math.pow(1 - u, 3); // easeOutCubic
+        const step = (now: number) => {
+          const u = Math.min(1, (now - t0) / dur);
+          apply(ease(u));
+          if (u < 1) stackAnimRef.current = requestAnimationFrame(step);
+          else stackAnimRef.current = null;
+        };
+        stackAnimRef.current = requestAnimationFrame(step);
+      }
       // Frame the camera on the reprojected stack bounds using Sigma's OWN coordinate
       // conversion (self-calibrating, not hardcoded), so clusters fit the USABLE viewport
       // (canvas width minus the open right sidebar + a label-safe margin) at any screen size.
@@ -1097,7 +1158,7 @@ export function GraphCanvas({
       let ax = 0, ay = 0;
       for (const g of geom.values()) { ax += g.gx / geom.size; ay += g.gy / geom.size; }
       const sectors: { id: string; color: string; cx: number; cy: number; r: number }[] = [];
-      const headings: { id: string; label: string; color: string; left: number; top: number; align: string }[] = [];
+      const headings: Heading[] = [];
       const vis = visibleNodesRef.current;
       for (const d of topLevel) {
         const g = geom.get(d.id);
@@ -1112,29 +1173,19 @@ export function GraphCanvas({
         const ux = g.gx - ax, uy = g.gy - ay, len = Math.hypot(ux, uy) || 1;
         const p = renderer.graphToViewport({ x: g.gx + (ux / len) * g.gr, y: g.gy + (uy / len) * g.gr });
         const sx = (p.x - c.x) / (r || 1), sy = (p.y - c.y) / (r || 1);
-        const align = Math.abs(sx) > 0.55 ? (sx > 0 ? "right" : "left") : sy < 0 ? "up" : "down";
-        headings.push({ id: d.id, label: d.name, color: d.color, left: p.x + sx * 8, top: p.y + sy * 8, align });
+        const alignOf = (x: number, y: number) =>
+          Math.abs(x) > 0.55 ? (x > 0 ? "right" : "left") : y < 0 ? "up" : "down";
+        const q = { x: 2 * c.x - p.x, y: 2 * c.y - p.y };
+        headings.push({ id: d.id, label: d.name, color: d.color, left: p.x + sx * 8, top: p.y + sy * 8,
+          align: alignOf(sx, sy), alt: { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) } });
       }
-      setBackdrop({ sectors, headings });
+      setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel, selectedRef.current) });
     };
+    // Re-project after every render: Sigma renders with the camera's final state, while
+    // "updated" can be emitted mid-animation and leave headings on stale positions.
     project();
-    const camera = renderer.getCamera();
-    camera.on("updated", project);
-    const onResize = () => project();
-    window.addEventListener("resize", onResize);
-    // span the entry framing animation so the backdrop settles with the camera.
-    // Refresh labels once after the entry animation settles.
-    let raf = 0; const t0 = performance.now();
-    const loop = (now: number) => {
-      project();
-      if (now - t0 < 1400) raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => {
-      camera.removeListener("updated", project);
-      window.removeEventListener("resize", onResize);
-      cancelAnimationFrame(raf);
-    };
+    renderer.on("afterRender", project);
+    return () => { renderer.removeListener("afterRender", project); };
   }, [domains, data, exploreNonce, stackPositions, scanStatusByNode, visibleNodes]);
 
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;

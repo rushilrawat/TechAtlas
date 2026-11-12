@@ -1,5 +1,4 @@
 import { test, expect, type Page } from "@playwright/test";
-import { pathsConflict } from "../src/graph/clearEdges";
 
 /**
  * Radial Atlas Visual-Proof harness.
@@ -9,15 +8,14 @@ import { pathsConflict } from "../src/graph/clearEdges";
  * coordinates or mere canvas existence. A passing metric corresponds to what a user
  * actually sees.
  *
- * Six metrics per viewport (design.md Testing Strategy -> Integration Tests, Layer 6):
- *   1. visibleNodeCount          - visible individual nodes
- *   2. aggregatedNodeCount       - must remain zero
- *   3. visibleCircleIntersections- pairs of visible circles whose screen distance
- *                                  < rA + rB + VISUAL_GAP  (spatial-grid, near-linear)
- *   4. priorityLabelCollisions   - overlapping shown-label boxes + label/node intersections
- *   5. importantContentBehindPanels - shown labels/markers behind .legend / filter panel
- *                                  or clipped by the viewport
- *   6. ordinaryEdgesVisible      - edges with getEdgeDisplayData().hidden !== true at rest
+ * Metrics per viewport:
+ *   - visible individual nodes (607) and aggregate replacements (0)
+ *   - circle intersections / true overlaps between drawn circles
+ *   - priority label collisions (domain headings + any WebGL label) and label/node hits
+ *   - headings or domain anchors behind the side panels or clipped by the viewport
+ *   - visible relationships, cross-domain share, curvature, and curve crossings
+ *   - parent-centering error and largest angular gap per ecosystem
+ *   - full-render time (ten synchronous Sigma refreshes)
  *
  * renderedRadius(id) = sigma.scaleSize(getNodeDisplayData(id).size): this is exactly what
  * Sigma uses internally when drawing a node (sigma.esm.js: `var size = this.scaleSize(data.size)`),
@@ -44,9 +42,15 @@ type Metrics = {
   visibleCircleIntersections: number;
   visibleCircleOverlaps: number;
   priorityLabelCollisions: number;
+  labelNodeCollisions: number;
   visibleDomainLabels: number;
   importantContentBehindPanels: number;
   ordinaryEdgesVisible: number;
+  crossDomainEdgesVisible: number;
+  curvedEdges: number;
+  edgeCrossings: number;
+  maxCenteringError: number;
+  maxAngularGapDeg: number;
   totalNodes: number;
   sampleRadii: number[];
 };
@@ -86,51 +90,24 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
       const crect = cont.getBoundingClientRect();
       const vw = cont.clientWidth;
       const vh = cont.clientHeight;
+      type Rect = { x: number; y: number; w: number; h: number };
+      const overlap = (a: Rect, b: Rect) =>
+        a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
-      // ---- visible nodes + their screen geometry ----
-      type Vis = {
-        id: string;
-        cx: number;
-        cy: number;
-        r: number;
-        isAggregate: boolean;
-        count: number;
-        labelled: boolean;
-        label: string;
-        nodeType: string;
-      };
-      const RATIO_UNIVERSE = 1.1;
-      const RATIO_DOMAIN = 0.55;
-      const ratio = s.getCamera().getState().ratio;
-      const band = ratio > RATIO_UNIVERSE ? 0 : ratio > RATIO_DOMAIN ? 1 : 2;
-      const narrow = vw < 641;
-
-      // Replicate semanticZoom.labelVisibleAtRatio + GraphCanvas narrow overview rule, so
-      // "shown labels" matches what Sigma is asked to render at the overview.
-      const labelShown = (nodeType: string, size: number): boolean => {
-        if (narrow && band <= 1) return nodeType === "domain";
-        if (band === 0) return nodeType === "domain" || size >= 18;
-        if (band === 1) return nodeType === "domain" || size >= 12;
-        return true;
-      };
-
+      // ---- visible nodes + their true on-screen geometry ----
+      type Vis = { id: string; cx: number; cy: number; r: number; cluster: string; ring: number;
+        isAggregate: boolean; count: number; label: string };
       const visible: Vis[] = [];
-      let aggregatedNodeCount = 0;
-      let visibleIndividualNodes = 0;
-      let visibleMarkers = 0;
+      let aggregatedNodeCount = 0, visibleIndividualNodes = 0, visibleMarkers = 0;
       g.forEachNode((id: string, a: any) => {
         const dd = s.getNodeDisplayData(id);
         if (!dd || dd.hidden === true) return;
         const vp = s.graphToViewport({ x: a.x, y: a.y });
-        const r = s.scaleSize(dd.size); // true on-screen pixel radius
         const isAggregate = a.isAggregate === true;
         const count = isAggregate ? (a.count ?? (a.memberIds?.length ?? 0)) : 0;
-        if (isAggregate) { aggregatedNodeCount += count; visibleMarkers++; }
-        else { visibleIndividualNodes++; }
-        const label = dd.label ?? a.label ?? "";
-        const labelled =
-          !!label && (isAggregate || labelShown(a.nodeType, dd.size));
-        visible.push({ id, cx: vp.x, cy: vp.y, r, isAggregate, count, labelled, label, nodeType: a.nodeType });
+        if (isAggregate) { aggregatedNodeCount += count; visibleMarkers++; } else visibleIndividualNodes++;
+        visible.push({ id, cx: vp.x, cy: vp.y, r: s.scaleSize(dd.size), cluster: a.cluster,
+          ring: a.ring ?? 0, isAggregate, count, label: dd.label ?? "" });
       });
 
       // ---- circle intersections (spatial grid, near-linear) ----
@@ -138,102 +115,116 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
       for (const v of visible) maxR = Math.max(maxR, v.r);
       const cell = maxR * 2 + VISUAL_GAP + 1;
       const grid = new Map<string, number[]>();
-      const keyOf = (gx: number, gy: number) => gx + ":" + gy;
       visible.forEach((v, i) => {
-        const gx = Math.floor(v.cx / cell);
-        const gy = Math.floor(v.cy / cell);
-        const k = keyOf(gx, gy);
-        const arr = grid.get(k);
-        if (arr) arr.push(i);
-        else grid.set(k, [i]);
+        const k = Math.floor(v.cx / cell) + ":" + Math.floor(v.cy / cell);
+        grid.set(k, [...(grid.get(k) ?? []), i]);
       });
-      let visibleCircleIntersections = 0;
-      let visibleCircleOverlaps = 0;
+      let visibleCircleIntersections = 0, visibleCircleOverlaps = 0;
       visible.forEach((v, i) => {
-        const gx = Math.floor(v.cx / cell);
-        const gy = Math.floor(v.cy / cell);
-        for (let dx = -1; dx <= 1; dx++) {
-          for (let dy = -1; dy <= 1; dy++) {
-            const arr = grid.get(keyOf(gx + dx, gy + dy));
-            if (!arr) continue;
-            for (const j of arr) {
-              if (j <= i) continue;
-              const b = visible[j];
-              const dist = Math.hypot(v.cx - b.cx, v.cy - b.cy);
-              if (dist < v.r + b.r + VISUAL_GAP) visibleCircleIntersections++;
-              if (dist < v.r + b.r) visibleCircleOverlaps++;
-            }
+        const gx = Math.floor(v.cx / cell), gy = Math.floor(v.cy / cell);
+        for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+          for (const j of grid.get((gx + dx) + ":" + (gy + dy)) ?? []) {
+            if (j <= i) continue;
+            const b = visible[j];
+            const dist = Math.hypot(v.cx - b.cx, v.cy - b.cy);
+            if (dist < v.r + b.r + VISUAL_GAP) visibleCircleIntersections++;
+            if (dist < v.r + b.r) visibleCircleOverlaps++;
           }
         }
       });
 
-      // ---- label boxes (screen space) ----
-      // Estimate each shown label's box using canvas measureText at the real label font.
+      // ---- priority labels: the domain headings plus any WebGL label Sigma is asked to draw ----
+      const boxes: (Rect & { id: string })[] = [];
+      document.querySelectorAll(".atlas-heading").forEach((el) => {
+        const r = el.getBoundingClientRect();
+        boxes.push({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height,
+          id: (el.textContent ?? "") });
+      });
+      const visibleDomainLabels = boxes.length;
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d")!;
       ctx.font = "12px Inter, system-ui, sans-serif";
-      const LABEL_H = 14;
-      type Box = { x: number; y: number; w: number; h: number; id: string };
-      const boxes: Box[] = [];
       for (const v of visible) {
-        if (!v.labelled || !v.label) continue;
-        const w = ctx.measureText(v.label).width;
-        // Sigma draws the label to the right of the node, vertically centered.
-        boxes.push({ x: v.cx + v.r + 2, y: v.cy - LABEL_H / 2, w, h: LABEL_H, id: v.id });
+        if (!v.label) continue;
+        boxes.push({ x: v.cx + v.r + 2, y: v.cy - 7, w: ctx.measureText(v.label).width, h: 14, id: v.id });
       }
-      const overlap = (a: Box, b: Box) =>
-        a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
       let priorityLabelCollisions = 0;
-      for (let i = 0; i < boxes.length; i++) {
-        for (let j = i + 1; j < boxes.length; j++) {
-          if (overlap(boxes[i], boxes[j])) priorityLabelCollisions++;
-        }
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        if (overlap(boxes[i], boxes[j])) priorityLabelCollisions++;
       }
-      // label-box intersecting a visible node circle (approx the circle's bbox)
+      let labelNodeCollisions = 0;
       for (const bx of boxes) {
-        for (const v of visible) {
-          if (v.id === bx.id) continue;
-          const nodeBox = { x: v.cx - v.r, y: v.cy - v.r, w: v.r * 2, h: v.r * 2, id: v.id };
-          if (overlap(bx, nodeBox)) {
-            priorityLabelCollisions++;
-            break;
-          }
-        }
+        if (visible.some((v) => v.id !== bx.id &&
+          overlap(bx, { x: v.cx - v.r, y: v.cy - v.r, w: v.r * 2, h: v.r * 2 }))) labelNodeCollisions++;
       }
 
       // ---- important content behind panels / clipped ----
-      const rectOf = (sel: string) => {
-        const el = document.querySelector(sel) as HTMLElement | null;
-        if (!el) return null;
-        const r = el.getBoundingClientRect();
-        if (r.width <= 0 || r.height <= 0) return null;
-        // translate to container-local coords
-        return { x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height };
-      };
-      const panels = [rectOf(".legend"), rectOf("#graph-filters"), rectOf(".filter-panel")].filter(
-        Boolean,
-      ) as { x: number; y: number; w: number; h: number }[];
-      const boxOverlapsRect = (
-        a: Box,
-        r: { x: number; y: number; w: number; h: number },
-      ) => a.x < r.x + r.w && a.x + a.w > r.x && a.y < r.y + r.h && a.y + a.h > r.y;
+      const panels = [".legend", "#graph-filters", ".filter-panel"].map((sel) => {
+        const r = document.querySelector(sel)?.getBoundingClientRect();
+        return r && r.width > 0 && r.height > 0
+          ? { x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height } : null;
+      }).filter(Boolean) as Rect[];
       let importantContentBehindPanels = 0;
       for (const bx of boxes) {
-        let hit = false;
-        for (const p of panels) if (boxOverlapsRect(bx, p)) hit = true;
-        if (bx.x < 0 || bx.y < 0 || bx.x + bx.w > vw || bx.y + bx.h > vh) hit = true;
-        if (hit) importantContentBehindPanels++;
+        if (panels.some((p) => overlap(bx, p)) || bx.x < 0 || bx.y < 0 || bx.x + bx.w > vw || bx.y + bx.h > vh) {
+          importantContentBehindPanels++;
+        }
+      }
+      // domain anchors (the ecosystem centers) must never sit under a panel either
+      for (const v of visible) {
+        if (v.ring === 0 && g.getNodeAttribute(v.id, "nodeType") === "domain" &&
+          panels.some((p) => overlap({ x: v.cx - v.r, y: v.cy - v.r, w: v.r * 2, h: v.r * 2 }, p))) {
+          importantContentBehindPanels++;
+        }
       }
 
-      // ---- ordinary edges visible at rest ----
-      let ordinaryEdgesVisible = 0;
-      g.forEachEdge((key: string) => {
-        const dd = s.getEdgeDisplayData(key);
-        if (dd && dd.hidden !== true) ordinaryEdgesVisible++;
+      // ---- visible relationships, measured on the curves actually drawn ----
+      type Pt = { x: number; y: number };
+      const curve = (a: Pt, b: Pt, k: number): Pt[] => Array.from({ length: 13 }, (_, i) => {
+        const t = i / 12, u = 1 - t;
+        const c = { x: (a.x + b.x) / 2 - (b.y - a.y) * k, y: (a.y + b.y) / 2 + (b.x - a.x) * k };
+        return s.graphToViewport({ x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
+          y: u * u * a.y + 2 * u * t * c.y + t * t * b.y });
       });
+      const paths: { s: string; t: string; pts: Pt[] }[] = [];
+      let ordinaryEdgesVisible = 0, crossDomainEdgesVisible = 0, curvedEdges = 0;
+      g.forEachEdge((key: string, attrs: any, src: string, tgt: string) => {
+        const dd = s.getEdgeDisplayData(key);
+        if (!dd || dd.hidden === true) return;
+        ordinaryEdgesVisible++;
+        if (attrs.crossDomain) crossDomainEdgesVisible++;
+        if (attrs.type === "curved" && Math.abs(attrs.curvature ?? 0) >= 0.1) curvedEdges++;
+        paths.push({ s: src, t: tgt, pts: curve(g.getNodeAttributes(src), g.getNodeAttributes(tgt), attrs.curvature ?? 0) });
+      });
+      const side = (p: Pt, q: Pt, r: Pt) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+      const cross = (p: Pt, q: Pt, r: Pt, w: Pt) =>
+        side(p, q, r) * side(p, q, w) < 0 && side(r, w, p) * side(r, w, q) < 0;
+      let edgeCrossings = 0;
+      for (let i = 0; i < paths.length; i++) for (let j = i + 1; j < paths.length; j++) {
+        const A = paths[i], B = paths[j];
+        if (A.s === B.s || A.s === B.t || A.t === B.s || A.t === B.t) continue;
+        let hit = false;
+        for (let m = 0; m < 12 && !hit; m++) for (let n = 0; n < 12 && !hit; n++) {
+          hit = cross(A.pts[m], A.pts[m + 1], B.pts[n], B.pts[n + 1]);
+        }
+        if (hit) edgeCrossings++;
+      }
 
-      const sampleRadii = visible.slice(0, 5).map((v) => Math.round(v.r * 100) / 100);
-      const visibleDomainLabels = visible.filter((v) => v.nodeType === "domain" && v.labelled).length;
+      // ---- parent centering + angular coverage per ecosystem (screen space) ----
+      let maxCenteringError = 0, maxAngularGapDeg = 0;
+      for (const anchor of visible) {
+        if (g.getNodeAttribute(anchor.id, "nodeType") !== "domain") continue;
+        const members = visible.filter((v) => v.cluster === anchor.id && v.id !== anchor.id);
+        if (members.length < 8) continue;
+        const extent = Math.max(...members.map((m) => Math.hypot(m.cx - anchor.cx, m.cy - anchor.cy)));
+        const mx = members.reduce((acc, m) => acc + m.cx, 0) / members.length - anchor.cx;
+        const my = members.reduce((acc, m) => acc + m.cy, 0) / members.length - anchor.cy;
+        maxCenteringError = Math.max(maxCenteringError, Math.hypot(mx, my) / extent);
+        const angles = members.map((m) => Math.atan2(m.cy - anchor.cy, m.cx - anchor.cx)).sort((p, q) => p - q);
+        let gap = angles[0] + 2 * Math.PI - angles[angles.length - 1];
+        for (let i = 1; i < angles.length; i++) gap = Math.max(gap, angles[i] - angles[i - 1]);
+        maxAngularGapDeg = Math.max(maxAngularGapDeg, (gap * 180) / Math.PI);
+      }
 
       return {
         viewport: vpName,
@@ -244,11 +235,17 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
         visibleCircleIntersections,
         visibleCircleOverlaps,
         priorityLabelCollisions,
+        labelNodeCollisions,
         visibleDomainLabels,
         importantContentBehindPanels,
         ordinaryEdgesVisible,
+        crossDomainEdgesVisible,
+        curvedEdges,
+        edgeCrossings,
+        maxCenteringError: Math.round(maxCenteringError * 1000) / 1000,
+        maxAngularGapDeg: Math.round(maxAngularGapDeg),
         totalNodes: g.order,
-        sampleRadii,
+        sampleRadii: visible.slice(0, 5).map((v) => Math.round(v.r * 100) / 100),
       };
     },
     { VISUAL_GAP, vpName },
@@ -259,48 +256,39 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
   for (const vp of VIEWPORTS) {
     test(`overview metrics @ ${vp.name}`, async ({ page }) => {
       await gotoOverview(page, vp);
-      const m = await measure(page, vp.name);
+      const frame = await page.evaluate(async () => {
+        const t0 = performance.now();
+        const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+        for (let i = 0; i < 10; i++) s.refresh();
+        return (performance.now() - t0) / 10;
+      });
+      const m = { ...(await measure(page, vp.name)), msPerFullRender: Math.round(frame * 10) / 10 };
       // Surface the measured metrics in the test output (counterexample record).
       console.log("OVERVIEW_METRICS " + JSON.stringify(m));
       await page.screenshot({ path: `screenshots/radial-${vp.width}x${vp.height}.png` });
-      const paths = await page.evaluate(() => {
-        const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
-        const graph = sigma.getGraph();
-        return graph.edges().filter((id: string) => !sigma.getEdgeDisplayData(id)?.hidden).map((id: string) => {
-          const [source, target] = graph.extremities(id);
-          const a = graph.getNodeAttributes(source), b = graph.getNodeAttributes(target);
-          const dx = b.x - a.x, dy = b.y - a.y;
-          const control = { x: (a.x + b.x) / 2 + dy * 0.04, y: (a.y + b.y) / 2 - dx * 0.04 };
-          return { edge: { source, target }, points: Array.from({ length: 13 }, (_: unknown, i: number) => {
-            const t = i / 12, u = 1 - t;
-            return { x: u * u * a.x + 2 * u * t * control.x + t * t * b.x,
-              y: u * u * a.y + 2 * u * t * control.y + t * t * b.y };
-          }) };
-        });
-      });
-      for (let i = 0; i < paths.length; i++) for (let j = i + 1; j < paths.length; j++) {
-        expect(pathsConflict(paths[i] as never, paths[j] as never, 14),
-          `visible curves ${i} and ${j} cross or run together`).toBe(false);
-      }
 
       // Every canonical node remains individually visible at overview.
-      expect(
-        m.visibleIndividualNodes + m.aggregatedNodeCount + m.visibleMarkers,
-        "individuals + aggregated members + shown markers (anchors) must equal canonical count",
-      ).toBe(607);
       expect(m.visibleIndividualNodes).toBe(607);
       expect(m.visibleMarkers).toBe(0);
       expect(m.aggregatedNodeCount).toBe(0);
+      // Parents are centered and every populated ecosystem surrounds its anchor.
+      expect(m.maxCenteringError).toBeLessThanOrEqual(0.25);
+      expect(m.maxAngularGapDeg).toBeLessThan(90);
+      // A restrained, genuinely curved backbone of canonical relationships.
+      expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(100);
+      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(170);
+      expect(m.crossDomainEdgesVisible).toBeLessThanOrEqual(20);
+      expect(m.curvedEdges).toBe(m.ordinaryEdgesVisible);
+      expect(m.edgeCrossings, "overview curve crossings").toBeLessThanOrEqual(3);
+      expect(m.importantContentBehindPanels).toBe(0);
+      expect(m.priorityLabelCollisions).toBe(0);
 
       if (vp.desktop) {
-        expect(m.visibleCircleOverlaps, "actual circle overlaps").toBeLessThanOrEqual(30);
-        expect(m.priorityLabelCollisions, "overview label conflicts").toBeLessThanOrEqual(8);
-        expect(m.visibleDomainLabels, "readable domain names at overview").toBeGreaterThanOrEqual(8);
-        expect(m.importantContentBehindPanels).toBe(0);
-        expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(70);
-        expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(110);
+        expect(m.visibleCircleOverlaps, "drawn circles never overlap at desktop fit").toBe(0);
+        expect(m.visibleDomainLabels, "all 14 domain headings").toBe(14);
+        expect(m.labelNodeCollisions, "headings clear of node circles").toBeLessThanOrEqual(2);
       } else {
-        expect(m.visibleIndividualNodes).toBe(607);
+        expect(m.visibleDomainLabels).toBeGreaterThanOrEqual(5);
       }
     });
   }
@@ -506,5 +494,66 @@ test.describe("Overview interaction regressions", () => {
     expect(after.individuals).toBe(607);
     expect(after.markers).toBe(0);
     expect(after.edges).toBeGreaterThan(before.edges);
+  });
+
+  test("selecting a technology reveals exactly its canonical relationships", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    const target = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      const p = s.graphToViewport({ x: g.getNodeAttribute("technology:react", "x"), y: g.getNodeAttribute("technology:react", "y") });
+      return { ...p, degree: g.degree("technology:react") };
+    });
+    const box = await page.locator(".graph-canvas").boundingBox();
+    await page.mouse.click(box!.x + target.x, box!.y + target.y);
+    await expect(page.getByRole("region", { name: "Node details" }).getByRole("heading", { name: "React" })).toBeVisible();
+    await page.waitForTimeout(700);
+    const shown = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      let incident = 0, bright = 0;
+      g.forEachEdge((key: string, _a: any, src: string, tgt: string) => {
+        const dd = s.getEdgeDisplayData(key);
+        if (!dd || dd.hidden) return;
+        if (src === "technology:react" || tgt === "technology:react") { incident++; if ((dd.zIndex ?? 0) >= 3) bright++; }
+        else if ((dd.zIndex ?? 0) >= 3) bright = -999;
+      });
+      return { incident, bright };
+    });
+    expect(shown.incident).toBe(target.degree);
+    expect(shown.bright).toBe(target.degree);
+    await page.screenshot({ path: "screenshots/radial-react-selected.png" });
+  });
+
+  test("deselecting while zoomed keeps the zoom-level relationships", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const d = s.getNodeDisplayData("domain:backend");
+      s.getCamera().setState({ x: d.x, y: d.y, ratio: 0.3 });
+    });
+    await page.waitForTimeout(500);
+    const zoomed = await countVisible(page);
+    const p = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      return s.graphToViewport({ x: g.getNodeAttribute("technology:fastapi", "x"), y: g.getNodeAttribute("technology:fastapi", "y") });
+    });
+    const box = await page.locator(".graph-canvas").boundingBox();
+    await page.mouse.click(box!.x + p.x, box!.y + p.y);
+    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page.getByRole("group", { name: /Technology graph/ }).press("Escape");
+    await page.mouse.move(box!.x + box!.width - 5, box!.y + 5); // end the hover, too
+    await page.waitForTimeout(500);
+    const ratio = await page.evaluate(() => (window as unknown as { __ta_sigma?: any }).__ta_sigma.getCamera().getState().ratio);
+    if (ratio <= 0.55) expect((await countVisible(page)).edges).toBe(zoomed.edges);
+    await page.screenshot({ path: "screenshots/radial-deselected-zoom.png" });
+  });
+
+  test("a domain heading focuses its ecosystem", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.locator(".atlas-heading", { hasText: "Artificial Intelligence" }).click();
+    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
   });
 });

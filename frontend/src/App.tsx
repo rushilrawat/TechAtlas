@@ -421,7 +421,12 @@ export default function App() {
         <DomainLegend
           domains={state.domains}
           selectedId={selected}
-          onPick={navigate}
+          onPick={(id) => {
+            // On narrow screens the legend is a sheet over the atlas: close it so the
+            // focused ecosystem is visible above the details sheet.
+            if (window.matchMedia("(max-width: 1023px)").matches) setLegendCollapsed(true);
+            navigate(id);
+          }}
           collapsed={legendCollapsed}
           onToggle={() => setLegendCollapsed((v) => !v)}
         />

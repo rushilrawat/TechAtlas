@@ -393,9 +393,8 @@ body {
 .relationship-legend-body p { color: var(--text-dim); margin: 6px 0; }
 .relationship-legend-body > div { display: flex; align-items: center; gap: 8px; margin: 7px 0; }
 .edge-swatch { width: 26px; border-top: 2px solid; display: inline-block; flex: none; }
-.edge-swatch-structure { border-color: rgba(194,218,255,.94); }
-.edge-swatch-local { border-color: rgba(100,194,255,.88); }
-.edge-swatch-cross { border-color: rgba(255,194,104,.96); }
+.edge-swatch-local { border-image: linear-gradient(90deg, #49c96d, #a970ff, #38c6f0) 1; opacity: .8; }
+.edge-swatch-cross { border-color: rgba(214,200,170,.55); }
 .edge-statement { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 20px 0; }
 .edge-statement button { background: none; border: 0; color: var(--accent); padding: 5px 0; min-height: 32px; text-align: left; font: inherit; cursor: pointer; }
 .edge-statement span { color: var(--text-dim); text-transform: capitalize; }

@@ -49,6 +49,7 @@ export function buildGraph(data: GraphResponse): Graph {
       y: n.y ?? 0,
       // Layout-computed drawn radius (px at the default fit); API size is the fallback.
       size: n.display_size ?? n.size,
+      apiSize: n.size, // Repo X-Ray keeps the larger popularity-based sizing
       color: n.color,
       nodeType: n.node_type,
       nodeSubtype: n.node_subtype,

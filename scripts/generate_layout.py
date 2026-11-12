@@ -377,6 +377,29 @@ def _segments_cross(a: tuple, b: tuple, c: tuple, d: tuple) -> bool:
     return (side(a, b, c) * side(a, b, d) < 0) and (side(c, d, a) * side(c, d, b) < 0)
 
 
+LOCAL_CURVATURE, CROSS_CURVATURE = 0.22, 0.18  # mirrored by frontend buildGraph.ts
+
+
+def _curve(a: tuple, b: tuple, ref: tuple, magnitude: float, steps: int = 12) -> list[tuple]:
+    """The quadratic curve the renderer draws, bowing away from `ref` (see buildGraph.ts)."""
+    mx, my = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+    k = magnitude if (-(b[1] - a[1]) * (mx - ref[0]) + (b[0] - a[0]) * (my - ref[1])) >= 0 \
+        else -magnitude
+    c = (mx - (b[1] - a[1]) * k, my + (b[0] - a[0]) * k)
+    return [((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0],
+             (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1])
+            for t in (i / steps for i in range(steps + 1))]
+
+
+def _curves_cross(p: tuple, q: tuple) -> bool:
+    """Whether two drawn curves (endpoints + polyline) cross away from a shared node."""
+    (pa, pb, pts), (qa, qb, qts) = p, q
+    if {pa, pb} & {qa, qb}:
+        return False
+    return any(_segments_cross(pts[i], pts[i + 1], qts[j], qts[j + 1])
+               for i in range(len(pts) - 1) for j in range(len(qts) - 1))
+
+
 def generate(dataset: dict) -> dict:
     """Derive the parent-centered radial atlas and its canonical-edge backbone."""
     import sys
@@ -464,7 +487,8 @@ def generate(dataset: dict) -> dict:
     for nid in ids:  # isolated ids without a territory never occur, but never drop one
         pos.setdefault(nid, [0.0, 0.0])
 
-    tiers = _edge_tiers(edges, pos, ring, territory_of, degree, extent, ordered, parent_of)
+    tiers = _edge_tiers(edges, pos, ring, territory_of, domain_of, degree, extent, ordered,
+                        parent_of)
     coords = {nid: {"x": round(pos[nid][0], 2), "y": round(pos[nid][1], 2),
                     "radius": api_radius[nid], "r": r[nid],
                     "cluster": domain_of[nid], "ring": ring[nid]}
@@ -477,8 +501,8 @@ def generate(dataset: dict) -> dict:
 
 
 def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
-                degree: dict, extent: dict, ordered: list[str], parent_of: dict,
-                ) -> dict[str, str]:
+                cluster_of: dict, degree: dict, extent: dict, ordered: list[str],
+                parent_of: dict) -> dict[str, str]:
     """Tier A hierarchy, Tier B per-territory spanning forest, Tier C bridges, D rest.
 
     Only canonical edges are ever tiered. Canonical weights may be null; the
@@ -488,6 +512,12 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
     max_deg = max((v for k, v in degree.items() if ring.get(k) != 0), default=1) or 1
     index = {d: i for i, d in enumerate(ordered)}
     point = {nid: (p[0], p[1]) for nid, p in pos.items()}
+
+    def drawn(s: str, t: str) -> tuple:
+        local = cluster_of[s] == cluster_of[t]
+        ref = point[cluster_of[s]] if local else (0.0, 0.0)
+        return (s, t, _curve(point[s], point[t], ref,
+                             LOCAL_CURVATURE if local else CROSS_CURVATURE))
     scored = []
     for i, edge in enumerate(edges):
         s, t, rt = edge["source"], edge["target"], edge["relationship_type"]
@@ -529,11 +559,11 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
     for _, eid, s, t, ts, tt in scored:
         if ts != tt or len(accepted[ts]) >= budget[ts] or find(s) == find(t):
             continue
-        seg = (point[s], point[t])
-        if any(_segments_cross(*seg, *other) for other in accepted[ts]):
+        path = drawn(s, t)
+        if any(_curves_cross(path, other) for other in accepted[ts]):
             continue
         parent[find(s)] = find(t)
-        accepted[ts].append(seg)
+        accepted[ts].append(path)
         tiers[eid] = "TierB"
 
     bridges: list[tuple] = []
@@ -546,12 +576,13 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
         if min(gap, n - gap) != 1:
             continue  # only neighboring ecosystems; long bridges would cross the atlas
         pair = tuple(sorted((ts, tt)))
-        seg = (point[s], point[t])
-        if per_pair.get(pair, 0) >= TIER_C_PER_PAIR or \
-                any(_segments_cross(*seg, *other) for other in bridges):
+        path = drawn(s, t)
+        if per_pair.get(pair, 0) >= TIER_C_PER_PAIR or any(
+                _curves_cross(path, other)
+                for other in bridges + accepted[ts] + accepted[tt]):
             continue
         per_pair[pair] = per_pair.get(pair, 0) + 1
-        bridges.append(seg)
+        bridges.append(path)
         tiers[eid] = "TierC"
     return tiers
 

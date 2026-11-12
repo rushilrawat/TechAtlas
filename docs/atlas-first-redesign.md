@@ -21,11 +21,11 @@ around the graph and its visual hierarchy, not the truth of the data.
 
 1. A slim header contains the brand, a single search field, Explore and Repo
    X-Ray navigation, and a compact graph count.
-2. The graph fills the remaining viewport. Domain names are legible at overview;
-   roughly 70–110 genuine curves show local relationships and cross-domain
-   bridges without crossings. More clear connections appear on zoom. The center
-   brand text and decorative rings are removed. The map never becomes a row of
-   domain markers.
+2. The graph fills the remaining viewport. Each of the 14 ecosystems is laid out
+   around its own domain anchor in 360 degrees, and all 14 domain headings sit
+   just outside their ecosystems. A backbone of 100–170 genuine curves (a scored
+   spanning forest per ecosystem plus at most 20 bridges between neighbors) is
+   drawn at overview; the remaining relationships appear on zoom or selection.
 3. A compact left rail stacks domain browsing and filters. The rail leaves the
    radial atlas visually dominant.
 4. A bottom corner control explains edge colors and zoom/keyboard actions.
@@ -56,11 +56,12 @@ around the graph and its visual hierarchy, not the truth of the data.
 
 - All 607 canonical nodes and 1116 relationships remain addressable; no synthetic
   edges or aggregate replacements are introduced.
-- Overview curves have no crossings or merged runs away from shared endpoints
-  in the measured desktop, tablet, and mobile views.
-- The 1440×900 overview does not regress beyond the current 26 node overlaps,
-  7 label collisions, and 0 panel occlusions. Review at 1920×1080, 768×1024,
-  and 390×844 as well.
+- Overview curves are measured on the drawn curves; the generator rejects
+  backbone candidates that would cross an accepted curve, and the visual-proof
+  harness bounds the remaining crossings.
+- The 1440×900 overview has 0 drawn-circle overlaps, 0 label collisions, all 14
+  domain headings, and 0 panel occlusions. Review at 1920×1080, 768×1024,
+  390×844, and 390×667 as well.
 - Search, domain navigation, filters, edge details, Repo X-Ray, and Back to
   Explore pass their existing browser regressions. Production static mode still
   works without FastAPI and contains no test hooks.
