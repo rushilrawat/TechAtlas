@@ -15,3 +15,14 @@ describe("guided paths", () => {
     }
   });
 });
+
+describe("guided path quality", () => {
+  it("never revisits a node and offers at least 30 paths", () => {
+    expect(JOURNEYS.length).toBeGreaterThanOrEqual(30);
+    for (const journey of JOURNEYS) {
+      const ids = journey.steps.map((step) => step.id);
+      expect(new Set(ids).size, journey.title).toBe(ids.length);
+    }
+    expect(new Set(JOURNEYS.map((j) => j.title)).size).toBe(JOURNEYS.length);
+  });
+});
