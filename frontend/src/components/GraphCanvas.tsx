@@ -262,7 +262,7 @@ function fitExplore(renderer: Sigma, prefersReduced: boolean): number {
     renderer.getCamera().setState({ x: 0.5, y: 0.5, ratio: 1, angle: 0 });
     renderer.refresh();
   } else {
-    void renderer.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1, angle: 0 }, { duration: 500 });
+    void renderer.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1, angle: 0 }, { duration: 560, easing: "cubicInOut" });
   }
   // Layout units are px at the reference fit; scale drawn sizes to this viewport's fit.
   return Math.max(0.42, Math.min(1.25, 1 / gpx));
@@ -459,8 +459,6 @@ export function GraphCanvas({
   const selectedRef = useRef<string | null>(selectedId);
   const selectedEdgeRef = useRef<string | null>(selectedEdgeId);
   const previewEdgeRef = useRef<string | null>(previewEdgeId);
-  const keyboardIndexRef = useRef(-1);
-  const [keyboardDomain, setKeyboardDomain] = useState("");
   useEffect(() => { journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds); sigmaRef.current?.refresh(); }, [journeyNodeIds, journeyEdgeIds]);
   // Precomputed highlight set for the current active node (Task 7).
   const activeRef = useRef<string | null>(null);
@@ -1219,7 +1217,10 @@ export function GraphCanvas({
     const container = renderer.getContainer();
     const narrow = container.clientWidth < 641;
     const isDomain = graph.getNodeAttribute(focusId, "nodeType") === "domain";
-    const ratio = narrow ? (isDomain ? 0.8 : 0.55) : 0.35;
+    // Keep the current zoom when already close in, so walking node to node (arrows,
+    // neighbours) glides instead of bouncing the zoom level each step.
+    const ratio = narrow ? (isDomain ? 0.8 : 0.55)
+      : Math.min(camera.getState().ratio, isDomain ? 0.5 : 0.35);
     const targetX = display.x;
     const targetY = display.y;
     if (narrow) {
@@ -1275,7 +1276,7 @@ export function GraphCanvas({
     // animate again is safe, but we null-out the callback timer by not chaining.
     camera.animate(
       { x: targetX, y: targetY, ratio },
-      { duration: prefersReducedMotion ? 0 : 500 },
+      { duration: prefersReducedMotion ? 0 : 520, easing: "cubicInOut" },
     );
   }, [focusId]);
 
@@ -1422,22 +1423,66 @@ export function GraphCanvas({
   }, [domains, data, exploreNonce, stackPositions, scanStatusByNode, visibleNodes]);
 
   const isEmpty = visibleNodes !== null && visibleNodes.size === 0;
-  const keyboardDomains = data.nodes.filter((node) => node.node_type === "domain" && node.ring === 0);
-  const onGraphKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowUp") {
+  // ---- Keyboard exploration ----
+  // Arrows walk the map: from the selected node, move to the connected node that lies in
+  // that direction on screen (a domain also reaches the other domain anchors). With
+  // nothing selected, the first arrow picks the domain nearest the screen centre in that
+  // direction. Shift+arrows pan, +/- zoom, 0 re-frames, Escape clears.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (target?.closest("input, textarea, select, [contenteditable='true'], .xray-panel, .about-page")) return;
+      if (target?.tagName === "BUTTON" && event.key === "Enter") return;
+      const renderer = sigmaRef.current, graph = graphRef.current;
+      if (!renderer || !graph || stackActiveRef.current) return;
+      const camera = renderer.getCamera();
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const ease = { duration: reduce ? 0 : 280, easing: "quadraticOut" as const };
+      const dirs: Record<string, [number, number]> = {
+        ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      const dir = dirs[event.key];
+      if (dir && event.shiftKey) {
+        event.preventDefault();
+        const { x, y, ratio } = camera.getState();
+        void camera.animate({ x: x + dir[0] * 0.12 * ratio, y: y - dir[1] * 0.12 * ratio }, ease);
+        return;
+      }
+      if (event.key === "+" || event.key === "=") { event.preventDefault(); void camera.animatedZoom({ duration: ease.duration, factor: 1.4 }); return; }
+      if (event.key === "-" || event.key === "_") { event.preventDefault(); void camera.animatedUnzoom({ duration: ease.duration, factor: 1.4 }); return; }
+      if (event.key === "0") { event.preventDefault(); sizeScaleRef.current = fitExplore(renderer, reduce); return; }
+      if (event.key === "Escape") { onSelectRef.current(null); return; }
+      if (!dir) return;
       event.preventDefault();
-      const step = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
-      keyboardIndexRef.current = (keyboardIndexRef.current + step + keyboardDomains.length) % keyboardDomains.length;
-      setKeyboardDomain(keyboardDomains[keyboardIndexRef.current]?.label ?? "");
-    } else if (event.key === "Enter" && keyboardIndexRef.current >= 0) {
-      event.preventDefault();
-      onSelect(keyboardDomains[keyboardIndexRef.current].id);
-    } else if (event.key === "Escape") {
-      keyboardIndexRef.current = -1;
-      setKeyboardDomain("");
-      onSelect(null);
-    }
-  };
+      const vis = visibleNodesRef.current;
+      const screen = (id: string) => renderer.graphToViewport(graph.getNodeAttributes(id) as { x: number; y: number });
+      const from = selectedRef.current && graph.hasNode(selectedRef.current) ? selectedRef.current : null;
+      const origin = from ? screen(from) : { x: renderer.getContainer().clientWidth / 2, y: renderer.getContainer().clientHeight / 2 };
+      const candidates = new Set<string>();
+      if (from) {
+        graph.forEachNeighbor(from, (n) => candidates.add(n));
+        if (graph.getNodeAttribute(from, "nodeType") === "domain") {
+          graph.forEachNode((id, a) => { if (a.nodeType === "domain" && a.ring === 0) candidates.add(id); });
+        }
+      } else {
+        graph.forEachNode((id, a) => { if (a.nodeType === "domain" && a.ring === 0) candidates.add(id); });
+      }
+      let best: string | null = null, bestScore = Infinity;
+      for (const id of candidates) {
+        if (id === from || (vis && !vis.has(id))) continue;
+        const p = screen(id), vx = p.x - origin.x, vy = p.y - origin.y;
+        const along = vx * dir[0] + vy * dir[1];
+        if (along <= 4) continue;
+        const across = Math.abs(vx * dir[1] - vy * dir[0]);
+        // Prefer what is straight ahead; sideways drift costs twice as much as distance.
+        const score = along + 2 * across;
+        if (score < bestScore) { bestScore = score; best = id; }
+      }
+      if (best) onSelectRef.current(best);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <div className="graph-canvas-wrap">
@@ -1464,8 +1509,7 @@ export function GraphCanvas({
         className="graph-canvas"
         role="group"
         tabIndex={0}
-        onKeyDown={onGraphKeyDown}
-        aria-label="Technology graph. Use arrow keys to browse domains, Enter to open one, or Escape to clear selection. Search and the domain list provide access to every node."
+        aria-label="Technology graph. Arrow keys move to the connected node in that direction, Shift plus arrows pans, plus and minus zoom, 0 resets the view, Escape clears the selection. Search and the domain list reach every node."
       />
       {backdrop.headings.map((h) => (
         <button
@@ -1488,7 +1532,7 @@ export function GraphCanvas({
           {hoverPreview.description && <p>{hoverPreview.description}</p>}
         </aside>;
       })()}
-      {keyboardDomain && <div className="graph-keyboard-hint" aria-live="polite">{keyboardDomain} · press Enter to explore</div>}
+      <div className="sr-only" aria-live="polite">{selectedId ? `${data.nodes.find((n) => n.id === selectedId)?.label ?? ""} selected` : ""}</div>
       {headingScreens.filter((h) => h.visible).map((h) => (
         <div
           key={h.domainId}

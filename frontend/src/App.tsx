@@ -139,6 +139,13 @@ export default function App() {
     };
   }, [heroVisible]);
   useEffect(() => { if (selected || xrayOpen) setHeroVisible(false); }, [selected, xrayOpen]);
+  // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
+  const [heroRendered, setHeroRendered] = useState(heroVisible);
+  useEffect(() => {
+    if (heroVisible) { setHeroRendered(true); return; }
+    const t = window.setTimeout(() => setHeroRendered(false), 220);
+    return () => window.clearTimeout(t);
+  }, [heroVisible]);
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
@@ -590,8 +597,9 @@ export default function App() {
             />
           </>
         )}
-        {heroVisible && (
-          <section className="hero" aria-label="Welcome">
+        {heroRendered && (
+          <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
+            aria-hidden={!heroVisible}>
             <h1 className="hero-title">
               Every technology, and how it connects. <span>{state.graph.nodes.length} of them.</span>
             </h1>

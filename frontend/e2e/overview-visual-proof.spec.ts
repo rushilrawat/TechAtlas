@@ -367,14 +367,36 @@ test.describe("Overview interaction regressions", () => {
     await page.screenshot({ path: "screenshots/edge-detail-1440x900.png" });
   });
 
-  test("graph keyboard navigation opens a domain", async ({ page }) => {
+  test("arrow keys walk the atlas along real connections", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     const graph = page.getByRole("group", { name: /Technology graph/ });
     await graph.focus();
-    await graph.press("ArrowRight");
-    await expect(page.getByText(/press Enter to explore/)).toBeVisible();
-    await graph.press("Enter");
-    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+    // First arrow picks a domain; the next ones step to connected nodes.
+    await page.keyboard.press("ArrowRight");
+    const details = page.getByRole("region", { name: "Node details" });
+    await expect(details).toBeVisible();
+    const first = await details.getByRole("heading").first().textContent();
+    await page.waitForTimeout(600);
+    await page.keyboard.press("ArrowDown");
+    await page.waitForTimeout(600);
+    const second = await details.getByRole("heading").first().textContent();
+    expect(second).not.toBe(first);
+    const linked = await page.evaluate(([a, b]) => {
+      const g = (window as unknown as { __ta_sigma?: any }).__ta_sigma.getGraph();
+      const id = (label: string | null) => g.nodes().find((n: string) => g.getNodeAttribute(n, "label") === label);
+      const x = id(a), y = id(b);
+      const domains = [x, y].every((n) => g.getNodeAttribute(n, "nodeType") === "domain");
+      return domains || g.areNeighbors(x, y);
+    }, [first, second]);
+    expect(linked).toBe(true);
+    // Zoom keys change the camera; Escape clears the selection.
+    const before = await page.evaluate(() => (window as unknown as { __ta_sigma?: any }).__ta_sigma.getCamera().getState().ratio);
+    await page.keyboard.press("-");
+    await page.waitForTimeout(500);
+    const after = await page.evaluate(() => (window as unknown as { __ta_sigma?: any }).__ta_sigma.getCamera().getState().ratio);
+    expect(after).toBeGreaterThan(before);
+    await page.keyboard.press("Escape");
+    await expect(details).toHaveCount(0);
   });
 
   test("node detail previews one canonical connection and opens its neighbor", async ({ page }) => {

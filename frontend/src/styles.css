@@ -1159,3 +1159,18 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 @media (min-width: 1024px) {
   .relationship-legend { left: 14px; transform: none; }
 }
+
+/* ---- Smoother UX: eased entrances; every one respects reduced motion ---- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes fade-in { from { opacity: 0; } }
+.details, .journey-panel, .compare-panel, .xray-panel, .legend, .filter-panel, .relationship-legend-body { animation: panel-in 220ms cubic-bezier(.2,.7,.2,1); }
+.node-preview { animation: fade-in 140ms ease-out; }
+.atlas-heading { transition: color 160ms ease-out; }
+.relationship-legend-keys { font-size: 11px; }
+@media (prefers-reduced-motion: reduce) {
+  .details, .journey-panel, .compare-panel, .xray-panel, .legend, .filter-panel, .relationship-legend-body, .node-preview { animation: none; }
+}
+.hero { transition: opacity 200ms ease-out, transform 200ms ease-out; }
+.hero.is-leaving { opacity: 0; transform: translate(-50%, -6px); pointer-events: none; }
+.hero.is-leaving .hero-actions { pointer-events: none; }
