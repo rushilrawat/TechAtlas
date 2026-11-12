@@ -16,6 +16,7 @@ import { buildOverlay } from "./graph/scanOverlay";
 import { computeStackLayout, prominenceOf } from "./graph/stackLayout";
 import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED } from "./api/scanner";
+import { Icon } from "./components/Icon";
 import { JOURNEYS } from "./graph/journeys";
 import { readFilter, writeFilter, readCamera, writeCamera } from "./graph/shareView";
 import { connectionPath } from "./graph/compare";
@@ -435,20 +436,32 @@ export default function App() {
           <button
             type="button"
             className="xray-entry"
+            aria-label="Repo X-Ray"
+            title="Scan a GitHub repository"
             onClick={() => setXrayOpen(true)}
           >
-            Repo X-Ray
+            <Icon name="scan" /><span>Repo X-Ray</span>
           </button>
         )}
-        <button type="button" className="journey-trigger" onClick={() => {
-          setCompareMode((open) => !open); setJourneyIndex(null); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
-        }}>{compareMode ? "Exit compare" : "Compare"}</button>
-        <button type="button" className="journey-trigger" onClick={() => {
-          if (journeyIndex === null) { setCompareMode(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
-          else { setJourneyIndex(null); handleSelect(null); }
-        }}>{journeyIndex === null ? "Guided paths" : "Exit path"}</button>
-        <button type="button" className="theme-trigger" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? "☀" : "☾"}</button>
-        <button type="button" className="about-trigger" onClick={aboutOpen ? closeAbout : openAbout}>{aboutOpen ? "Back to atlas" : "About the data"}</button>
+        {/* Atlas tools: one quiet, uniform group. Labels collapse to icons on phones;
+            each keeps its full accessible name. */}
+        <nav className="topbar-tools" aria-label="Atlas modes">
+          <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
+            aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
+              setCompareMode((open) => !open); setJourneyIndex(null); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
+            }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
+          <button type="button" className="tool" aria-label={journeyIndex === null ? "Guided paths" : "Exit path"}
+            aria-pressed={journeyIndex !== null} title="Follow a guided path" onClick={() => {
+              if (journeyIndex === null) { setCompareMode(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
+              else { setJourneyIndex(null); handleSelect(null); }
+            }}><Icon name="paths" /><span>{journeyIndex === null ? "Guided paths" : "Exit path"}</span></button>
+          <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
+            title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
+            <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
+          <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
+        </nav>
         <div className="topbar-meta">
           <span>
             {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
@@ -471,8 +484,8 @@ export default function App() {
       </main>}
       <main aria-hidden={aboutOpen} style={aboutOpen ? { visibility: "hidden" } : undefined} className={`stage${desktopRail ? ` rail-${desktopRail}` : ""}`}>
         {!xrayOpen && <nav className="atlas-rail" aria-label="Atlas tools">
-          <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}>◉</button>
-          <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}>☷</button>
+          <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
+          <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}><Icon name="filters" /></button>
         </nav>}
         <GraphCanvas
           data={state.graph}
