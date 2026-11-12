@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api/client";
 import type { DomainSummary, GraphNode, GraphResponse, NeighborEdge } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
@@ -140,6 +140,40 @@ export default function App() {
   }, [heroVisible]);
   useEffect(() => { if (selected || xrayOpen) setHeroVisible(false); }, [selected, xrayOpen]);
   // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
+  // Fullscreen: the browser Fullscreen API where available, plus an immersive layout that
+  // hides the chrome so the atlas fills the screen (also the fallback on iPhone Safari).
+  const [immersive, setImmersive] = useState(false);
+  const toggleFullscreen = useCallback(() => {
+    const root = document.documentElement;
+    if (document.fullscreenElement) { void document.exitFullscreen(); return; }
+    if (immersive) { setImmersive(false); return; }
+    setImmersive(true);
+    if (root.requestFullscreen) root.requestFullscreen().catch(() => { /* immersive layout still applies */ });
+  }, [immersive]);
+  useEffect(() => {
+    const sync = () => { if (!document.fullscreenElement) setImmersive(false); };
+    document.addEventListener("fullscreenchange", sync);
+    return () => document.removeEventListener("fullscreenchange", sync);
+  }, []);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (event.key === "f" || event.key === "F") { event.preventDefault(); toggleFullscreen(); }
+      else if (event.key === "Escape" && immersive && !document.fullscreenElement) setImmersive(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toggleFullscreen, immersive]);
+  // The canvas changes size when the chrome hides or shows; re-frame the atlas after it.
+  const firstImmersive = useRef(true);
+  useEffect(() => {
+    if (firstImmersive.current) { firstImmersive.current = false; return; }
+    if (immersive) setHeroVisible(false);
+    const t = window.setTimeout(() => { window.dispatchEvent(new Event("resize")); setExploreNonce((n) => n + 1); }, 180);
+    return () => window.clearTimeout(t);
+  }, [immersive]);
   const [heroRendered, setHeroRendered] = useState(heroVisible);
   useEffect(() => {
     if (heroVisible) { setHeroRendered(true); return; }
@@ -416,7 +450,7 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className={`app${immersive ? " is-immersive" : ""}`}>
       <header className="topbar">
         <button
           type="button"
@@ -465,6 +499,8 @@ export default function App() {
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
+          <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
+            onClick={toggleFullscreen}><Icon name="expand" /></button>
           <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
@@ -490,6 +526,10 @@ export default function App() {
         </article>
       </main>}
       <main aria-hidden={aboutOpen} style={aboutOpen ? { visibility: "hidden" } : undefined} className={`stage${desktopRail ? ` rail-${desktopRail}` : ""}`}>
+        {immersive && (
+          <button type="button" className="fullscreen-exit" onClick={toggleFullscreen}
+            aria-label="Exit fullscreen" title="Exit fullscreen (F or Esc)"><Icon name="collapse" /><span>Exit</span></button>
+        )}
         {!xrayOpen && <nav className="atlas-rail" aria-label="Atlas tools">
           <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
           <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}><Icon name="filters" /></button>
