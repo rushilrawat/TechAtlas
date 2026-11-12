@@ -972,3 +972,24 @@ body {
 .atlas-heading-down { transform: translate(-50%, 0); text-align: center; }
 .atlas-heading-box { transform: none; text-align: center; }
 .atlas-heading.phone { max-width: 96px; font-size: 10px; line-height: 12.5px; padding: 1px 0; }
+
+/* First-load hero: one line over the atlas, centred at the top; never blocks the canvas. */
+.hero {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 7;
+  display: flex; align-items: center; gap: 16px; padding: 10px 12px 10px 18px;
+  max-width: min(760px, calc(100% - 32px)); pointer-events: none;
+  background: rgba(11, 14, 20, 0.78); border: 1px solid var(--panel-border);
+  border-radius: 999px; backdrop-filter: blur(6px); animation: hero-in 400ms ease-out;
+}
+.hero-title { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: #eef2fb; }
+.hero-title span { color: var(--text-dim); font-weight: 500; font-variant-numeric: tabular-nums; }
+.hero-actions { display: flex; gap: 8px; flex: none; pointer-events: auto; }
+.hero-actions button { font: inherit; font-size: 13px; border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.hero-primary { background: #e6ebf5; color: #0b0e14; border: 0; font-weight: 600; }
+.hero-secondary { background: none; color: var(--text); border: 1px solid var(--panel-border); }
+@keyframes hero-in { from { opacity: 0; transform: translate(-50%, -6px); } }
+@media (max-width: 640px) {
+  .hero { top: auto; bottom: 64px; flex-direction: column; border-radius: 14px; padding: 12px; text-align: center; }
+  .hero-title { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) { .hero { animation: none; } }

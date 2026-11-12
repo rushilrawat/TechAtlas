@@ -83,6 +83,22 @@ export default function App() {
   // Mobile bottom-sheet collapse: lets users minimize the panel to a thin bar and
   // explore the full-height visualization. Reframes the camera when toggled.
   const [sheetCollapsed, setSheetCollapsed] = useState(false);
+  // First-load story: a one-line hero that fades on the first interaction with the atlas.
+  const [heroVisible, setHeroVisible] = useState(() => !slugFromPath());
+  useEffect(() => {
+    if (!heroVisible) return;
+    const hide = () => setHeroVisible(false);
+    const events = ["wheel", "keydown", "touchstart"] as const;
+    for (const e of events) window.addEventListener(e, hide, { once: true, passive: true });
+    const canvas = () => document.querySelector(".graph-canvas");
+    const onDown = (e: PointerEvent) => { if (canvas()?.contains(e.target as Node)) hide(); };
+    window.addEventListener("pointerdown", onDown);
+    return () => {
+      for (const e of events) window.removeEventListener(e, hide);
+      window.removeEventListener("pointerdown", onDown);
+    };
+  }, [heroVisible]);
+  useEffect(() => { if (selected || xrayOpen) setHeroVisible(false); }, [selected, xrayOpen]);
   const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
@@ -415,6 +431,23 @@ export default function App() {
               mobileOpen={filtersOpen}
             />
           </>
+        )}
+        {heroVisible && (
+          <section className="hero" aria-label="Welcome">
+            <h1 className="hero-title">
+              Every technology, and how it connects. <span>{state.graph.nodes.length} of them.</span>
+            </h1>
+            <div className="hero-actions">
+              <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
+                Explore the atlas
+              </button>
+              {SCANNER_ENABLED && (
+                <button type="button" className="hero-secondary" onClick={() => setXrayOpen(true)}>
+                  Scan a repo
+                </button>
+              )}
+            </div>
+          </section>
         )}
         {overlay && <XrayLegend />}
         {!xrayOpen && <RelationshipLegend />}
