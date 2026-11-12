@@ -21,6 +21,9 @@ class GraphNode(BaseModel):
     x: float | None = None
     y: float | None = None
     cluster: str | None = None
+    ring: int = 0
+    # Drawn overview radius in screen px at the default atlas fit (layout `r`).
+    display_size: float | None = None
     size: float = Field(description="Render radius hint, bounded by the layout scale.")
     color: str
     # Phase 1D: optional popularity signals. `popularity` is a 0..1 sourced adoption
@@ -72,6 +75,7 @@ class GraphResponse(BaseModel):
     # Additive overview LOD groupings (deterministic, from layout.json). Empty when the
     # layout predates aggregation. Never alters nodes/edges/canonical truth.
     overview_aggregates: list[OverviewAggregate] = Field(default_factory=list)
+    edge_tiers: dict[str, str] = Field(default_factory=dict)
 
 
 class NeighborEdge(BaseModel):
@@ -135,5 +139,5 @@ class DomainSummary(BaseModel):
     color: str
     node_count: int
     # Parent domain id when this is a nested subdomain (via a non-root has_subdomain
-    # edge); None for the 14 top-level domains. Lets the UI nest subdomains in the legend.
+    # edge); None for the top-level domains. Lets the UI nest subdomains in the legend.
     parent_id: str | None = None

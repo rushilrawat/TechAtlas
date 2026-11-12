@@ -44,7 +44,10 @@ DOMAIN_COLORS: dict[str, str] = {
     # has its own clearly-separated hue (min perceptual distance ~97); the three SUBDOMAINS
     # are intentional tints inside their parent's family (systems=copper, gamedev=coral).
     # No two top-level domains share or nearly share a hue.
-    "domain:ai-ml": "#a970ff",                 # violet
+    # Deep violet keeps AI/ML's identity while staying >= 20 dE00-ish from every other
+    # domain under protan/deutan/tritan simulation (the former #a970ff fell to 5.8
+    # against Cloud for deuteranopia).
+    "domain:ai-ml": "#8732ff",                 # deep violet
     "domain:robotics": "#e05cc8",              # magenta-pink
     "domain:databases": "#edb13a",             # amber-yellow
     "domain:backend": "#49c96d",               # green
@@ -58,6 +61,9 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:frontend": "#38c6f0",              # bright azure
     "domain:mobile": "#53e0a0",                # mint green
     "domain:gamedev": "#ff7fa0",               # coral-pink
+    "domain:quantum": "#e9f07a",               # lime-lemon (>=18 from all under CVD sims)
+    "domain:blockchain": "#df7205",            # deep bitcoin orange (>=14.9 under CVD sims)
+    "domain:iot": "#b7f91f",                   # electric lime (>=14.9 under CVD sims)
     # Subdomains — tints within the PARENT family (hierarchy honest, §12).
     "domain:computer-architecture": "#d98b55", # lighter copper (within Systems)
     "domain:embedded": "#c9732f",              # deep copper-tan (within Systems)
@@ -86,10 +92,12 @@ class GraphService:
             self.layout_version: str | None = layout.get("layout_version")
             self._coords: dict[str, dict] = layout.get("coordinates", {})
             self._overview_aggregates: list[dict] = layout.get("overview_aggregates", [])
+            self._edge_tiers: dict[str, str] = layout.get("edge_tiers", {})
         else:
             self.layout_version = None
             self._coords = {}
             self._overview_aggregates = []
+            self._edge_tiers = {}
 
         # adjacency: node id -> list of (relationship_type, direction, other_id)
         self._adj: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
@@ -172,6 +180,8 @@ class GraphService:
             x=coord.get("x"),
             y=coord.get("y"),
             cluster=coord.get("cluster", node.get("primary_domain")),
+            ring=coord.get("ring", 0),
+            display_size=coord.get("r"),
             size=self._size(node),
             color=self._color(node),
             popularity=self._popularity_of(node),

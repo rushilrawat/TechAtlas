@@ -1,4 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+// Canonical dataset size, read from the data so adding a domain never breaks the suite.
+const graph = JSON.parse(readFileSync(new URL("../../data/graph.json", import.meta.url), "utf8")) as
+  { nodes: { node_type: string }[] };
+const CANONICAL_NODES = graph.nodes.length;
 
 /**
  * Stack View regression suite.
@@ -52,7 +58,7 @@ function scan(ids: string[], opts: Partial<{ partial: boolean }> = {}) {
 async function gotoExplore(page: Page, vp = { width: 1440, height: 900 }) {
   await page.setViewportSize(vp);
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes . \d+ edges/)).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".graph-canvas")).toBeVisible({ timeout: 30_000 });
   // Wait for the renderer handle (proves the canvas mounted and Sigma constructed).
   await page.waitForFunction(() => !!(window as unknown as { __ta_sigma?: unknown }).__ta_sigma, null, { timeout: 15_000 });
 }
@@ -62,8 +68,16 @@ async function runScan(page: Page, ids: string[], opts: Partial<{ partial: boole
   await page.getByRole("button", { name: "Repo X-Ray" }).click();
   await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/repo");
   await page.getByRole("button", { name: "Analyze Repository" }).click();
-  await expect(page.getByText(/acme\/repo/)).toBeVisible({ timeout: 20_000 });
-  await page.waitForTimeout(1300); // let the stack projection + camera settle
+  // The mobile results sheet minimizes after a scan; its repository link remains in the
+  // DOM but is intentionally hidden until the user expands the sheet.
+  const repo = page.getByText(/acme\/repo/);
+  await expect(repo).toBeAttached({ timeout: 20_000 });
+  if (page.viewportSize()!.width > 640) await expect(repo).toBeVisible();
+  // This suite exercises Stack View; the product opens scans on the full atlas.
+  if (page.viewportSize()!.width <= 640) await page.getByRole("button", { name: /View scan results/ }).click();
+  await switchView(page, "Stack View");
+  if (page.viewportSize()!.width <= 640) await page.getByRole("button", { name: /Minimize/ }).click();
+  await page.waitForTimeout(500); // let the stack projection + camera settle
 }
 
 // Re-scan WITHOUT re-entering via the Repo X-Ray entry button (panel already open, e.g.
@@ -139,25 +153,19 @@ test.describe("Stack View rendering regressions", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(String(e)));
     await gotoExplore(page);
-    // Collision-free overview (atlas-overview-collision-free): the default view shows the
-    // 14 domain SECTOR MARKERS, not all 607 individual nodes. The canonical nodes are not
-    // drawn at rest but remain fully REACHABLE — zooming into the detail band reveals the
-    // individual bubbles. This proves real rendering (canvas draws something meaningful) and
-    // that no node was discarded, without reintroducing the overlap the fix removed.
+    // The radial overview draws every canonical node individually at rest.
     const sample = ["technology:react", "technology:python", "domain:frontend", "domain:ai-ml"];
-    // All sampled nodes exist on the canvas (reachable), and markers render at the overview.
-    const markerShown = await page.evaluate(() => {
+    const shown = await page.evaluate(() => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
       const g = s.getGraph();
-      let markers = 0;
-      g.forEachNode((_id: string, a: any) => {
-        if (a.isAggregate !== true) return;
-        const dd = s.getNodeDisplayData(a.id ?? _id);
-        if (dd && dd.hidden !== true) markers++;
+      let individuals = 0;
+      g.forEachNode((id: string, a: any) => {
+        const dd = s.getNodeDisplayData(id);
+        if (a.isAggregate !== true && dd && dd.hidden !== true) individuals++;
       });
-      return markers;
+      return individuals;
     });
-    expect(markerShown, "sector markers should render at the default overview").toBeGreaterThan(0);
+    expect(shown, "all canonical nodes should render at the default overview").toBe(CANONICAL_NODES);
     // Zoom into the detail band; the sampled canonical nodes are revealed (progressive
     // disclosure), proving they are present and reachable — not discarded.
     await page.evaluate(() => {

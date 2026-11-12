@@ -53,7 +53,7 @@ export function computeStackLayout(
   // Gaps are in canonical graph-coordinate units (the universe spans ~2300x2300), so
   // clusters and nodes get real separation instead of collapsing into a central blob.
   const clusterGapX = opts.clusterGapX ?? 1750;
-  const nodeGap = opts.nodeGap ?? 430;
+  const nodeGap = opts.nodeGap ?? 520; // room for a label beside each detected node
   const nodeCols = opts.nodeCols ?? 3;
   // Clearance between a cluster heading and its first node row (graph units).
   const headingGap = opts.headingGap ?? 260;

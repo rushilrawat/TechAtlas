@@ -168,5 +168,35 @@
     "short_description": "Generating and manipulating images: rendering pipelines, ray tracing, shaders, and geometric modeling.",
     "importance": 0.72,
     "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:quantum",
+    "slug": "quantum",
+    "name": "Quantum Computing & Information",
+    "node_type": "domain",
+    "primary_domain": "domain:quantum",
+    "short_description": "Computing with qubits, superposition and entanglement to tackle problems that are hard for classical machines.",
+    "importance": 0.7,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:blockchain",
+    "slug": "blockchain-web3",
+    "name": "Blockchain & Web3",
+    "node_type": "domain",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Shared ledgers secured by cryptography and consensus, and the applications built on them.",
+    "importance": 0.65,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:iot",
+    "slug": "iot",
+    "name": "Internet of Things & Devices",
+    "node_type": "domain",
+    "primary_domain": "domain:iot",
+    "short_description": "Connected sensors and devices that measure, communicate and act on the physical world.",
+    "importance": 0.65,
+    "lifecycle_status": "active"
   }
 ]

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGraph } from "./buildGraph";
+import { buildGraph, curvePoint, outwardCurvature } from "./buildGraph";
 import type { GraphResponse } from "../api/types";
 
 const fixture: GraphResponse = {
@@ -58,6 +58,21 @@ describe("buildGraph", () => {
     expect(g.size).toBe(1);
     expect(g.hasEdge("e0")).toBe(true);
     expect(g.getEdgeAttribute("e0", "relationshipType")).toBe("written_in");
+    expect(g.getEdgeAttribute("e0", "tier")).toBe("TierD");
+    expect(Math.abs(g.getEdgeAttribute("e0", "curvature"))).toBeGreaterThan(0.1);
+  });
+
+  it("copies ring and tier metadata without changing canonical topology", () => {
+    const enriched: GraphResponse = {
+      ...fixture,
+      nodes: fixture.nodes.map((n, i) => ({ ...n, ring: i + 1 })),
+      edge_tiers: { e0: "TierB" },
+    };
+    const g = buildGraph(enriched);
+    expect(g.order).toBe(2);
+    expect(g.size).toBe(1);
+    expect(g.getNodeAttribute("technology:react", "ring")).toBe(1);
+    expect(g.getEdgeAttribute("e0", "tier")).toBe("TierB");
   });
 
   it("skips edges whose endpoints are missing", () => {
@@ -113,6 +128,8 @@ describe("buildGraph multi-edge handling", () => {
     expect(g.hasEdge("e1")).toBe(true);
     expect(g.getEdgeAttribute("e0", "relationshipType")).toBe("built_on");
     expect(g.getEdgeAttribute("e1", "relationshipType")).toBe("depends_on");
+    expect(g.getEdgeAttribute("e0", "curvature")).not.toBe(g.getEdgeAttribute("e1", "curvature"));
+    expect(g.getEdgeAttribute("e0", "type")).toBe("curved");
   });
 });
 
@@ -167,89 +184,62 @@ describe("buildGraph on the real dataset", () => {
 });
 
 
-// --- atlas-overview-collision-free: aggregate marker ingestion (Task 4) ---
-describe("buildGraph overview-aggregate ingestion", () => {
-  const withAggregates: GraphResponse = {
-    version: "0.4.0",
-    layout_version: "0.4.0",
-    nodes: [
-      { id: "domain:robotics", slug: "robotics", label: "Robotics", node_type: "domain",
-        node_subtype: null, primary_domain: "domain:robotics", x: 0, y: 0,
-        cluster: "domain:robotics", size: 26, color: "#e05cc8" },
-      { id: "technology:ros", slug: "ros", label: "ROS", node_type: "technology",
-        node_subtype: "library", primary_domain: "domain:robotics", x: 10, y: 10,
-        cluster: "domain:robotics", size: 8, color: "#e05cc8" },
-      { id: "technology:slam", slug: "slam", label: "SLAM", node_type: "technology",
-        node_subtype: "library", primary_domain: "domain:robotics", x: 20, y: 20,
-        cluster: "domain:robotics", size: 8, color: "#e05cc8" },
-    ],
-    edges: [],
-    overview_aggregates: [
-      { domain_id: "domain:robotics", markers: [
-        { id: "agg:domain:robotics:0", x: 15, y: 15, radius: 40,
-          member_ids: ["technology:ros", "technology:slam"], count: 2, direct_count: 2 },
-      ] },
-    ],
-  };
-
-  it("still builds all canonical nodes + edges unchanged", () => {
-    const g = buildGraph(withAggregates);
-    // 3 canonical nodes + 1 aggregate marker node
-    expect(g.hasNode("domain:robotics")).toBe(true);
-    expect(g.hasNode("technology:ros")).toBe(true);
-    expect(g.hasNode("technology:slam")).toBe(true);
-  });
-
-  it("adds each marker as an isAggregate node carrying memberIds + count, hidden by default", () => {
-    const g = buildGraph(withAggregates);
-    expect(g.hasNode("agg:domain:robotics:0")).toBe(true);
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "isAggregate")).toBe(true);
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "count")).toBe(2);
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "directCount")).toBe(2);
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "memberIds")).toEqual([
-      "technology:ros", "technology:slam",
-    ]);
-    // marker colour follows its domain anchor; positioned at its centroid
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "x")).toBe(15);
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "domainId")).toBe("domain:robotics");
-    // hidden by default: the render layer decides when to show it
-    expect(g.getNodeAttribute("agg:domain:robotics:0", "hidden")).toBe(true);
-  });
-
-  it("builds fine when overview_aggregates is absent (older payload)", () => {
-    const g = buildGraph(fixture);
-    expect(g.order).toBe(2); // no marker nodes added
-  });
-
-  it("union of marker memberIds references only real canonical member nodes", () => {
-    const g = buildGraph(withAggregates);
-    const members = g.getNodeAttribute("agg:domain:robotics:0", "memberIds") as string[];
-    for (const id of members) expect(g.hasNode(id)).toBe(true);
+// A stale API payload may still include legacy aggregate metadata. The radial atlas
+// ignores it and builds only canonical nodes.
+describe("legacy aggregate metadata", () => {
+  it("does not add presentation marker nodes", () => {
+    const legacy: GraphResponse = {
+      ...fixture,
+      overview_aggregates: [{ domain_id: "domain:frontend", markers: [
+        { id: "agg:domain:frontend:all", x: 2, y: 3, radius: 40,
+          member_ids: ["technology:react"], count: 1, direct_count: 1 },
+      ] }],
+    };
+    const graph = buildGraph(legacy);
+    expect(graph.order).toBe(2);
+    expect(graph.hasNode("agg:domain:frontend:all")).toBe(false);
   });
 });
 
-// aggregateMemberIds helper mirrors domainMemberIds for markers.
-import { aggregateMemberIds } from "./buildGraph";
-describe("aggregateMemberIds", () => {
-  it("returns all member ids represented by a domain's markers", () => {
-    const g = buildGraph({
-      version: "0.4.0", layout_version: "0.4.0",
-      nodes: [
-        { id: "domain:x", slug: "x", label: "X", node_type: "domain", node_subtype: null,
-          primary_domain: "domain:x", x: 0, y: 0, cluster: "domain:x", size: 20, color: "#fff" },
-        { id: "technology:a", slug: "a", label: "A", node_type: "technology", node_subtype: "library",
-          primary_domain: "domain:x", x: 1, y: 1, cluster: "domain:x", size: 8, color: "#fff" },
-        { id: "technology:b", slug: "b", label: "B", node_type: "technology", node_subtype: "library",
-          primary_domain: "domain:x", x: 2, y: 2, cluster: "domain:x", size: 8, color: "#fff" },
-      ],
-      edges: [],
-      overview_aggregates: [
-        { domain_id: "domain:x", markers: [
-          { id: "agg:domain:x:0", x: 1, y: 1, radius: 10, member_ids: ["technology:a"], count: 1, direct_count: 1 },
-          { id: "agg:domain:x:1", x: 2, y: 2, radius: 10, member_ids: ["technology:b"], count: 1, direct_count: 1 },
-        ] },
-      ],
-    });
-    expect(aggregateMemberIds(g, "domain:x")).toEqual(new Set(["technology:a", "technology:b"]));
+describe("curved edge geometry", () => {
+  it("bows curves away from the reference point", () => {
+    const ref = { x: 0, y: 0 };
+    for (const [a, b] of [[{ x: 10, y: 10 }, { x: 20, y: 0 }], [{ x: 20, y: 0 }, { x: 10, y: 10 }],
+      [{ x: -10, y: -10 }, { x: -20, y: 5 }]]) {
+      const k = outwardCurvature(a, b, ref, 0.2);
+      const apex = curvePoint(a, b, k, 0.5);
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      expect(Math.hypot(apex.x, apex.y)).toBeGreaterThan(Math.hypot(mid.x, mid.y));
+    }
+  });
+
+  it("uses the layout's drawn radius when present", () => {
+    const g = buildGraph({ ...fixture, nodes: fixture.nodes.map((n) => ({ ...n, display_size: 3.2 })) });
+    expect(g.getNodeAttribute("technology:react", "size")).toBe(3.2);
+  });
+});
+
+describe("ecosystem membership of edges", () => {
+  const node = (id: string, cluster: string, type: "domain" | "technology" = "technology") => ({
+    id, slug: id, label: id, node_type: type, node_subtype: null, primary_domain: cluster,
+    x: 0, y: 0, cluster, size: 3, color: "#888888",
+  });
+  const data = {
+    version: "t", layout_version: "t",
+    nodes: [node("domain:software-engineering", "domain:software-engineering", "domain"),
+      node("domain:systems", "domain:systems", "domain"), node("domain:arch", "domain:arch", "domain"),
+      node("t:a", "domain:systems"), node("t:b", "domain:arch"), node("t:c", "domain:software-engineering")],
+    edges: [
+      { id: "e0", source: "domain:systems", target: "domain:arch", relationship_type: "has_subdomain", weight: null },
+      { id: "e1", source: "domain:software-engineering", target: "domain:systems", relationship_type: "has_subdomain", weight: null },
+      { id: "e2", source: "t:a", target: "t:b", relationship_type: "related_to", weight: null },
+      { id: "e3", source: "t:a", target: "t:c", relationship_type: "related_to", weight: null },
+    ],
+  } as GraphResponse;
+
+  it("treats a nested subdomain as part of its parent ecosystem, not the taxonomic root's", () => {
+    const g = buildGraph(data);
+    expect(g.getEdgeAttribute("e2", "crossDomain")).toBe(false);
+    expect(g.getEdgeAttribute("e3", "crossDomain")).toBe(true);
   });
 });

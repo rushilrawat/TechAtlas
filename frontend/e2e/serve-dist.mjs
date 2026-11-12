@@ -2,7 +2,7 @@
 // falls back to index.html for unknown paths (the SPA 404 behavior Pages uses).
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
@@ -13,7 +13,7 @@ const BASE = "/TechAtlas";
 const PORT = 4178;
 const MIME = {
   ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
-  ".json": "application/json", ".svg": "image/svg+xml", ".ico": "image/x-icon",
+  ".json": "application/json", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".png": "image/png",
 };
 
 createServer(async (req, res) => {
@@ -22,6 +22,7 @@ createServer(async (req, res) => {
   if (p === "/") p = "/index.html";
   let file = normalize(join(DIST, p));
   if (!file.startsWith(DIST)) { res.writeHead(403); return res.end(); }
+  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, "index.html");
   if (!existsSync(file)) file = join(DIST, "index.html"); // SPA fallback
   try {
     const body = await readFile(file);

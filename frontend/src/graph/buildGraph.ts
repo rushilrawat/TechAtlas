@@ -5,10 +5,29 @@
 import Graph from "graphology";
 import type { GraphResponse, NodeType } from "../api/types";
 
+type Point = { x: number; y: number };
+
+/**
+ * Signed curvature for @sigma/edge-curve so the curve bows away from `ref`. The program
+ * places its control point at mid + k * (-dy, dx) in y-up graph space.
+ */
+export function outwardCurvature(a: Point, b: Point, ref: Point, magnitude: number): number {
+  const mx = (a.x + b.x) / 2 - ref.x, my = (a.y + b.y) / 2 - ref.y;
+  return (-(b.y - a.y) * mx + (b.x - a.x) * my) >= 0 ? magnitude : -magnitude;
+}
+
+/** Point on the quadratic curve the edge program draws (graph space, t in [0, 1]). */
+export function curvePoint(a: Point, b: Point, curvature: number, t: number): Point {
+  const c = { x: (a.x + b.x) / 2 - (b.y - a.y) * curvature, y: (a.y + b.y) / 2 + (b.x - a.x) * curvature };
+  const u = 1 - t;
+  return { x: u * u * a.x + 2 * u * t * c.x + t * t * b.x, y: u * u * a.y + 2 * u * t * c.y + t * t * b.y };
+}
+
 // Phase 1.5 UI-A: quiet background edges. The base graph must read as a calm map, not a
 // bright spiderweb, so unpromoted edges sit in the 0.04-0.10 opacity band (per-state
 // reducers in GraphCanvas promote the relevant ones). See design LLD.
 export const BASE_EDGE_SIZE = 0.4;
+const ROOT_DOMAIN = "domain:software-engineering"; // taxonomic root, not a nesting parent
 export const BASE_EDGE_COLOR = "rgba(140,150,170,0.06)";
 
 // Node-type shapes so classification is conveyed by form, not just color (a11y §14.2).
@@ -29,18 +48,35 @@ export function buildGraph(data: GraphResponse): Graph {
       label: n.label,
       x: n.x ?? 0,
       y: n.y ?? 0,
-      size: n.size,
+      // Layout-computed drawn radius (px at the default fit); API size is the fallback.
+      size: n.display_size ?? n.size,
+      apiSize: n.size, // Repo X-Ray keeps the larger popularity-based sizing
       color: n.color,
       nodeType: n.node_type,
       nodeSubtype: n.node_subtype,
       primaryDomain: n.primary_domain,
       slug: n.slug,
       cluster: n.cluster,
+      ring: n.ring ?? 0,
       type: TYPE_TO_SHAPE[n.node_type],
       // domains get a visible border to read as anchors
       borderColor: n.node_type === "domain" ? "#ffffff" : n.color,
     });
   }
+
+  // Ecosystem (territory) of each node: a nested subdomain's members belong to their
+  // top-level parent's ecosystem, exactly as the layout generator groups them.
+  const parentOf = new Map<string, string>();
+  for (const e of data.edges) {
+    if (e.relationship_type === "has_subdomain" && e.source !== ROOT_DOMAIN) parentOf.set(e.target, e.source);
+  }
+  const territoryOf = (id: string): string => {
+    let d = graph.getNodeAttribute(id, "cluster") as string;
+    while (parentOf.has(d)) d = parentOf.get(d)!;
+    return d;
+  };
+
+  graph.forEachNode((id) => graph.setNodeAttribute(id, "territory", territoryOf(id)));
 
   for (const e of data.edges) {
     if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
@@ -50,62 +86,37 @@ export function buildGraph(data: GraphResponse): Graph {
       relationshipType: e.relationship_type,
       size: BASE_EDGE_SIZE,
       color: BASE_EDGE_COLOR,
+      tier: data.edge_tiers?.[key] ?? "TierD",
+      crossDomain: territoryOf(e.source) !== territoryOf(e.target),
+      type: "curved",
     });
   }
 
-  // ---- Overview LOD aggregate markers (atlas-overview-collision-free) ----
-  // Additive presentation nodes. The canonical 607 nodes + 1116 edges above are built
-  // exactly as before; markers are EXTRA nodes tagged `isAggregate` so Sigma's node
-  // program, hit-testing, label, and click plumbing are reused with no new render program.
-  // Markers start HIDDEN — the GraphCanvas render layer decides responsively (from live
-  // screen-space fit) when a marker REPLACES its members. A marker is never a canonical
-  // node or relationship; its id is namespaced `agg:` and it carries the exact member ids.
-  for (const agg of data.overview_aggregates ?? []) {
-    const anchorColor = graph.hasNode(agg.domain_id)
-      ? (graph.getNodeAttribute(agg.domain_id, "color") as string)
-      : "#9aa5ce";
-    for (const m of agg.markers) {
-      if (graph.hasNode(m.id)) continue;
-      graph.addNode(m.id, {
-        label: "",            // label is composed at render time (name + count)
-        x: m.x,
-        y: m.y,
-        // Render radius hint; the render layer rescales against live screen space.
-        size: Math.max(12, Math.min(34, Math.sqrt(m.count) * 6)),
-        color: anchorColor,
-        nodeType: "aggregate",
-        primaryDomain: agg.domain_id,
-        type: "circle",
-        borderColor: anchorColor,
-        isAggregate: true,
-        domainId: agg.domain_id,
-        memberIds: [...m.member_ids],
-        count: m.count,
-        directCount: m.direct_count,
-        // start hidden: the overview render logic unhides markers for collapsed sectors.
-        hidden: true,
-      });
-    }
+  // Deterministic curvature. Local curves bow away from their ecosystem's anchor and
+  // cross-domain bridges bow away from the atlas center, so no curve sweeps through a
+  // cluster core. Parallel canonical relationships fan out with growing offsets.
+  const pairs = new Map<string, string[]>();
+  graph.forEachEdge((key, _attrs, source, target) => {
+    const pair = [source, target].sort().join("|");
+    const group = pairs.get(pair) ?? [];
+    group.push(key);
+    pairs.set(pair, group);
+  });
+  for (const group of pairs.values()) {
+    group.sort().forEach((key, index) => {
+      const [s, t] = graph.extremities(key);
+      const a = graph.getNodeAttributes(s), b = graph.getNodeAttributes(t);
+      const cross = graph.getEdgeAttribute(key, "crossDomain") as boolean;
+      const anchor = cross ? null : a.cluster === b.cluster ? (a.cluster as string) : territoryOf(s);
+      const ref = anchor && graph.hasNode(anchor) ? graph.getNodeAttributes(anchor) : { x: 0, y: 0 };
+      const base = (cross ? 0.18 : 0.22) + index * 0.12;
+      graph.setEdgeAttribute(key, "curvature",
+        outwardCurvature(a as Point, b as Point, ref as Point, base));
+    });
   }
 
   return graph;
 }
-
-/**
- * All canonical member ids represented by a domain's overview aggregate markers — the
- * union across that domain's markers. Mirrors `domainMemberIds` but sourced from the
- * precomputed LOD groupings, so a collapsed sector hides exactly these member nodes.
- */
-export function aggregateMemberIds(graph: Graph, domainId: string): Set<string> {
-  const set = new Set<string>();
-  graph.forEachNode((_nid, a) => {
-    if (a.isAggregate === true && a.domainId === domainId) {
-      for (const m of (a.memberIds as string[] | undefined) ?? []) set.add(m);
-    }
-  });
-  return set;
-}
-
 
 /**
  * All member node ids of a domain = every node whose `primaryDomain` is that domain, plus

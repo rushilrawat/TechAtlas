@@ -161,6 +161,17 @@ npm run build
 
 Point the dev proxy at a non-default backend with `TECHATLAS_API=http://host:port npm run dev`.
 
+To explore the checked-in static API snapshot without starting FastAPI, run:
+
+```bash
+cd frontend
+VITE_STATIC_API=true npm run dev    # http://localhost:5173
+```
+
+Static mode serves `frontend/public/api/v1/*.json` directly. Vite disables its `/api`
+proxy in this mode, so graph, search, and node details work from the snapshot. Repo X-Ray
+requires the live backend and is unavailable in static mode.
+
 ## Full check (what CI runs)
 
 ```bash

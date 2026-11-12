@@ -172,6 +172,36 @@
       "lifecycle_status": "mature"
     },
     {
+      "id": "domain:quantum",
+      "slug": "quantum",
+      "name": "Quantum Computing & Information",
+      "node_type": "domain",
+      "primary_domain": "domain:quantum",
+      "short_description": "Computing with qubits, superposition and entanglement to tackle problems that are hard for classical machines.",
+      "importance": 0.7,
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "domain:blockchain",
+      "slug": "blockchain-web3",
+      "name": "Blockchain & Web3",
+      "node_type": "domain",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Shared ledgers secured by cryptography and consensus, and the applications built on them.",
+      "importance": 0.65,
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "domain:iot",
+      "slug": "iot",
+      "name": "Internet of Things & Devices",
+      "node_type": "domain",
+      "primary_domain": "domain:iot",
+      "short_description": "Connected sensors and devices that measure, communicate and act on the physical world.",
+      "importance": 0.65,
+      "lifecycle_status": "active"
+    },
+    {
       "id": "concept:object-oriented-programming",
       "slug": "object-oriented-programming",
       "name": "Object-Oriented Programming",
@@ -3636,7 +3666,7 @@
       "slug": "quantum-computing",
       "name": "Quantum Computing",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Computation that exploits quantum-mechanical phenomena like superposition and entanglement.",
       "aliases": [
         "QC"
@@ -3649,7 +3679,7 @@
       "slug": "qubit",
       "name": "Qubits",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "The basic unit of quantum information, able to exist in superposition.",
       "aliases": [
         "Qubit"
@@ -3662,7 +3692,7 @@
       "slug": "quantum-gate",
       "name": "Quantum Gates",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Basic operations that manipulate the state of qubits.",
       "importance": 0.6,
       "wikipedia_title": "Quantum logic gate"
@@ -3672,7 +3702,7 @@
       "slug": "quantum-algorithms",
       "name": "Quantum Algorithms",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Algorithms designed to run on quantum computers.",
       "importance": 0.6,
       "wikipedia_title": "Quantum algorithm"
@@ -3834,6 +3864,371 @@
       ],
       "importance": 0.6,
       "wikipedia_title": "Neuro-symbolic AI"
+    },
+    {
+      "id": "concept:quantum-superposition",
+      "slug": "quantum-superposition",
+      "name": "Quantum Superposition",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum state that is a combination of several basis states at once.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Quantum superposition"
+    },
+    {
+      "id": "concept:quantum-entanglement",
+      "slug": "quantum-entanglement",
+      "name": "Quantum Entanglement",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Correlation between qubits so the state of one cannot be described independently.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Quantum entanglement"
+    },
+    {
+      "id": "concept:quantum-circuit",
+      "slug": "quantum-circuit",
+      "name": "Quantum Circuit",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A sequence of quantum gates and measurements that expresses a quantum program.",
+      "lifecycle_status": "active",
+      "importance": 0.7,
+      "wikipedia_title": "Quantum circuit"
+    },
+    {
+      "id": "concept:shors-algorithm",
+      "slug": "shors-algorithm",
+      "name": "Shor's Algorithm",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum algorithm that factors integers in polynomial time, threatening RSA.",
+      "lifecycle_status": "active",
+      "importance": 0.6,
+      "wikipedia_title": "Shor's algorithm"
+    },
+    {
+      "id": "concept:grovers-algorithm",
+      "slug": "grovers-algorithm",
+      "name": "Grover's Algorithm",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum search algorithm with a quadratic speedup over classical search.",
+      "lifecycle_status": "active",
+      "importance": 0.55,
+      "wikipedia_title": "Grover's algorithm"
+    },
+    {
+      "id": "concept:quantum-error-correction",
+      "slug": "quantum-error-correction",
+      "name": "Quantum Error Correction",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Encoding logical qubits across many physical qubits to survive noise.",
+      "lifecycle_status": "active",
+      "importance": 0.6,
+      "wikipedia_title": "Quantum error correction"
+    },
+    {
+      "id": "concept:quantum-advantage",
+      "slug": "quantum-advantage",
+      "name": "Quantum Advantage",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A task a quantum computer completes far faster than any classical computer.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "Quantum supremacy"
+      ],
+      "importance": 0.5,
+      "wikipedia_title": "Quantum supremacy"
+    },
+    {
+      "id": "concept:variational-quantum-eigensolver",
+      "slug": "variational-quantum-eigensolver",
+      "name": "Variational Quantum Eigensolver",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A hybrid quantum-classical algorithm that estimates ground-state energies.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "VQE"
+      ],
+      "importance": 0.45,
+      "wikipedia_title": "Variational quantum eigensolver"
+    },
+    {
+      "id": "concept:quantum-annealing",
+      "slug": "quantum-annealing",
+      "name": "Quantum Annealing",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Finding low-energy solutions to optimization problems with quantum fluctuations.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Quantum annealing"
+    },
+    {
+      "id": "concept:quantum-key-distribution",
+      "slug": "quantum-key-distribution",
+      "name": "Quantum Key Distribution",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Sharing encryption keys whose interception is detectable by quantum physics.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "QKD"
+      ],
+      "importance": 0.5,
+      "wikipedia_title": "Quantum key distribution"
+    },
+    {
+      "id": "concept:superconducting-qubits",
+      "slug": "superconducting-qubits",
+      "name": "Superconducting Qubits",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Qubits built from superconducting circuits, used by IBM and Google hardware.",
+      "lifecycle_status": "active",
+      "importance": 0.5,
+      "wikipedia_title": "Superconducting quantum computing"
+    },
+    {
+      "id": "concept:trapped-ion-qubits",
+      "slug": "trapped-ion-qubits",
+      "name": "Trapped-Ion Qubits",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Qubits stored in individual ions held by electromagnetic fields.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Trapped-ion quantum computer"
+    },
+    {
+      "id": "concept:blockchain",
+      "slug": "blockchain",
+      "name": "Blockchain",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "An append-only chain of blocks, each linked to the previous one by a cryptographic hash.",
+      "lifecycle_status": "active",
+      "importance": 0.8,
+      "wikipedia_title": "Blockchain"
+    },
+    {
+      "id": "concept:distributed-ledger",
+      "slug": "distributed-ledger",
+      "name": "Distributed Ledger",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A database replicated and agreed upon across many independent nodes.",
+      "lifecycle_status": "active",
+      "importance": 0.6,
+      "wikipedia_title": "Distributed ledger"
+    },
+    {
+      "id": "concept:proof-of-work",
+      "slug": "proof-of-work",
+      "name": "Proof of Work",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Consensus by spending computation to propose the next block.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "PoW"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Proof of work"
+    },
+    {
+      "id": "concept:proof-of-stake",
+      "slug": "proof-of-stake",
+      "name": "Proof of Stake",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Consensus by validators who lock up stake and risk losing it for misbehaving.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "PoS"
+      ],
+      "importance": 0.6,
+      "wikipedia_title": "Proof of stake"
+    },
+    {
+      "id": "concept:byzantine-fault-tolerance",
+      "slug": "byzantine-fault-tolerance",
+      "name": "Byzantine Fault Tolerance",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Reaching agreement even when some participants lie or fail arbitrarily.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "BFT"
+      ],
+      "importance": 0.5,
+      "wikipedia_title": "Byzantine fault"
+    },
+    {
+      "id": "concept:merkle-tree",
+      "slug": "merkle-tree",
+      "name": "Merkle Tree",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A tree of hashes that proves a piece of data belongs to a larger set.",
+      "lifecycle_status": "active",
+      "importance": 0.5,
+      "wikipedia_title": "Merkle tree"
+    },
+    {
+      "id": "concept:smart-contracts",
+      "slug": "smart-contracts",
+      "name": "Smart Contracts",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Programs stored on a blockchain that run exactly as written.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Smart contract"
+    },
+    {
+      "id": "concept:cryptocurrency",
+      "slug": "cryptocurrency",
+      "name": "Cryptocurrency",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Digital money whose ownership is recorded on a blockchain.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Cryptocurrency"
+    },
+    {
+      "id": "concept:crypto-wallet",
+      "slug": "crypto-wallet",
+      "name": "Cryptocurrency Wallet",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Software or hardware that holds the keys used to sign transactions.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Cryptocurrency wallet"
+    },
+    {
+      "id": "concept:decentralized-finance",
+      "slug": "decentralized-finance",
+      "name": "Decentralized Finance",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Lending, trading and other financial services run by smart contracts.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "DeFi"
+      ],
+      "importance": 0.45,
+      "wikipedia_title": "Decentralized finance"
+    },
+    {
+      "id": "concept:layer-2-scaling",
+      "slug": "layer-2-scaling",
+      "name": "Layer 2 Scaling",
+      "node_type": "concept",
+      "primary_domain": "domain:blockchain",
+      "short_description": "Processing transactions off the main chain and settling the results on it.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "Rollups"
+      ],
+      "importance": 0.4
+    },
+    {
+      "id": "concept:internet-of-things",
+      "slug": "internet-of-things",
+      "name": "Internet of Things",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "Everyday physical devices connected to the internet to sense and act.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "IoT"
+      ],
+      "importance": 0.75,
+      "wikipedia_title": "Internet of things"
+    },
+    {
+      "id": "concept:mqtt",
+      "slug": "mqtt",
+      "name": "MQTT",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "A lightweight publish-subscribe messaging protocol for devices.",
+      "lifecycle_status": "active",
+      "node_subtype": "protocol",
+      "importance": 0.6,
+      "wikipedia_title": "MQTT"
+    },
+    {
+      "id": "concept:zigbee",
+      "slug": "zigbee",
+      "name": "Zigbee",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "A low-power mesh radio protocol for home and sensor networks.",
+      "lifecycle_status": "active",
+      "node_subtype": "protocol",
+      "importance": 0.45,
+      "wikipedia_title": "Zigbee"
+    },
+    {
+      "id": "concept:lorawan",
+      "slug": "lorawan",
+      "name": "LoRaWAN",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "A long-range, low-power wide-area network protocol for sensors.",
+      "lifecycle_status": "active",
+      "node_subtype": "protocol",
+      "importance": 0.4,
+      "wikipedia_title": "LoRa"
+    },
+    {
+      "id": "concept:digital-twin",
+      "slug": "digital-twin",
+      "name": "Digital Twin",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "A live virtual model of a physical object kept in sync with its sensor data.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Digital twin"
+    },
+    {
+      "id": "concept:home-automation",
+      "slug": "home-automation",
+      "name": "Home Automation",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "Controlling lights, heating and appliances in a home through connected devices.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "Smart home"
+      ],
+      "importance": 0.45,
+      "wikipedia_title": "Home automation"
+    },
+    {
+      "id": "concept:industrial-iot",
+      "slug": "industrial-iot",
+      "name": "Industrial IoT",
+      "node_type": "concept",
+      "primary_domain": "domain:iot",
+      "short_description": "Connected sensors and machines in factories, energy and logistics.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "IIoT"
+      ],
+      "importance": 0.45,
+      "wikipedia_title": "Industrial internet of things"
     },
     {
       "id": "technology:python",
@@ -7818,7 +8213,7 @@
       "name": "Solidity",
       "node_type": "technology",
       "node_subtype": "programming_language",
-      "primary_domain": "domain:backend",
+      "primary_domain": "domain:blockchain",
       "short_description": "A language for writing smart contracts on Ethereum-like blockchains.",
       "lifecycle_status": "active",
       "official_url": "https://soliditylang.org",
@@ -8077,11 +8472,287 @@
       "name": "Qiskit",
       "node_type": "technology",
       "node_subtype": "library",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "An open-source SDK for programming quantum computers.",
       "official_url": "https://www.ibm.com/quantum/qiskit",
       "wikipedia_title": "Qiskit",
       "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:cirq",
+      "slug": "cirq",
+      "name": "Cirq",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:quantum",
+      "short_description": "Google's Python library for writing and simulating quantum circuits.",
+      "lifecycle_status": "active",
+      "official_url": "https://quantumai.google/cirq",
+      "documentation_url": "https://quantumai.google/cirq",
+      "wikipedia_title": "Cirq"
+    },
+    {
+      "id": "technology:pennylane",
+      "slug": "pennylane",
+      "name": "PennyLane",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:quantum",
+      "short_description": "A Python library for quantum machine learning and differentiable quantum programs.",
+      "lifecycle_status": "active",
+      "official_url": "https://pennylane.ai",
+      "documentation_url": "https://docs.pennylane.ai"
+    },
+    {
+      "id": "technology:q-sharp",
+      "slug": "q-sharp",
+      "name": "Q#",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:quantum",
+      "short_description": "Microsoft's domain-specific language for quantum programs.",
+      "lifecycle_status": "active",
+      "official_url": "https://learn.microsoft.com/azure/quantum/qsharp-overview",
+      "documentation_url": "https://learn.microsoft.com/azure/quantum/",
+      "wikipedia_title": "Q Sharp"
+    },
+    {
+      "id": "technology:openqasm",
+      "slug": "openqasm",
+      "name": "OpenQASM",
+      "node_type": "technology",
+      "node_subtype": "standard",
+      "primary_domain": "domain:quantum",
+      "short_description": "An open assembly language for describing quantum circuits.",
+      "lifecycle_status": "active",
+      "official_url": "https://openqasm.com",
+      "documentation_url": "https://openqasm.com",
+      "wikipedia_title": "OpenQASM"
+    },
+    {
+      "id": "technology:amazon-braket",
+      "slug": "amazon-braket",
+      "name": "Amazon Braket",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "AWS's managed service for running quantum programs on simulators and hardware.",
+      "lifecycle_status": "active",
+      "official_url": "https://aws.amazon.com/braket/",
+      "documentation_url": "https://docs.aws.amazon.com/braket/"
+    },
+    {
+      "id": "technology:azure-quantum",
+      "slug": "azure-quantum",
+      "name": "Azure Quantum",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "Microsoft's cloud service for quantum hardware access and development.",
+      "lifecycle_status": "active",
+      "official_url": "https://azure.microsoft.com/products/quantum",
+      "documentation_url": "https://learn.microsoft.com/azure/quantum/"
+    },
+    {
+      "id": "technology:ibm-quantum-platform",
+      "slug": "ibm-quantum-platform",
+      "name": "IBM Quantum Platform",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "IBM's cloud access to its superconducting quantum processors.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.ibm.com/quantum",
+      "documentation_url": "https://docs.quantum.ibm.com/"
+    },
+    {
+      "id": "technology:cuda-q",
+      "slug": "cuda-q",
+      "name": "CUDA-Q",
+      "node_type": "technology",
+      "node_subtype": "sdk",
+      "primary_domain": "domain:quantum",
+      "short_description": "NVIDIA's platform for hybrid quantum-classical programs on GPUs and QPUs.",
+      "lifecycle_status": "active",
+      "official_url": "https://developer.nvidia.com/cuda-q",
+      "documentation_url": "https://nvidia.github.io/cuda-quantum/"
+    },
+    {
+      "id": "technology:bitcoin",
+      "slug": "bitcoin",
+      "name": "Bitcoin",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:blockchain",
+      "short_description": "The first cryptocurrency, secured by a proof-of-work blockchain.",
+      "lifecycle_status": "active",
+      "official_url": "https://bitcoin.org",
+      "documentation_url": "https://developer.bitcoin.org",
+      "wikipedia_title": "Bitcoin"
+    },
+    {
+      "id": "technology:ethereum",
+      "slug": "ethereum",
+      "name": "Ethereum",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A proof-of-stake blockchain that runs smart contracts.",
+      "lifecycle_status": "active",
+      "official_url": "https://ethereum.org",
+      "documentation_url": "https://ethereum.org/developers/docs",
+      "wikipedia_title": "Ethereum"
+    },
+    {
+      "id": "technology:solana",
+      "slug": "solana",
+      "name": "Solana",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A high-throughput blockchain for smart contracts.",
+      "lifecycle_status": "active",
+      "official_url": "https://solana.com",
+      "documentation_url": "https://solana.com/docs",
+      "wikipedia_title": "Solana (blockchain platform)"
+    },
+    {
+      "id": "technology:hardhat",
+      "slug": "hardhat",
+      "name": "Hardhat",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A development environment for compiling, testing and deploying Ethereum contracts.",
+      "lifecycle_status": "active",
+      "official_url": "https://hardhat.org",
+      "documentation_url": "https://hardhat.org/docs"
+    },
+    {
+      "id": "technology:foundry",
+      "slug": "foundry",
+      "name": "Foundry",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A fast Rust-based toolkit for building and testing Ethereum contracts.",
+      "lifecycle_status": "active",
+      "official_url": "https://getfoundry.sh",
+      "documentation_url": "https://book.getfoundry.sh"
+    },
+    {
+      "id": "technology:ethers-js",
+      "slug": "ethers-js",
+      "name": "ethers.js",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A JavaScript library for talking to Ethereum and its wallets.",
+      "lifecycle_status": "active",
+      "official_url": "https://ethers.org",
+      "documentation_url": "https://docs.ethers.org"
+    },
+    {
+      "id": "technology:metamask",
+      "slug": "metamask",
+      "name": "MetaMask",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A browser and mobile wallet for Ethereum and compatible chains.",
+      "lifecycle_status": "active",
+      "official_url": "https://metamask.io",
+      "documentation_url": "https://docs.metamask.io",
+      "wikipedia_title": "MetaMask"
+    },
+    {
+      "id": "technology:ipfs",
+      "slug": "ipfs",
+      "name": "IPFS",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:blockchain",
+      "short_description": "A peer-to-peer network for storing and sharing content by its hash.",
+      "lifecycle_status": "active",
+      "official_url": "https://ipfs.tech",
+      "documentation_url": "https://docs.ipfs.tech",
+      "wikipedia_title": "InterPlanetary File System"
+    },
+    {
+      "id": "technology:arduino",
+      "slug": "arduino",
+      "name": "Arduino",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:iot",
+      "short_description": "Open-source microcontroller boards and the IDE used to program them.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.arduino.cc",
+      "documentation_url": "https://docs.arduino.cc",
+      "wikipedia_title": "Arduino"
+    },
+    {
+      "id": "technology:raspberry-pi",
+      "slug": "raspberry-pi",
+      "name": "Raspberry Pi",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:iot",
+      "short_description": "Low-cost single-board Linux computers popular for devices and prototypes.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.raspberrypi.com",
+      "documentation_url": "https://www.raspberrypi.com/documentation/",
+      "wikipedia_title": "Raspberry Pi"
+    },
+    {
+      "id": "technology:mosquitto",
+      "slug": "mosquitto",
+      "name": "Eclipse Mosquitto",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:iot",
+      "short_description": "An open-source MQTT message broker.",
+      "lifecycle_status": "active",
+      "official_url": "https://mosquitto.org",
+      "documentation_url": "https://mosquitto.org/documentation/"
+    },
+    {
+      "id": "technology:node-red",
+      "slug": "node-red",
+      "name": "Node-RED",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:iot",
+      "short_description": "A visual flow editor for wiring devices, APIs and services together.",
+      "lifecycle_status": "active",
+      "official_url": "https://nodered.org",
+      "documentation_url": "https://nodered.org/docs/",
+      "wikipedia_title": "Node-RED"
+    },
+    {
+      "id": "technology:home-assistant",
+      "slug": "home-assistant",
+      "name": "Home Assistant",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:iot",
+      "short_description": "Open-source home automation software that runs locally.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.home-assistant.io",
+      "documentation_url": "https://www.home-assistant.io/docs/",
+      "wikipedia_title": "Home Assistant"
+    },
+    {
+      "id": "technology:aws-iot-core",
+      "slug": "aws-iot-core",
+      "name": "AWS IoT Core",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:iot",
+      "short_description": "AWS's managed service for connecting devices and routing their messages.",
+      "lifecycle_status": "active",
+      "official_url": "https://aws.amazon.com/iot-core/",
+      "documentation_url": "https://docs.aws.amazon.com/iot/"
     }
   ],
   "edges": [
@@ -12201,11 +12872,6 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "technology:solidity",
-      "target": "domain:backend",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
       "source": "technology:nixos",
       "target": "domain:testing-tooling",
       "relationship_type": "belongs_to_domain"
@@ -13566,11 +14232,6 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "concept:quantum-computing",
-      "target": "domain:systems",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
       "source": "concept:qubit",
       "target": "concept:quantum-computing",
       "relationship_type": "part_of_ecosystem"
@@ -13664,6 +14325,796 @@
       "source": "concept:neuro-symbolic-ai",
       "target": "concept:deep-learning",
       "relationship_type": "related_to"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:quantum",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "concept:quantum-superposition",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-entanglement",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-circuit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:grovers-algorithm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-error-correction",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-advantage",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:variational-quantum-eigensolver",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-annealing",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:trapped-ion-qubits",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:q-sharp",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:openqasm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:azure-quantum",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-computing",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-gate",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-algorithms",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "concept:quantum-superposition",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "concept:quantum-entanglement",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-gate",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "concept:quantum-error-correction",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:trapped-ion-qubits",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "concept:trapped-ion-qubits",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "concept:quantum-annealing",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:quantum-algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:grovers-algorithm",
+      "target": "concept:quantum-algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:variational-quantum-eigensolver",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-advantage",
+      "target": "concept:computational-complexity",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:public-key-cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:post-quantum-cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "concept:quantum-entanglement",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:cirq",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "concept:variational-quantum-eigensolver",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:openqasm",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:openqasm",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:q-sharp",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:azure-quantum",
+      "target": "technology:q-sharp",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "technology:qiskit",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "concept:superconducting-qubits",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "technology:aws",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "technology:azure-quantum",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "technology:cuda",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:blockchain",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:iot",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "concept:blockchain",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:distributed-ledger",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:proof-of-work",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:proof-of-stake",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:byzantine-fault-tolerance",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:merkle-tree",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:smart-contracts",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cryptocurrency",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:crypto-wallet",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:decentralized-finance",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:layer-2-scaling",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:internet-of-things",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:mqtt",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:zigbee",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:lorawan",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:digital-twin",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:home-automation",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:industrial-iot",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:bitcoin",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ethereum",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:solana",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:hardhat",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:foundry",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ethers-js",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:metamask",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ipfs",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:arduino",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:raspberry-pi",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:mosquitto",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:node-red",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:home-assistant",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:aws-iot-core",
+      "target": "domain:iot",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:solidity",
+      "target": "domain:blockchain",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:blockchain",
+      "target": "concept:distributed-ledger",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:blockchain",
+      "target": "concept:distributed-systems",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:hashing",
+      "target": "concept:merkle-tree",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "concept:merkle-tree",
+      "target": "concept:blockchain",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "concept:proof-of-work",
+      "target": "concept:consensus",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:proof-of-stake",
+      "target": "concept:consensus",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:proof-of-work",
+      "target": "concept:proof-of-stake",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "concept:byzantine-fault-tolerance",
+      "target": "concept:consensus",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:cryptocurrency",
+      "target": "concept:blockchain",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:crypto-wallet",
+      "target": "concept:public-key-cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:digital-signature",
+      "target": "concept:crypto-wallet",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "concept:smart-contracts",
+      "target": "concept:blockchain",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:decentralized-finance",
+      "target": "concept:smart-contracts",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:layer-2-scaling",
+      "target": "concept:blockchain",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:bitcoin",
+      "target": "concept:blockchain",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:bitcoin",
+      "target": "concept:proof-of-work",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:bitcoin",
+      "target": "concept:cryptocurrency",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ethereum",
+      "target": "concept:blockchain",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:ethereum",
+      "target": "concept:proof-of-stake",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:ethereum",
+      "target": "concept:smart-contracts",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:ethereum",
+      "target": "concept:decentralized-finance",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:solana",
+      "target": "concept:blockchain",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:solana",
+      "target": "concept:smart-contracts",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:solana",
+      "target": "technology:rust",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:solana",
+      "target": "technology:ethereum",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:solidity",
+      "target": "concept:smart-contracts",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:solidity",
+      "target": "technology:ethereum",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:hardhat",
+      "target": "concept:smart-contracts",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:hardhat",
+      "target": "technology:solidity",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:hardhat",
+      "target": "technology:typescript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:foundry",
+      "target": "technology:hardhat",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:foundry",
+      "target": "technology:rust",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:ethers-js",
+      "target": "technology:ethereum",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:ethers-js",
+      "target": "technology:typescript",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:metamask",
+      "target": "concept:crypto-wallet",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:metamask",
+      "target": "technology:ethereum",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:ipfs",
+      "target": "technology:ethereum",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:ipfs",
+      "target": "technology:go",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "concept:internet-of-things",
+      "target": "concept:edge-computing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:internet-of-things",
+      "target": "concept:microcontroller",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:internet-of-things",
+      "target": "concept:digital-twin",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:industrial-iot",
+      "target": "concept:internet-of-things",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:digital-twin",
+      "target": "concept:industrial-iot",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:home-automation",
+      "target": "concept:internet-of-things",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:mqtt",
+      "target": "concept:message-broker",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:mqtt",
+      "target": "concept:internet-of-things",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:zigbee",
+      "target": "concept:home-automation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:lorawan",
+      "target": "concept:internet-of-things",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:arduino",
+      "target": "concept:microcontroller",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:esp32",
+      "target": "technology:arduino",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:raspberry-pi",
+      "target": "concept:internet-of-things",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:raspberry-pi",
+      "target": "technology:python",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:mosquitto",
+      "target": "concept:mqtt",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:node-red",
+      "target": "technology:nodejs",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:node-red",
+      "target": "concept:mqtt",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:home-assistant",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:home-assistant",
+      "target": "concept:home-automation",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:home-assistant",
+      "target": "concept:zigbee",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:home-assistant",
+      "target": "concept:mqtt",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:aws-iot-core",
+      "target": "technology:aws",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:aws-iot-core",
+      "target": "concept:mqtt",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:aws-iot-core",
+      "target": "concept:internet-of-things",
+      "relationship_type": "used_for"
     }
   ]
 }
