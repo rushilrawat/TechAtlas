@@ -591,8 +591,12 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
     point = {nid: (p[0], p[1]) for nid, p in pos.items()}
 
     def drawn(s: str, t: str) -> tuple:
-        local = cluster_of[s] == cluster_of[t]
-        ref = point[cluster_of[s]] if local else (0.0, 0.0)
+        # Mirrors buildGraph.ts: a curve within one ecosystem bows away from the nearest
+        # shared anchor (its own cluster's, else the territory's); a bridge bows away
+        # from the atlas center.
+        local = territory_of[s] == territory_of[t]
+        anchor = cluster_of[s] if cluster_of[s] == cluster_of[t] else territory_of[s]
+        ref = point[anchor] if local else (0.0, 0.0)
         return (s, t, _curve(point[s], point[t], ref,
                              LOCAL_CURVATURE if local else CROSS_CURVATURE))
     scored = []
@@ -645,21 +649,26 @@ def _edge_tiers(edges: list[dict], pos: dict, ring: dict, territory_of: dict,
 
     bridges: list[tuple] = []
     per_pair: dict[tuple, int] = {}
-    for _, eid, s, t, ts, tt in scored:
-        if ts == tt or len(bridges) >= TIER_C_CAP:
-            continue
-        if math.dist(point[ts], point[tt]) - extent[ts] - extent[tt] > NEIGHBOR_GAP_PX:
-            continue  # only neighboring ecosystems; long bridges would cross the atlas
-        pair = tuple(sorted((ts, tt)))
-        path = drawn(s, t)
-        # Bridges may pass over local backbone curves but never cross another bridge.
-        if per_pair.get(pair, 0) >= TIER_C_PER_PAIR or any(
-                _curves_cross(path, other) for other in bridges):
-            continue
-        per_pair[pair] = per_pair.get(pair, 0) + 1
-        bridges.append(path)
-        tiers[eid] = "TierC"
+    local = [path for paths in accepted.values() for path in paths]
+    # Two passes: bridges that cross nothing first; then, if the budget is not yet met,
+    # bridges that pass over local curves. A bridge never crosses another bridge.
+    for strict in (True, False):
+        for _, eid, s, t, ts, tt in scored:
+            if ts == tt or len(bridges) >= TIER_C_CAP or tiers[eid] == "TierC":
+                continue
+            if math.dist(point[ts], point[tt]) - extent[ts] - extent[tt] > NEIGHBOR_GAP_PX:
+                continue  # only neighboring ecosystems; long bridges would cross the atlas
+            pair = tuple(sorted((ts, tt)))
+            if per_pair.get(pair, 0) >= TIER_C_PER_PAIR:
+                continue
+            path = drawn(s, t)
+            if any(_curves_cross(path, other) for other in bridges + (local if strict else [])):
+                continue
+            per_pair[pair] = per_pair.get(pair, 0) + 1
+            bridges.append(path)
+            tiers[eid] = "TierC"
     return tiers
+
 
 def main() -> None:
     if not DATASET.exists():

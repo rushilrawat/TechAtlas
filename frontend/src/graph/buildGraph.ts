@@ -27,6 +27,7 @@ export function curvePoint(a: Point, b: Point, curvature: number, t: number): Po
 // bright spiderweb, so unpromoted edges sit in the 0.04-0.10 opacity band (per-state
 // reducers in GraphCanvas promote the relevant ones). See design LLD.
 export const BASE_EDGE_SIZE = 0.4;
+const ROOT_DOMAIN = "domain:software-engineering"; // taxonomic root, not a nesting parent
 export const BASE_EDGE_COLOR = "rgba(140,150,170,0.06)";
 
 // Node-type shapes so classification is conveyed by form, not just color (a11y §14.2).
@@ -63,6 +64,18 @@ export function buildGraph(data: GraphResponse): Graph {
     });
   }
 
+  // Ecosystem (territory) of each node: a nested subdomain's members belong to their
+  // top-level parent's ecosystem, exactly as the layout generator groups them.
+  const parentOf = new Map<string, string>();
+  for (const e of data.edges) {
+    if (e.relationship_type === "has_subdomain" && e.source !== ROOT_DOMAIN) parentOf.set(e.target, e.source);
+  }
+  const territoryOf = (id: string): string => {
+    let d = graph.getNodeAttribute(id, "cluster") as string;
+    while (parentOf.has(d)) d = parentOf.get(d)!;
+    return d;
+  };
+
   for (const e of data.edges) {
     if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
     const key = e.id;
@@ -72,7 +85,7 @@ export function buildGraph(data: GraphResponse): Graph {
       size: BASE_EDGE_SIZE,
       color: BASE_EDGE_COLOR,
       tier: data.edge_tiers?.[key] ?? "TierD",
-      crossDomain: graph.getNodeAttribute(e.source, "cluster") !== graph.getNodeAttribute(e.target, "cluster"),
+      crossDomain: territoryOf(e.source) !== territoryOf(e.target),
       type: "curved",
     });
   }
@@ -92,7 +105,7 @@ export function buildGraph(data: GraphResponse): Graph {
       const [s, t] = graph.extremities(key);
       const a = graph.getNodeAttributes(s), b = graph.getNodeAttributes(t);
       const cross = graph.getEdgeAttribute(key, "crossDomain") as boolean;
-      const anchor = cross ? null : (a.cluster as string);
+      const anchor = cross ? null : a.cluster === b.cluster ? (a.cluster as string) : territoryOf(s);
       const ref = anchor && graph.hasNode(anchor) ? graph.getNodeAttributes(anchor) : { x: 0, y: 0 };
       const base = (cross ? 0.18 : 0.22) + index * 0.12;
       graph.setEdgeAttribute(key, "curvature",

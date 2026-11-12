@@ -577,4 +577,35 @@ test.describe("Overview interaction regressions", () => {
     await page.locator(".atlas-heading", { hasText: "Artificial Intelligence" }).click();
     await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
   });
+
+  test("search frames the target inside its own ecosystem and labels it", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    const search = page.getByLabel("Search the technology graph");
+    await search.click();
+    await search.fill("PostgreSQL");
+    await page.getByRole("option", { name: /PostgreSQL/ }).first().click();
+    await expect(page.getByRole("region", { name: "Node details" }).getByRole("heading", { name: "PostgreSQL" })).toBeVisible();
+    await page.waitForTimeout(900);
+    const framed = await page.evaluate(() => {
+      const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+      const g = s.getGraph();
+      const cont = s.getContainer() as HTMLElement;
+      const panel = document.querySelector(".details")!.getBoundingClientRect();
+      const left = cont.getBoundingClientRect().left;
+      const p = s.graphToViewport({ x: g.getNodeAttribute("technology:postgresql", "x"), y: g.getNodeAttribute("technology:postgresql", "y") });
+      const a = s.graphToViewport({ x: g.getNodeAttribute("domain:databases", "x"), y: g.getNodeAttribute("domain:databases", "y") });
+      return { x: p.x, y: p.y, anchorOnScreen: a.x > 0 && a.x < panel.left - left && a.y > 0 && a.y < cont.clientHeight,
+        w: cont.clientWidth, h: cont.clientHeight, panelLeft: panel.left - left,
+        label: s.getNodeDisplayData("technology:postgresql")?.label, ratio: s.getCamera().getState().ratio };
+    });
+    // The target is on screen, clear of the details panel, labelled, and zoomed in enough
+    // that its own ecosystem's anchor is in view too (the map structure is preserved).
+    expect(framed.x).toBeGreaterThan(0);
+    expect(framed.x).toBeLessThan(framed.panelLeft);
+    expect(framed.y).toBeGreaterThan(0);
+    expect(framed.y).toBeLessThan(framed.h);
+    expect(framed.label).toBe("PostgreSQL");
+    expect(framed.ratio).toBeLessThan(1);
+    expect(framed.anchorOnScreen).toBe(true);
+  });
 });

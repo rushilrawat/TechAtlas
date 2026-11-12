@@ -256,9 +256,10 @@ const HEADING_MAX_W = 150, HEADING_LINE_H = 14.4;
 let headingCtx: CanvasRenderingContext2D | null = null;
 
 /** Whether a box overlaps a circle (closest-point test). */
-function discHits(b: { x: number; y: number; w: number; h: number }, d: { x: number; y: number; r: number }) {
+function discHits(b: { x: number; y: number; w: number; h: number }, d: { x: number; y: number; r: number },
+  fringe = 0.85) {
   const nx = Math.max(b.x, Math.min(d.x, b.x + b.w)), ny = Math.max(b.y, Math.min(d.y, b.y + b.h));
-  return Math.hypot(nx - d.x, ny - d.y) < d.r * 0.92;
+  return Math.hypot(nx - d.x, ny - d.y) < d.r * fringe;
 }
 
 /**
@@ -287,22 +288,26 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     const text = headingCtx.measureText(h.label).width * 1.08;
     const w = Math.min(HEADING_MAX_W, text + 2);
     const bh = Math.ceil(text / HEADING_MAX_W + 0.05) * HEADING_LINE_H + 4;
-    // Outer rim first; the inner rim (facing the open atlas center) is the fallback.
-    for (const spot of [h, ...(h.alt ?? [])]) {
-      let x = spot.align === "right" ? spot.left : spot.align === "left" ? spot.left - w : spot.left - w / 2;
-      const y = spot.align === "up" ? spot.top - bh : spot.align === "down" ? spot.top : spot.top - bh / 2;
-      // Nudge a heading that barely overflows; never drag an off-screen ecosystem's name in.
-      if (x < -24 || x + w > vw + 24) continue;
-      x = Math.max(4, Math.min(vw - w - 4, x));
-      const box = { x, y, w, h: bh };
-      if (y < 0 || y + bh > vh) continue;
-      if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
-      // A heading never sits on top of another ecosystem.
-      if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc))) continue;
-      // Re-express the clamped box in the heading's own alignment anchor.
-      const left = spot.align === "right" ? x : spot.align === "left" ? x + w : x + w / 2;
-      placed.push({ h: { id: h.id, label: h.label, color: h.color, top: spot.top, align: spot.align, left }, box });
-      break;
+    // Preferred spot first, then fallbacks around its own cluster. A second pass lets a
+    // name graze a neighbor's sparse outer fringe rather than disappear entirely.
+    for (const fringe of [0.85, 0.6]) {
+      if (placed.some((p) => p.h.id === h.id)) break;
+      for (const spot of [h, ...(h.alt ?? [])]) {
+        let x = spot.align === "right" ? spot.left : spot.align === "left" ? spot.left - w : spot.left - w / 2;
+        const y = spot.align === "up" ? spot.top - bh : spot.align === "down" ? spot.top : spot.top - bh / 2;
+        // Nudge a heading that barely overflows; never drag an off-screen ecosystem's name in.
+        if (x < -24 || x + w > vw + 24) continue;
+        x = Math.max(4, Math.min(vw - w - 4, x));
+        const box = { x, y, w, h: bh };
+        if (y < 0 || y + bh > vh) continue;
+        if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
+        // A heading never sits on top of another ecosystem's body.
+        if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, fringe))) continue;
+        // Re-express the clamped box in the heading's own alignment anchor.
+        const left = spot.align === "right" ? x : spot.align === "left" ? x + w : x + w / 2;
+        placed.push({ h: { id: h.id, label: h.label, color: h.color, top: spot.top, align: spot.align, left }, box });
+        break;
+      }
     }
   }
   return placed.map((p) => p.h);
@@ -1193,13 +1198,18 @@ export function GraphCanvas({
         // neighbor, another name, or a panel is in the way.
         const outer = { left: p.x + sx * 8, top: p.y + sy * 8, align: alignOf(sx, sy) };
         const above = { left: c.x, top: c.y - r - 6, align: "up" };
-        const [first, second] = ringLike ? [outer, above] : [above, outer];
-        headings.push({ id: d.id, label: d.name, color: d.color, ...first, disc: { x: c.x, y: c.y, r },
-          alt: [second, { left: c.x, top: c.y + r + 6, align: "down" },
-            { left: c.x + r * 0.8, top: c.y - r * 0.8, align: "right" },
-            { left: c.x - r * 0.8, top: c.y - r * 0.8, align: "left" },
-            { left: c.x + r + 8, top: c.y, align: "right" }, { left: c.x - r - 8, top: c.y, align: "left" },
-            { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) }] });
+        // Every fallback stays hugging its own cluster, so a name is never closer to a
+        // neighbor than to the ecosystem it labels.
+        const hug = [{ left: c.x, top: c.y + r + 6, align: "down" },
+          { left: c.x + r * 0.75, top: c.y - r * 0.75, align: "right" },
+          { left: c.x - r * 0.75, top: c.y - r * 0.75, align: "left" },
+          { left: c.x + r * 0.75, top: c.y + r * 0.75, align: "right" },
+          { left: c.x - r * 0.75, top: c.y + r * 0.75, align: "left" },
+          { left: c.x + r + 8, top: c.y, align: "right" }, { left: c.x - r - 8, top: c.y, align: "left" }];
+        const [first, ...rest] = ringLike
+          ? [outer, above, ...hug, { left: q.x - sx * 8, top: q.y - sy * 8, align: alignOf(-sx, -sy) }]
+          : [above, ...hug];
+        headings.push({ id: d.id, label: d.name, color: d.color, ...first, disc: { x: c.x, y: c.y, r }, alt: rest });
       }
       setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel, selectedRef.current) });
     };

@@ -218,3 +218,28 @@ describe("curved edge geometry", () => {
     expect(g.getNodeAttribute("technology:react", "size")).toBe(3.2);
   });
 });
+
+describe("ecosystem membership of edges", () => {
+  const node = (id: string, cluster: string, type: "domain" | "technology" = "technology") => ({
+    id, slug: id, label: id, node_type: type, node_subtype: null, primary_domain: cluster,
+    x: 0, y: 0, cluster, size: 3, color: "#888888",
+  });
+  const data = {
+    version: "t", layout_version: "t",
+    nodes: [node("domain:software-engineering", "domain:software-engineering", "domain"),
+      node("domain:systems", "domain:systems", "domain"), node("domain:arch", "domain:arch", "domain"),
+      node("t:a", "domain:systems"), node("t:b", "domain:arch"), node("t:c", "domain:software-engineering")],
+    edges: [
+      { id: "e0", source: "domain:systems", target: "domain:arch", relationship_type: "has_subdomain", weight: null },
+      { id: "e1", source: "domain:software-engineering", target: "domain:systems", relationship_type: "has_subdomain", weight: null },
+      { id: "e2", source: "t:a", target: "t:b", relationship_type: "related_to", weight: null },
+      { id: "e3", source: "t:a", target: "t:c", relationship_type: "related_to", weight: null },
+    ],
+  } as GraphResponse;
+
+  it("treats a nested subdomain as part of its parent ecosystem, not the taxonomic root's", () => {
+    const g = buildGraph(data);
+    expect(g.getEdgeAttribute("e2", "crossDomain")).toBe(false);
+    expect(g.getEdgeAttribute("e3", "crossDomain")).toBe(true);
+  });
+});
