@@ -208,7 +208,7 @@ CURATED = [
     "domain:mobile", "domain:gamedev", "domain:ai-ml", "domain:robotics",
     "domain:databases", "domain:backend", "domain:cloud-devops",
     "domain:networks", "domain:systems", "domain:theory", "domain:security",
-    "domain:quantum",
+    "domain:quantum", "domain:blockchain", "domain:iot",
 ]
 
 
@@ -402,14 +402,15 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
 
 
 MACRO_COMPOSITION = "continents"
-EXPECTED_NODES, EXPECTED_EDGES = 628, 1176  # canonical dataset size (sanity warning only)
+EXPECTED_NODES, EXPECTED_EDGES = 662, 1272  # canonical dataset size (sanity warning only)
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [
     ["domain:theory", "domain:quantum", "domain:systems", "domain:networks", "domain:security"],
     ["domain:testing-tooling", "domain:backend", "domain:cloud-devops",
-     "domain:databases", "domain:software-engineering"],
-    ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev"],
+     "domain:databases", "domain:software-engineering", "domain:blockchain"],
+    ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev",
+     "domain:iot"],
 ]
 LANDSCAPE = 1.6  # target width:height of the packed composition (desktop canvas)
 

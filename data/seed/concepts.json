@@ -3803,5 +3803,229 @@
     "lifecycle_status": "active",
     "importance": 0.45,
     "wikipedia_title": "Trapped-ion quantum computer"
+  },
+  {
+    "id": "concept:blockchain",
+    "slug": "blockchain",
+    "name": "Blockchain",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "An append-only chain of blocks, each linked to the previous one by a cryptographic hash.",
+    "lifecycle_status": "active",
+    "importance": 0.8,
+    "wikipedia_title": "Blockchain"
+  },
+  {
+    "id": "concept:distributed-ledger",
+    "slug": "distributed-ledger",
+    "name": "Distributed Ledger",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "A database replicated and agreed upon across many independent nodes.",
+    "lifecycle_status": "active",
+    "importance": 0.6,
+    "wikipedia_title": "Distributed ledger"
+  },
+  {
+    "id": "concept:proof-of-work",
+    "slug": "proof-of-work",
+    "name": "Proof of Work",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Consensus by spending computation to propose the next block.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "PoW"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Proof of work"
+  },
+  {
+    "id": "concept:proof-of-stake",
+    "slug": "proof-of-stake",
+    "name": "Proof of Stake",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Consensus by validators who lock up stake and risk losing it for misbehaving.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "PoS"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Proof of stake"
+  },
+  {
+    "id": "concept:byzantine-fault-tolerance",
+    "slug": "byzantine-fault-tolerance",
+    "name": "Byzantine Fault Tolerance",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Reaching agreement even when some participants lie or fail arbitrarily.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "BFT"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Byzantine fault"
+  },
+  {
+    "id": "concept:merkle-tree",
+    "slug": "merkle-tree",
+    "name": "Merkle Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "A tree of hashes that proves a piece of data belongs to a larger set.",
+    "lifecycle_status": "active",
+    "importance": 0.5,
+    "wikipedia_title": "Merkle tree"
+  },
+  {
+    "id": "concept:smart-contracts",
+    "slug": "smart-contracts",
+    "name": "Smart Contracts",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Programs stored on a blockchain that run exactly as written.",
+    "lifecycle_status": "active",
+    "importance": 0.65,
+    "wikipedia_title": "Smart contract"
+  },
+  {
+    "id": "concept:cryptocurrency",
+    "slug": "cryptocurrency",
+    "name": "Cryptocurrency",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Digital money whose ownership is recorded on a blockchain.",
+    "lifecycle_status": "active",
+    "importance": 0.65,
+    "wikipedia_title": "Cryptocurrency"
+  },
+  {
+    "id": "concept:crypto-wallet",
+    "slug": "crypto-wallet",
+    "name": "Cryptocurrency Wallet",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Software or hardware that holds the keys used to sign transactions.",
+    "lifecycle_status": "active",
+    "importance": 0.45,
+    "wikipedia_title": "Cryptocurrency wallet"
+  },
+  {
+    "id": "concept:decentralized-finance",
+    "slug": "decentralized-finance",
+    "name": "Decentralized Finance",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Lending, trading and other financial services run by smart contracts.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "DeFi"
+    ],
+    "importance": 0.45,
+    "wikipedia_title": "Decentralized finance"
+  },
+  {
+    "id": "concept:layer-2-scaling",
+    "slug": "layer-2-scaling",
+    "name": "Layer 2 Scaling",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Processing transactions off the main chain and settling the results on it.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "Rollups"
+    ],
+    "importance": 0.4
+  },
+  {
+    "id": "concept:internet-of-things",
+    "slug": "internet-of-things",
+    "name": "Internet of Things",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "Everyday physical devices connected to the internet to sense and act.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "IoT"
+    ],
+    "importance": 0.75,
+    "wikipedia_title": "Internet of things"
+  },
+  {
+    "id": "concept:mqtt",
+    "slug": "mqtt",
+    "name": "MQTT",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "A lightweight publish-subscribe messaging protocol for devices.",
+    "lifecycle_status": "active",
+    "node_subtype": "protocol",
+    "importance": 0.6,
+    "wikipedia_title": "MQTT"
+  },
+  {
+    "id": "concept:zigbee",
+    "slug": "zigbee",
+    "name": "Zigbee",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "A low-power mesh radio protocol for home and sensor networks.",
+    "lifecycle_status": "active",
+    "node_subtype": "protocol",
+    "importance": 0.45,
+    "wikipedia_title": "Zigbee"
+  },
+  {
+    "id": "concept:lorawan",
+    "slug": "lorawan",
+    "name": "LoRaWAN",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "A long-range, low-power wide-area network protocol for sensors.",
+    "lifecycle_status": "active",
+    "node_subtype": "protocol",
+    "importance": 0.4,
+    "wikipedia_title": "LoRa"
+  },
+  {
+    "id": "concept:digital-twin",
+    "slug": "digital-twin",
+    "name": "Digital Twin",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "A live virtual model of a physical object kept in sync with its sensor data.",
+    "lifecycle_status": "active",
+    "importance": 0.45,
+    "wikipedia_title": "Digital twin"
+  },
+  {
+    "id": "concept:home-automation",
+    "slug": "home-automation",
+    "name": "Home Automation",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "Controlling lights, heating and appliances in a home through connected devices.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "Smart home"
+    ],
+    "importance": 0.45,
+    "wikipedia_title": "Home automation"
+  },
+  {
+    "id": "concept:industrial-iot",
+    "slug": "industrial-iot",
+    "name": "Industrial IoT",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "Connected sensors and machines in factories, energy and logistics.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "IIoT"
+    ],
+    "importance": 0.45,
+    "wikipedia_title": "Industrial internet of things"
   }
 ]

@@ -62,6 +62,8 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:mobile": "#53e0a0",                # mint green
     "domain:gamedev": "#ff7fa0",               # coral-pink
     "domain:quantum": "#e9f07a",               # lime-lemon (>=18 from all under CVD sims)
+    "domain:blockchain": "#df7205",            # deep bitcoin orange (>=14.9 under CVD sims)
+    "domain:iot": "#b7f91f",                   # electric lime (>=14.9 under CVD sims)
     # Subdomains — tints within the PARENT family (hierarchy honest, §12).
     "domain:computer-architecture": "#d98b55", # lighter copper (within Systems)
     "domain:embedded": "#c9732f",              # deep copper-tan (within Systems)

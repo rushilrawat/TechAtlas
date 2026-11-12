@@ -225,4 +225,30 @@ export const JOURNEYS: Journey[] = [
     { id: "concept:tcp-ip", caption: "TCP/IP is the protocol suite the internet runs on." },
     { id: "concept:congestion-control", caption: "Congestion control keeps senders from overwhelming the network." },
   ] },
+  { title: "How Bitcoin works", steps: [
+    { id: "concept:hashing", caption: "Hashing fingerprints data so any change is obvious." },
+    { id: "concept:merkle-tree", caption: "A Merkle tree hashes a whole block of transactions into one root." },
+    { id: "concept:blockchain", caption: "Each block links to the last by hash, forming a blockchain." },
+    { id: "technology:bitcoin", caption: "Bitcoin was the first blockchain, created for digital money." },
+    { id: "concept:proof-of-work", caption: "Miners spend computation to agree on the next block." },
+  ] },
+  { title: "Building on Ethereum", steps: [
+    { id: "concept:smart-contracts", caption: "Smart contracts are programs that live on a blockchain." },
+    { id: "technology:solidity", caption: "Solidity is the main language for writing them." },
+    { id: "technology:hardhat", caption: "Hardhat compiles, tests and deploys contracts." },
+    { id: "technology:typescript", caption: "Its tooling and scripts are written in TypeScript." },
+  ] },
+  { title: "From sensor to cloud", steps: [
+    { id: "technology:arduino", caption: "Arduino boards read sensors and drive motors." },
+    { id: "concept:microcontroller", caption: "At their heart is a microcontroller." },
+    { id: "concept:internet-of-things", caption: "Connect many of them and you have the Internet of Things." },
+    { id: "concept:mqtt", caption: "MQTT is the lightweight protocol devices use to report in." },
+    { id: "technology:aws-iot-core", caption: "AWS IoT Core receives and routes those messages in the cloud." },
+  ] },
+  { title: "A smart home", steps: [
+    { id: "concept:zigbee", caption: "Zigbee links low-power sensors and bulbs in a mesh." },
+    { id: "concept:home-automation", caption: "Home automation ties lights, heating and locks together." },
+    { id: "technology:home-assistant", caption: "Home Assistant runs it all locally, without a cloud." },
+    { id: "technology:python", caption: "It is written in Python, so it is easy to extend." },
+  ] },
 ];

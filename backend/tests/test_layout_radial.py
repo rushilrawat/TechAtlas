@@ -34,7 +34,7 @@ def test_canonical_nodes_and_ids_preserved():
 def test_fourteen_whole_ecosystems_never_overlap():
     coords, ext = LAYOUT["coordinates"], LAYOUT["domain_extents"]
     order = LAYOUT["domain_ring_order"]
-    assert len(order) == 15
+    assert len(order) == 17
     assert LAYOUT["macro_composition"] == gl.MACRO_COMPOSITION == "continents"
     for d in order:
         assert coords[d]["ring"] == 0
