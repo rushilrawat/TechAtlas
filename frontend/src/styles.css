@@ -1154,3 +1154,8 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
   .hero-title { font-size: 12.5px; }
   .hero-actions button { white-space: nowrap; padding: 5px 11px; font-size: 12px; }
 }
+
+/* Laptops and desktops: the Connections key joins the other tools on the left edge. */
+@media (min-width: 1024px) {
+  .relationship-legend { left: 14px; transform: none; }
+}
