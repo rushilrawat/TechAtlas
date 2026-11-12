@@ -254,6 +254,16 @@ type Heading = { id: string; label: string; color: string; left: number; top: nu
 type Box = { x: number; y: number; w: number; h: number };
 const HEADING_FONT = "600 11.5px Inter, system-ui, sans-serif";
 const HEADING_MAX_W = 150, HEADING_LINE_H = 14.4;
+// Phones: the whole atlas is a few hundred px wide, so names are smaller and short.
+const PHONE_HEADING_FONT = "600 10px Inter, system-ui, sans-serif";
+const PHONE_MAX_W = 96, PHONE_LINE_H = 12.5;
+const SHORT_NAMES: Record<string, string> = {
+  "domain:ai-ml": "AI & ML", "domain:backend": "Backend", "domain:cloud-devops": "Cloud & DevOps",
+  "domain:networks": "Networks", "domain:security": "Security", "domain:databases": "Databases",
+  "domain:frontend": "Frontend", "domain:gamedev": "Game Dev", "domain:mobile": "Mobile & Desktop",
+  "domain:robotics": "Robotics", "domain:software-engineering": "Software Eng.",
+  "domain:systems": "Systems", "domain:testing-tooling": "Testing & Tooling", "domain:theory": "Theory",
+};
 let headingCtx: CanvasRenderingContext2D | null = null;
 
 /** Whether a box overlaps a circle (closest-point test). */
@@ -301,8 +311,12 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
   obstacles: Obstacles, ringLike: boolean): Heading[] {
   headingCtx ??= document.createElement("canvas").getContext("2d");
   if (!headingCtx) return headings;
-  headingCtx.font = HEADING_FONT;
   const vw = container.clientWidth, vh = container.clientHeight;
+  const phone = vw < 641;
+  headingCtx.font = phone ? PHONE_HEADING_FONT : HEADING_FONT;
+  const maxW = phone ? PHONE_MAX_W : HEADING_MAX_W, lineH = phone ? PHONE_LINE_H : HEADING_LINE_H;
+  // Small clusters keep their names tight against the rim instead of a fixed gap.
+  const gap = phone ? 2 : 6;
   const crect = container.getBoundingClientRect();
   const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details"]
     .map((sel) => document.querySelector(sel)?.getBoundingClientRect())
@@ -317,16 +331,17 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     if (!h.disc) continue;
     const { x: cx, y: cy, r } = h.disc;
     // Canvas metrics can run narrower than the DOM's rendered font; keep a safety margin.
-    const text = headingCtx.measureText(h.label).width * 1.08;
-    const w = Math.min(HEADING_MAX_W, text + 2);
-    const bh = Math.ceil(text / HEADING_MAX_W + 0.05) * HEADING_LINE_H + 4;
+    const label = phone ? SHORT_NAMES[h.id] ?? h.label : h.label;
+    const text = headingCtx.measureText(label).width * 1.08;
+    const w = Math.min(maxW, text + 2);
+    const bh = Math.ceil(text / maxW + 0.05) * lineH + (phone ? 2 : 4);
     let best: { score: number; box: Box } | null = null;
-    for (const reach of [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+    for (const reach of phone ? [0.45, 0.6, 0.75, 0.9, 1.05] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
       for (let k = 0; k < 16; k++) {
         const a = -Math.PI / 2 + (k * Math.PI) / 8; // start straight above
         const dx = Math.cos(a), dy = Math.sin(a);
         // The box's near edge touches the spot, so the label grows away from its cluster.
-        const px = cx + dx * (r * reach + 6), py = cy + dy * (r * reach + 6);
+        const px = cx + dx * (r * reach + gap), py = cy + dy * (r * reach + gap);
         const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
@@ -341,7 +356,7 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     }
     if (best) {
       placed.push({ box: best.box,
-        h: { id: h.id, label: h.label, color: h.color, left: best.box.x, top: best.box.y, align: "box" } });
+        h: { id: h.id, label, color: h.color, left: best.box.x, top: best.box.y, align: phone ? "box phone" : "box" } });
     }
   }
   return placed.map((p) => p.h);
@@ -1301,6 +1316,7 @@ export function GraphCanvas({
           key={h.id}
           type="button"
           className={`atlas-heading atlas-heading-${h.align}${selectedId === h.id ? " is-active" : ""}`}
+          aria-label={domains?.find((d) => d.id === h.id)?.name ?? h.label}
           style={{ left: h.left, top: h.top, ["--domain" as string]: h.color }}
           onClick={() => onSelect(h.id)}
         >
