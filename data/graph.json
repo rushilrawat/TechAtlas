@@ -172,6 +172,16 @@
       "lifecycle_status": "mature"
     },
     {
+      "id": "domain:quantum",
+      "slug": "quantum",
+      "name": "Quantum Computing & Information",
+      "node_type": "domain",
+      "primary_domain": "domain:quantum",
+      "short_description": "Computing with qubits, superposition and entanglement to tackle problems that are hard for classical machines.",
+      "importance": 0.7,
+      "lifecycle_status": "active"
+    },
+    {
       "id": "concept:object-oriented-programming",
       "slug": "object-oriented-programming",
       "name": "Object-Oriented Programming",
@@ -3636,7 +3646,7 @@
       "slug": "quantum-computing",
       "name": "Quantum Computing",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Computation that exploits quantum-mechanical phenomena like superposition and entanglement.",
       "aliases": [
         "QC"
@@ -3649,7 +3659,7 @@
       "slug": "qubit",
       "name": "Qubits",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "The basic unit of quantum information, able to exist in superposition.",
       "aliases": [
         "Qubit"
@@ -3662,7 +3672,7 @@
       "slug": "quantum-gate",
       "name": "Quantum Gates",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Basic operations that manipulate the state of qubits.",
       "importance": 0.6,
       "wikipedia_title": "Quantum logic gate"
@@ -3672,7 +3682,7 @@
       "slug": "quantum-algorithms",
       "name": "Quantum Algorithms",
       "node_type": "concept",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "Algorithms designed to run on quantum computers.",
       "importance": 0.6,
       "wikipedia_title": "Quantum algorithm"
@@ -3834,6 +3844,147 @@
       ],
       "importance": 0.6,
       "wikipedia_title": "Neuro-symbolic AI"
+    },
+    {
+      "id": "concept:quantum-superposition",
+      "slug": "quantum-superposition",
+      "name": "Quantum Superposition",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum state that is a combination of several basis states at once.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Quantum superposition"
+    },
+    {
+      "id": "concept:quantum-entanglement",
+      "slug": "quantum-entanglement",
+      "name": "Quantum Entanglement",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Correlation between qubits so the state of one cannot be described independently.",
+      "lifecycle_status": "active",
+      "importance": 0.65,
+      "wikipedia_title": "Quantum entanglement"
+    },
+    {
+      "id": "concept:quantum-circuit",
+      "slug": "quantum-circuit",
+      "name": "Quantum Circuit",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A sequence of quantum gates and measurements that expresses a quantum program.",
+      "lifecycle_status": "active",
+      "importance": 0.7,
+      "wikipedia_title": "Quantum circuit"
+    },
+    {
+      "id": "concept:shors-algorithm",
+      "slug": "shors-algorithm",
+      "name": "Shor's Algorithm",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum algorithm that factors integers in polynomial time, threatening RSA.",
+      "lifecycle_status": "active",
+      "importance": 0.6,
+      "wikipedia_title": "Shor's algorithm"
+    },
+    {
+      "id": "concept:grovers-algorithm",
+      "slug": "grovers-algorithm",
+      "name": "Grover's Algorithm",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A quantum search algorithm with a quadratic speedup over classical search.",
+      "lifecycle_status": "active",
+      "importance": 0.55,
+      "wikipedia_title": "Grover's algorithm"
+    },
+    {
+      "id": "concept:quantum-error-correction",
+      "slug": "quantum-error-correction",
+      "name": "Quantum Error Correction",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Encoding logical qubits across many physical qubits to survive noise.",
+      "lifecycle_status": "active",
+      "importance": 0.6,
+      "wikipedia_title": "Quantum error correction"
+    },
+    {
+      "id": "concept:quantum-advantage",
+      "slug": "quantum-advantage",
+      "name": "Quantum Advantage",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A task a quantum computer completes far faster than any classical computer.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "Quantum supremacy"
+      ],
+      "importance": 0.5,
+      "wikipedia_title": "Quantum supremacy"
+    },
+    {
+      "id": "concept:variational-quantum-eigensolver",
+      "slug": "variational-quantum-eigensolver",
+      "name": "Variational Quantum Eigensolver",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "A hybrid quantum-classical algorithm that estimates ground-state energies.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "VQE"
+      ],
+      "importance": 0.45,
+      "wikipedia_title": "Variational quantum eigensolver"
+    },
+    {
+      "id": "concept:quantum-annealing",
+      "slug": "quantum-annealing",
+      "name": "Quantum Annealing",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Finding low-energy solutions to optimization problems with quantum fluctuations.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Quantum annealing"
+    },
+    {
+      "id": "concept:quantum-key-distribution",
+      "slug": "quantum-key-distribution",
+      "name": "Quantum Key Distribution",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Sharing encryption keys whose interception is detectable by quantum physics.",
+      "lifecycle_status": "active",
+      "aliases": [
+        "QKD"
+      ],
+      "importance": 0.5,
+      "wikipedia_title": "Quantum key distribution"
+    },
+    {
+      "id": "concept:superconducting-qubits",
+      "slug": "superconducting-qubits",
+      "name": "Superconducting Qubits",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Qubits built from superconducting circuits, used by IBM and Google hardware.",
+      "lifecycle_status": "active",
+      "importance": 0.5,
+      "wikipedia_title": "Superconducting quantum computing"
+    },
+    {
+      "id": "concept:trapped-ion-qubits",
+      "slug": "trapped-ion-qubits",
+      "name": "Trapped-Ion Qubits",
+      "node_type": "concept",
+      "primary_domain": "domain:quantum",
+      "short_description": "Qubits stored in individual ions held by electromagnetic fields.",
+      "lifecycle_status": "active",
+      "importance": 0.45,
+      "wikipedia_title": "Trapped-ion quantum computer"
     },
     {
       "id": "technology:python",
@@ -8077,11 +8228,110 @@
       "name": "Qiskit",
       "node_type": "technology",
       "node_subtype": "library",
-      "primary_domain": "domain:systems",
+      "primary_domain": "domain:quantum",
       "short_description": "An open-source SDK for programming quantum computers.",
       "official_url": "https://www.ibm.com/quantum/qiskit",
       "wikipedia_title": "Qiskit",
       "lifecycle_status": "active"
+    },
+    {
+      "id": "technology:cirq",
+      "slug": "cirq",
+      "name": "Cirq",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:quantum",
+      "short_description": "Google's Python library for writing and simulating quantum circuits.",
+      "lifecycle_status": "active",
+      "official_url": "https://quantumai.google/cirq",
+      "documentation_url": "https://quantumai.google/cirq",
+      "wikipedia_title": "Cirq"
+    },
+    {
+      "id": "technology:pennylane",
+      "slug": "pennylane",
+      "name": "PennyLane",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:quantum",
+      "short_description": "A Python library for quantum machine learning and differentiable quantum programs.",
+      "lifecycle_status": "active",
+      "official_url": "https://pennylane.ai",
+      "documentation_url": "https://docs.pennylane.ai"
+    },
+    {
+      "id": "technology:q-sharp",
+      "slug": "q-sharp",
+      "name": "Q#",
+      "node_type": "technology",
+      "node_subtype": "programming_language",
+      "primary_domain": "domain:quantum",
+      "short_description": "Microsoft's domain-specific language for quantum programs.",
+      "lifecycle_status": "active",
+      "official_url": "https://learn.microsoft.com/azure/quantum/qsharp-overview",
+      "documentation_url": "https://learn.microsoft.com/azure/quantum/",
+      "wikipedia_title": "Q Sharp"
+    },
+    {
+      "id": "technology:openqasm",
+      "slug": "openqasm",
+      "name": "OpenQASM",
+      "node_type": "technology",
+      "node_subtype": "standard",
+      "primary_domain": "domain:quantum",
+      "short_description": "An open assembly language for describing quantum circuits.",
+      "lifecycle_status": "active",
+      "official_url": "https://openqasm.com",
+      "documentation_url": "https://openqasm.com",
+      "wikipedia_title": "OpenQASM"
+    },
+    {
+      "id": "technology:amazon-braket",
+      "slug": "amazon-braket",
+      "name": "Amazon Braket",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "AWS's managed service for running quantum programs on simulators and hardware.",
+      "lifecycle_status": "active",
+      "official_url": "https://aws.amazon.com/braket/",
+      "documentation_url": "https://docs.aws.amazon.com/braket/"
+    },
+    {
+      "id": "technology:azure-quantum",
+      "slug": "azure-quantum",
+      "name": "Azure Quantum",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "Microsoft's cloud service for quantum hardware access and development.",
+      "lifecycle_status": "active",
+      "official_url": "https://azure.microsoft.com/products/quantum",
+      "documentation_url": "https://learn.microsoft.com/azure/quantum/"
+    },
+    {
+      "id": "technology:ibm-quantum-platform",
+      "slug": "ibm-quantum-platform",
+      "name": "IBM Quantum Platform",
+      "node_type": "technology",
+      "node_subtype": "cloud_service",
+      "primary_domain": "domain:quantum",
+      "short_description": "IBM's cloud access to its superconducting quantum processors.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.ibm.com/quantum",
+      "documentation_url": "https://docs.quantum.ibm.com/"
+    },
+    {
+      "id": "technology:cuda-q",
+      "slug": "cuda-q",
+      "name": "CUDA-Q",
+      "node_type": "technology",
+      "node_subtype": "sdk",
+      "primary_domain": "domain:quantum",
+      "short_description": "NVIDIA's platform for hybrid quantum-classical programs on GPUs and QPUs.",
+      "lifecycle_status": "active",
+      "official_url": "https://developer.nvidia.com/cuda-q",
+      "documentation_url": "https://nvidia.github.io/cuda-quantum/"
     }
   ],
   "edges": [
@@ -13566,11 +13816,6 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "concept:quantum-computing",
-      "target": "domain:systems",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
       "source": "concept:qubit",
       "target": "concept:quantum-computing",
       "relationship_type": "part_of_ecosystem"
@@ -13664,6 +13909,311 @@
       "source": "concept:neuro-symbolic-ai",
       "target": "concept:deep-learning",
       "relationship_type": "related_to"
+    },
+    {
+      "source": "domain:software-engineering",
+      "target": "domain:quantum",
+      "relationship_type": "has_subdomain"
+    },
+    {
+      "source": "concept:quantum-superposition",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-entanglement",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-circuit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:grovers-algorithm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-error-correction",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-advantage",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:variational-quantum-eigensolver",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-annealing",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:trapped-ion-qubits",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:q-sharp",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:openqasm",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:azure-quantum",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-computing",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-gate",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:quantum-algorithms",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "domain:quantum",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "concept:quantum-superposition",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:qubit",
+      "target": "concept:quantum-entanglement",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-gate",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "enables"
+    },
+    {
+      "source": "concept:quantum-error-correction",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:trapped-ion-qubits",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:superconducting-qubits",
+      "target": "concept:trapped-ion-qubits",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "concept:quantum-annealing",
+      "target": "concept:qubit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:quantum-algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:grovers-algorithm",
+      "target": "concept:quantum-algorithms",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:variational-quantum-eigensolver",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-advantage",
+      "target": "concept:computational-complexity",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:public-key-cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:shors-algorithm",
+      "target": "concept:post-quantum-cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "concept:quantum-entanglement",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:quantum-key-distribution",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:cirq",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:cirq",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:pennylane",
+      "target": "concept:variational-quantum-eigensolver",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:openqasm",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:qiskit",
+      "target": "technology:openqasm",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:q-sharp",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:azure-quantum",
+      "target": "technology:q-sharp",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "technology:qiskit",
+      "relationship_type": "commonly_used_with"
+    },
+    {
+      "source": "technology:ibm-quantum-platform",
+      "target": "concept:superconducting-qubits",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "technology:aws",
+      "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "technology:amazon-braket",
+      "target": "technology:azure-quantum",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "technology:cuda",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:cuda-q",
+      "target": "concept:quantum-circuit",
+      "relationship_type": "used_for"
     }
   ]
 }

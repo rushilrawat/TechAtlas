@@ -208,6 +208,7 @@ CURATED = [
     "domain:mobile", "domain:gamedev", "domain:ai-ml", "domain:robotics",
     "domain:databases", "domain:backend", "domain:cloud-devops",
     "domain:networks", "domain:systems", "domain:theory", "domain:security",
+    "domain:quantum",
 ]
 
 
@@ -401,10 +402,11 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
 
 
 MACRO_COMPOSITION = "continents"
+EXPECTED_NODES, EXPECTED_EDGES = 628, 1176  # canonical dataset size (sanity warning only)
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [
-    ["domain:theory", "domain:systems", "domain:networks", "domain:security"],
+    ["domain:theory", "domain:quantum", "domain:systems", "domain:networks", "domain:security"],
     ["domain:testing-tooling", "domain:backend", "domain:cloud-devops",
      "domain:databases", "domain:software-engineering"],
     ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev"],
@@ -486,8 +488,9 @@ def generate(dataset: dict, composition: str | None = None) -> dict:
     """Derive the parent-centered radial atlas and its canonical-edge backbone."""
     import sys
     nodes, edges = dataset["nodes"], dataset["edges"]
-    if len(nodes) != 607 or len(edges) != 1116:
-        print(f"Warning: expected 607/1116, got {len(nodes)}/{len(edges)}", file=sys.stderr)
+    if len(nodes) != EXPECTED_NODES or len(edges) != EXPECTED_EDGES:
+        print(f"Warning: expected {EXPECTED_NODES}/{EXPECTED_EDGES}, "
+              f"got {len(nodes)}/{len(edges)}", file=sys.stderr)
     ids = [n["id"] for n in nodes]
     by_id = {n["id"]: n for n in nodes}
     domain_of = {nid: _domain_of(n) for nid, n in by_id.items()}

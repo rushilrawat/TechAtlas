@@ -18,7 +18,7 @@ def _members(coords, anchor):
 
 def test_canonical_nodes_and_ids_preserved():
     coords = LAYOUT["coordinates"]
-    assert len(DATASET["nodes"]) == 607 and len(DATASET["edges"]) == 1116
+    assert len(DATASET["nodes"]) == gl.EXPECTED_NODES and len(DATASET["edges"]) == gl.EXPECTED_EDGES
     assert sorted(coords) == sorted(n["id"] for n in DATASET["nodes"])
     assert LAYOUT["overview_aggregates"] == []
     assert LAYOUT["layout_algorithm"] == gl.LAYOUT_ALGORITHM
@@ -34,7 +34,7 @@ def test_canonical_nodes_and_ids_preserved():
 def test_fourteen_whole_ecosystems_never_overlap():
     coords, ext = LAYOUT["coordinates"], LAYOUT["domain_extents"]
     order = LAYOUT["domain_ring_order"]
-    assert len(order) == 14
+    assert len(order) == 15
     assert LAYOUT["macro_composition"] == gl.MACRO_COMPOSITION == "continents"
     for d in order:
         assert coords[d]["ring"] == 0
@@ -105,7 +105,7 @@ def test_layout_is_stable_and_matches_committed_artifact():
 def test_edge_tiers_are_a_sparse_canonical_backbone():
     tiers = LAYOUT["edge_tiers"]
     coords = LAYOUT["coordinates"]
-    assert set(tiers) == {f"e{i}" for i in range(1116)}
+    assert set(tiers) == {f"e{i}" for i in range(gl.EXPECTED_EDGES)}
     assert set(tiers.values()) == {"TierA", "TierB", "TierC", "TierD"}
     counts = Counter(tiers.values())
     # Rush asked for more visible connections than the original 100-170 target.
@@ -127,8 +127,8 @@ def test_edge_tiers_are_a_sparse_canonical_backbone():
 def test_api_threads_radial_fields():
     service = GraphService()
     nodes, edges = service.graph()
-    assert len(nodes) == 607 and len(edges) == 1116
-    assert len(service._edge_tiers) == 1116
+    assert len(nodes) == gl.EXPECTED_NODES and len(edges) == gl.EXPECTED_EDGES
+    assert len(service._edge_tiers) == gl.EXPECTED_EDGES
     assert service.overview_aggregates() == []
     assert all(node.ring in (0, 1, 2, 3) for node in nodes)
 

@@ -1,4 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+// Canonical dataset size, read from the data so adding a domain never breaks the suite.
+const graph = JSON.parse(readFileSync(new URL("../../data/graph.json", import.meta.url), "utf8")) as
+  { nodes: { node_type: string }[] };
+const CANONICAL_NODES = graph.nodes.length;
 
 /**
  * Stack View regression suite.
@@ -159,7 +165,7 @@ test.describe("Stack View rendering regressions", () => {
       });
       return individuals;
     });
-    expect(shown, "all canonical nodes should render at the default overview").toBe(607);
+    expect(shown, "all canonical nodes should render at the default overview").toBe(CANONICAL_NODES);
     // Zoom into the detail band; the sampled canonical nodes are revealed (progressive
     // disclosure), proving they are present and reachable — not discarded.
     await page.evaluate(() => {

@@ -139,5 +139,5 @@ class DomainSummary(BaseModel):
     color: str
     node_count: int
     # Parent domain id when this is a nested subdomain (via a non-root has_subdomain
-    # edge); None for the 14 top-level domains. Lets the UI nest subdomains in the legend.
+    # edge); None for the top-level domains. Lets the UI nest subdomains in the legend.
     parent_id: str | None = None

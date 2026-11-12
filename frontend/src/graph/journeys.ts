@@ -75,4 +75,19 @@ export const JOURNEYS: Journey[] = [
     { id: "concept:slam", caption: "SLAM builds a map while localizing within it." },
     { id: "concept:occupancy-grid", caption: "An occupancy grid records which cells are free or blocked." },
   ] },
+  { title: "How a quantum computer computes", steps: [
+    { id: "concept:qubit", caption: "A qubit can hold a blend of 0 and 1 at the same time." },
+    { id: "concept:quantum-computing", caption: "Quantum computers manipulate many qubits together." },
+    { id: "concept:quantum-gate", caption: "Quantum gates are the operations applied to qubits." },
+    { id: "concept:quantum-circuit", caption: "Gates in sequence form a quantum circuit, the program." },
+    { id: "technology:qiskit", caption: "Qiskit lets you write circuits in Python." },
+    { id: "technology:ibm-quantum-platform", caption: "IBM Quantum runs them on real superconducting hardware." },
+  ] },
+  { title: "Why quantum threatens encryption", steps: [
+    { id: "concept:quantum-algorithms", caption: "Some algorithms only run efficiently on quantum hardware." },
+    { id: "concept:shors-algorithm", caption: "Shor's algorithm factors large numbers in polynomial time." },
+    { id: "concept:public-key-cryptography", caption: "That breaks the public-key schemes behind RSA." },
+    { id: "concept:cryptography", caption: "Cryptographers are preparing replacements now." },
+    { id: "concept:post-quantum-cryptography", caption: "Post-quantum cryptography resists attacks by quantum computers." },
+  ] },
 ];

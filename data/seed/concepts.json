@@ -3464,7 +3464,7 @@
     "slug": "quantum-computing",
     "name": "Quantum Computing",
     "node_type": "concept",
-    "primary_domain": "domain:systems",
+    "primary_domain": "domain:quantum",
     "short_description": "Computation that exploits quantum-mechanical phenomena like superposition and entanglement.",
     "aliases": [
       "QC"
@@ -3477,7 +3477,7 @@
     "slug": "qubit",
     "name": "Qubits",
     "node_type": "concept",
-    "primary_domain": "domain:systems",
+    "primary_domain": "domain:quantum",
     "short_description": "The basic unit of quantum information, able to exist in superposition.",
     "aliases": [
       "Qubit"
@@ -3490,7 +3490,7 @@
     "slug": "quantum-gate",
     "name": "Quantum Gates",
     "node_type": "concept",
-    "primary_domain": "domain:systems",
+    "primary_domain": "domain:quantum",
     "short_description": "Basic operations that manipulate the state of qubits.",
     "importance": 0.6,
     "wikipedia_title": "Quantum logic gate"
@@ -3500,7 +3500,7 @@
     "slug": "quantum-algorithms",
     "name": "Quantum Algorithms",
     "node_type": "concept",
-    "primary_domain": "domain:systems",
+    "primary_domain": "domain:quantum",
     "short_description": "Algorithms designed to run on quantum computers.",
     "importance": 0.6,
     "wikipedia_title": "Quantum algorithm"
@@ -3662,5 +3662,146 @@
     ],
     "importance": 0.6,
     "wikipedia_title": "Neuro-symbolic AI"
+  },
+  {
+    "id": "concept:quantum-superposition",
+    "slug": "quantum-superposition",
+    "name": "Quantum Superposition",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A quantum state that is a combination of several basis states at once.",
+    "lifecycle_status": "active",
+    "importance": 0.65,
+    "wikipedia_title": "Quantum superposition"
+  },
+  {
+    "id": "concept:quantum-entanglement",
+    "slug": "quantum-entanglement",
+    "name": "Quantum Entanglement",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Correlation between qubits so the state of one cannot be described independently.",
+    "lifecycle_status": "active",
+    "importance": 0.65,
+    "wikipedia_title": "Quantum entanglement"
+  },
+  {
+    "id": "concept:quantum-circuit",
+    "slug": "quantum-circuit",
+    "name": "Quantum Circuit",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A sequence of quantum gates and measurements that expresses a quantum program.",
+    "lifecycle_status": "active",
+    "importance": 0.7,
+    "wikipedia_title": "Quantum circuit"
+  },
+  {
+    "id": "concept:shors-algorithm",
+    "slug": "shors-algorithm",
+    "name": "Shor's Algorithm",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A quantum algorithm that factors integers in polynomial time, threatening RSA.",
+    "lifecycle_status": "active",
+    "importance": 0.6,
+    "wikipedia_title": "Shor's algorithm"
+  },
+  {
+    "id": "concept:grovers-algorithm",
+    "slug": "grovers-algorithm",
+    "name": "Grover's Algorithm",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A quantum search algorithm with a quadratic speedup over classical search.",
+    "lifecycle_status": "active",
+    "importance": 0.55,
+    "wikipedia_title": "Grover's algorithm"
+  },
+  {
+    "id": "concept:quantum-error-correction",
+    "slug": "quantum-error-correction",
+    "name": "Quantum Error Correction",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Encoding logical qubits across many physical qubits to survive noise.",
+    "lifecycle_status": "active",
+    "importance": 0.6,
+    "wikipedia_title": "Quantum error correction"
+  },
+  {
+    "id": "concept:quantum-advantage",
+    "slug": "quantum-advantage",
+    "name": "Quantum Advantage",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A task a quantum computer completes far faster than any classical computer.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "Quantum supremacy"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Quantum supremacy"
+  },
+  {
+    "id": "concept:variational-quantum-eigensolver",
+    "slug": "variational-quantum-eigensolver",
+    "name": "Variational Quantum Eigensolver",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "A hybrid quantum-classical algorithm that estimates ground-state energies.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "VQE"
+    ],
+    "importance": 0.45,
+    "wikipedia_title": "Variational quantum eigensolver"
+  },
+  {
+    "id": "concept:quantum-annealing",
+    "slug": "quantum-annealing",
+    "name": "Quantum Annealing",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Finding low-energy solutions to optimization problems with quantum fluctuations.",
+    "lifecycle_status": "active",
+    "importance": 0.45,
+    "wikipedia_title": "Quantum annealing"
+  },
+  {
+    "id": "concept:quantum-key-distribution",
+    "slug": "quantum-key-distribution",
+    "name": "Quantum Key Distribution",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Sharing encryption keys whose interception is detectable by quantum physics.",
+    "lifecycle_status": "active",
+    "aliases": [
+      "QKD"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Quantum key distribution"
+  },
+  {
+    "id": "concept:superconducting-qubits",
+    "slug": "superconducting-qubits",
+    "name": "Superconducting Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Qubits built from superconducting circuits, used by IBM and Google hardware.",
+    "lifecycle_status": "active",
+    "importance": 0.5,
+    "wikipedia_title": "Superconducting quantum computing"
+  },
+  {
+    "id": "concept:trapped-ion-qubits",
+    "slug": "trapped-ion-qubits",
+    "name": "Trapped-Ion Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Qubits stored in individual ions held by electromagnetic fields.",
+    "lifecycle_status": "active",
+    "importance": 0.45,
+    "wikipedia_title": "Trapped-ion quantum computer"
   }
 ]

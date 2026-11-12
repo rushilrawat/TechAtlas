@@ -168,5 +168,15 @@
     "short_description": "Generating and manipulating images: rendering pipelines, ray tracing, shaders, and geometric modeling.",
     "importance": 0.72,
     "lifecycle_status": "mature"
+  },
+  {
+    "id": "domain:quantum",
+    "slug": "quantum",
+    "name": "Quantum Computing & Information",
+    "node_type": "domain",
+    "primary_domain": "domain:quantum",
+    "short_description": "Computing with qubits, superposition and entanglement to tackle problems that are hard for classical machines.",
+    "importance": 0.7,
+    "lifecycle_status": "active"
   }
 ]

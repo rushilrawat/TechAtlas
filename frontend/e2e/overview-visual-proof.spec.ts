@@ -1,4 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+// Canonical dataset size, read from the data so adding a domain never breaks the suite.
+const graph = JSON.parse(readFileSync(new URL("../../data/graph.json", import.meta.url), "utf8")) as
+  { nodes: { node_type: string }[] };
+const CANONICAL_NODES = graph.nodes.length;
+const TOP_LEVEL_DOMAINS = graph.nodes.filter((n) => n.node_type === "domain").length - 3; // minus 3 nested subdomains
 
 /**
  * Radial Atlas Visual-Proof harness.
@@ -9,7 +16,7 @@ import { test, expect, type Page } from "@playwright/test";
  * actually sees.
  *
  * Metrics per viewport:
- *   - visible individual nodes (607) and aggregate replacements (0)
+ *   - visible individual nodes (every canonical node) and aggregate replacements (0)
  *   - circle intersections / true overlaps between drawn circles
  *   - priority label collisions (domain headings + any WebGL label) and label/node hits
  *   - headings or domain anchors behind the side panels or clipped by the viewport
@@ -268,7 +275,7 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       await page.screenshot({ path: `screenshots/radial-${vp.width}x${vp.height}.png` });
 
       // Every canonical node remains individually visible at overview.
-      expect(m.visibleIndividualNodes).toBe(607);
+      expect(m.visibleIndividualNodes).toBe(CANONICAL_NODES);
       expect(m.visibleMarkers).toBe(0);
       expect(m.aggregatedNodeCount).toBe(0);
       // Parents are centered and every populated ecosystem surrounds its anchor.
@@ -287,7 +294,7 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
 
       if (vp.desktop) {
         expect(m.visibleCircleOverlaps, "drawn circles never overlap at desktop fit").toBe(0);
-        expect(m.visibleDomainLabels, "all 14 domain headings").toBe(14);
+        expect(m.visibleDomainLabels, "every top-level domain heading").toBe(TOP_LEVEL_DOMAINS);
         expect(m.labelNodeCollisions, "headings clear of node circles").toBeLessThanOrEqual(2);
       } else {
         // Phones keep minimal overview labels: only headings that fit without covering
@@ -444,7 +451,7 @@ test.describe("Overview interaction regressions", () => {
   }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     const before = await countVisible(page);
-    expect(before.individuals).toBe(607);
+    expect(before.individuals).toBe(CANONICAL_NODES);
     expect(before.markers).toBe(0);
     // Select the Robotics domain via the live app state (same path a legend click uses).
     await page.evaluate(() => {
@@ -502,7 +509,7 @@ test.describe("Overview interaction regressions", () => {
   }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     const before = await countVisible(page);
-    expect(before.individuals).toBe(607);
+    expect(before.individuals).toBe(CANONICAL_NODES);
     // Zoom the camera well past the overview band into detail.
     await page.evaluate(() => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
@@ -512,7 +519,7 @@ test.describe("Overview interaction regressions", () => {
     await page.waitForTimeout(400);
     const after = await countVisible(page);
     // Nodes remain present while detail edges become available.
-    expect(after.individuals).toBe(607);
+    expect(after.individuals).toBe(CANONICAL_NODES);
     expect(after.markers).toBe(0);
     expect(after.edges).toBeGreaterThan(before.edges);
   });
