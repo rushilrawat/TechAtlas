@@ -357,7 +357,7 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     const w = Math.min(maxW, text + 2);
     const bh = Math.ceil(text / maxW + 0.05) * lineH + (phone ? 2 : 4);
     let best: { score: number; box: Box; foreign: number } | null = null;
-    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45, 1.7, 2] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
       for (let k = 0; k < 24; k++) {
         const a = -Math.PI / 2 + (k * Math.PI) / 12; // start straight above
         const dx = Math.cos(a), dy = Math.sin(a);
@@ -366,15 +366,22 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
-        if (headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
+        if (phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
         const { nodes, curves, own, ownNodes } = obstacles.count(box, h.id);
         // Ring compositions read best with names on the outer rim; maps prefer above.
         const outward = ringLike ? Math.hypot(px - vw / 2, py - vh / 2) < Math.hypot(cx - vw / 2, cy - vh / 2) ? 2 : 0 : 0;
         const below = dy > 0.35 ? 0.6 : 0;
         // Covering another ecosystem's nodes or lines is what reads as a wrong label, so it
         // costs far more than grazing its own cluster's sparse fringe or sitting farther out.
-        const score = nodes * 14 + curves * 9 + ownNodes * 4 + own * 0.6 + reach * 3 + below + outward;
-        if (!best || score < best.score - 1e-9) best = { score, box, foreign: nodes + curves };
+        // Phones: clusters are packed tightly, so a name must also read as belonging to its
+        // own cluster; it may not sit nearer (by rim distance) to any other ecosystem.
+        const bx = box.x + w / 2, by = box.y + bh / 2;
+        const ownGap = Math.hypot(bx - cx, by - cy) - r;
+        if (phone && headings.some((o) => o.id !== h.id && o.disc &&
+          Math.hypot(bx - o.disc.x, by - o.disc.y) - o.disc.r < ownGap - 2)) continue;
+        // On phones clusters are tiny, so a name on its own nodes hides the cluster itself.
+        const score = nodes * 14 + curves * 9 + ownNodes * (phone ? 12 : 4) + own * 0.6 + reach * 3 + below + outward;
+        if (!best || score < best.score - 1e-9) best = { score, box, foreign: nodes + curves + ownNodes };
       }
     }
     if (best) {
