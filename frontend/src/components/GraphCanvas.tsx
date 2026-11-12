@@ -9,9 +9,16 @@ import type { LabelContext } from "../graph/semanticZoom";
 import { selectClearEdges } from "../graph/clearEdges";
 import EdgeCurveProgram from "@sigma/edge-curve";
 import { computeFit } from "../graph/cameraFit";
+import { api } from "../api/client";
+import type { SharedCamera } from "../graph/shareView";
 
 interface Props {
   data: GraphResponse;
+  theme?: "dark" | "light";
+  journeyNodeIds?: string[];
+  journeyEdgeIds?: string[];
+  initialCamera?: SharedCamera | null;
+  onCameraChange?: (camera: SharedCamera) => void;
   selectedId: string | null;
   selectedEdgeId?: string | null;
   previewEdgeId?: string | null;
@@ -54,6 +61,18 @@ const DIM_NODE = "rgba(120,130,150,0.12)";
 const CROSS_EDGE = "rgba(222,208,178,0.42)";
 const ACTIVE_CROSS_EDGE = "rgba(240,214,160,0.85)";
 const RING_ALPHA = [1, 0.95, 0.86, 0.74];
+const EMPTY_IDS: string[] = [];
+
+/**
+ * Node fade: Sigma's node program draws fills opaque, so a receding node is mixed toward
+ * the page background instead of given an alpha. `amount` 1 = full color, 0 = background.
+ */
+function fadeNode(color: unknown, amount: number): string {
+  if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) return String(color);
+  const bg = document.documentElement.dataset.theme === "light" ? [230, 237, 243] : [11, 14, 20];
+  const c = [1, 3, 5].map((i, k) => Math.round(bg[k] + (parseInt(color.slice(i, i + 2), 16) - bg[k]) * amount));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
 
 /** `#rrggbb` -> rgba() with the given alpha; non-hex colors pass through unchanged. */
 function withAlpha(color: unknown, alpha: number): string {
@@ -322,7 +341,8 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
   // Small clusters keep their names tight against the rim instead of a fixed gap.
   const gap = phone ? 2 : 6;
   const crect = container.getBoundingClientRect();
-  const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details"]
+  const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details", ".hero",
+    ".atlas-rail", ".journey-panel", ".compare-panel"]
     .map((sel) => document.querySelector(sel)?.getBoundingClientRect())
     .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
     .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));
@@ -396,6 +416,11 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
 
 export function GraphCanvas({
   data,
+  theme = "dark",
+  journeyNodeIds = EMPTY_IDS,
+  journeyEdgeIds = EMPTY_IDS,
+  initialCamera = null,
+  onCameraChange,
   selectedId,
   selectedEdgeId = null,
   previewEdgeId = null,
@@ -414,15 +439,28 @@ export function GraphCanvas({
   domains = null,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const onCameraChangeRef = useRef(onCameraChange);
+  const onSelectRef = useRef(onSelect);
+  const onSelectEdgeRef = useRef(onSelectEdge);
+  onSelectRef.current = onSelect;
+  onSelectEdgeRef.current = onSelectEdge;
+  useEffect(() => { sigmaRef.current?.setSetting("labelColor", { color: theme === "light" ? "#26364d" : "#c8d0e8" }); sigmaRef.current?.refresh(); }, [theme]); // also re-runs node fades
+  useEffect(() => { onCameraChangeRef.current = onCameraChange; }, [onCameraChange]);
   const sigmaRef = useRef<Sigma | null>(null);
   const graphRef = useRef<Graph | null>(null);
 
+  const journeyNodesRef = useRef(new Set(journeyNodeIds));
+  const journeyEdgesRef = useRef(new Set(journeyEdgeIds));
   const hoveredRef = useRef<string | null>(null);
+  const [hoverPreview, setHoverPreview] = useState<{ id: string; x: number; y: number; description: string } | null>(null);
+  const descriptionsRef = useRef(new Map<string, string>());
+  const pendingDescriptionsRef = useRef(new Set<string>());
   const selectedRef = useRef<string | null>(selectedId);
   const selectedEdgeRef = useRef<string | null>(selectedEdgeId);
   const previewEdgeRef = useRef<string | null>(previewEdgeId);
   const keyboardIndexRef = useRef(-1);
   const [keyboardDomain, setKeyboardDomain] = useState("");
+  useEffect(() => { journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds); sigmaRef.current?.refresh(); }, [journeyNodeIds, journeyEdgeIds]);
   // Precomputed highlight set for the current active node (Task 7).
   const activeRef = useRef<string | null>(null);
   const neighborSetRef = useRef<Set<string> | null>(null);
@@ -452,6 +490,7 @@ export function GraphCanvas({
   const ratioRef = useRef<number>(1);
   // Drawn-size multiplier for the current viewport's atlas fit (1 = 1440x900 reference).
   const sizeScaleRef = useRef<number>(1);
+  const focusFadeRef = useRef<number>(1);
   // Projected screen positions for Stack View domain headings (DOM overlay).
   const [headingScreens, setHeadingScreens] = useState<
     { domainId: string; label: string; color: string; left: number; top: number; visible: boolean }[]
@@ -483,6 +522,29 @@ export function GraphCanvas({
       edgeProgramClasses: { curved: EdgeCurveProgram },
       enableEdgeEvents: true,
       labelColor: { color: "#c8d0e8" },
+      // Hovered / highlighted node: a dark rounded plate under the light label (Sigma's
+      // default plate is white, which made the light label unreadable).
+      defaultDrawNodeHover: (context, d, settings) => {
+        const size = settings.labelSize;
+        context.font = `${settings.labelWeight} ${size}px ${settings.labelFont}`;
+        const light = document.documentElement.dataset.theme === "light";
+        context.beginPath();
+        context.arc(d.x, d.y, d.size + 3, 0, Math.PI * 2);
+        context.fillStyle = light ? "rgba(255,255,255,0.95)" : "rgba(11,14,20,0.92)";
+        context.fill();
+        context.lineWidth = 1.5;
+        context.strokeStyle = typeof d.color === "string" ? d.color : "#c8d0e8";
+        context.stroke();
+        if (typeof d.label !== "string" || !d.label) return;
+        const w = context.measureText(d.label).width;
+        const x = d.x + d.size + 6, h = size + 8;
+        context.beginPath();
+        context.roundRect(x - 4, d.y - h / 2, w + 8, h, 5);
+        context.fillStyle = light ? "rgba(255,255,255,0.95)" : "rgba(11,14,20,0.92)";
+        context.fill();
+        context.fillStyle = light ? "#1d3046" : "#eef2fb";
+        context.fillText(d.label, x, d.y + size / 3);
+      },
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
       // UI-C: reduce Universe label collisions. Larger grid cells + lower density mean
@@ -519,6 +581,7 @@ export function GraphCanvas({
     requestAnimationFrame(() => {
       if (stackActiveRef.current) return;
       sizeScaleRef.current = fitExplore(renderer, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      if (initialCamera) renderer.getCamera().setState(initialCamera);
       renderer.refresh();
     });
 
@@ -530,6 +593,20 @@ export function GraphCanvas({
     }
 
     // Compute the highlight set once whenever the active node changes.
+    // Focus transition: 0 = nothing receded yet, 1 = the rest of the map fully dimmed.
+    let fadeRaf = 0;
+    const startFocusFade = () => {
+      cancelAnimationFrame(fadeRaf);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { focusFadeRef.current = 1; return; }
+      const t0 = performance.now();
+      focusFadeRef.current = 0;
+      const step = (now: number) => {
+        focusFadeRef.current = Math.min(1, (now - t0) / 320);
+        renderer.refresh();
+        if (focusFadeRef.current < 1) fadeRaf = requestAnimationFrame(step);
+      };
+      fadeRaf = requestAnimationFrame(step);
+    };
     const recomputeActive = () => {
       let active = selectedRef.current ?? hoveredRef.current;
       // If a filter currently hides the active node, don't treat it as active —
@@ -538,6 +615,8 @@ export function GraphCanvas({
       const vis = visibleNodesRef.current;
       if (active && vis && !vis.has(active)) active = null;
       if (active === activeRef.current) return;
+      // A new selection (not a hover) eases the rest of the map back instead of snapping.
+      if (active && active === selectedRef.current) startFocusFade();
       activeRef.current = active;
       if (!active || !graph.hasNode(active)) {
         neighborSetRef.current = null;
@@ -584,6 +663,12 @@ export function GraphCanvas({
       if (vis && !vis.has(node)) {
         res.hidden = true;
         return res;
+      }
+
+      if (journeyNodesRef.current.size && !scanStatusRef.current) {
+        res.size = (dataIn.size as number) * sizeScaleRef.current;
+        if (journeyNodesRef.current.has(node)) { res.forceLabel = true; res.zIndex = 4; return res; }
+        res.color = fadeNode(dataIn.color, 0.28); res.label = ""; res.zIndex = 0; return res;
       }
 
       // Repo X-Ray overlay (Phase 1.5B): detected nodes keep their domain color and
@@ -659,7 +744,7 @@ export function GraphCanvas({
 
       if (!active) {
         res.zIndex = isDomain ? 2 : ring === 1 ? 1 : 0;
-        if (!isDomain) res.color = withAlpha(dataIn.color, RING_ALPHA[ring] ?? 0.8);
+        if (!isDomain) res.color = fadeNode(dataIn.color, RING_ALPHA[ring] ?? 0.8);
         return res;
       }
       const set = neighborSetRef.current;
@@ -674,7 +759,7 @@ export function GraphCanvas({
         return res;
       }
       // Context recedes but keeps its domain hue, so the map stays readable around a focus.
-      res.color = withAlpha(dataIn.color, 0.2);
+      res.color = fadeNode(dataIn.color, 0.3 + ((RING_ALPHA[ring] ?? 0.8) - 0.3) * (1 - focusFadeRef.current));
       res.label = "";
       res.zIndex = 0;
       return res;
@@ -685,6 +770,11 @@ export function GraphCanvas({
       const vedges = visibleEdgesRef.current;
       if (vedges && !vedges.has(edge)) {
         return { ...dataIn, hidden: true };
+      }
+      if (journeyEdgesRef.current.size && !scanStatusRef.current) {
+        return journeyEdgesRef.current.has(edge)
+          ? { ...dataIn, color: "rgba(245,207,130,.95)", size: 2.2, zIndex: 4 }
+          : { ...dataIn, hidden: true };
       }
       const shownEdge = selectedEdgeRef.current ?? previewEdgeRef.current;
       if (shownEdge) {
@@ -698,9 +788,16 @@ export function GraphCanvas({
       const scanEdges = scanEdgesRef.current;
       if (scanEdges) {
         if (stackActiveRef.current) {
-          // Stack View default: suppress edges so domain grouping is not mistaken for a
-          // dependency (spec SS3). BUT when a node is SELECTED, reveal only its VERIFIED
-          // canonical edges to other detected nodes (spec SS2) — never co-occurrence edges.
+          // Reveal only canonical edges from the selected detection to another detected
+          // node. A scan alone never invents a relationship between technologies.
+          const active = selectedRef.current;
+          if (active && scanEdges.has(edge)) {
+            const [source, target] = graph.extremities(edge);
+            if (source === active || target === active) {
+              const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
+              return { ...dataIn, color: cross ? "rgba(251,191,36,.9)" : SCAN_HILITE_EDGE, size: 1.6, zIndex: 3 };
+            }
+          }
           return { ...dataIn, hidden: true };
         }
         if (activeRef.current || !scanClearEdges.has(edge)) return { ...dataIn, hidden: true };
@@ -740,24 +837,40 @@ export function GraphCanvas({
           size: domainFocus ? 0.9 : 1.3, zIndex: 3 };
       }
       // Unrelated relationships stay as the faintest context while something is focused.
-      return zoomVisible ? { ...dataIn, color: withAlpha(tint, 0.07), size: 0.45, zIndex: 0 }
+      return zoomVisible ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
         : { ...dataIn, hidden: true };
     });
 
-    renderer.on("enterNode", ({ node }) => {
+    renderer.on("enterNode", ({ node, event }) => {
       hoveredRef.current = node;
+      if (window.matchMedia("(hover: hover)").matches && "clientX" in event.original) {
+        const bounds = containerRef.current?.getBoundingClientRect();
+        const x = Math.min(event.original.clientX - (bounds?.left ?? 0) + 18, (bounds?.width ?? 0) - 250);
+        const y = Math.min(event.original.clientY - (bounds?.top ?? 0) + 18, (bounds?.height ?? 0) - 110);
+        setHoverPreview({ id: node, x: Math.max(8, x), y: Math.max(8, y), description: descriptionsRef.current.get(node) ?? "" });
+        const item = data.nodes.find((n) => n.id === node);
+        if (item && !descriptionsRef.current.has(node) && !pendingDescriptionsRef.current.has(node)) {
+          pendingDescriptionsRef.current.add(node);
+          void api.node(item.slug).then((detail) => {
+            descriptionsRef.current.set(node, detail.short_description);
+            setHoverPreview((current) => current?.id === node ? { ...current, description: detail.short_description } : current);
+          }).catch(() => { descriptionsRef.current.set(node, ""); }).finally(() => pendingDescriptionsRef.current.delete(node));
+        }
+      }
       scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "pointer";
     });
     renderer.on("leaveNode", () => {
       hoveredRef.current = null;
+      setHoverPreview(null);
       scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "default";
     });
     renderer.on("clickNode", ({ node }) => {
-      onSelect(node);
+      setHoverPreview(null);
+      onSelectRef.current(node);
     });
-    renderer.on("clickEdge", ({ edge }) => onSelectEdge?.(edge));
+    renderer.on("clickEdge", ({ edge }) => onSelectEdgeRef.current?.(edge));
     renderer.on("clickStage", ({ event }) => {
       // Phones: a tap near a node selects it before any nearby curve (nodes are the
       // primary targets and are too small to hit exactly at the all-in-one fit).
@@ -771,10 +884,10 @@ export function GraphCanvas({
           const distance = Math.hypot(point.x - event.x, point.y - event.y);
           if (distance < best) { best = distance; nearest = id; }
         });
-        if (nearest) { onSelect(nearest); return; }
+        if (nearest) { onSelectRef.current(nearest); return; }
       }
       let nearEdge: string | null = null, bestEdgeDistance = 5;
-      if (onSelectEdge) graph.forEachEdge((id, _attrs, source, target) => {
+      if (onSelectEdgeRef.current) graph.forEachEdge((id, _attrs, source, target) => {
         if (renderer.getEdgeDisplayData(id)?.hidden) return;
         const ga = graph.getNodeAttributes(source) as { x: number; y: number };
         const gb = graph.getNodeAttributes(target) as { x: number; y: number };
@@ -789,13 +902,16 @@ export function GraphCanvas({
           previous = next;
         }
       });
-      if (nearEdge && onSelectEdge) { onSelectEdge(nearEdge); return; }
-      onSelect(null);
+      if (nearEdge && onSelectEdgeRef.current) { onSelectEdgeRef.current(nearEdge); return; }
+      onSelectRef.current(null);
     });
 
     // Re-gate labels when the zoom level crosses a threshold (Task 8).
     const camera = renderer.getCamera();
+    let cameraTimer: number | undefined;
     const onCameraUpdate = () => {
+      window.clearTimeout(cameraTimer);
+      cameraTimer = window.setTimeout(() => { const { x, y, ratio } = camera.getState(); onCameraChangeRef.current?.({ x, y, ratio }); }, 400);
       const r = camera.getState().ratio;
       const crossed =
         bandOf(r) !== bandOf(ratioRef.current); // refresh on band change
@@ -808,6 +924,8 @@ export function GraphCanvas({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
+      cancelAnimationFrame(fadeRaf);
+      window.clearTimeout(cameraTimer);
       camera.removeListener("updated", onCameraUpdate);
       renderer.kill();
       sigmaRef.current = null;
@@ -815,7 +933,9 @@ export function GraphCanvas({
       activeRef.current = null;
       neighborSetRef.current = null;
     };
-  }, [data, onSelect, onSelectEdge]);
+  // The renderer is built once per dataset; selection callbacks are read through refs so
+  // a parent re-creating them (e.g. compare or guided-path state) never rebuilds Sigma.
+  }, [data]);
 
   // React to selection changes (recompute happens inside the scheduled refresh).
   useEffect(() => {
@@ -1358,6 +1478,15 @@ export function GraphCanvas({
           {h.label}
         </button>
       ))}
+      {hoverPreview && (() => {
+        const node = data.nodes.find((n) => n.id === hoverPreview.id);
+        if (!node) return null;
+        const connections = new Set(data.edges.filter((edge) => edge.source === node.id || edge.target === node.id).map((edge) => edge.source === node.id ? edge.target : edge.source)).size;
+        return <aside className="node-preview" style={{ left: hoverPreview.x, top: hoverPreview.y }} aria-hidden="true">
+          <strong>{node.label}</strong><span>{node.node_subtype || node.node_type} · {connections} connections</span>
+          {hoverPreview.description && <p>{hoverPreview.description}</p>}
+        </aside>;
+      })()}
       {keyboardDomain && <div className="graph-keyboard-hint" aria-live="polite">{keyboardDomain} · press Enter to explore</div>}
       {headingScreens.filter((h) => h.visible).map((h) => (
         <div

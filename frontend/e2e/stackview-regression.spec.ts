@@ -52,7 +52,7 @@ function scan(ids: string[], opts: Partial<{ partial: boolean }> = {}) {
 async function gotoExplore(page: Page, vp = { width: 1440, height: 900 }) {
   await page.setViewportSize(vp);
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes . \d+ edges/)).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".graph-canvas")).toBeVisible({ timeout: 30_000 });
   // Wait for the renderer handle (proves the canvas mounted and Sigma constructed).
   await page.waitForFunction(() => !!(window as unknown as { __ta_sigma?: unknown }).__ta_sigma, null, { timeout: 15_000 });
 }
@@ -67,7 +67,11 @@ async function runScan(page: Page, ids: string[], opts: Partial<{ partial: boole
   const repo = page.getByText(/acme\/repo/);
   await expect(repo).toBeAttached({ timeout: 20_000 });
   if (page.viewportSize()!.width > 640) await expect(repo).toBeVisible();
-  await page.waitForTimeout(1300); // let the stack projection + camera settle
+  // This suite exercises Stack View; the product opens scans on the full atlas.
+  if (page.viewportSize()!.width <= 640) await page.getByRole("button", { name: /View scan results/ }).click();
+  await switchView(page, "Stack View");
+  if (page.viewportSize()!.width <= 640) await page.getByRole("button", { name: /Minimize/ }).click();
+  await page.waitForTimeout(500); // let the stack projection + camera settle
 }
 
 // Re-scan WITHOUT re-entering via the Repo X-Ray entry button (panel already open, e.g.

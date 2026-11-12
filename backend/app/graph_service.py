@@ -44,7 +44,10 @@ DOMAIN_COLORS: dict[str, str] = {
     # has its own clearly-separated hue (min perceptual distance ~97); the three SUBDOMAINS
     # are intentional tints inside their parent's family (systems=copper, gamedev=coral).
     # No two top-level domains share or nearly share a hue.
-    "domain:ai-ml": "#a970ff",                 # violet
+    # Deep violet keeps AI/ML's identity while staying >= 20 dE00-ish from every other
+    # domain under protan/deutan/tritan simulation (the former #a970ff fell to 5.8
+    # against Cloud for deuteranopia).
+    "domain:ai-ml": "#8732ff",                 # deep violet
     "domain:robotics": "#e05cc8",              # magenta-pink
     "domain:databases": "#edb13a",             # amber-yellow
     "domain:backend": "#49c96d",               # green

@@ -58,7 +58,7 @@ type Metrics = {
 async function gotoOverview(page: Page, vp: { width: number; height: number }) {
   await page.setViewportSize({ width: vp.width, height: vp.height });
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes . \d+ edges/)).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".graph-canvas")).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(
     () => !!(window as unknown as { __ta_sigma?: unknown }).__ta_sigma,
     null,
@@ -372,6 +372,7 @@ test.describe("Overview interaction regressions", () => {
 
   test("node detail previews one canonical connection and opens its neighbor", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
+    await page.getByRole("button", { name: "Domains", exact: true }).click();
     await page.locator(".legend-item").filter({ hasText: "Backend Development" }).first().click();
     const details = page.getByRole("region", { name: "Node details" });
     await expect(details).toBeVisible();
@@ -486,7 +487,7 @@ test.describe("Overview interaction regressions", () => {
       g.forEachNode((id: string, a: any) => {
         const color = s.getNodeDisplayData(id)?.color as string;
         if (a.primaryDomain === "domain:robotics" && id !== "domain:robotics") { if (color === a.color) bright++; }
-        else if (/,0\.2\)$/.test(color)) dimmed++;
+        else if (color !== a.color) dimmed++;
       });
       return { bright, dimmed };
     });
@@ -608,4 +609,71 @@ test.describe("Overview interaction regressions", () => {
     expect(framed.ratio).toBeLessThan(1);
     expect(framed.anchorOnScreen).toBe(true);
   });
+});
+
+test.describe("High-end atlas controls", () => {
+  test("guided path follows real nodes and shareable selection", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.getByRole("button", { name: "Guided paths" }).click();
+    await expect(page.getByRole("region", { name: "Guided path" })).toContainText("DNS");
+    await expect(page).toHaveURL(/\/concept\/dns/);
+    await page.getByRole("button", { name: "Next" }).click();
+    await expect(page).toHaveURL(/\/domain\/networks/);
+  });
+
+  test("theme, rail, and data explanation are accessible", async ({ page }) => {
+    await gotoOverview(page, { width: 1440, height: 900 });
+    await page.getByRole("button", { name: "Filters", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Graph filters" })).toBeVisible();
+    await page.getByRole("button", { name: "Switch to light theme" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.screenshot({ path: "screenshots/light-theme-1440x900.png" });
+    await page.getByRole("button", { name: "About the data" }).click();
+    await expect(page).toHaveURL(/\/about$/);
+    await expect(page.getByRole("article", { name: "About the data" })).toContainText("Dataset version");
+  });
+});
+
+test("compare mode shows shared connections, alternatives, and a route", async ({ page }) => {
+  await gotoOverview(page, { width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
+  const search = page.getByRole("combobox", { name: "Search the technology graph" });
+  await search.fill("Python");
+  await expect(page.getByRole("listbox")).toBeVisible();
+  await search.press("Enter");
+  await search.fill("FastAPI");
+  await expect(page.getByRole("listbox")).toBeVisible();
+  await search.press("Enter");
+  const panel = page.getByRole("region", { name: "Compare technologies" });
+  await expect(panel).toContainText("Python");
+  await expect(panel).toContainText("FastAPI");
+  await expect(panel).toContainText("Connection path");
+});
+
+test("hovering a node opens a short preview", async ({ page }) => {
+  await gotoOverview(page, { width: 1440, height: 900 });
+  const point = await page.evaluate(() => {
+    const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+    const graph = sigma.getGraph();
+    const xy = sigma.graphToViewport({ x: graph.getNodeAttribute("domain:backend", "x"), y: graph.getNodeAttribute("domain:backend", "y") });
+    const rect = sigma.getContainer().getBoundingClientRect();
+    return { x: rect.left + xy.x, y: rect.top + xy.y };
+  });
+  await page.mouse.move(point.x, point.y);
+  await expect(page.locator(".node-preview")).toContainText("Backend Development");
+});
+
+test("filters and camera survive a shared URL", async ({ page }) => {
+  await gotoOverview(page, { width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies").check();
+  await expect(page).toHaveURL(/type=technology/);
+  await page.evaluate(() => {
+    const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
+    sigma.getCamera().setState({ ratio: .55 });
+  });
+  await expect.poll(() => new URL(page.url()).searchParams.get("zoom")).toBe("0.5500");
+  await page.reload();
+  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies")).toBeChecked();
 });

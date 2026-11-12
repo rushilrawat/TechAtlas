@@ -22,6 +22,7 @@ interface Props {
   onFocusNode: (nodeId: string) => void;
   nodesById: Map<string, GraphNode>;
   domainsById: Map<string, DomainSummary>;
+  learnNext?: { id: string; label: string; connections: number }[];
   view: "stack" | "universe";
   onViewChange: (v: "stack" | "universe") => void;
   /** Mobile bottom-sheet collapse state + toggle (ignored on desktop via CSS). */
@@ -41,7 +42,7 @@ const GH_RE = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/?$/i;
 
 export function RepoXrayPanel({
   phase, onAnalyze, onExit, onAnalyzeAnother, onFocusStack, onFocusNode, nodesById,
-  domainsById, view, onViewChange, collapsed = false, onToggleCollapsed,
+  domainsById, learnNext = [], view, onViewChange, collapsed = false, onToggleCollapsed,
 }: Props) {
   const [url, setUrl] = useState("");
   const [touched, setTouched] = useState(false);
@@ -145,6 +146,7 @@ export function RepoXrayPanel({
           scan={phase.scan}
           nodesById={nodesById}
           domainsById={domainsById}
+          learnNext={learnNext}
           onFocusStack={onFocusStack}
           onFocusNode={onFocusNode}
           onAnalyzeAnother={() => { setUrl(""); setTouched(false); onAnalyzeAnother(); }}
@@ -234,12 +236,13 @@ function DetectionGroups({
 const UNMAPPED_CAP = 50;
 
 function Results({
-  scan, nodesById, domainsById, onFocusStack, onFocusNode, onAnalyzeAnother, onExit,
+  scan, nodesById, domainsById, learnNext, onFocusStack, onFocusNode, onAnalyzeAnother, onExit,
   view, onViewChange,
 }: {
   scan: RepoScan;
   nodesById: Map<string, GraphNode>;
   domainsById: Map<string, DomainSummary>;
+  learnNext: { id: string; label: string; connections: number }[];
   onFocusStack: () => void;
   onFocusNode: (id: string) => void;
   onAnalyzeAnother: () => void;
@@ -322,6 +325,12 @@ function Results({
           </button>
         </div>
       </div>
+
+      {learnNext.length > 0 && <section className="xray-learn-next" aria-label="What to learn next">
+        <h3>What to learn next</h3>
+        <p>Technologies connected to your detected stack.</p>
+        <ul>{learnNext.map((item) => <li key={item.id}><button type="button" onClick={() => onFocusNode(item.id)}>{item.label} <span>{item.connections} links</span></button></li>)}</ul>
+      </section>}
 
       {/* Stack View / Universe View switch (X-Ray UX correction). Both views share the
           same scan, evidence, and selection; switching never rescans. */}

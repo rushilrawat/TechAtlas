@@ -10,6 +10,7 @@ const base = process.env.VITE_BASE ?? "/";
 // public/api snapshot directly; proxying it would swallow those JSON files.
 export default defineConfig({
   base,
+  define: { __DATA_BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)) },
   plugins: [react()],
   server: {
     port: 5173,

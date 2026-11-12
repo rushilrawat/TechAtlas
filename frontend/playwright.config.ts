@@ -26,7 +26,7 @@ export default defineConfig({
   webServer: {
     command: "node e2e/serve-dist.mjs",
     url: "http://localhost:4178/TechAtlas/",
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 30_000,
   },
 });

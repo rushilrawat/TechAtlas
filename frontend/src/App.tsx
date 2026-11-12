@@ -16,6 +16,9 @@ import { buildOverlay } from "./graph/scanOverlay";
 import { computeStackLayout, prominenceOf } from "./graph/stackLayout";
 import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED } from "./api/scanner";
+import { JOURNEYS } from "./graph/journeys";
+import { readFilter, writeFilter, readCamera, writeCamera } from "./graph/shareView";
+import { connectionPath } from "./graph/compare";
 
 type LoadState =
   | { status: "loading" }
@@ -26,6 +29,11 @@ type LoadState =
 // Base-aware so they work under a GitHub Pages sub-path (e.g. /TechAtlas/).
 const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, ""); // "" or "/TechAtlas"
 
+function isAboutPath(): boolean {
+  const path = BASE_PATH && window.location.pathname.startsWith(BASE_PATH) ? window.location.pathname.slice(BASE_PATH.length) : window.location.pathname;
+  return /^\/about\/?$/.test(path);
+}
+
 function slugFromPath(): string | null {
   let path = window.location.pathname;
   if (BASE_PATH && path.startsWith(BASE_PATH)) path = path.slice(BASE_PATH.length);
@@ -33,7 +41,7 @@ function slugFromPath(): string | null {
   return m ? m[2] : null;
 }
 function pathForNode(nodeType: string, slug: string): string {
-  return `${BASE_PATH}/${nodeType}/${slug}`;
+  return `${BASE_PATH}/${nodeType}/${slug}${window.location.search}`;
 }
 
 // Measure the actual on-screen width of the open right-edge panel (detail panel if it
@@ -51,12 +59,18 @@ function measureRightPanelWidth(): number {
 
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
+  const [initialCamera] = useState(() => readCamera(window.location.search));
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
   const [previewEdge, setPreviewEdge] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
-  const [filter, setFilter] = useState<FilterState>(emptyFilter());
+  const [filter, setFilter] = useState<FilterState>(() => readFilter(window.location.search));
   const [xrayOpen, setXrayOpen] = useState(false);
+  useEffect(() => {
+    const query = writeFilter(window.location.search, filter);
+    const url = `${window.location.pathname}${query ? `?${query}` : ""}`;
+    window.history.replaceState(null, "", url);
+  }, [filter]);
   const [fitNonce, setFitNonce] = useState(0);
   // Bumped to re-fit the default Explore atlas camera when returning from Repo X-Ray.
   const [exploreNonce, setExploreNonce] = useState(0);
@@ -66,9 +80,34 @@ export default function App() {
   // UI-E req 1: on mobile the filter sheet is closed by default (graph-first);
   // an accessible Filters control opens/closes it. Ignored on desktop (CSS).
   const [filtersOpen, setFiltersOpen] = useState(false);
-  // X-Ray view mode: Stack (clustered reprojection) is the default on a completed
-  // scan; Universe shows detections highlighted in the canonical 417-node layout.
-  const [xrayView, setXrayView] = useState<"stack" | "universe">("stack");
+  const [theme, setTheme] = useState<"dark" | "light">(() => window.localStorage.getItem("techatlas-theme") === "light" ? "light" : "dark");
+  useEffect(() => { document.documentElement.dataset.theme = theme; window.localStorage.setItem("techatlas-theme", theme); }, [theme]);
+  const [aboutOpen, setAboutOpen] = useState(isAboutPath);
+  const [aboutReturn, setAboutReturn] = useState(`${BASE_PATH || ""}/`);
+  useEffect(() => {
+    const sync = () => setAboutOpen(isAboutPath());
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+  const openAbout = () => {
+    setAboutReturn(`${window.location.pathname}${window.location.search}`);
+    window.history.pushState(null, "", `${BASE_PATH}/about`);
+    setAboutOpen(true);
+    setHeroVisible(false);
+  };
+  const closeAbout = () => {
+    window.history.replaceState(null, "", aboutReturn);
+    setAboutOpen(false);
+  };
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareFirst, setCompareFirst] = useState<string | null>(null);
+  const [compareSecond, setCompareSecond] = useState<string | null>(null);
+  const [journeyIndex, setJourneyIndex] = useState<number | null>(null);
+  const [journeyStep, setJourneyStep] = useState(0);
+  const [desktopRail, setDesktopRail] = useState<"domains" | "filters" | null>(null);
+  // X-Ray opens on the full atlas with detections highlighted. Stack is the
+  // optional clustered reprojection of the same scan.
+  const [xrayView, setXrayView] = useState<"stack" | "universe">("universe");
   // Track narrow (mobile) viewports so Stack View can lay clusters in a single column
   // that fits the portrait band above the bottom sheet.
   const [narrow, setNarrow] = useState(
@@ -84,7 +123,7 @@ export default function App() {
   // explore the full-height visualization. Reframes the camera when toggled.
   const [sheetCollapsed, setSheetCollapsed] = useState(false);
   // First-load story: a one-line hero that fades on the first interaction with the atlas.
-  const [heroVisible, setHeroVisible] = useState(() => !slugFromPath());
+  const [heroVisible, setHeroVisible] = useState(() => !slugFromPath() && !isAboutPath());
   useEffect(() => {
     if (!heroVisible) return;
     const hide = () => setHeroVisible(false);
@@ -163,13 +202,17 @@ export default function App() {
         state.graph.nodes.find((n) => n.id === slugOrId) ??
         state.graph.nodes.find((n) => n.slug === slugOrId);
       if (!node) return;
+      if (compareMode && node.node_type === "technology") {
+        if (!compareFirst || compareSecond) { setCompareFirst(node.id); setCompareSecond(null); }
+        else if (node.id !== compareFirst) setCompareSecond(node.id);
+      }
       setSelectedEdge(null);
       setPreviewEdge(null);
       setSelected(node.id);
       setFocus(node.id);
       window.history.replaceState(null, "", pathForNode(node.node_type, node.slug));
     },
-    [state],
+    [state, compareMode, compareFirst, compareSecond],
   );
 
   const handleSelect = useCallback(
@@ -179,7 +222,7 @@ export default function App() {
       if (id === null) {
         setSelected(null);
         setFocus(null);
-        window.history.replaceState(null, "", BASE_PATH ? `${BASE_PATH}/` : "/");
+        window.history.replaceState(null, "", `${BASE_PATH || ""}/${window.location.search}`);
         return;
       }
       navigate(id);
@@ -219,10 +262,10 @@ export default function App() {
     return buildOverlay(activeScan, graphData);
   }, [graphData, activeScan]);
 
-  // Default to Stack View whenever a new scan completes; reset when leaving X-Ray.
+  // Show detections on the full atlas when a new scan completes.
   useEffect(() => {
     if (activeScan) {
-      setXrayView("stack");
+      setXrayView("universe");
       // Graph-first on narrow mobile: default the results sheet to MINIMIZED after a
       // scan so the Stack View is immediately visible and not covered. The obvious
       // "View scan results" control expands it. Desktop has no sheet, so keep it open.
@@ -232,6 +275,22 @@ export default function App() {
 
   // Temporary Stack-View projection: cluster detected nodes by canonical primary_domain.
   // Pure + deterministic; never mutates canonical coordinates (GraphCanvas restores them).
+  const learnNext = useMemo(() => {
+    if (!overlay || !graphData) return [];
+    const scores = new Map<string, number>();
+    for (const edge of graphData.edges) {
+      if (edge.relationship_type === "belongs_to_domain") continue;
+      const sourceDetected = overlay.detectedNodes.has(edge.source);
+      const targetDetected = overlay.detectedNodes.has(edge.target);
+      if (sourceDetected === targetDetected) continue;
+      const candidate = sourceDetected ? edge.target : edge.source;
+      if (graphData.nodes.find((node) => node.id === candidate)?.node_type !== "technology") continue;
+      scores.set(candidate, (scores.get(candidate) ?? 0) + 1);
+    }
+    return [...scores].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 5)
+      .map(([id, connections]) => ({ id, label: graphData.nodes.find((node) => node.id === id)?.label ?? id, connections }));
+  }, [overlay, graphData]);
+
   const stackView = useMemo(() => {
     if (!overlay || !graphData || xrayView !== "stack") return null;
     const byId = new Map(graphData.nodes.map((n) => [n.id, n]));
@@ -290,8 +349,10 @@ export default function App() {
     resetScan();                       // clear scan phase/overlay (removes scanner colours,
                                        // highlighted/hidden edges, detection rings)
     setXrayOpen(false);                // close the results panel / X-Ray interface
+    setCompareMode(false);
+    setJourneyIndex(null);
     setSheetCollapsed(false);          // reset the mobile sheet state
-    setXrayView("stack");              // reset the X-Ray view mode for next time
+    setXrayView("universe");           // reset the X-Ray view mode for next time
     setSelected(null);                 // drop scan-specific selection
     setSelectedEdge(null);
     setFocus(null);
@@ -300,6 +361,29 @@ export default function App() {
   }, [resetScan]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
+  const journey = journeyIndex === null ? null : JOURNEYS[journeyIndex];
+  const journeyNodeIds = useMemo(() => journey?.steps.map((step) => step.id) ?? [], [journey]);
+  const journeyEdgeIds = useMemo(() => {
+    if (!journey || !graphData) return [];
+    return journey.steps.slice(1).map((step, i) => graphData.edges.find((edge) =>
+      (edge.source === journey.steps[i].id && edge.target === step.id) ||
+      (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
+  }, [journey, graphData]);
+  const comparison = useMemo(() => {
+    if (!graphData || !compareFirst || !compareSecond) return null;
+    const neighbors = (id: string) => new Set(graphData.edges.filter((edge) => edge.source === id || edge.target === id)
+      .map((edge) => edge.source === id ? edge.target : edge.source));
+    const first = neighbors(compareFirst), second = neighbors(compareSecond);
+    return {
+      shared: [...first].filter((id) => second.has(id)).filter((id) => nodesById.get(id)?.node_type !== "domain"),
+      direct: graphData.edges.find((edge) => (edge.source === compareFirst && edge.target === compareSecond) ||
+        (edge.target === compareFirst && edge.source === compareSecond))?.relationship_type ?? null,
+      path: connectionPath(graphData, compareFirst, compareSecond),
+      alternatives: [compareFirst, compareSecond].map((id) => graphData.edges.filter((edge) =>
+        edge.relationship_type === "alternative_to" && (edge.source === id || edge.target === id))
+        .map((edge) => edge.source === id ? edge.target : edge.source)),
+    };
+  }, [graphData, compareFirst, compareSecond, nodesById]);
   const edgeDetail = graphData?.edges.find((edge) => edge.id === selectedEdge) ?? null;
 
   if (state.status === "loading") {
@@ -329,7 +413,7 @@ export default function App() {
         <button
           type="button"
           className="brand"
-          onClick={exitXray}
+          onClick={aboutOpen ? closeAbout : exitXray}
           aria-label="TechAtlas home — return to the Explore universe"
           title="Return to the Explore universe"
         >
@@ -356,6 +440,15 @@ export default function App() {
             Repo X-Ray
           </button>
         )}
+        <button type="button" className="journey-trigger" onClick={() => {
+          setCompareMode((open) => !open); setJourneyIndex(null); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
+        }}>{compareMode ? "Exit compare" : "Compare"}</button>
+        <button type="button" className="journey-trigger" onClick={() => {
+          if (journeyIndex === null) { setCompareMode(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
+          else { setJourneyIndex(null); handleSelect(null); }
+        }}>{journeyIndex === null ? "Guided paths" : "Exit path"}</button>
+        <button type="button" className="theme-trigger" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? "☀" : "☾"}</button>
+        <button type="button" className="about-trigger" onClick={aboutOpen ? closeAbout : openAbout}>{aboutOpen ? "Back to atlas" : "About the data"}</button>
         <div className="topbar-meta">
           <span>
             {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
@@ -363,9 +456,35 @@ export default function App() {
         </div>
       </header>
 
-      <main className="stage">
+      {aboutOpen && <main className="about-page">
+        <article className="about-panel" aria-label="About the data">
+          <button type="button" className="about-back" onClick={closeAbout}>← Back to atlas</button>
+          <h2>About the data</h2>
+          <p>TechAtlas maps {state.graph.nodes.length} domains, concepts, and technologies through {state.graph.edges.length} typed relationships. Dataset version {state.graph.version}.</p>
+          <h3>Sources</h3>
+          <p>Names, descriptions, and relationships come from the curated <a href="https://github.com/rushilrawat/TechAtlas/tree/main/data">TechAtlas dataset</a>. Wikipedia summaries are shown with attribution in technology details. Optional popularity scores use GitHub activity and npm, PyPI, or crates.io downloads.</p>
+          <h3>How links are chosen</h3>
+          <p>Relationships use explicit types such as belongs to domain, integrates with, and alternative to. Dataset validation checks endpoints and allowed types. Discovery imports add a verified identity and domain; richer links require review.</p>
+          <h3>Freshness</h3>
+          <p>This graph snapshot was built on {__DATA_BUILD_DATE__} (UTC). Individual source summaries and popularity snapshots can have different dates; see their attribution in the detail panel. <a href="https://github.com/rushilrawat/TechAtlas/commits/main/data">View graph history</a>.</p>
+        </article>
+      </main>}
+      <main aria-hidden={aboutOpen} style={aboutOpen ? { visibility: "hidden" } : undefined} className={`stage${desktopRail ? ` rail-${desktopRail}` : ""}`}>
+        {!xrayOpen && <nav className="atlas-rail" aria-label="Atlas tools">
+          <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}>◉</button>
+          <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}>☷</button>
+        </nav>}
         <GraphCanvas
           data={state.graph}
+          theme={theme}
+          journeyNodeIds={journeyNodeIds}
+          journeyEdgeIds={journeyEdgeIds}
+          initialCamera={initialCamera}
+          onCameraChange={(camera) => {
+            if (xrayOpen) return;
+            const query = writeCamera(window.location.search, camera);
+            window.history.replaceState(null, "", `${window.location.pathname}?${query}`);
+          }}
           selectedId={selected}
           selectedEdgeId={selectedEdge}
           previewEdgeId={previewEdge}
@@ -394,6 +513,31 @@ export default function App() {
               : null
           }
         />
+        {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
+          <h2>Compare technologies</h2>
+          <p>{compareFirst ? nodesById.get(compareFirst)?.label : "Select the first technology on the atlas or in search."} <span aria-hidden>↔</span> {compareSecond ? nodesById.get(compareSecond)?.label : "Select a second technology"}</p>
+          {comparison && <>
+            <p>{comparison.direct ? `Direct relationship: ${comparison.direct.replaceAll("_", " ")}` : "No direct relationship in the graph."}</p>
+            <h3>Connection path</h3>
+            <p>{comparison.path.length ? comparison.path.map((id) => nodesById.get(id)?.label ?? id).join(" → ") : "No relationship path within five steps."}</p>
+            {comparison.alternatives.some((list) => list.length) && <><h3>Alternatives</h3><p>{comparison.alternatives.map((list, index) =>
+              `${nodesById.get(index === 0 ? compareFirst! : compareSecond!)?.label}: ${list.length ? list.map((id) => nodesById.get(id)?.label ?? id).join(", ") : "none listed"}`).join(" · ")}</p></>}
+            <h3>Shared connections · {comparison.shared.length}</h3>
+            <ul>{comparison.shared.slice(0, 12).map((id) => <li key={id}><button type="button" onClick={() => navigate(id)}>{nodesById.get(id)?.label}</button></li>)}</ul>
+          </>}
+        </section>}
+        {journey && !xrayOpen && <section className="journey-panel" aria-label="Guided path">
+          <select aria-label="Choose guided path" value={journeyIndex ?? 0} onChange={(event) => {
+            const index = Number(event.target.value); setJourneyIndex(index); setJourneyStep(0); navigate(JOURNEYS[index].steps[0].id);
+          }}>{JOURNEYS.map((item, index) => <option key={item.title} value={index}>{item.title}</option>)}</select>
+          <p className="journey-progress">Step {journeyStep + 1} of {journey.steps.length}</p>
+          <h2>{nodesById.get(journey.steps[journeyStep].id)?.label}</h2>
+          <p>{journey.steps[journeyStep].caption}</p>
+          <div className="journey-actions">
+            <button disabled={journeyStep === 0} onClick={() => { setJourneyStep(journeyStep - 1); navigate(journey.steps[journeyStep - 1].id); }}>Previous</button>
+            <button disabled={journeyStep === journey.steps.length - 1} onClick={() => { setJourneyStep(journeyStep + 1); navigate(journey.steps[journeyStep + 1].id); }}>Next</button>
+          </div>
+        </section>}
         {xrayOpen ? (
           <RepoXrayPanel
             phase={scanPhase}
@@ -404,6 +548,7 @@ export default function App() {
             onFocusNode={navigate}
             nodesById={nodesById}
             domainsById={domainsById}
+            learnNext={learnNext}
             view={xrayView}
             onViewChange={setXrayView}
             collapsed={sheetCollapsed}
@@ -460,10 +605,10 @@ export default function App() {
             if (window.matchMedia("(max-width: 1023px)").matches) setLegendCollapsed(true);
             navigate(id);
           }}
-          collapsed={legendCollapsed}
-          onToggle={() => setLegendCollapsed((v) => !v)}
+          collapsed={window.matchMedia("(max-width: 1023px)").matches ? legendCollapsed : desktopRail !== "domains" || legendCollapsed}
+          onToggle={() => { setLegendCollapsed((v) => !v); setDesktopRail(null); }}
         />
-        {selected && (
+        {selected && !compareMode && (
           <NodeDetailsPanel
             // Pass the node's canonical slug (resolved from the loaded graph) rather
             // than its id: static detail files are keyed by slug, and a node's id

@@ -112,3 +112,11 @@ test("Repo X-Ray entry is hidden when the scanner is NOT configured", async ({ p
   await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
   await expect(page.getByRole("button", { name: "Repo X-Ray" })).toHaveCount(0);
 });
+
+test("About page has a direct static route", async ({ page }) => {
+  await page.goto("/TechAtlas/about/");
+  await expect(page.getByRole("heading", { name: "About the data" })).toBeVisible();
+  await expect(page.getByText(/Dataset version/)).toBeVisible();
+  await page.getByRole("button", { name: "Back to atlas" }).first().click();
+  await expect(page.locator(".graph-canvas")).toBeVisible();
+});
