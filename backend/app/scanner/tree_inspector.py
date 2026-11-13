@@ -11,12 +11,17 @@ import base64
 from dataclasses import dataclass, field
 
 from .github_client import BudgetExceeded, GitHubClient
+from .manifest_parsers.extra import config_target
 
 # Directories never worth inspecting (dependencies / build output / VCS).
 _EXCLUDE_DIR_PARTS = {
     "node_modules", ".git", "dist", "build", "out", ".next", ".nuxt", "vendor",
     "venv", ".venv", "__pycache__", ".tox", "target", "bin", "obj", ".idea",
     ".vscode", "coverage", ".cache", "site-packages", "third_party", "Pods",
+    # Test fixtures, sample apps and evaluation corpora describe OTHER projects; their
+    # manifests are not this repository's stack (Phase 1.5E).
+    "fixtures", "__fixtures__", "testdata", "test-fixtures", "__mocks__", "corpus",
+    "examples", "example", "samples",
 }
 # Binary / non-source extensions to skip for source analysis.
 _BINARY_EXT = {
@@ -43,7 +48,13 @@ MANIFEST_BASENAMES = {
     "settings.gradle.kts",
     # Go
     "go.mod", "go.sum",
+    # Ruby / PHP / Dart (Phase 1.5E)
+    "Gemfile", "composer.json", "pubspec.yaml",
+    # Infra and tool configs (Phase 1.5E)
+    "Chart.yaml", "schema.prisma", "kustomization.yaml", "kustomization.yml",
 }
+_K8S_DIRS = {"k8s", "kube", "kubernetes", "manifests", "deploy", "deployment", "deployments",
+             "kustomize"}
 # Prefix/suffix patterns for manifests/config.
 def _is_manifest(path: str) -> bool:
     base = path.rsplit("/", 1)[-1]
@@ -58,6 +69,12 @@ def _is_manifest(path: str) -> bool:
     # Gradle version catalog: only when it lives under a gradle/ directory, to avoid
     # scooping up unrelated TOML files elsewhere in the tree.
     if base == "libs.versions.toml" and "gradle/" in path:
+        return True
+    if base.endswith((".csproj", ".fsproj", ".tf")):
+        return True
+    if config_target(base):
+        return True
+    if base.endswith((".yaml", ".yml")) and _K8S_DIRS & set(path.split("/")[:-1]):
         return True
     return False
 
@@ -98,6 +115,9 @@ class TreeSelection:
     important_files_skipped: int = 0  # manifests/configs dropped by max_files (real)
     manifests_total: int = 0          # manifests+workflows discovered in the tree
     manifests_selected: int = 0       # of those, how many are inspected
+    # Every non-excluded file path in the tree (names only, never fetched): used for
+    # language detection by file extension (Phase 1.5E).
+    all_paths: list[str] = field(default_factory=list)
 
 
 def select_files(
@@ -134,6 +154,7 @@ def select_files(
         size = int(t.get("size") or 0)
         if _excluded(path):
             continue
+        sel.all_paths.append(path)
         if _is_manifest(path):
             manifests.append(SelectedFile(path, size, "manifest"))
         elif _is_workflow(path):

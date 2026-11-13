@@ -13,8 +13,8 @@ from urllib.parse import quote
 
 from .github_client import BudgetExceeded, GitHubClient, GitHubError
 from .import_role import role_for_node
+from .manifest_parsers import extra, infra, java, js, rust
 from .manifest_parsers import go as goparser
-from .manifest_parsers import infra, java, js, rust
 from .manifest_parsers import python as pyparser
 from .manifest_parsers.common import RawDetection
 from .models import (
@@ -79,6 +79,24 @@ def _parse_file(path: str, kind: str, text: str,
             out += goparser.parse_go_mod(path, text)
         elif base == "go.sum":
             out += goparser.parse_go_sum(path, text)
+        elif base == "Gemfile":
+            out += extra.parse_gemfile(path, text)
+        elif base == "composer.json":
+            out += extra.parse_composer_json(path, text)
+        elif base.endswith((".csproj", ".fsproj")):
+            out += extra.parse_dotnet_project(path, text)
+        elif base == "pubspec.yaml":
+            out += extra.parse_pubspec(path, text)
+        elif base.endswith(".tf"):
+            out += extra.parse_terraform(path, text)
+        elif base == "Chart.yaml":
+            out += extra.parse_helm_chart(path, text)
+        elif base == "schema.prisma":
+            out += extra.parse_prisma_schema(path, text)
+        elif extra.config_target(base):
+            out += extra.parse_tool_config(path, text)
+        elif base.endswith((".yaml", ".yml")):
+            out += extra.parse_k8s_manifest(path, text)
         return out
     if kind == "source":
         if path.endswith(".py"):
@@ -123,6 +141,8 @@ def build_scan(
         elif f.kind == "source":
             sources += 1
         raw += _parse_file(f.path, f.kind, text, gradle_catalog, go_own_module)
+    # Languages by file extension over the whole tree (names only, no extra fetches).
+    raw += extra.language_detections(getattr(selection, "all_paths", []) or [])
 
     # Consolidate per node id. Package detections -> match; node_id detections direct.
     evidence: list[Evidence] = []

@@ -1,0 +1,53 @@
+{
+  "repository": "example/py-ml-service",
+  "ecosystems": [
+    "pypi"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:pytorch"
+    },
+    {
+      "node_id": "technology:huggingface-transformers"
+    },
+    {
+      "node_id": "technology:fastapi"
+    },
+    {
+      "node_id": "technology:numpy"
+    },
+    {
+      "node_id": "technology:pandas"
+    },
+    {
+      "node_id": "technology:scikit-learn"
+    },
+    {
+      "node_id": "technology:mlflow"
+    },
+    {
+      "node_id": "technology:celery"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:mypy"
+    },
+    {
+      "node_id": "technology:python"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "concept:containerization"
+    }
+  ]
+}

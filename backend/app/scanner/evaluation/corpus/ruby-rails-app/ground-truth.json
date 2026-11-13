@@ -1,0 +1,26 @@
+{
+  "repository": "example/ruby-rails-app",
+  "ecosystems": [
+    "rubygems"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:rails"
+    },
+    {
+      "node_id": "technology:ruby"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "concept:containerization"
+    }
+  ]
+}

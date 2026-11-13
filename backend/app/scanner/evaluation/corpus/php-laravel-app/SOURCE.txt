@@ -1,0 +1,4 @@
+Synthetic fixture authored for the TechAtlas Repo X-Ray accuracy work (Phase 1.5E).
+Manifest/source content is minimal and hand-written (not copied from a repo),
+so there are no third-party license constraints. Ground truth is human-authored:
+every technology a reviewer reading these files would say the project uses.

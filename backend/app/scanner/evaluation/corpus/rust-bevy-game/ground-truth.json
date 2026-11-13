@@ -6,6 +6,9 @@
   "expected_detections": [
     {
       "node_id": "technology:bevy"
+    },
+    {
+      "node_id": "technology:rust"
     }
   ]
 }

@@ -6,6 +6,9 @@
   "expected_detections": [
     {
       "node_id": "technology:gin"
+    },
+    {
+      "node_id": "technology:go"
     }
   ]
 }

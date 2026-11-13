@@ -15,6 +15,9 @@
     },
     {
       "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:python"
     }
   ]
 }

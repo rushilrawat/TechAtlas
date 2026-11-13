@@ -1,0 +1,17 @@
+{
+  "repository": "example/flutter-app",
+  "ecosystems": [
+    "pub"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:flutter"
+    },
+    {
+      "node_id": "technology:dart"
+    },
+    {
+      "node_id": "technology:firebase"
+    }
+  ]
+}
