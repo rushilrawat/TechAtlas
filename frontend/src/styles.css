@@ -1064,6 +1064,15 @@ body {
 .compare-panel ul { padding: 0; margin: 0; list-style: none; }
 .compare-panel li button { width: 100%; border: 0; padding: 5px 0; color: var(--text); text-align: left; background: transparent; cursor: pointer; }
 .compare-panel li button:hover { color: #fff; }
+.compare-pair button { padding: 0; border: 0; background: transparent; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.compare-actions { display: flex; gap: 6px; margin: 4px 0 8px; }
+.compare-actions button { padding: 4px 9px; border: 1px solid var(--panel-border); border-radius: 6px; background: transparent; color: var(--text); font: inherit; font-size: 11px; cursor: pointer; }
+.compare-actions button:hover { color: #fff; border-color: var(--accent); }
+.compare-alts span { color: var(--text-dim); }
+.compare-alts button { margin: 0 4px 4px 0; padding: 2px 7px; border: 1px solid var(--panel-border); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: 11px; cursor: pointer; }
+.compare-alts button:hover { border-color: var(--accent); color: #fff; }
+.compare-alts em { color: var(--text-dim); }
+:root[data-theme="light"] .compare-pair button, :root[data-theme="light"] .compare-actions button:hover, :root[data-theme="light"] .compare-alts button:hover { color: #1d3046; }
 
 .xray-learn-next { margin: 14px 0; padding: 12px; border: 1px solid var(--panel-border); border-radius: 8px; }
 .xray-learn-next h3 { margin: 0; color: #fff; font-size: 13px; }
