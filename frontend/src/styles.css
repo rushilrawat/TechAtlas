@@ -1293,3 +1293,29 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
   .topbar-tools .tool, .topbar-tools .tool-icon { padding: 0 6px; }
   .topbar-tools { min-width: 0; overflow-x: auto; scrollbar-width: none; }
 }
+
+/* Repo X-Ray stack statistics */
+.xray-stats { margin: 12px 0; padding: 12px; border: 1px solid var(--panel-border); border-radius: 8px; }
+.xray-stats .xray-section-title { margin-top: 0; }
+.xray-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.xray-stat-grid div { display: flex; flex-direction: column; padding: 8px; border-radius: 6px; background: rgba(255,255,255,.04); }
+.xray-stat-grid strong { font-size: 18px; color: var(--text); line-height: 1.1; }
+.xray-stat-grid small { font-size: 11px; color: var(--text-dim); font-weight: 500; }
+.xray-stat-grid span { font-size: 11px; color: var(--text-dim); }
+.xray-stat-h { margin: 12px 0 6px; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
+.xray-conf-bar { display: flex; gap: 2px; height: 8px; border-radius: 4px; overflow: hidden; }
+.xray-conf-bar span { background: var(--sc, #8a94a6); min-width: 4px; }
+.xray-conf-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0 0; padding: 0; list-style: none; font-size: 11px; color: var(--text-dim); }
+.xray-conf-legend li { display: flex; align-items: center; gap: 5px; }
+.xray-conf-legend b, .xray-eco b { color: var(--text); font-weight: 600; }
+.xray-field-bars { margin: 0; padding: 0; list-style: none; }
+.xray-field-bars li { display: grid; grid-template-columns: minmax(0, 9.5em) 1fr 2em; align-items: center; gap: 8px; padding: 2px 0; font-size: 11px; }
+.xray-field-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+.xray-field-track { height: 6px; border-radius: 3px; background: rgba(255,255,255,.06); overflow: hidden; }
+.xray-field-track span { display: block; height: 100%; border-radius: 3px; }
+.xray-field-n { text-align: right; color: var(--text-dim); }
+.xray-eco { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; font-size: 11px; color: var(--text-dim); }
+.xray-eco span { padding: 2px 7px; border: 1px solid var(--panel-border); border-radius: 999px; }
+.xray-share { display: flex; gap: 6px; margin-top: 12px; }
+:root[data-theme="light"] .xray-stat-grid div { background: rgba(0,0,0,.04); }
+:root[data-theme="light"] .xray-field-track { background: rgba(0,0,0,.08); }

@@ -3,7 +3,7 @@
 // panel styling. Graph highlighting itself happens in GraphCanvas via the overlay; this
 // panel drives the scan lifecycle and lets the user jump to detected nodes.
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   DetectionStatus,
   DomainSummary,
@@ -12,6 +12,7 @@ import type {
 } from "../api/types";
 import type { ScanPhase } from "../graph/useRepoScan";
 import { safeHttpUrl } from "../util/safeUrl";
+import { CONFIDENCE_ORDER, computeScanStats, pct, scanSummaryMarkdown } from "../graph/scanStats";
 
 interface Props {
   phase: ScanPhase;
@@ -307,6 +308,8 @@ function Results({
         </div>
       </div>
 
+      <ScanStatsPanel scan={scan} nodesById={nodesById} domainsById={domainsById} />
+
       {/* Section D: primary actions (Focus on Stack primary; others secondary) */}
       <div className="xray-actions">
         <button type="button" className="xray-focus primary" onClick={onFocusStack}>
@@ -419,5 +422,74 @@ function Results({
           )}
       </p>
     </div>
+  );
+}
+
+function ScanStatsPanel({ scan, nodesById, domainsById }: {
+  scan: RepoScan; nodesById: Map<string, GraphNode>; domainsById: Map<string, DomainSummary>;
+}) {
+  const stats = useMemo(() => computeScanStats(scan, nodesById, domainsById), [scan, nodesById, domainsById]);
+  const [copied, setCopied] = useState<"" | "summary" | "json">("");
+  if (stats.detected === 0) return null;
+  const max = Math.max(...stats.fields.map((f) => f.count), 1);
+  const flash = (k: "summary" | "json") => { setCopied(k); window.setTimeout(() => setCopied(""), 1500); };
+  const copySummary = () => {
+    const text = scanSummaryMarkdown(scan, stats, nodesById, domainsById, window.location.href);
+    void navigator.clipboard?.writeText(text).then(() => flash("summary"), () => undefined);
+  };
+  const downloadJson = () => {
+    const blob = new Blob([JSON.stringify({ repository: scan.repository, scanner_version: scan.scanner_version,
+      summary: scan.summary, stats, detections: scan.detections, unmapped: scan.unmapped }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${scan.repository.owner}-${scan.repository.name}-xray.json`;
+    a.click();
+    window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    flash("json");
+  };
+  return (
+    <section className="xray-stats" aria-label="Scan statistics">
+      <h3 className="xray-section-title">Stack statistics</h3>
+      <div className="xray-stat-grid">
+        <div><strong>{stats.fieldsTouched}<small>/{stats.fieldsTotal}</small></strong><span>fields touched</span></div>
+        <div><strong>{pct(stats.atlasCoverage, 1)}</strong><span>of the atlas</span></div>
+        <div><strong>{stats.mappedShare === null ? "–" : pct(stats.mappedShare)}</strong><span>deps mapped</span></div>
+        <div><strong>{stats.evidenceCount}</strong><span>signals in {stats.evidenceFiles} files</span></div>
+      </div>
+
+      <h4 className="xray-stat-h">Confidence</h4>
+      <div className="xray-conf-bar" role="img" aria-label={CONFIDENCE_ORDER.map((k) => `${stats.confidence[k]} ${k}`).join(", ")}>
+        {CONFIDENCE_ORDER.filter((k) => stats.confidence[k]).map((k) =>
+          <span key={k} className={`status-${k}`} style={{ flexGrow: stats.confidence[k] }} />)}
+      </div>
+      <ul className="xray-conf-legend">
+        {CONFIDENCE_ORDER.filter((k) => stats.confidence[k]).map((k) =>
+          <li key={k}><span className={`xray-dot status-${k}`} aria-hidden />{STATUS_LABEL[k]} <b>{stats.confidence[k]}</b></li>)}
+      </ul>
+
+      <h4 className="xray-stat-h">By field</h4>
+      <ul className="xray-field-bars">
+        {stats.fields.map((f) => (
+          <li key={f.id} title={`${f.technologies} technologies, ${f.concepts} concepts · ${f.count} of ${f.atlasTotal} in this field`}>
+            <span className="xray-field-name">{f.name}</span>
+            <span className="xray-field-track"><span style={{ width: `${(f.count / max) * 100}%`, background: f.color }} /></span>
+            <span className="xray-field-n">{f.count}</span>
+          </li>
+        ))}
+      </ul>
+
+      {stats.ecosystems.length > 0 && <>
+        <h4 className="xray-stat-h">Package ecosystems</h4>
+        <p className="xray-eco">{stats.ecosystems.map((e) => <span key={e.name}>{e.name} <b>{e.count}</b></span>)}</p>
+      </>}
+      {(stats.direct > 0 || stats.transitive > 0) && (
+        <p className="muted xray-deps">{stats.direct} direct · {stats.transitive} transitive dependencies</p>
+      )}
+
+      <div className="xray-share">
+        <button type="button" className="xray-action-btn" onClick={copySummary}>{copied === "summary" ? "Summary copied" : "Copy summary"}</button>
+        <button type="button" className="xray-action-btn" onClick={downloadJson}>{copied === "json" ? "Downloaded" : "Download JSON"}</button>
+      </div>
+    </section>
   );
 }
