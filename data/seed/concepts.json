@@ -1931,7 +1931,7 @@
     "slug": "digital-logic",
     "name": "Digital Logic",
     "node_type": "concept",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "The design of circuits that operate on binary signals using logic gates.",
     "importance": 0.6,
     "wikipedia_title": "Logic gate"
@@ -1941,7 +1941,7 @@
     "slug": "combinational-logic",
     "name": "Combinational Logic",
     "node_type": "concept",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "Digital logic whose output depends only on current inputs, with no memory.",
     "importance": 0.6,
     "wikipedia_title": "Combinational logic"
@@ -1951,7 +1951,7 @@
     "slug": "sequential-logic",
     "name": "Sequential Logic",
     "node_type": "concept",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "Digital logic whose output depends on current inputs and stored state.",
     "importance": 0.6,
     "wikipedia_title": "Sequential logic"
@@ -1974,7 +1974,7 @@
     "slug": "asic",
     "name": "ASIC",
     "node_type": "concept",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "An integrated circuit customized for a specific application rather than general use.",
     "aliases": [
       "Application-Specific Integrated Circuit"
@@ -1987,7 +1987,7 @@
     "slug": "hdl",
     "name": "Hardware Description Languages",
     "node_type": "concept",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "Languages used to model and describe digital hardware circuits.",
     "aliases": [
       "HDL"
@@ -3323,7 +3323,7 @@
     "slug": "human-computer-interaction",
     "name": "Human-Computer Interaction",
     "node_type": "concept",
-    "primary_domain": "domain:frontend",
+    "primary_domain": "domain:hci",
     "short_description": "The study and design of how people interact with computers.",
     "aliases": [
       "HCI"
@@ -3349,7 +3349,7 @@
     "slug": "interaction-design",
     "name": "Interaction Design",
     "node_type": "concept",
-    "primary_domain": "domain:frontend",
+    "primary_domain": "domain:hci",
     "short_description": "Designing interactive products focused on user behavior and flow.",
     "aliases": [
       "IxD"
@@ -3431,7 +3431,7 @@
     "slug": "scientific-computing",
     "name": "Scientific Computing",
     "node_type": "concept",
-    "primary_domain": "domain:ai-ml",
+    "primary_domain": "domain:interdisciplinary",
     "short_description": "Using computation and numerical methods to solve scientific problems.",
     "aliases": [
       "Computational science"
@@ -3454,7 +3454,7 @@
     "slug": "bioinformatics",
     "name": "Bioinformatics",
     "node_type": "concept",
-    "primary_domain": "domain:ai-ml",
+    "primary_domain": "domain:computational-biology",
     "short_description": "Applying computation to understand biological data such as genomes.",
     "importance": 0.6,
     "wikipedia_title": "Bioinformatics"
@@ -4274,7 +4274,7 @@
     "slug": "usability-testing",
     "name": "Usability Testing",
     "node_type": "concept",
-    "primary_domain": "domain:frontend",
+    "primary_domain": "domain:hci",
     "short_description": "Watching real users attempt tasks to find where an interface confuses them.",
     "node_subtype": "technique",
     "importance": 0.5,
@@ -4412,5 +4412,3696 @@
     ],
     "importance": 0.55,
     "wikipedia_title": "Data lake"
+  },
+  {
+    "id": "concept:cache-coherence",
+    "slug": "cache-coherence",
+    "name": "Cache Coherence",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Keeping every core's cached copy of shared memory consistent.",
+    "importance": 0.55,
+    "wikipedia_title": "Cache coherence"
+  },
+  {
+    "id": "concept:simultaneous-multithreading",
+    "slug": "simultaneous-multithreading",
+    "name": "Simultaneous Multithreading",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Running several hardware threads on one core to fill idle execution units.",
+    "importance": 0.45,
+    "wikipedia_title": "Simultaneous multithreading",
+    "aliases": [
+      "SMT",
+      "Hyper-Threading"
+    ]
+  },
+  {
+    "id": "concept:vliw",
+    "slug": "vliw",
+    "name": "VLIW",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Very long instruction words: the compiler, not the chip, schedules parallel operations.",
+    "importance": 0.35,
+    "wikipedia_title": "Very long instruction word",
+    "aliases": [
+      "Very Long Instruction Word"
+    ]
+  },
+  {
+    "id": "concept:risc",
+    "slug": "risc",
+    "name": "RISC",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Reduced instruction set computing: few, simple, fixed-length instructions.",
+    "importance": 0.55,
+    "wikipedia_title": "Reduced instruction set computer",
+    "aliases": [
+      "Reduced Instruction Set Computer"
+    ]
+  },
+  {
+    "id": "concept:cisc",
+    "slug": "cisc",
+    "name": "CISC",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Complex instruction set computing: rich, variable-length instructions such as x86.",
+    "importance": 0.45,
+    "wikipedia_title": "Complex instruction set computer",
+    "aliases": [
+      "Complex Instruction Set Computer"
+    ]
+  },
+  {
+    "id": "concept:microarchitecture",
+    "slug": "microarchitecture",
+    "name": "Microarchitecture",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "How a processor implements its instruction set: pipelines, caches and execution units.",
+    "importance": 0.55,
+    "wikipedia_title": "Microarchitecture"
+  },
+  {
+    "id": "concept:instruction-level-parallelism",
+    "slug": "instruction-level-parallelism",
+    "name": "Instruction-Level Parallelism",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Executing independent instructions from one thread at the same time.",
+    "importance": 0.45,
+    "wikipedia_title": "Instruction-level parallelism",
+    "aliases": [
+      "ILP"
+    ]
+  },
+  {
+    "id": "concept:speculative-execution",
+    "slug": "speculative-execution",
+    "name": "Speculative Execution",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Running instructions before it is certain they are needed, then discarding wrong guesses.",
+    "importance": 0.45,
+    "wikipedia_title": "Speculative execution"
+  },
+  {
+    "id": "concept:tlb",
+    "slug": "tlb",
+    "name": "Translation Lookaside Buffer",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A small cache of recent virtual-to-physical address translations.",
+    "importance": 0.4,
+    "wikipedia_title": "Translation lookaside buffer",
+    "aliases": [
+      "TLB"
+    ]
+  },
+  {
+    "id": "concept:dram",
+    "slug": "dram",
+    "name": "DRAM",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Dynamic RAM: dense main memory that stores bits as charge and must be refreshed.",
+    "importance": 0.5,
+    "wikipedia_title": "Dynamic random-access memory",
+    "aliases": [
+      "Dynamic RAM"
+    ]
+  },
+  {
+    "id": "concept:numa",
+    "slug": "numa",
+    "name": "NUMA",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Non-uniform memory access: memory closer to a socket is faster for that socket.",
+    "importance": 0.4,
+    "wikipedia_title": "Non-uniform memory access",
+    "aliases": [
+      "Non-Uniform Memory Access"
+    ]
+  },
+  {
+    "id": "concept:vector-processor",
+    "slug": "vector-processor",
+    "name": "Vector Processor",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A processor whose instructions operate on whole arrays of data at once.",
+    "importance": 0.4,
+    "wikipedia_title": "Vector processor"
+  },
+  {
+    "id": "concept:hardware-accelerator",
+    "slug": "hardware-accelerator",
+    "name": "Hardware Accelerator",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Specialised hardware that runs one kind of workload far faster than a CPU.",
+    "importance": 0.5,
+    "wikipedia_title": "Hardware acceleration"
+  },
+  {
+    "id": "concept:systolic-array",
+    "slug": "systolic-array",
+    "name": "Systolic Array",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A grid of processing elements passing data rhythmically; the core of TPUs.",
+    "importance": 0.35,
+    "wikipedia_title": "Systolic array"
+  },
+  {
+    "id": "concept:neuromorphic-computing",
+    "slug": "neuromorphic-computing",
+    "name": "Neuromorphic Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Chips modelled on neurons and synapses for efficient, event-driven computation.",
+    "importance": 0.4,
+    "wikipedia_title": "Neuromorphic engineering"
+  },
+  {
+    "id": "concept:chiplet",
+    "slug": "chiplet",
+    "name": "Chiplets",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Building one processor from several smaller dies in a single package.",
+    "importance": 0.4,
+    "wikipedia_title": "Chiplet"
+  },
+  {
+    "id": "concept:heterogeneous-computing",
+    "slug": "heterogeneous-computing",
+    "name": "Heterogeneous Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Combining CPUs, GPUs and accelerators so each task runs on the best fit.",
+    "importance": 0.45,
+    "wikipedia_title": "Heterogeneous computing"
+  },
+  {
+    "id": "concept:transistor",
+    "slug": "transistor",
+    "name": "Transistor",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "The semiconductor switch from which all digital logic is built.",
+    "importance": 0.6,
+    "wikipedia_title": "Transistor"
+  },
+  {
+    "id": "concept:cmos",
+    "slug": "cmos",
+    "name": "CMOS",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Complementary MOS: the low-power transistor technology behind nearly every chip.",
+    "importance": 0.55,
+    "wikipedia_title": "CMOS"
+  },
+  {
+    "id": "concept:boolean-algebra",
+    "slug": "boolean-algebra",
+    "name": "Boolean Algebra",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "The algebra of true and false that underlies logic circuits.",
+    "importance": 0.55,
+    "wikipedia_title": "Boolean algebra"
+  },
+  {
+    "id": "concept:karnaugh-map",
+    "slug": "karnaugh-map",
+    "name": "Karnaugh Map",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "A grid method for simplifying Boolean expressions by hand.",
+    "importance": 0.35,
+    "wikipedia_title": "Karnaugh map",
+    "aliases": [
+      "K-map"
+    ]
+  },
+  {
+    "id": "concept:flip-flop",
+    "slug": "flip-flop",
+    "name": "Flip-Flop",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "A clocked circuit that stores one bit; the building block of registers.",
+    "importance": 0.45,
+    "wikipedia_title": "Flip-flop (electronics)"
+  },
+  {
+    "id": "concept:register-transfer-level",
+    "slug": "register-transfer-level",
+    "name": "Register-Transfer Level",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Describing hardware as data moving between registers each clock cycle.",
+    "importance": 0.45,
+    "wikipedia_title": "Register-transfer level",
+    "aliases": [
+      "RTL"
+    ]
+  },
+  {
+    "id": "concept:logic-synthesis",
+    "slug": "logic-synthesis",
+    "name": "Logic Synthesis",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Automatically turning an RTL description into a netlist of gates.",
+    "importance": 0.4,
+    "wikipedia_title": "Logic synthesis"
+  },
+  {
+    "id": "concept:high-level-synthesis",
+    "slug": "high-level-synthesis",
+    "name": "High-Level Synthesis",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Generating hardware from C, C++ or similar high-level code.",
+    "importance": 0.35,
+    "wikipedia_title": "High-level synthesis",
+    "aliases": [
+      "HLS"
+    ]
+  },
+  {
+    "id": "concept:static-timing-analysis",
+    "slug": "static-timing-analysis",
+    "name": "Static Timing Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Checking that every signal path meets the clock deadline without simulation.",
+    "importance": 0.35,
+    "wikipedia_title": "Static timing analysis",
+    "aliases": [
+      "STA"
+    ]
+  },
+  {
+    "id": "concept:place-and-route",
+    "slug": "place-and-route",
+    "name": "Place and Route",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Positioning gates on the die and wiring them together.",
+    "importance": 0.35,
+    "wikipedia_title": "Place and route"
+  },
+  {
+    "id": "concept:clock-domain-crossing",
+    "slug": "clock-domain-crossing",
+    "name": "Clock Domain Crossing",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Safely passing signals between parts of a chip driven by different clocks.",
+    "importance": 0.3,
+    "wikipedia_title": "Clock domain crossing"
+  },
+  {
+    "id": "concept:design-for-testability",
+    "slug": "design-for-testability",
+    "name": "Design for Testability",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Adding structures such as scan chains so fabricated chips can be tested.",
+    "importance": 0.3,
+    "wikipedia_title": "Design for testing",
+    "aliases": [
+      "DFT"
+    ]
+  },
+  {
+    "id": "concept:hardware-verification",
+    "slug": "hardware-verification",
+    "name": "Hardware Verification",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Proving or testing that a chip design matches its specification before tape-out.",
+    "importance": 0.4,
+    "wikipedia_title": "Functional verification"
+  },
+  {
+    "id": "concept:electronic-design-automation",
+    "slug": "electronic-design-automation",
+    "name": "Electronic Design Automation",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Software tools for designing, simulating and verifying chips and boards.",
+    "importance": 0.45,
+    "wikipedia_title": "Electronic design automation",
+    "aliases": [
+      "EDA"
+    ]
+  },
+  {
+    "id": "concept:system-on-chip",
+    "slug": "system-on-chip",
+    "name": "System on a Chip",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "A whole computer (cores, memory controllers, I/O) on one die.",
+    "importance": 0.55,
+    "wikipedia_title": "System on a chip",
+    "aliases": [
+      "SoC"
+    ]
+  },
+  {
+    "id": "concept:semiconductor-fabrication",
+    "slug": "semiconductor-fabrication",
+    "name": "Semiconductor Fabrication",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Manufacturing chips through lithography, deposition and etching.",
+    "importance": 0.45,
+    "wikipedia_title": "Semiconductor device fabrication"
+  },
+  {
+    "id": "concept:vlsi",
+    "slug": "vlsi",
+    "name": "VLSI",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Very-large-scale integration: putting billions of transistors on one chip.",
+    "importance": 0.55,
+    "wikipedia_title": "Very Large Scale Integration",
+    "aliases": [
+      "Very-Large-Scale Integration"
+    ]
+  },
+  {
+    "id": "concept:low-power-design",
+    "slug": "low-power-design",
+    "name": "Low-Power Design",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Techniques such as clock gating and voltage scaling that cut chip energy use.",
+    "importance": 0.35,
+    "wikipedia_title": "Low-power electronics"
+  },
+  {
+    "id": "concept:digital-signal-processing",
+    "slug": "digital-signal-processing",
+    "name": "Digital Signal Processing",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Analysing and modifying sampled signals with algorithms.",
+    "importance": 0.6,
+    "wikipedia_title": "Digital signal processing",
+    "aliases": [
+      "DSP"
+    ]
+  },
+  {
+    "id": "concept:fourier-transform",
+    "slug": "fourier-transform",
+    "name": "Fourier Transform",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Decomposing a signal into the frequencies that make it up.",
+    "importance": 0.6,
+    "wikipedia_title": "Fourier transform"
+  },
+  {
+    "id": "concept:fast-fourier-transform",
+    "slug": "fast-fourier-transform",
+    "name": "Fast Fourier Transform",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "An O(n log n) algorithm for the discrete Fourier transform.",
+    "importance": 0.55,
+    "wikipedia_title": "Fast Fourier transform",
+    "aliases": [
+      "FFT"
+    ]
+  },
+  {
+    "id": "concept:sampling-theorem",
+    "slug": "sampling-theorem",
+    "name": "Sampling Theorem",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Sampling above twice the highest frequency captures a signal exactly.",
+    "importance": 0.5,
+    "wikipedia_title": "Nyquist–Shannon sampling theorem",
+    "aliases": [
+      "Nyquist–Shannon theorem"
+    ]
+  },
+  {
+    "id": "concept:z-transform",
+    "slug": "z-transform",
+    "name": "Z-Transform",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "The discrete-time counterpart of the Laplace transform, used to analyse filters.",
+    "importance": 0.35,
+    "wikipedia_title": "Z-transform"
+  },
+  {
+    "id": "concept:digital-filter",
+    "slug": "digital-filter",
+    "name": "Digital Filter",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "An algorithm that removes or emphasises parts of a signal's spectrum.",
+    "importance": 0.45,
+    "wikipedia_title": "Digital filter",
+    "aliases": [
+      "FIR filter",
+      "IIR filter"
+    ]
+  },
+  {
+    "id": "concept:convolution",
+    "slug": "convolution",
+    "name": "Convolution",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Sliding one function over another and summing the products.",
+    "importance": 0.55,
+    "wikipedia_title": "Convolution"
+  },
+  {
+    "id": "concept:modulation",
+    "slug": "modulation",
+    "name": "Modulation",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Encoding information onto a carrier wave (AM, FM, QAM ...).",
+    "importance": 0.45,
+    "wikipedia_title": "Modulation"
+  },
+  {
+    "id": "concept:analog-to-digital-conversion",
+    "slug": "analog-to-digital-conversion",
+    "name": "Analog-to-Digital Conversion",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Turning a continuous voltage into numbers a computer can process.",
+    "importance": 0.45,
+    "wikipedia_title": "Analog-to-digital converter",
+    "aliases": [
+      "ADC"
+    ]
+  },
+  {
+    "id": "concept:wavelet-transform",
+    "slug": "wavelet-transform",
+    "name": "Wavelet Transform",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Analysing a signal at several scales at once; used in JPEG 2000.",
+    "importance": 0.35,
+    "wikipedia_title": "Wavelet transform"
+  },
+  {
+    "id": "concept:image-processing",
+    "slug": "image-processing",
+    "name": "Image Processing",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Algorithms that enhance, filter or analyse digital images.",
+    "importance": 0.55,
+    "wikipedia_title": "Digital image processing"
+  },
+  {
+    "id": "concept:audio-signal-processing",
+    "slug": "audio-signal-processing",
+    "name": "Audio Signal Processing",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Processing sound: effects, compression, noise reduction and analysis.",
+    "importance": 0.45,
+    "wikipedia_title": "Audio signal processing"
+  },
+  {
+    "id": "concept:software-defined-radio",
+    "slug": "software-defined-radio",
+    "name": "Software-Defined Radio",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Radio systems whose modulation and filtering run in software.",
+    "importance": 0.4,
+    "wikipedia_title": "Software-defined radio",
+    "aliases": [
+      "SDR"
+    ]
+  },
+  {
+    "id": "concept:ofdm",
+    "slug": "ofdm",
+    "name": "OFDM",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Splitting data across many closely spaced carriers; used by Wi-Fi and 4G/5G.",
+    "importance": 0.4,
+    "wikipedia_title": "Orthogonal frequency-division multiplexing",
+    "aliases": [
+      "Orthogonal Frequency-Division Multiplexing"
+    ]
+  },
+  {
+    "id": "concept:mimo",
+    "slug": "mimo",
+    "name": "MIMO",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Using multiple antennas on both ends to multiply wireless throughput.",
+    "importance": 0.4,
+    "wikipedia_title": "MIMO",
+    "aliases": [
+      "Multiple-Input Multiple-Output"
+    ]
+  },
+  {
+    "id": "concept:compressed-sensing",
+    "slug": "compressed-sensing",
+    "name": "Compressed Sensing",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Recovering sparse signals from far fewer samples than usual.",
+    "importance": 0.3,
+    "wikipedia_title": "Compressed sensing"
+  },
+  {
+    "id": "concept:adaptive-filter",
+    "slug": "adaptive-filter",
+    "name": "Adaptive Filter",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "A filter that tunes itself to changing signals, as in echo cancellation.",
+    "importance": 0.3,
+    "wikipedia_title": "Adaptive filter"
+  },
+  {
+    "id": "concept:data-compression",
+    "slug": "data-compression",
+    "name": "Data Compression",
+    "node_type": "concept",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Representing information in fewer bits, losslessly or with acceptable loss.",
+    "importance": 0.55,
+    "wikipedia_title": "Data compression"
+  },
+  {
+    "id": "concept:pwm",
+    "slug": "pwm",
+    "name": "Pulse-Width Modulation",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Controlling power by rapidly switching a signal on and off.",
+    "importance": 0.4,
+    "wikipedia_title": "Pulse-width modulation",
+    "aliases": [
+      "PWM"
+    ]
+  },
+  {
+    "id": "concept:gpio",
+    "slug": "gpio",
+    "name": "GPIO",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "General-purpose input/output pins that software can read or drive.",
+    "importance": 0.4,
+    "wikipedia_title": "General-purpose input/output",
+    "aliases": [
+      "General-Purpose I/O"
+    ]
+  },
+  {
+    "id": "concept:direct-memory-access",
+    "slug": "direct-memory-access",
+    "name": "Direct Memory Access",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Letting peripherals move data to memory without the CPU copying it.",
+    "importance": 0.45,
+    "wikipedia_title": "Direct memory access",
+    "aliases": [
+      "DMA"
+    ]
+  },
+  {
+    "id": "concept:watchdog-timer",
+    "slug": "watchdog-timer",
+    "name": "Watchdog Timer",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A timer that resets a device if its software stops responding.",
+    "importance": 0.3,
+    "wikipedia_title": "Watchdog timer"
+  },
+  {
+    "id": "concept:bootloader",
+    "slug": "bootloader",
+    "name": "Bootloader",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "The first code that runs at power-on and loads the main program.",
+    "importance": 0.4,
+    "wikipedia_title": "Bootloader"
+  },
+  {
+    "id": "concept:memory-mapped-io",
+    "slug": "memory-mapped-io",
+    "name": "Memory-Mapped I/O",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Controlling devices by reading and writing special memory addresses.",
+    "importance": 0.35,
+    "wikipedia_title": "Memory-mapped I/O",
+    "aliases": [
+      "MMIO"
+    ]
+  },
+  {
+    "id": "concept:embedded-linux",
+    "slug": "embedded-linux",
+    "name": "Embedded Linux",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Linux trimmed and configured to run on devices rather than PCs.",
+    "importance": 0.4,
+    "wikipedia_title": "Embedded Linux"
+  },
+  {
+    "id": "concept:hardware-abstraction-layer",
+    "slug": "hardware-abstraction-layer",
+    "name": "Hardware Abstraction Layer",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "A software layer hiding hardware details behind a common interface.",
+    "importance": 0.35,
+    "wikipedia_title": "Hardware abstraction",
+    "aliases": [
+      "HAL"
+    ]
+  },
+  {
+    "id": "concept:tinyml",
+    "slug": "tinyml",
+    "name": "TinyML",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Running machine-learning models on microcontrollers with milliwatts of power.",
+    "importance": 0.4,
+    "wikipedia_title": "TinyML"
+  },
+  {
+    "id": "concept:cyber-physical-systems",
+    "slug": "cyber-physical-systems",
+    "name": "Cyber-Physical Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "Computation tightly coupled to physical processes, like cars and power grids.",
+    "importance": 0.45,
+    "wikipedia_title": "Cyber-physical system",
+    "aliases": [
+      "CPS"
+    ]
+  },
+  {
+    "id": "concept:jtag",
+    "slug": "jtag",
+    "name": "JTAG",
+    "node_type": "concept",
+    "primary_domain": "domain:embedded",
+    "short_description": "The standard debug and test port for chips and boards.",
+    "importance": 0.3,
+    "wikipedia_title": "JTAG",
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:hardware-software-codesign",
+    "slug": "hardware-software-codesign",
+    "name": "Hardware/Software Co-Design",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Designing hardware and software together to meet performance and power goals.",
+    "importance": 0.4,
+    "wikipedia_title": "Hardware/software co-design"
+  },
+  {
+    "id": "concept:printed-circuit-board",
+    "slug": "printed-circuit-board",
+    "name": "Printed Circuit Board",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "The board that mechanically supports and wires electronic components.",
+    "importance": 0.45,
+    "wikipedia_title": "Printed circuit board",
+    "aliases": [
+      "PCB"
+    ]
+  },
+  {
+    "id": "concept:analog-circuit-design",
+    "slug": "analog-circuit-design",
+    "name": "Analog Circuit Design",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Designing amplifiers, filters and power circuits that handle continuous signals.",
+    "importance": 0.4,
+    "wikipedia_title": "Analogue electronics"
+  },
+  {
+    "id": "concept:signal-integrity",
+    "slug": "signal-integrity",
+    "name": "Signal Integrity",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Keeping high-speed electrical signals clean as they travel through wires.",
+    "importance": 0.3,
+    "wikipedia_title": "Signal integrity"
+  },
+  {
+    "id": "concept:user-centered-design",
+    "slug": "user-centered-design",
+    "name": "User-Centered Design",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Designing iteratively around users' needs, tested with real users.",
+    "importance": 0.55,
+    "wikipedia_title": "User-centered design",
+    "aliases": [
+      "UCD"
+    ]
+  },
+  {
+    "id": "concept:user-research",
+    "slug": "user-research",
+    "name": "User Research",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Studying users through interviews, observation and surveys to inform design.",
+    "importance": 0.45,
+    "wikipedia_title": "User research"
+  },
+  {
+    "id": "concept:personas",
+    "slug": "personas",
+    "name": "Personas",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Fictional but research-based users that keep a team focused on real needs.",
+    "importance": 0.3,
+    "wikipedia_title": "Persona (user experience)"
+  },
+  {
+    "id": "concept:cognitive-load",
+    "slug": "cognitive-load",
+    "name": "Cognitive Load",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "The mental effort an interface demands; good design keeps it low.",
+    "importance": 0.4,
+    "wikipedia_title": "Cognitive load"
+  },
+  {
+    "id": "concept:mental-model",
+    "slug": "mental-model",
+    "name": "Mental Models",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "What users believe about how a system works, right or wrong.",
+    "importance": 0.35,
+    "wikipedia_title": "Mental model"
+  },
+  {
+    "id": "concept:fitts-law",
+    "slug": "fitts-law",
+    "name": "Fitts's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Time to hit a target grows with distance and shrinks with target size.",
+    "importance": 0.4,
+    "wikipedia_title": "Fitts's law"
+  },
+  {
+    "id": "concept:information-architecture",
+    "slug": "information-architecture",
+    "name": "Information Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Organising and labelling content so people can find their way.",
+    "importance": 0.4,
+    "wikipedia_title": "Information architecture"
+  },
+  {
+    "id": "concept:ui-prototyping",
+    "slug": "ui-prototyping",
+    "name": "UI Prototyping",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Building quick mock-ups to test ideas before writing production code.",
+    "importance": 0.4,
+    "wikipedia_title": "Software prototyping"
+  },
+  {
+    "id": "concept:heuristic-evaluation",
+    "slug": "heuristic-evaluation",
+    "name": "Heuristic Evaluation",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Experts inspecting an interface against usability principles.",
+    "importance": 0.35,
+    "wikipedia_title": "Heuristic evaluation"
+  },
+  {
+    "id": "concept:eye-tracking",
+    "slug": "eye-tracking",
+    "name": "Eye Tracking",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Measuring where people look to study attention or control interfaces.",
+    "importance": 0.35,
+    "wikipedia_title": "Eye tracking"
+  },
+  {
+    "id": "concept:conversational-ui",
+    "slug": "conversational-ui",
+    "name": "Conversational UI",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Interfaces you talk or chat with instead of clicking through.",
+    "importance": 0.45,
+    "wikipedia_title": "Conversational user interface",
+    "aliases": [
+      "Chatbot interface"
+    ]
+  },
+  {
+    "id": "concept:voice-user-interface",
+    "slug": "voice-user-interface",
+    "name": "Voice User Interface",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Controlling systems by speaking, as with smart speakers.",
+    "importance": 0.4,
+    "wikipedia_title": "Voice user interface",
+    "aliases": [
+      "VUI"
+    ]
+  },
+  {
+    "id": "concept:gesture-recognition",
+    "slug": "gesture-recognition",
+    "name": "Gesture Recognition",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Interpreting hand and body movements as input.",
+    "importance": 0.4,
+    "wikipedia_title": "Gesture recognition"
+  },
+  {
+    "id": "concept:haptics",
+    "slug": "haptics",
+    "name": "Haptics",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Touch feedback such as vibration and force in devices and controllers.",
+    "importance": 0.4,
+    "wikipedia_title": "Haptic technology"
+  },
+  {
+    "id": "concept:brain-computer-interface",
+    "slug": "brain-computer-interface",
+    "name": "Brain-Computer Interface",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Direct communication between brain activity and a computer.",
+    "importance": 0.45,
+    "wikipedia_title": "Brain–computer interface",
+    "aliases": [
+      "BCI"
+    ]
+  },
+  {
+    "id": "concept:cscw",
+    "slug": "cscw",
+    "name": "Computer-Supported Cooperative Work",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "How technology supports people working together.",
+    "importance": 0.35,
+    "wikipedia_title": "Computer-supported cooperative work",
+    "aliases": [
+      "CSCW"
+    ]
+  },
+  {
+    "id": "concept:ubiquitous-computing",
+    "slug": "ubiquitous-computing",
+    "name": "Ubiquitous Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Computing woven invisibly into everyday objects and spaces.",
+    "importance": 0.4,
+    "wikipedia_title": "Ubiquitous computing"
+  },
+  {
+    "id": "concept:affective-computing",
+    "slug": "affective-computing",
+    "name": "Affective Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Systems that recognise, interpret or simulate human emotion.",
+    "importance": 0.35,
+    "wikipedia_title": "Affective computing"
+  },
+  {
+    "id": "concept:dark-patterns",
+    "slug": "dark-patterns",
+    "name": "Dark Patterns",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Interface tricks that push users into choices they did not intend.",
+    "importance": 0.35,
+    "wikipedia_title": "Dark pattern"
+  },
+  {
+    "id": "concept:human-robot-interaction",
+    "slug": "human-robot-interaction",
+    "name": "Human-Robot Interaction",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "How people and robots communicate and work safely together.",
+    "importance": 0.4,
+    "wikipedia_title": "Human–robot interaction",
+    "aliases": [
+      "HRI"
+    ]
+  },
+  {
+    "id": "concept:computational-social-science",
+    "slug": "computational-social-science",
+    "name": "Computational Social Science",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Studying society with large-scale data and simulation.",
+    "importance": 0.4,
+    "wikipedia_title": "Computational social science"
+  },
+  {
+    "id": "concept:digital-humanities",
+    "slug": "digital-humanities",
+    "name": "Digital Humanities",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Computational methods applied to history, literature and the arts.",
+    "importance": 0.35,
+    "wikipedia_title": "Digital humanities"
+  },
+  {
+    "id": "concept:educational-technology",
+    "slug": "educational-technology",
+    "name": "Educational Technology",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Software and data that support teaching and learning.",
+    "importance": 0.4,
+    "wikipedia_title": "Educational technology",
+    "aliases": [
+      "EdTech"
+    ]
+  },
+  {
+    "id": "concept:computational-neuroscience",
+    "slug": "computational-neuroscience",
+    "name": "Computational Neuroscience",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Modelling how neurons and brains compute.",
+    "importance": 0.4,
+    "wikipedia_title": "Computational neuroscience"
+  },
+  {
+    "id": "concept:climate-informatics",
+    "slug": "climate-informatics",
+    "name": "Climate Informatics",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Machine learning and data science for climate and weather science.",
+    "importance": 0.35,
+    "wikipedia_title": "Climate informatics"
+  },
+  {
+    "id": "concept:geographic-information-systems",
+    "slug": "geographic-information-systems",
+    "name": "Geographic Information Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Capturing, analysing and mapping spatial data.",
+    "importance": 0.5,
+    "wikipedia_title": "Geographic information system",
+    "aliases": [
+      "GIS"
+    ]
+  },
+  {
+    "id": "concept:computational-chemistry",
+    "slug": "computational-chemistry",
+    "name": "Computational Chemistry",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Simulating molecules and reactions with quantum and classical models.",
+    "importance": 0.4,
+    "wikipedia_title": "Computational chemistry"
+  },
+  {
+    "id": "concept:computational-physics",
+    "slug": "computational-physics",
+    "name": "Computational Physics",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Numerical simulation of physical systems.",
+    "importance": 0.4,
+    "wikipedia_title": "Computational physics"
+  },
+  {
+    "id": "concept:smart-cities",
+    "slug": "smart-cities",
+    "name": "Smart Cities",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Urban services run on sensors, networks and data.",
+    "importance": 0.4,
+    "wikipedia_title": "Smart city"
+  },
+  {
+    "id": "concept:precision-agriculture",
+    "slug": "precision-agriculture",
+    "name": "Precision Agriculture",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Using sensors, drones and data to farm field-by-field and plant-by-plant.",
+    "importance": 0.35,
+    "wikipedia_title": "Precision agriculture"
+  },
+  {
+    "id": "concept:computational-law",
+    "slug": "computational-law",
+    "name": "Computational Law",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Representing and reasoning about legal rules with software.",
+    "importance": 0.3,
+    "wikipedia_title": "Computational law",
+    "aliases": [
+      "Legal tech"
+    ]
+  },
+  {
+    "id": "concept:music-information-retrieval",
+    "slug": "music-information-retrieval",
+    "name": "Music Information Retrieval",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Extracting melody, rhythm and similarity from music audio and scores.",
+    "importance": 0.3,
+    "wikipedia_title": "Music information retrieval",
+    "aliases": [
+      "MIR"
+    ]
+  },
+  {
+    "id": "concept:computational-linguistics",
+    "slug": "computational-linguistics",
+    "name": "Computational Linguistics",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "The scientific study of language with computational models.",
+    "importance": 0.45,
+    "wikipedia_title": "Computational linguistics"
+  },
+  {
+    "id": "concept:sports-analytics",
+    "slug": "sports-analytics",
+    "name": "Sports Analytics",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Tracking and statistical modelling to evaluate players and tactics.",
+    "importance": 0.3,
+    "wikipedia_title": "Sports analytics"
+  },
+  {
+    "id": "concept:smart-grid",
+    "slug": "smart-grid",
+    "name": "Smart Grid",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Power grids that use sensing and control to balance supply and demand.",
+    "importance": 0.4,
+    "wikipedia_title": "Smart grid"
+  },
+  {
+    "id": "concept:genomics",
+    "slug": "genomics",
+    "name": "Genomics",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Sequencing and analysing whole genomes.",
+    "importance": 0.55,
+    "wikipedia_title": "Genomics"
+  },
+  {
+    "id": "concept:sequence-alignment",
+    "slug": "sequence-alignment",
+    "name": "Sequence Alignment",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Lining up DNA or protein sequences to find similarity.",
+    "importance": 0.5,
+    "wikipedia_title": "Sequence alignment"
+  },
+  {
+    "id": "concept:genome-assembly",
+    "slug": "genome-assembly",
+    "name": "Genome Assembly",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Reconstructing a genome from millions of short sequencing reads.",
+    "importance": 0.4,
+    "wikipedia_title": "Sequence assembly"
+  },
+  {
+    "id": "concept:next-generation-sequencing",
+    "slug": "next-generation-sequencing",
+    "name": "Next-Generation Sequencing",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Massively parallel DNA sequencing that made genomics cheap.",
+    "importance": 0.45,
+    "wikipedia_title": "Massive parallel sequencing",
+    "aliases": [
+      "NGS"
+    ]
+  },
+  {
+    "id": "concept:phylogenetics",
+    "slug": "phylogenetics",
+    "name": "Phylogenetics",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Inferring evolutionary trees from sequence data.",
+    "importance": 0.4,
+    "wikipedia_title": "Computational phylogenetics"
+  },
+  {
+    "id": "concept:protein-structure-prediction",
+    "slug": "protein-structure-prediction",
+    "name": "Protein Structure Prediction",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Predicting a protein's 3D shape from its amino-acid sequence.",
+    "importance": 0.5,
+    "wikipedia_title": "Protein structure prediction"
+  },
+  {
+    "id": "concept:gene-expression-analysis",
+    "slug": "gene-expression-analysis",
+    "name": "Gene Expression Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Measuring which genes are active, e.g. with RNA-seq.",
+    "importance": 0.4,
+    "wikipedia_title": "Gene expression profiling"
+  },
+  {
+    "id": "concept:single-cell-analysis",
+    "slug": "single-cell-analysis",
+    "name": "Single-Cell Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Measuring molecules cell by cell to map tissues and cell types.",
+    "importance": 0.35,
+    "wikipedia_title": "Single-cell analysis"
+  },
+  {
+    "id": "concept:systems-biology",
+    "slug": "systems-biology",
+    "name": "Systems Biology",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Modelling biological systems as networks of interacting parts.",
+    "importance": 0.4,
+    "wikipedia_title": "Systems biology"
+  },
+  {
+    "id": "concept:molecular-dynamics",
+    "slug": "molecular-dynamics",
+    "name": "Molecular Dynamics",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Simulating how atoms and molecules move over time.",
+    "importance": 0.45,
+    "wikipedia_title": "Molecular dynamics"
+  },
+  {
+    "id": "concept:computational-drug-discovery",
+    "slug": "computational-drug-discovery",
+    "name": "Computational Drug Discovery",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Screening and designing drug candidates in silico.",
+    "importance": 0.45,
+    "wikipedia_title": "Drug design"
+  },
+  {
+    "id": "concept:biological-network-analysis",
+    "slug": "biological-network-analysis",
+    "name": "Biological Network Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Graph analysis of protein, gene and metabolic interactions.",
+    "importance": 0.3,
+    "wikipedia_title": "Biological network"
+  },
+  {
+    "id": "concept:algorithmic-trading",
+    "slug": "algorithmic-trading",
+    "name": "Algorithmic Trading",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Trading by programmed rules instead of by hand.",
+    "importance": 0.5,
+    "wikipedia_title": "Algorithmic trading"
+  },
+  {
+    "id": "concept:high-frequency-trading",
+    "slug": "high-frequency-trading",
+    "name": "High-Frequency Trading",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Trading in microseconds, where network latency is the edge.",
+    "importance": 0.4,
+    "wikipedia_title": "High-frequency trading",
+    "aliases": [
+      "HFT"
+    ]
+  },
+  {
+    "id": "concept:quantitative-finance",
+    "slug": "quantitative-finance",
+    "name": "Quantitative Finance",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Mathematical and statistical models for pricing and investing.",
+    "importance": 0.45,
+    "wikipedia_title": "Mathematical finance",
+    "aliases": [
+      "Quant finance"
+    ]
+  },
+  {
+    "id": "concept:risk-modeling",
+    "slug": "risk-modeling",
+    "name": "Financial Risk Modeling",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Estimating losses from market, credit and operational risk.",
+    "importance": 0.4,
+    "wikipedia_title": "Financial risk modeling"
+  },
+  {
+    "id": "concept:payment-systems",
+    "slug": "payment-systems",
+    "name": "Payment Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Card networks, real-time rails and processors that move money.",
+    "importance": 0.5,
+    "wikipedia_title": "Payment system"
+  },
+  {
+    "id": "concept:open-banking",
+    "slug": "open-banking",
+    "name": "Open Banking",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Banks sharing account data with third parties through APIs, with consent.",
+    "importance": 0.4,
+    "wikipedia_title": "Open banking"
+  },
+  {
+    "id": "concept:fraud-detection",
+    "slug": "fraud-detection",
+    "name": "Fraud Detection",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Spotting fraudulent transactions with rules and machine learning.",
+    "importance": 0.45,
+    "wikipedia_title": "Fraud"
+  },
+  {
+    "id": "concept:credit-scoring",
+    "slug": "credit-scoring",
+    "name": "Credit Scoring",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Statistical models that estimate how likely a borrower is to repay.",
+    "importance": 0.35,
+    "wikipedia_title": "Credit score"
+  },
+  {
+    "id": "concept:robo-advisor",
+    "slug": "robo-advisor",
+    "name": "Robo-Advisors",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Automated investment management driven by algorithms.",
+    "importance": 0.3,
+    "wikipedia_title": "Robo-advisor"
+  },
+  {
+    "id": "concept:regtech",
+    "slug": "regtech",
+    "name": "RegTech",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Technology that automates regulatory compliance and reporting.",
+    "importance": 0.3,
+    "wikipedia_title": "Regulatory technology"
+  },
+  {
+    "id": "concept:order-matching-engine",
+    "slug": "order-matching-engine",
+    "name": "Order Matching Engine",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "The core of an exchange: pairs buy and sell orders by price and time.",
+    "importance": 0.35,
+    "wikipedia_title": "Order matching system"
+  },
+  {
+    "id": "concept:cbdc",
+    "slug": "cbdc",
+    "name": "Central Bank Digital Currency",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Digital money issued directly by a central bank.",
+    "importance": 0.35,
+    "wikipedia_title": "Central bank digital currency",
+    "aliases": [
+      "CBDC"
+    ]
+  },
+  {
+    "id": "concept:electronic-health-records",
+    "slug": "electronic-health-records",
+    "name": "Electronic Health Records",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Digital patient records shared across a care system.",
+    "importance": 0.5,
+    "wikipedia_title": "Electronic health record",
+    "aliases": [
+      "EHR"
+    ]
+  },
+  {
+    "id": "concept:health-data-interoperability",
+    "slug": "health-data-interoperability",
+    "name": "Health Data Interoperability",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Exchanging medical data between systems with standards like HL7 FHIR.",
+    "importance": 0.4,
+    "wikipedia_title": "Health information exchange"
+  },
+  {
+    "id": "concept:medical-imaging",
+    "slug": "medical-imaging",
+    "name": "Medical Imaging",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Computing behind CT, MRI and ultrasound, from reconstruction to diagnosis.",
+    "importance": 0.5,
+    "wikipedia_title": "Medical imaging"
+  },
+  {
+    "id": "concept:clinical-decision-support",
+    "slug": "clinical-decision-support",
+    "name": "Clinical Decision Support",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Software that gives clinicians patient-specific advice at the point of care.",
+    "importance": 0.4,
+    "wikipedia_title": "Clinical decision support system"
+  },
+  {
+    "id": "concept:telemedicine",
+    "slug": "telemedicine",
+    "name": "Telemedicine",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Delivering care remotely over video, messaging and monitoring.",
+    "importance": 0.4,
+    "wikipedia_title": "Telehealth"
+  },
+  {
+    "id": "concept:wearable-health-monitoring",
+    "slug": "wearable-health-monitoring",
+    "name": "Wearable Health Monitoring",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Watches and patches that continuously track vital signs.",
+    "importance": 0.4,
+    "wikipedia_title": "Wearable technology"
+  },
+  {
+    "id": "concept:precision-medicine",
+    "slug": "precision-medicine",
+    "name": "Precision Medicine",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Treatment tailored to each patient's genes, environment and lifestyle.",
+    "importance": 0.4,
+    "wikipedia_title": "Precision medicine"
+  },
+  {
+    "id": "concept:hipaa",
+    "slug": "hipaa",
+    "name": "HIPAA",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "The US law governing the privacy and security of health information.",
+    "importance": 0.4,
+    "wikipedia_title": "Health Insurance Portability and Accountability Act",
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:epidemiological-modeling",
+    "slug": "epidemiological-modeling",
+    "name": "Epidemiological Modeling",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Simulating how diseases spread to guide public-health decisions.",
+    "importance": 0.4,
+    "wikipedia_title": "Mathematical modelling of infectious diseases"
+  },
+  {
+    "id": "concept:medical-device-software",
+    "slug": "medical-device-software",
+    "name": "Medical Device Software",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Safety-critical software regulated as part of a medical device.",
+    "importance": 0.35,
+    "wikipedia_title": "Software as a medical device"
+  },
+  {
+    "id": "concept:hidden-markov-model",
+    "slug": "hidden-markov-model",
+    "name": "Hidden Markov Model",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A model of a system moving through unobserved states that emit observations.",
+    "importance": 0.4,
+    "wikipedia_title": "Hidden Markov model",
+    "aliases": [
+      "HMM"
+    ]
+  },
+  {
+    "id": "concept:generative-adversarial-network",
+    "slug": "generative-adversarial-network",
+    "name": "Generative Adversarial Network",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Two networks competing: one generates fakes, the other spots them.",
+    "importance": 0.5,
+    "wikipedia_title": "Generative adversarial network",
+    "aliases": [
+      "GAN"
+    ]
+  },
+  {
+    "id": "concept:variational-autoencoder",
+    "slug": "variational-autoencoder",
+    "name": "Variational Autoencoder",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A generative model that learns a smooth latent space to sample from.",
+    "importance": 0.4,
+    "wikipedia_title": "Variational autoencoder",
+    "aliases": [
+      "VAE"
+    ]
+  },
+  {
+    "id": "concept:recurrent-neural-network",
+    "slug": "recurrent-neural-network",
+    "name": "Recurrent Neural Network",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Networks with loops that process sequences step by step.",
+    "importance": 0.5,
+    "wikipedia_title": "Recurrent neural network",
+    "aliases": [
+      "RNN"
+    ]
+  },
+  {
+    "id": "concept:lstm",
+    "slug": "lstm",
+    "name": "LSTM",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Long short-term memory: an RNN cell that remembers over long sequences.",
+    "importance": 0.45,
+    "wikipedia_title": "Long short-term memory",
+    "aliases": [
+      "Long Short-Term Memory"
+    ]
+  },
+  {
+    "id": "concept:transfer-learning",
+    "slug": "transfer-learning",
+    "name": "Transfer Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Reusing a model trained on one task as the starting point for another.",
+    "importance": 0.5,
+    "wikipedia_title": "Transfer learning"
+  },
+  {
+    "id": "concept:federated-learning",
+    "slug": "federated-learning",
+    "name": "Federated Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Training on many devices' data without the data leaving the devices.",
+    "importance": 0.45,
+    "wikipedia_title": "Federated learning"
+  },
+  {
+    "id": "concept:explainable-ai",
+    "slug": "explainable-ai",
+    "name": "Explainable AI",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Methods that make a model's decisions understandable to people.",
+    "importance": 0.5,
+    "wikipedia_title": "Explainable artificial intelligence",
+    "aliases": [
+      "XAI"
+    ]
+  },
+  {
+    "id": "concept:ai-alignment",
+    "slug": "ai-alignment",
+    "name": "AI Alignment",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Making AI systems pursue the goals and values their designers intend.",
+    "importance": 0.5,
+    "wikipedia_title": "AI alignment",
+    "aliases": [
+      "AI safety"
+    ]
+  },
+  {
+    "id": "concept:rlhf",
+    "slug": "rlhf",
+    "name": "RLHF",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Reinforcement learning from human feedback: tuning a model on human preferences.",
+    "importance": 0.45,
+    "wikipedia_title": "Reinforcement learning from human feedback",
+    "aliases": [
+      "Reinforcement Learning from Human Feedback"
+    ]
+  },
+  {
+    "id": "concept:knowledge-graph",
+    "slug": "knowledge-graph",
+    "name": "Knowledge Graph",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Facts stored as entities and typed relationships between them.",
+    "importance": 0.5,
+    "wikipedia_title": "Knowledge graph"
+  },
+  {
+    "id": "concept:object-detection",
+    "slug": "object-detection",
+    "name": "Object Detection",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Finding and labelling objects with bounding boxes in images.",
+    "importance": 0.5,
+    "wikipedia_title": "Object detection"
+  },
+  {
+    "id": "concept:image-segmentation",
+    "slug": "image-segmentation",
+    "name": "Image Segmentation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Labelling every pixel of an image by the object it belongs to.",
+    "importance": 0.45,
+    "wikipedia_title": "Image segmentation"
+  },
+  {
+    "id": "concept:speech-recognition",
+    "slug": "speech-recognition",
+    "name": "Speech Recognition",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Converting spoken audio into text.",
+    "importance": 0.5,
+    "wikipedia_title": "Speech recognition",
+    "aliases": [
+      "ASR"
+    ]
+  },
+  {
+    "id": "concept:machine-translation",
+    "slug": "machine-translation",
+    "name": "Machine Translation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Automatically translating text between languages.",
+    "importance": 0.45,
+    "wikipedia_title": "Machine translation"
+  },
+  {
+    "id": "concept:sentiment-analysis",
+    "slug": "sentiment-analysis",
+    "name": "Sentiment Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Detecting opinion and emotion in text.",
+    "importance": 0.4,
+    "wikipedia_title": "Sentiment analysis"
+  },
+  {
+    "id": "concept:named-entity-recognition",
+    "slug": "named-entity-recognition",
+    "name": "Named Entity Recognition",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Finding names of people, places and organisations in text.",
+    "importance": 0.35,
+    "wikipedia_title": "Named-entity recognition",
+    "aliases": [
+      "NER"
+    ]
+  },
+  {
+    "id": "concept:mixture-of-experts",
+    "slug": "mixture-of-experts",
+    "name": "Mixture of Experts",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Routing each input to a few specialised sub-networks to scale models cheaply.",
+    "importance": 0.4,
+    "wikipedia_title": "Mixture of experts",
+    "aliases": [
+      "MoE"
+    ]
+  },
+  {
+    "id": "concept:model-quantization",
+    "slug": "model-quantization",
+    "name": "Model Quantization",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Storing weights in fewer bits so models run faster and smaller.",
+    "importance": 0.4,
+    "wikipedia_title": "Quantization (signal processing)"
+  },
+  {
+    "id": "concept:knowledge-distillation",
+    "slug": "knowledge-distillation",
+    "name": "Knowledge Distillation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Training a small model to imitate a large one.",
+    "importance": 0.35,
+    "wikipedia_title": "Knowledge distillation"
+  },
+  {
+    "id": "concept:anomaly-detection",
+    "slug": "anomaly-detection",
+    "name": "Anomaly Detection",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Finding data points that do not fit the usual pattern.",
+    "importance": 0.45,
+    "wikipedia_title": "Anomaly detection"
+  },
+  {
+    "id": "concept:time-series-forecasting",
+    "slug": "time-series-forecasting",
+    "name": "Time-Series Forecasting",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Predicting future values from past observations over time.",
+    "importance": 0.45,
+    "wikipedia_title": "Time series"
+  },
+  {
+    "id": "concept:causal-inference",
+    "slug": "causal-inference",
+    "name": "Causal Inference",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Working out cause and effect rather than mere correlation.",
+    "importance": 0.4,
+    "wikipedia_title": "Causal inference"
+  },
+  {
+    "id": "concept:contrastive-learning",
+    "slug": "contrastive-learning",
+    "name": "Contrastive Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Learning representations by pulling similar pairs together and pushing others apart.",
+    "importance": 0.35,
+    "wikipedia_title": "Contrastive learning"
+  },
+  {
+    "id": "concept:gradient-boosting",
+    "slug": "gradient-boosting",
+    "name": "Gradient Boosting",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Building a strong model from many small decision trees, each fixing the last.",
+    "importance": 0.45,
+    "wikipedia_title": "Gradient boosting"
+  },
+  {
+    "id": "concept:decision-trees",
+    "slug": "decision-trees",
+    "name": "Decision Trees",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Models that predict by following a tree of yes/no questions.",
+    "importance": 0.45,
+    "wikipedia_title": "Decision tree learning"
+  },
+  {
+    "id": "concept:support-vector-machine",
+    "slug": "support-vector-machine",
+    "name": "Support Vector Machine",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A classifier that finds the widest margin between classes.",
+    "importance": 0.4,
+    "wikipedia_title": "Support vector machine",
+    "aliases": [
+      "SVM"
+    ]
+  },
+  {
+    "id": "concept:k-means-clustering",
+    "slug": "k-means-clustering",
+    "name": "K-Means Clustering",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Grouping data into k clusters around their means.",
+    "importance": 0.4,
+    "wikipedia_title": "K-means clustering"
+  },
+  {
+    "id": "concept:dimensionality-reduction",
+    "slug": "dimensionality-reduction",
+    "name": "Dimensionality Reduction",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Compressing many features into a few that keep the structure, e.g. PCA.",
+    "importance": 0.4,
+    "wikipedia_title": "Dimensionality reduction",
+    "aliases": [
+      "PCA"
+    ]
+  },
+  {
+    "id": "concept:lambda-calculus",
+    "slug": "lambda-calculus",
+    "name": "Lambda Calculus",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A minimal model of computation built only from functions.",
+    "importance": 0.45,
+    "wikipedia_title": "Lambda calculus"
+  },
+  {
+    "id": "concept:graph-theory",
+    "slug": "graph-theory",
+    "name": "Graph Theory",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "The mathematics of nodes and edges.",
+    "importance": 0.6,
+    "wikipedia_title": "Graph theory"
+  },
+  {
+    "id": "concept:discrete-mathematics",
+    "slug": "discrete-mathematics",
+    "name": "Discrete Mathematics",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Logic, sets, combinatorics and graphs: the maths of computing.",
+    "importance": 0.55,
+    "wikipedia_title": "Discrete mathematics"
+  },
+  {
+    "id": "concept:linear-algebra",
+    "slug": "linear-algebra",
+    "name": "Linear Algebra",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Vectors, matrices and linear maps; the language of ML and graphics.",
+    "importance": 0.6,
+    "wikipedia_title": "Linear algebra"
+  },
+  {
+    "id": "concept:probability-theory",
+    "slug": "probability-theory",
+    "name": "Probability Theory",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "The mathematics of uncertainty and randomness.",
+    "importance": 0.55,
+    "wikipedia_title": "Probability theory"
+  },
+  {
+    "id": "concept:game-theory",
+    "slug": "game-theory",
+    "name": "Game Theory",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Modelling strategic decisions between rational agents.",
+    "importance": 0.45,
+    "wikipedia_title": "Game theory"
+  },
+  {
+    "id": "concept:monte-carlo-methods",
+    "slug": "monte-carlo-methods",
+    "name": "Monte Carlo Methods",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Estimating results by repeated random sampling.",
+    "importance": 0.5,
+    "wikipedia_title": "Monte Carlo method"
+  },
+  {
+    "id": "concept:linear-programming",
+    "slug": "linear-programming",
+    "name": "Linear Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Optimising a linear objective under linear constraints.",
+    "importance": 0.4,
+    "wikipedia_title": "Linear programming"
+  },
+  {
+    "id": "concept:convex-optimization",
+    "slug": "convex-optimization",
+    "name": "Convex Optimization",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Optimisation problems where every local minimum is global.",
+    "importance": 0.45,
+    "wikipedia_title": "Convex optimization"
+  },
+  {
+    "id": "concept:kolmogorov-complexity",
+    "slug": "kolmogorov-complexity",
+    "name": "Kolmogorov Complexity",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "The length of the shortest program that outputs a given string.",
+    "importance": 0.3,
+    "wikipedia_title": "Kolmogorov complexity"
+  },
+  {
+    "id": "concept:amortized-analysis",
+    "slug": "amortized-analysis",
+    "name": "Amortized Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Averaging an operation's cost over a whole sequence of operations.",
+    "importance": 0.35,
+    "wikipedia_title": "Amortized analysis"
+  },
+  {
+    "id": "concept:string-matching",
+    "slug": "string-matching",
+    "name": "String Matching",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Finding patterns in text quickly, e.g. KMP and Boyer-Moore.",
+    "importance": 0.4,
+    "wikipedia_title": "String-searching algorithm"
+  },
+  {
+    "id": "concept:network-flow",
+    "slug": "network-flow",
+    "name": "Network Flow",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Maximum flow and minimum cut problems on graphs.",
+    "importance": 0.35,
+    "wikipedia_title": "Network flow problem",
+    "aliases": [
+      "Max flow"
+    ]
+  },
+  {
+    "id": "concept:bloom-filter",
+    "slug": "bloom-filter",
+    "name": "Bloom Filter",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A compact probabilistic set that may give false positives but never false negatives.",
+    "importance": 0.4,
+    "wikipedia_title": "Bloom filter"
+  },
+  {
+    "id": "concept:type-inference",
+    "slug": "type-inference",
+    "name": "Type Inference",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Compilers working out types so programmers do not have to write them.",
+    "importance": 0.4,
+    "wikipedia_title": "Type inference"
+  },
+  {
+    "id": "concept:generics",
+    "slug": "generics",
+    "name": "Generic Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Writing code once that works for many types.",
+    "importance": 0.45,
+    "wikipedia_title": "Generic programming",
+    "aliases": [
+      "Generics"
+    ]
+  },
+  {
+    "id": "concept:memory-safety",
+    "slug": "memory-safety",
+    "name": "Memory Safety",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Freedom from bugs like buffer overflows and use-after-free.",
+    "importance": 0.5,
+    "wikipedia_title": "Memory safety"
+  },
+  {
+    "id": "concept:ownership-and-borrowing",
+    "slug": "ownership-and-borrowing",
+    "name": "Ownership and Borrowing",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Rust's compile-time rules that guarantee memory safety without a GC.",
+    "importance": 0.4,
+    "wikipedia_title": "Rust (programming language)"
+  },
+  {
+    "id": "concept:metaprogramming",
+    "slug": "metaprogramming",
+    "name": "Metaprogramming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Programs that write or transform other programs, such as macros.",
+    "importance": 0.35,
+    "wikipedia_title": "Metaprogramming"
+  },
+  {
+    "id": "concept:coroutines",
+    "slug": "coroutines",
+    "name": "Coroutines",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Functions that can pause and resume, the basis of async/await.",
+    "importance": 0.4,
+    "wikipedia_title": "Coroutine"
+  },
+  {
+    "id": "concept:actor-model",
+    "slug": "actor-model",
+    "name": "Actor Model",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Concurrency through isolated actors that only communicate by messages.",
+    "importance": 0.45,
+    "wikipedia_title": "Actor model"
+  },
+  {
+    "id": "concept:design-by-contract",
+    "slug": "design-by-contract",
+    "name": "Design by Contract",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Specifying preconditions, postconditions and invariants for code.",
+    "importance": 0.3,
+    "wikipedia_title": "Design by contract"
+  },
+  {
+    "id": "concept:software-architecture",
+    "slug": "software-architecture",
+    "name": "Software Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "The high-level structure of a system and the trade-offs behind it.",
+    "importance": 0.55,
+    "wikipedia_title": "Software architecture"
+  },
+  {
+    "id": "concept:requirements-engineering",
+    "slug": "requirements-engineering",
+    "name": "Requirements Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Discovering, documenting and managing what a system must do.",
+    "importance": 0.4,
+    "wikipedia_title": "Requirements engineering"
+  },
+  {
+    "id": "concept:just-in-time-compilation",
+    "slug": "just-in-time-compilation",
+    "name": "Just-in-Time Compilation",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Compiling code to machine code while the program runs.",
+    "importance": 0.45,
+    "wikipedia_title": "Just-in-time compilation",
+    "aliases": [
+      "JIT"
+    ]
+  },
+  {
+    "id": "concept:interpreter",
+    "slug": "interpreter",
+    "name": "Interpreter",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A program that executes code directly instead of compiling it first.",
+    "importance": 0.45,
+    "wikipedia_title": "Interpreter (computing)"
+  },
+  {
+    "id": "concept:amdahls-law",
+    "slug": "amdahls-law",
+    "name": "Amdahl's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The serial part of a program caps how much parallelism can speed it up.",
+    "importance": 0.45,
+    "wikipedia_title": "Amdahl's law"
+  },
+  {
+    "id": "concept:supercomputer",
+    "slug": "supercomputer",
+    "name": "Supercomputer",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Machines with tens of thousands of nodes for the largest simulations.",
+    "importance": 0.45,
+    "wikipedia_title": "Supercomputer"
+  },
+  {
+    "id": "concept:exascale-computing",
+    "slug": "exascale-computing",
+    "name": "Exascale Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Systems performing at least 10^18 floating-point operations per second.",
+    "importance": 0.35,
+    "wikipedia_title": "Exascale computing"
+  },
+  {
+    "id": "concept:distributed-shared-memory",
+    "slug": "distributed-shared-memory",
+    "name": "Distributed Shared Memory",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Making separate machines' memory look like one shared address space.",
+    "importance": 0.3,
+    "wikipedia_title": "Distributed shared memory"
+  },
+  {
+    "id": "concept:lock-free-data-structures",
+    "slug": "lock-free-data-structures",
+    "name": "Lock-Free Data Structures",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Concurrent structures that make progress without locks, using atomics.",
+    "importance": 0.4,
+    "wikipedia_title": "Non-blocking algorithm"
+  },
+  {
+    "id": "concept:copy-on-write",
+    "slug": "copy-on-write",
+    "name": "Copy-on-Write",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Sharing data until someone writes, then copying only what changed.",
+    "importance": 0.4,
+    "wikipedia_title": "Copy-on-write"
+  },
+  {
+    "id": "concept:page-replacement",
+    "slug": "page-replacement",
+    "name": "Page Replacement",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Choosing which memory page to evict when RAM is full, e.g. LRU.",
+    "importance": 0.35,
+    "wikipedia_title": "Page replacement algorithm"
+  },
+  {
+    "id": "concept:osi-model",
+    "slug": "osi-model",
+    "name": "OSI Model",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The seven-layer reference model for network communication.",
+    "importance": 0.55,
+    "wikipedia_title": "OSI model",
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:subnetting",
+    "slug": "subnetting",
+    "name": "Subnetting",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Dividing an IP network into smaller networks with masks and CIDR.",
+    "importance": 0.4,
+    "wikipedia_title": "Subnet",
+    "aliases": [
+      "CIDR"
+    ]
+  },
+  {
+    "id": "concept:vlan",
+    "slug": "vlan",
+    "name": "VLAN",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Splitting one physical network into isolated virtual networks.",
+    "importance": 0.4,
+    "wikipedia_title": "VLAN",
+    "aliases": [
+      "Virtual LAN"
+    ]
+  },
+  {
+    "id": "concept:vpn",
+    "slug": "vpn",
+    "name": "VPN",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "An encrypted tunnel that joins a device to a private network over the internet.",
+    "importance": 0.5,
+    "wikipedia_title": "Virtual private network",
+    "aliases": [
+      "Virtual Private Network"
+    ]
+  },
+  {
+    "id": "concept:dhcp",
+    "slug": "dhcp",
+    "name": "DHCP",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Automatically handing out IP addresses to devices that join a network.",
+    "importance": 0.4,
+    "wikipedia_title": "Dynamic Host Configuration Protocol",
+    "node_subtype": "protocol"
+  },
+  {
+    "id": "concept:arp",
+    "slug": "arp",
+    "name": "ARP",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Finding the hardware (MAC) address for an IP address on a local network.",
+    "importance": 0.35,
+    "wikipedia_title": "Address Resolution Protocol",
+    "node_subtype": "protocol"
+  },
+  {
+    "id": "concept:peer-to-peer-networking",
+    "slug": "peer-to-peer-networking",
+    "name": "Peer-to-Peer Networking",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Networks where every node is both client and server.",
+    "importance": 0.45,
+    "wikipedia_title": "Peer-to-peer",
+    "aliases": [
+      "P2P"
+    ]
+  },
+  {
+    "id": "concept:multicast",
+    "slug": "multicast",
+    "name": "Multicast",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Sending one stream to many receivers at once.",
+    "importance": 0.3,
+    "wikipedia_title": "Multicast"
+  },
+  {
+    "id": "concept:network-function-virtualization",
+    "slug": "network-function-virtualization",
+    "name": "Network Function Virtualization",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Running firewalls, routers and load balancers as software on servers.",
+    "importance": 0.35,
+    "wikipedia_title": "Network function virtualization",
+    "aliases": [
+      "NFV"
+    ]
+  },
+  {
+    "id": "concept:mesh-networking",
+    "slug": "mesh-networking",
+    "name": "Mesh Networking",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Networks where nodes relay each other's traffic with no central hub.",
+    "importance": 0.35,
+    "wikipedia_title": "Mesh networking"
+  },
+  {
+    "id": "concept:vehicle-to-everything",
+    "slug": "vehicle-to-everything",
+    "name": "Vehicle-to-Everything",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Cars exchanging data with other cars, roads and infrastructure.",
+    "importance": 0.3,
+    "wikipedia_title": "Vehicular communication systems",
+    "aliases": [
+      "V2X"
+    ]
+  },
+  {
+    "id": "concept:side-channel-attack",
+    "slug": "side-channel-attack",
+    "name": "Side-Channel Attack",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Extracting secrets from timing, power or other physical leakage.",
+    "importance": 0.45,
+    "wikipedia_title": "Side-channel attack",
+    "aliases": [
+      "Spectre",
+      "Meltdown"
+    ]
+  },
+  {
+    "id": "concept:trusted-execution-environment",
+    "slug": "trusted-execution-environment",
+    "name": "Trusted Execution Environment",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "An isolated area of a processor that protects code and data even from the OS.",
+    "importance": 0.4,
+    "wikipedia_title": "Trusted execution environment",
+    "aliases": [
+      "TEE",
+      "SGX"
+    ]
+  },
+  {
+    "id": "concept:secure-boot",
+    "slug": "secure-boot",
+    "name": "Secure Boot",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Only booting firmware and OS images that carry a valid signature.",
+    "importance": 0.35,
+    "wikipedia_title": "UEFI"
+  },
+  {
+    "id": "concept:hardware-security-module",
+    "slug": "hardware-security-module",
+    "name": "Hardware Security Module",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Tamper-resistant hardware that stores keys and performs crypto.",
+    "importance": 0.35,
+    "wikipedia_title": "Hardware security module",
+    "aliases": [
+      "HSM"
+    ]
+  },
+  {
+    "id": "concept:fuzzing",
+    "slug": "fuzzing",
+    "name": "Fuzzing",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Feeding programs huge volumes of random or mutated input to find crashes.",
+    "importance": 0.45,
+    "wikipedia_title": "Fuzzing"
+  },
+  {
+    "id": "concept:malware-analysis",
+    "slug": "malware-analysis",
+    "name": "Malware Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Studying malicious software to understand and stop it.",
+    "importance": 0.4,
+    "wikipedia_title": "Malware analysis"
+  },
+  {
+    "id": "concept:reverse-engineering",
+    "slug": "reverse-engineering",
+    "name": "Reverse Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Working out how software or hardware works from the finished product.",
+    "importance": 0.45,
+    "wikipedia_title": "Reverse engineering"
+  },
+  {
+    "id": "concept:intrusion-detection",
+    "slug": "intrusion-detection",
+    "name": "Intrusion Detection",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Monitoring networks and hosts for attacks.",
+    "importance": 0.45,
+    "wikipedia_title": "Intrusion detection system",
+    "aliases": [
+      "IDS"
+    ]
+  },
+  {
+    "id": "concept:buffer-overflow",
+    "slug": "buffer-overflow",
+    "name": "Buffer Overflow",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Writing past the end of a buffer to corrupt memory or hijack control.",
+    "importance": 0.45,
+    "wikipedia_title": "Buffer overflow"
+  },
+  {
+    "id": "concept:csrf",
+    "slug": "csrf",
+    "name": "CSRF",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Cross-site request forgery: tricking a logged-in browser into sending requests.",
+    "importance": 0.4,
+    "wikipedia_title": "Cross-site request forgery",
+    "aliases": [
+      "Cross-Site Request Forgery"
+    ]
+  },
+  {
+    "id": "concept:ddos-attack",
+    "slug": "ddos-attack",
+    "name": "DDoS Attack",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Overwhelming a service with traffic from many machines.",
+    "importance": 0.45,
+    "wikipedia_title": "Denial-of-service attack",
+    "aliases": [
+      "Denial of service"
+    ]
+  },
+  {
+    "id": "concept:phishing",
+    "slug": "phishing",
+    "name": "Phishing",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Fraudulent messages that trick people into revealing secrets.",
+    "importance": 0.45,
+    "wikipedia_title": "Phishing"
+  },
+  {
+    "id": "concept:supply-chain-security",
+    "slug": "supply-chain-security",
+    "name": "Software Supply Chain Security",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Protecting dependencies, build systems and releases from tampering.",
+    "importance": 0.45,
+    "wikipedia_title": "Supply chain attack",
+    "aliases": [
+      "SBOM"
+    ]
+  },
+  {
+    "id": "concept:siem",
+    "slug": "siem",
+    "name": "SIEM",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Security information and event management: collecting and correlating security logs.",
+    "importance": 0.35,
+    "wikipedia_title": "Security information and event management"
+  },
+  {
+    "id": "concept:sandboxing",
+    "slug": "sandboxing",
+    "name": "Sandboxing",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Running untrusted code with tightly restricted access.",
+    "importance": 0.4,
+    "wikipedia_title": "Sandbox (computer security)"
+  },
+  {
+    "id": "concept:b-tree",
+    "slug": "b-tree",
+    "name": "B-Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "The balanced tree behind most database indexes.",
+    "importance": 0.5,
+    "wikipedia_title": "B-tree"
+  },
+  {
+    "id": "concept:lsm-tree",
+    "slug": "lsm-tree",
+    "name": "LSM Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A write-optimised structure that batches writes and merges sorted files.",
+    "importance": 0.4,
+    "wikipedia_title": "Log-structured merge-tree",
+    "aliases": [
+      "Log-Structured Merge Tree"
+    ]
+  },
+  {
+    "id": "concept:write-ahead-log",
+    "slug": "write-ahead-log",
+    "name": "Write-Ahead Log",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Recording changes in a log before applying them, for crash recovery.",
+    "importance": 0.45,
+    "wikipedia_title": "Write-ahead logging",
+    "aliases": [
+      "WAL"
+    ]
+  },
+  {
+    "id": "concept:mvcc",
+    "slug": "mvcc",
+    "name": "MVCC",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Multi-version concurrency control: readers see a snapshot while writers proceed.",
+    "importance": 0.45,
+    "wikipedia_title": "Multiversion concurrency control"
+  },
+  {
+    "id": "concept:query-optimization",
+    "slug": "query-optimization",
+    "name": "Query Optimization",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Choosing the cheapest plan to execute a query.",
+    "importance": 0.45,
+    "wikipedia_title": "Query optimization"
+  },
+  {
+    "id": "concept:database-normalization",
+    "slug": "database-normalization",
+    "name": "Database Normalization",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Structuring tables to remove redundancy and update anomalies.",
+    "importance": 0.45,
+    "wikipedia_title": "Database normalization"
+  },
+  {
+    "id": "concept:columnar-storage",
+    "slug": "columnar-storage",
+    "name": "Columnar Storage",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Storing data by column so analytical scans read only what they need.",
+    "importance": 0.45,
+    "wikipedia_title": "Column-oriented DBMS"
+  },
+  {
+    "id": "concept:time-series-database",
+    "slug": "time-series-database",
+    "name": "Time-Series Database",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Databases optimised for timestamped metrics and events.",
+    "importance": 0.4,
+    "wikipedia_title": "Time series database"
+  },
+  {
+    "id": "concept:graph-database",
+    "slug": "graph-database",
+    "name": "Graph Database",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Databases that store nodes and relationships as first-class data.",
+    "importance": 0.45,
+    "wikipedia_title": "Graph database"
+  },
+  {
+    "id": "concept:change-data-capture",
+    "slug": "change-data-capture",
+    "name": "Change Data Capture",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Streaming every row change out of a database as events.",
+    "importance": 0.4,
+    "wikipedia_title": "Change data capture",
+    "aliases": [
+      "CDC"
+    ]
+  },
+  {
+    "id": "concept:data-mesh",
+    "slug": "data-mesh",
+    "name": "Data Mesh",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Domain teams owning and publishing their data as products.",
+    "importance": 0.35,
+    "wikipedia_title": "Data mesh"
+  },
+  {
+    "id": "concept:multi-tenancy",
+    "slug": "multi-tenancy",
+    "name": "Multi-Tenancy",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Serving many customers from one shared system while keeping them isolated.",
+    "importance": 0.4,
+    "wikipedia_title": "Multitenancy"
+  },
+  {
+    "id": "concept:cloud-service-models",
+    "slug": "cloud-service-models",
+    "name": "Cloud Service Models",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "IaaS, PaaS and SaaS: how much of the stack the provider runs.",
+    "importance": 0.45,
+    "wikipedia_title": "Cloud computing",
+    "aliases": [
+      "IaaS",
+      "PaaS",
+      "SaaS"
+    ]
+  },
+  {
+    "id": "concept:finops",
+    "slug": "finops",
+    "name": "FinOps",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Managing and optimising cloud spend as an engineering practice.",
+    "importance": 0.3,
+    "wikipedia_title": "FinOps"
+  },
+  {
+    "id": "concept:platform-engineering",
+    "slug": "platform-engineering",
+    "name": "Platform Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Building internal developer platforms with paved paths to production.",
+    "importance": 0.4,
+    "wikipedia_title": "Platform engineering"
+  },
+  {
+    "id": "concept:swarm-robotics",
+    "slug": "swarm-robotics",
+    "name": "Swarm Robotics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Many simple robots coordinating to achieve collective behaviour.",
+    "importance": 0.35,
+    "wikipedia_title": "Swarm robotics"
+  },
+  {
+    "id": "concept:soft-robotics",
+    "slug": "soft-robotics",
+    "name": "Soft Robotics",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Robots built from flexible, compliant materials.",
+    "importance": 0.3,
+    "wikipedia_title": "Soft robotics"
+  },
+  {
+    "id": "concept:humanoid-robots",
+    "slug": "humanoid-robots",
+    "name": "Humanoid Robots",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Robots with a human-like body plan for human-built environments.",
+    "importance": 0.4,
+    "wikipedia_title": "Humanoid robot"
+  },
+  {
+    "id": "concept:sim-to-real-transfer",
+    "slug": "sim-to-real-transfer",
+    "name": "Sim-to-Real Transfer",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Training robot policies in simulation and making them work on real hardware.",
+    "importance": 0.35,
+    "wikipedia_title": "Robot learning"
+  },
+  {
+    "id": "concept:quantum-machine-learning",
+    "slug": "quantum-machine-learning",
+    "name": "Quantum Machine Learning",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Machine learning algorithms that run on, or are inspired by, quantum computers.",
+    "importance": 0.4,
+    "wikipedia_title": "Quantum machine learning",
+    "aliases": [
+      "QML"
+    ]
+  },
+  {
+    "id": "concept:quantum-teleportation",
+    "slug": "quantum-teleportation",
+    "name": "Quantum Teleportation",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Transferring a qubit's state using entanglement and classical bits.",
+    "importance": 0.35,
+    "wikipedia_title": "Quantum teleportation"
+  },
+  {
+    "id": "concept:quantum-simulation",
+    "slug": "quantum-simulation",
+    "name": "Quantum Simulation",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Using quantum hardware to model molecules and materials.",
+    "importance": 0.4,
+    "wikipedia_title": "Quantum simulator"
+  },
+  {
+    "id": "concept:qaoa",
+    "slug": "qaoa",
+    "name": "QAOA",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "The quantum approximate optimisation algorithm for combinatorial problems.",
+    "importance": 0.3,
+    "wikipedia_title": "Quantum optimization algorithms",
+    "aliases": [
+      "Quantum Approximate Optimization Algorithm"
+    ]
+  },
+  {
+    "id": "concept:computer-animation",
+    "slug": "computer-animation",
+    "name": "Computer Animation",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Generating moving images: keyframes, skeletal rigs and simulation.",
+    "importance": 0.45,
+    "wikipedia_title": "Computer animation"
+  },
+  {
+    "id": "concept:volume-rendering",
+    "slug": "volume-rendering",
+    "name": "Volume Rendering",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Visualising 3D sampled data such as CT scans.",
+    "importance": 0.35,
+    "wikipedia_title": "Volume rendering"
+  },
+  {
+    "id": "concept:neural-radiance-fields",
+    "slug": "neural-radiance-fields",
+    "name": "Neural Radiance Fields",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Neural networks that reconstruct 3D scenes from photos.",
+    "importance": 0.4,
+    "wikipedia_title": "Neural radiance field",
+    "aliases": [
+      "NeRF"
+    ]
+  },
+  {
+    "id": "concept:gaussian-splatting",
+    "slug": "gaussian-splatting",
+    "name": "Gaussian Splatting",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Real-time 3D scene rendering with millions of fitted Gaussian blobs.",
+    "importance": 0.35,
+    "wikipedia_title": "Gaussian splatting"
+  },
+  {
+    "id": "concept:procedural-generation",
+    "slug": "procedural-generation",
+    "name": "Procedural Generation",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Creating game content algorithmically instead of by hand.",
+    "importance": 0.45,
+    "wikipedia_title": "Procedural generation"
+  },
+  {
+    "id": "concept:stablecoin",
+    "slug": "stablecoin",
+    "name": "Stablecoins",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Cryptocurrencies pegged to a stable asset such as the US dollar.",
+    "importance": 0.4,
+    "wikipedia_title": "Stablecoin"
+  },
+  {
+    "id": "concept:dao",
+    "slug": "dao",
+    "name": "DAO",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Decentralised autonomous organisation: governed by token holders via smart contracts.",
+    "importance": 0.35,
+    "wikipedia_title": "Decentralized autonomous organization",
+    "aliases": [
+      "Decentralized Autonomous Organization"
+    ]
+  },
+  {
+    "id": "concept:nft",
+    "slug": "nft",
+    "name": "NFT",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Non-fungible tokens: unique on-chain records of ownership.",
+    "importance": 0.35,
+    "wikipedia_title": "Non-fungible token",
+    "aliases": [
+      "Non-Fungible Token"
+    ]
+  },
+  {
+    "id": "concept:predictive-maintenance",
+    "slug": "predictive-maintenance",
+    "name": "Predictive Maintenance",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "Using sensor data to fix equipment before it fails.",
+    "importance": 0.4,
+    "wikipedia_title": "Predictive maintenance"
+  },
+  {
+    "id": "concept:small-language-models",
+    "slug": "small-language-models",
+    "name": "Small Language Models",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Compact LLMs that run on laptops, phones and edge devices.",
+    "importance": 0.5,
+    "wikipedia_title": "Small language model",
+    "aliases": [
+      "SLM"
+    ]
+  },
+  {
+    "id": "concept:reasoning-models",
+    "slug": "reasoning-models",
+    "name": "Reasoning Models",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "LLMs trained to think step by step before answering, trading compute for accuracy.",
+    "importance": 0.55,
+    "wikipedia_title": "Reasoning language model"
+  },
+  {
+    "id": "concept:test-time-compute",
+    "slug": "test-time-compute",
+    "name": "Test-Time Compute",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Spending more inference compute (thinking, sampling, search) to get better answers.",
+    "importance": 0.4,
+    "wikipedia_title": "Reasoning language model"
+  },
+  {
+    "id": "concept:vision-language-models",
+    "slug": "vision-language-models",
+    "name": "Vision-Language Models",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Models that understand images and text together.",
+    "importance": 0.5,
+    "wikipedia_title": "Vision-language model",
+    "aliases": [
+      "VLM"
+    ]
+  },
+  {
+    "id": "concept:tool-use",
+    "slug": "tool-use",
+    "name": "LLM Tool Use",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Letting models call functions and APIs with structured arguments.",
+    "importance": 0.5,
+    "wikipedia_title": "Large language model",
+    "aliases": [
+      "Function calling"
+    ]
+  },
+  {
+    "id": "concept:computer-use-agents",
+    "slug": "computer-use-agents",
+    "name": "Computer-Use Agents",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Agents that operate software through screenshots, clicks and typing.",
+    "importance": 0.4,
+    "wikipedia_title": "Intelligent agent"
+  },
+  {
+    "id": "concept:speculative-decoding",
+    "slug": "speculative-decoding",
+    "name": "Speculative Decoding",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "A small draft model proposes tokens that the large model verifies in parallel.",
+    "importance": 0.35,
+    "wikipedia_title": "Speculative decoding"
+  },
+  {
+    "id": "concept:kv-cache",
+    "slug": "kv-cache",
+    "name": "KV Cache",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Caching attention keys and values so generation does not recompute the past.",
+    "importance": 0.35,
+    "wikipedia_title": "Transformer (deep learning architecture)"
+  },
+  {
+    "id": "concept:flash-attention",
+    "slug": "flash-attention",
+    "name": "FlashAttention",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "An IO-aware exact attention algorithm that makes long contexts fast.",
+    "importance": 0.35,
+    "wikipedia_title": "FlashAttention"
+  },
+  {
+    "id": "concept:state-space-models",
+    "slug": "state-space-models",
+    "name": "State Space Models",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Sequence models like Mamba that scale linearly with context length.",
+    "importance": 0.4,
+    "wikipedia_title": "Mamba (deep learning architecture)",
+    "aliases": [
+      "Mamba"
+    ]
+  },
+  {
+    "id": "concept:synthetic-data",
+    "slug": "synthetic-data",
+    "name": "Synthetic Data",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Data generated by models or simulators to train or test other models.",
+    "importance": 0.45,
+    "wikipedia_title": "Synthetic data"
+  },
+  {
+    "id": "concept:llm-evaluation",
+    "slug": "llm-evaluation",
+    "name": "LLM Evaluation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Benchmarks, evals and judges that measure what a model can actually do.",
+    "importance": 0.45,
+    "wikipedia_title": "Large language model",
+    "aliases": [
+      "Evals"
+    ]
+  },
+  {
+    "id": "concept:ai-guardrails",
+    "slug": "ai-guardrails",
+    "name": "AI Guardrails",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Checks around a model that filter unsafe inputs and outputs.",
+    "importance": 0.4,
+    "wikipedia_title": "AI safety"
+  },
+  {
+    "id": "concept:mechanistic-interpretability",
+    "slug": "mechanistic-interpretability",
+    "name": "Mechanistic Interpretability",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Reverse-engineering the circuits and features inside neural networks.",
+    "importance": 0.4,
+    "wikipedia_title": "Mechanistic interpretability"
+  },
+  {
+    "id": "concept:direct-preference-optimization",
+    "slug": "direct-preference-optimization",
+    "name": "Direct Preference Optimization",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Aligning a model to human preferences without a separate reward model.",
+    "importance": 0.35,
+    "wikipedia_title": "Direct preference optimization",
+    "aliases": [
+      "DPO"
+    ]
+  },
+  {
+    "id": "concept:world-models",
+    "slug": "world-models",
+    "name": "World Models",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Models that learn how an environment evolves so agents can plan inside them.",
+    "importance": 0.4,
+    "wikipedia_title": "World model"
+  },
+  {
+    "id": "concept:text-to-video",
+    "slug": "text-to-video",
+    "name": "Text-to-Video Generation",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Generating video clips from text prompts.",
+    "importance": 0.45,
+    "wikipedia_title": "Text-to-video model"
+  },
+  {
+    "id": "concept:ai-infrastructure",
+    "slug": "ai-infrastructure",
+    "name": "AI Infrastructure",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "GPU clusters, schedulers and serving stacks built for training and inference.",
+    "importance": 0.5,
+    "wikipedia_title": "AI accelerator",
+    "aliases": [
+      "GPU cloud"
+    ]
+  },
+  {
+    "id": "concept:ai-assisted-programming",
+    "slug": "ai-assisted-programming",
+    "name": "AI-Assisted Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Writing, reviewing and refactoring code with AI coding assistants and agents.",
+    "importance": 0.55,
+    "wikipedia_title": "AI-assisted software development"
+  },
+  {
+    "id": "concept:vibe-coding",
+    "slug": "vibe-coding",
+    "name": "Vibe Coding",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Building software by describing it to an AI and steering the result.",
+    "importance": 0.4,
+    "wikipedia_title": "Vibe coding"
+  },
+  {
+    "id": "concept:developer-experience",
+    "slug": "developer-experience",
+    "name": "Developer Experience",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "How easy and pleasant tools and platforms are for developers to use.",
+    "importance": 0.4,
+    "wikipedia_title": "Developer experience",
+    "aliases": [
+      "DX"
+    ]
+  },
+  {
+    "id": "concept:react-server-components",
+    "slug": "react-server-components",
+    "name": "React Server Components",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Components that render on the server and stream to the client with zero JS.",
+    "importance": 0.45,
+    "wikipedia_title": "React (software)",
+    "aliases": [
+      "RSC"
+    ]
+  },
+  {
+    "id": "concept:islands-architecture",
+    "slug": "islands-architecture",
+    "name": "Islands Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Static HTML pages with small interactive islands hydrated independently.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:signals-reactivity",
+    "slug": "signals-reactivity",
+    "name": "Signals",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Fine-grained reactive values that update only what depends on them.",
+    "importance": 0.4
+  },
+  {
+    "id": "concept:view-transitions",
+    "slug": "view-transitions",
+    "name": "View Transitions",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A browser API for animated transitions between page states.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:container-queries",
+    "slug": "container-queries",
+    "name": "Container Queries",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "CSS that adapts a component to its container's size, not the viewport.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:local-first-software",
+    "slug": "local-first-software",
+    "name": "Local-First Software",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Apps that keep data on the device and sync in the background, often with CRDTs.",
+    "importance": 0.4,
+    "wikipedia_title": "Local-first software"
+  },
+  {
+    "id": "concept:super-apps",
+    "slug": "super-apps",
+    "name": "Super-Apps",
+    "node_type": "concept",
+    "primary_domain": "domain:mobile",
+    "short_description": "One mobile app hosting payments, messaging and mini-apps.",
+    "importance": 0.3,
+    "wikipedia_title": "Super-app"
+  },
+  {
+    "id": "concept:durable-execution",
+    "slug": "durable-execution",
+    "name": "Durable Execution",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Workflows that survive crashes by persisting every step.",
+    "importance": 0.4
+  },
+  {
+    "id": "concept:backend-as-a-service",
+    "slug": "backend-as-a-service",
+    "name": "Backend-as-a-Service",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Hosted auth, database and storage so apps need no custom backend.",
+    "importance": 0.4,
+    "wikipedia_title": "Mobile backend as a service",
+    "aliases": [
+      "BaaS"
+    ]
+  },
+  {
+    "id": "concept:hybrid-search",
+    "slug": "hybrid-search",
+    "name": "Hybrid Search",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Combining keyword and vector search for better retrieval.",
+    "importance": 0.4
+  },
+  {
+    "id": "concept:serverless-databases",
+    "slug": "serverless-databases",
+    "name": "Serverless Databases",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Databases that scale to zero and bill per use.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:zero-etl",
+    "slug": "zero-etl",
+    "name": "Zero-ETL",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Querying operational data in analytics systems without building pipelines.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:policy-as-code",
+    "slug": "policy-as-code",
+    "name": "Policy as Code",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Writing access and compliance rules as versioned, tested code.",
+    "importance": 0.4
+  },
+  {
+    "id": "concept:wasi-component-model",
+    "slug": "wasi-component-model",
+    "name": "WASI & the Component Model",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Running WebAssembly outside the browser with portable, composable components.",
+    "importance": 0.35,
+    "wikipedia_title": "WebAssembly",
+    "aliases": [
+      "WASI"
+    ]
+  },
+  {
+    "id": "concept:passkeys",
+    "slug": "passkeys",
+    "name": "Passkeys",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Phishing-resistant passwordless sign-in built on public-key cryptography.",
+    "importance": 0.5,
+    "wikipedia_title": "Passkey",
+    "aliases": [
+      "WebAuthn"
+    ]
+  },
+  {
+    "id": "concept:prompt-injection",
+    "slug": "prompt-injection",
+    "name": "Prompt Injection",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Hidden instructions in content that hijack an LLM or agent.",
+    "importance": 0.5,
+    "wikipedia_title": "Prompt injection"
+  },
+  {
+    "id": "concept:ai-red-teaming",
+    "slug": "ai-red-teaming",
+    "name": "AI Red Teaming",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Attacking AI systems on purpose to find unsafe behaviour before others do.",
+    "importance": 0.35,
+    "wikipedia_title": "Red team"
+  },
+  {
+    "id": "concept:secure-by-design",
+    "slug": "secure-by-design",
+    "name": "Secure by Design",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Building security in from the start, with memory-safe languages and safe defaults.",
+    "importance": 0.4,
+    "wikipedia_title": "Secure by design"
+  },
+  {
+    "id": "concept:io-uring",
+    "slug": "io-uring",
+    "name": "io_uring",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Linux's shared-ring interface for fast asynchronous I/O.",
+    "importance": 0.35,
+    "wikipedia_title": "Io uring"
+  },
+  {
+    "id": "concept:rust-for-linux",
+    "slug": "rust-for-linux",
+    "name": "Rust for Linux",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Writing Linux kernel drivers and subsystems in Rust.",
+    "importance": 0.4,
+    "wikipedia_title": "Rust for Linux"
+  },
+  {
+    "id": "concept:cxl",
+    "slug": "cxl",
+    "name": "CXL",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Compute Express Link: cache-coherent links for pooling memory and accelerators.",
+    "importance": 0.4,
+    "wikipedia_title": "Compute Express Link",
+    "aliases": [
+      "Compute Express Link"
+    ]
+  },
+  {
+    "id": "concept:high-bandwidth-memory",
+    "slug": "high-bandwidth-memory",
+    "name": "High Bandwidth Memory",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Stacked DRAM beside the processor, the memory of AI accelerators.",
+    "importance": 0.4,
+    "wikipedia_title": "High Bandwidth Memory",
+    "aliases": [
+      "HBM"
+    ]
+  },
+  {
+    "id": "concept:npu",
+    "slug": "npu",
+    "name": "Neural Processing Unit",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "A processor block dedicated to neural-network inference, now in phones and laptops.",
+    "importance": 0.45,
+    "wikipedia_title": "Neural processing unit",
+    "aliases": [
+      "NPU",
+      "AI accelerator"
+    ]
+  },
+  {
+    "id": "concept:processing-in-memory",
+    "slug": "processing-in-memory",
+    "name": "Processing-in-Memory",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "Computing inside or beside memory to avoid moving data.",
+    "importance": 0.3,
+    "wikipedia_title": "Processing-in-memory"
+  },
+  {
+    "id": "concept:gate-all-around-transistors",
+    "slug": "gate-all-around-transistors",
+    "name": "Gate-All-Around Transistors",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Transistors whose gate wraps the channel, succeeding FinFETs at 2 nm.",
+    "importance": 0.35,
+    "wikipedia_title": "Multigate device",
+    "aliases": [
+      "GAAFET"
+    ]
+  },
+  {
+    "id": "concept:open-source-hardware",
+    "slug": "open-source-hardware",
+    "name": "Open-Source Hardware",
+    "node_type": "concept",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Openly licensed chip and board designs, from RISC-V cores to full SoCs.",
+    "importance": 0.4,
+    "wikipedia_title": "Open-source hardware"
+  },
+  {
+    "id": "concept:wi-fi-7",
+    "slug": "wi-fi-7",
+    "name": "Wi-Fi 7",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "IEEE 802.11be: multi-link operation and 320 MHz channels.",
+    "importance": 0.4,
+    "wikipedia_title": "Wi-Fi 7",
+    "aliases": [
+      "802.11be"
+    ],
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:6g",
+    "slug": "6g",
+    "name": "6G",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The next cellular generation, targeting AI-native and sensing-integrated networks.",
+    "importance": 0.4,
+    "wikipedia_title": "6G",
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:leo-satellite-internet",
+    "slug": "leo-satellite-internet",
+    "name": "LEO Satellite Internet",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Broadband from large constellations of low-orbit satellites.",
+    "importance": 0.4,
+    "wikipedia_title": "Satellite internet constellation"
+  },
+  {
+    "id": "concept:edge-ai",
+    "slug": "edge-ai",
+    "name": "Edge AI",
+    "node_type": "concept",
+    "primary_domain": "domain:iot",
+    "short_description": "Running AI models on devices near the data instead of in the cloud.",
+    "importance": 0.5,
+    "wikipedia_title": "Edge computing"
+  },
+  {
+    "id": "concept:vision-language-action-models",
+    "slug": "vision-language-action-models",
+    "name": "Vision-Language-Action Models",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Models that turn camera input and instructions directly into robot actions.",
+    "importance": 0.45,
+    "wikipedia_title": "Vision-language-action model",
+    "aliases": [
+      "VLA"
+    ]
+  },
+  {
+    "id": "concept:robot-foundation-models",
+    "slug": "robot-foundation-models",
+    "name": "Robot Foundation Models",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Large models trained across many robots and tasks.",
+    "importance": 0.4,
+    "wikipedia_title": "Foundation model"
+  },
+  {
+    "id": "concept:autonomous-vehicles",
+    "slug": "autonomous-vehicles",
+    "name": "Autonomous Vehicles",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Self-driving cars and robotaxis.",
+    "importance": 0.5,
+    "wikipedia_title": "Self-driving car"
+  },
+  {
+    "id": "concept:autonomous-drones",
+    "slug": "autonomous-drones",
+    "name": "Autonomous Drones",
+    "node_type": "concept",
+    "primary_domain": "domain:robotics",
+    "short_description": "Drones that navigate and act without a human pilot.",
+    "importance": 0.4,
+    "wikipedia_title": "Unmanned aerial vehicle",
+    "aliases": [
+      "UAV"
+    ]
+  },
+  {
+    "id": "concept:logical-qubits",
+    "slug": "logical-qubits",
+    "name": "Logical Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Error-corrected qubits encoded across many physical qubits.",
+    "importance": 0.45,
+    "wikipedia_title": "Logical qubit"
+  },
+  {
+    "id": "concept:neutral-atom-qubits",
+    "slug": "neutral-atom-qubits",
+    "name": "Neutral-Atom Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Qubits made of atoms held in laser tweezers.",
+    "importance": 0.35,
+    "wikipedia_title": "Neutral atom quantum computer"
+  },
+  {
+    "id": "concept:photonic-qubits",
+    "slug": "photonic-qubits",
+    "name": "Photonic Qubits",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Qubits encoded in particles of light.",
+    "importance": 0.3,
+    "wikipedia_title": "Linear optical quantum computing"
+  },
+  {
+    "id": "concept:quantum-internet",
+    "slug": "quantum-internet",
+    "name": "Quantum Internet",
+    "node_type": "concept",
+    "primary_domain": "domain:quantum",
+    "short_description": "Networks that distribute entanglement between distant quantum devices.",
+    "importance": 0.35,
+    "wikipedia_title": "Quantum network"
+  },
+  {
+    "id": "concept:zk-rollups",
+    "slug": "zk-rollups",
+    "name": "ZK-Rollups",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Layer-2 chains that prove batches of transactions with zero-knowledge proofs.",
+    "importance": 0.4,
+    "wikipedia_title": "Rollup (blockchain)"
+  },
+  {
+    "id": "concept:account-abstraction",
+    "slug": "account-abstraction",
+    "name": "Account Abstraction",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Smart-contract wallets with recovery, batching and sponsored fees.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:rwa-tokenization",
+    "slug": "rwa-tokenization",
+    "name": "Real-World Asset Tokenization",
+    "node_type": "concept",
+    "primary_domain": "domain:blockchain",
+    "short_description": "Representing bonds, funds and property as on-chain tokens.",
+    "importance": 0.35,
+    "wikipedia_title": "Tokenization (finance)",
+    "aliases": [
+      "RWA"
+    ]
+  },
+  {
+    "id": "concept:ai-upscaling",
+    "slug": "ai-upscaling",
+    "name": "AI Upscaling",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Neural networks that render at low resolution and reconstruct sharp frames.",
+    "importance": 0.4,
+    "wikipedia_title": "Deep Learning Super Sampling",
+    "aliases": [
+      "DLSS",
+      "FSR"
+    ]
+  },
+  {
+    "id": "concept:real-time-path-tracing",
+    "slug": "real-time-path-tracing",
+    "name": "Real-Time Path Tracing",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Fully path-traced lighting at game frame rates.",
+    "importance": 0.4,
+    "wikipedia_title": "Path tracing"
+  },
+  {
+    "id": "concept:mesh-shaders",
+    "slug": "mesh-shaders",
+    "name": "Mesh Shaders",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "A GPU pipeline stage that replaces fixed vertex processing with compute-style work.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:cloud-gaming",
+    "slug": "cloud-gaming",
+    "name": "Cloud Gaming",
+    "node_type": "concept",
+    "primary_domain": "domain:gamedev",
+    "short_description": "Games running on remote servers and streamed as video.",
+    "importance": 0.4,
+    "wikipedia_title": "Cloud gaming"
+  },
+  {
+    "id": "concept:spatial-computing",
+    "slug": "spatial-computing",
+    "name": "Spatial Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Interfaces anchored in 3D space around the user, via headsets and glasses.",
+    "importance": 0.45,
+    "wikipedia_title": "Spatial computing"
+  },
+  {
+    "id": "concept:generative-ui",
+    "slug": "generative-ui",
+    "name": "Generative UI",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Interfaces generated on the fly by AI for each user and task.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:ai-for-science",
+    "slug": "ai-for-science",
+    "name": "AI for Science",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Machine learning that accelerates discovery in physics, chemistry and biology.",
+    "importance": 0.45,
+    "wikipedia_title": "AI for science"
+  },
+  {
+    "id": "concept:carbon-aware-computing",
+    "slug": "carbon-aware-computing",
+    "name": "Carbon-Aware Computing",
+    "node_type": "concept",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Shifting workloads in time and place to cut emissions.",
+    "importance": 0.35,
+    "wikipedia_title": "Green computing",
+    "aliases": [
+      "Green software"
+    ]
+  },
+  {
+    "id": "concept:protein-language-models",
+    "slug": "protein-language-models",
+    "name": "Protein Language Models",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Language models trained on protein sequences to predict structure and function.",
+    "importance": 0.4,
+    "wikipedia_title": "Protein language model"
+  },
+  {
+    "id": "concept:spatial-transcriptomics",
+    "slug": "spatial-transcriptomics",
+    "name": "Spatial Transcriptomics",
+    "node_type": "concept",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Measuring gene activity while keeping where it happens in a tissue.",
+    "importance": 0.3,
+    "wikipedia_title": "Spatial transcriptomics"
+  },
+  {
+    "id": "concept:real-time-payments",
+    "slug": "real-time-payments",
+    "name": "Real-Time Payments",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Instant account-to-account transfers such as FedNow, Pix and UPI.",
+    "importance": 0.4,
+    "wikipedia_title": "Instant payment"
+  },
+  {
+    "id": "concept:embedded-finance",
+    "slug": "embedded-finance",
+    "name": "Embedded Finance",
+    "node_type": "concept",
+    "primary_domain": "domain:fintech",
+    "short_description": "Payments, lending and insurance built into non-financial apps.",
+    "importance": 0.35,
+    "wikipedia_title": "Embedded finance"
+  },
+  {
+    "id": "concept:ambient-clinical-documentation",
+    "slug": "ambient-clinical-documentation",
+    "name": "Ambient Clinical Documentation",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "AI scribes that listen to visits and draft clinical notes.",
+    "importance": 0.35,
+    "aliases": [
+      "AI scribe"
+    ]
+  },
+  {
+    "id": "concept:digital-biomarkers",
+    "slug": "digital-biomarkers",
+    "name": "Digital Biomarkers",
+    "node_type": "concept",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Health signals measured by phones and wearables.",
+    "importance": 0.3,
+    "wikipedia_title": "Digital biomarker"
+  },
+  {
+    "id": "concept:property-based-testing",
+    "slug": "property-based-testing",
+    "name": "Property-Based Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Testing that properties hold for many generated inputs.",
+    "importance": 0.4,
+    "wikipedia_title": "Property testing"
+  },
+  {
+    "id": "concept:mutation-testing",
+    "slug": "mutation-testing",
+    "name": "Mutation Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Changing code on purpose to see whether tests catch it.",
+    "importance": 0.35,
+    "wikipedia_title": "Mutation testing"
+  },
+  {
+    "id": "concept:contract-testing",
+    "slug": "contract-testing",
+    "name": "Contract Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Verifying that services honour the API contracts their consumers rely on.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:visual-regression-testing",
+    "slug": "visual-regression-testing",
+    "name": "Visual Regression Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "Comparing screenshots to catch unintended UI changes.",
+    "importance": 0.3
   }
 ]

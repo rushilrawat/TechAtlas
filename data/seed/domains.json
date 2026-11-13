@@ -198,5 +198,85 @@
     "short_description": "Connected sensors and devices that measure, communicate and act on the physical world.",
     "importance": 0.65,
     "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:computer-engineering",
+    "slug": "computer-engineering",
+    "name": "Computer Engineering",
+    "short_description": "Where hardware meets software: processors, digital circuits, embedded devices and signals.",
+    "importance": 0.85,
+    "node_type": "domain",
+    "primary_domain": "domain:computer-engineering",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:hci",
+    "slug": "hci",
+    "name": "HCI & Interaction Design",
+    "short_description": "How people perceive, use and are affected by computing systems, and how to design for them.",
+    "importance": 0.75,
+    "node_type": "domain",
+    "primary_domain": "domain:hci",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:interdisciplinary",
+    "slug": "interdisciplinary",
+    "name": "Interdisciplinary Computing",
+    "short_description": "Computing applied to other fields: biology, finance, medicine, science, society and the arts.",
+    "importance": 0.75,
+    "node_type": "domain",
+    "primary_domain": "domain:interdisciplinary",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:digital-design",
+    "slug": "digital-design",
+    "name": "Digital Design & VLSI",
+    "short_description": "Designing digital circuits and chips, from logic gates to fabricated silicon.",
+    "importance": 0.65,
+    "node_type": "domain",
+    "primary_domain": "domain:digital-design",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:signal-processing",
+    "slug": "signal-processing",
+    "name": "Signal Processing",
+    "short_description": "Analysing and transforming signals such as audio, images and radio, and the maths of communication.",
+    "importance": 0.65,
+    "node_type": "domain",
+    "primary_domain": "domain:signal-processing",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:computational-biology",
+    "slug": "computational-biology",
+    "name": "Computational Biology",
+    "short_description": "Algorithms and models for genomes, proteins and living systems.",
+    "importance": 0.6,
+    "node_type": "domain",
+    "primary_domain": "domain:computational-biology",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:fintech",
+    "slug": "fintech",
+    "name": "FinTech & Computational Finance",
+    "short_description": "Software for money: payments, trading, risk and financial regulation.",
+    "importance": 0.6,
+    "node_type": "domain",
+    "primary_domain": "domain:fintech",
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:health-informatics",
+    "slug": "health-informatics",
+    "name": "Health Informatics",
+    "short_description": "Computing in healthcare: records, imaging, clinical decisions and medical devices.",
+    "importance": 0.6,
+    "node_type": "domain",
+    "primary_domain": "domain:health-informatics",
+    "lifecycle_status": "active"
   }
 ]
