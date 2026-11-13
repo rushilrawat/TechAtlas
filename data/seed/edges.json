@@ -4445,16 +4445,6 @@
     "relationship_type": "commonly_used_with"
   },
   {
-    "source": "domain:systems",
-    "target": "domain:computer-architecture",
-    "relationship_type": "has_subdomain"
-  },
-  {
-    "source": "domain:systems",
-    "target": "domain:embedded",
-    "relationship_type": "has_subdomain"
-  },
-  {
     "source": "domain:gamedev",
     "target": "domain:computer-graphics",
     "relationship_type": "has_subdomain"
@@ -4550,11 +4540,6 @@
     "relationship_type": "related_to"
   },
   {
-    "source": "concept:digital-logic",
-    "target": "domain:computer-architecture",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:combinational-logic",
     "target": "concept:digital-logic",
     "relationship_type": "related_to"
@@ -4570,19 +4555,9 @@
     "relationship_type": "related_to"
   },
   {
-    "source": "technology:fpga",
-    "target": "domain:computer-architecture",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:asic",
     "target": "concept:digital-logic",
     "relationship_type": "related_to"
-  },
-  {
-    "source": "concept:hdl",
-    "target": "domain:computer-architecture",
-    "relationship_type": "belongs_to_domain"
   },
   {
     "source": "technology:verilog",
@@ -5340,11 +5315,6 @@
     "relationship_type": "related_to"
   },
   {
-    "source": "concept:human-computer-interaction",
-    "target": "domain:frontend",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:user-experience",
     "target": "concept:human-computer-interaction",
     "relationship_type": "part_of_ecosystem"
@@ -5406,11 +5376,6 @@
   },
   {
     "source": "concept:scientific-computing",
-    "target": "domain:ai-ml",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "concept:scientific-computing",
     "target": "technology:numpy",
     "relationship_type": "related_to"
   },
@@ -5418,11 +5383,6 @@
     "source": "concept:numerical-analysis",
     "target": "concept:scientific-computing",
     "relationship_type": "related_to"
-  },
-  {
-    "source": "concept:bioinformatics",
-    "target": "domain:ai-ml",
-    "relationship_type": "belongs_to_domain"
   },
   {
     "source": "concept:qubit",
@@ -6401,11 +6361,6 @@
   },
   {
     "source": "concept:design-systems",
-    "target": "domain:frontend",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "concept:usability-testing",
     "target": "domain:frontend",
     "relationship_type": "belongs_to_domain"
   },
@@ -7712,6 +7667,4346 @@
   {
     "source": "technology:stripe",
     "target": "concept:webhooks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cache-coherence",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:simultaneous-multithreading",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vliw",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:risc",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cisc",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:microarchitecture",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:instruction-level-parallelism",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:speculative-execution",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:tlb",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:dram",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:numa",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vector-processor",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hardware-accelerator",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:systolic-array",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:neuromorphic-computing",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:chiplet",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:heterogeneous-computing",
+    "target": "domain:computer-architecture",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:transistor",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cmos",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:boolean-algebra",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:karnaugh-map",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:flip-flop",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:register-transfer-level",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:logic-synthesis",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:high-level-synthesis",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:static-timing-analysis",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:place-and-route",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:clock-domain-crossing",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:design-for-testability",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hardware-verification",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:electronic-design-automation",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:system-on-chip",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:semiconductor-fabrication",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vlsi",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:low-power-design",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:digital-signal-processing",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:fourier-transform",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:fast-fourier-transform",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sampling-theorem",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:z-transform",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:digital-filter",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:convolution",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:modulation",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:analog-to-digital-conversion",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:wavelet-transform",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:image-processing",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:audio-signal-processing",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:software-defined-radio",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ofdm",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:mimo",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:compressed-sensing",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:adaptive-filter",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:data-compression",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:pwm",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gpio",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:direct-memory-access",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:watchdog-timer",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:bootloader",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:memory-mapped-io",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:embedded-linux",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hardware-abstraction-layer",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:tinyml",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cyber-physical-systems",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:jtag",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hardware-software-codesign",
+    "target": "domain:computer-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:printed-circuit-board",
+    "target": "domain:computer-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:analog-circuit-design",
+    "target": "domain:computer-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:signal-integrity",
+    "target": "domain:computer-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:user-centered-design",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:user-research",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:personas",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cognitive-load",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:mental-model",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:fitts-law",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:information-architecture",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ui-prototyping",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:heuristic-evaluation",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:eye-tracking",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:conversational-ui",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:voice-user-interface",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gesture-recognition",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:haptics",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:brain-computer-interface",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cscw",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ubiquitous-computing",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:affective-computing",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:dark-patterns",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:human-robot-interaction",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-social-science",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:digital-humanities",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:educational-technology",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-neuroscience",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:climate-informatics",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:geographic-information-systems",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-chemistry",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-physics",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:smart-cities",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:precision-agriculture",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-law",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:music-information-retrieval",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-linguistics",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sports-analytics",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:smart-grid",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:genomics",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sequence-alignment",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:genome-assembly",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:next-generation-sequencing",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:phylogenetics",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:protein-structure-prediction",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gene-expression-analysis",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:single-cell-analysis",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:systems-biology",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:molecular-dynamics",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computational-drug-discovery",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:biological-network-analysis",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:algorithmic-trading",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:high-frequency-trading",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quantitative-finance",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:risk-modeling",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:payment-systems",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:open-banking",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:fraud-detection",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:credit-scoring",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:robo-advisor",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:regtech",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:order-matching-engine",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cbdc",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:electronic-health-records",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:health-data-interoperability",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:medical-imaging",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:clinical-decision-support",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:telemedicine",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:wearable-health-monitoring",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:precision-medicine",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hipaa",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:epidemiological-modeling",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:medical-device-software",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hidden-markov-model",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:generative-adversarial-network",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:variational-autoencoder",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:recurrent-neural-network",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:lstm",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:transfer-learning",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:federated-learning",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:explainable-ai",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ai-alignment",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:rlhf",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:knowledge-graph",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:object-detection",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:image-segmentation",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:speech-recognition",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:machine-translation",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sentiment-analysis",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:named-entity-recognition",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:mixture-of-experts",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:model-quantization",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:knowledge-distillation",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:anomaly-detection",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:time-series-forecasting",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:causal-inference",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:contrastive-learning",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gradient-boosting",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:decision-trees",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:support-vector-machine",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:k-means-clustering",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:dimensionality-reduction",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:lambda-calculus",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:graph-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:discrete-mathematics",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:linear-algebra",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:probability-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:game-theory",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:monte-carlo-methods",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:linear-programming",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:convex-optimization",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:kolmogorov-complexity",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:amortized-analysis",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:string-matching",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:network-flow",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:bloom-filter",
+    "target": "domain:theory",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:type-inference",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:generics",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:memory-safety",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ownership-and-borrowing",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:metaprogramming",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:coroutines",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:actor-model",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:design-by-contract",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:software-architecture",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:requirements-engineering",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:just-in-time-compilation",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:interpreter",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:amdahls-law",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:supercomputer",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:exascale-computing",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:distributed-shared-memory",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:lock-free-data-structures",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:copy-on-write",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:page-replacement",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:osi-model",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:subnetting",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vlan",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vpn",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:dhcp",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:arp",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:peer-to-peer-networking",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:multicast",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:network-function-virtualization",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:mesh-networking",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:vehicle-to-everything",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:side-channel-attack",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:trusted-execution-environment",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:secure-boot",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hardware-security-module",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:fuzzing",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:malware-analysis",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:reverse-engineering",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:intrusion-detection",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:buffer-overflow",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:csrf",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ddos-attack",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:phishing",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:supply-chain-security",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:siem",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sandboxing",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:b-tree",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:lsm-tree",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:write-ahead-log",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:mvcc",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:query-optimization",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:database-normalization",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:columnar-storage",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:time-series-database",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:graph-database",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:change-data-capture",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:data-mesh",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:multi-tenancy",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cloud-service-models",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:finops",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:platform-engineering",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:swarm-robotics",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:soft-robotics",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:humanoid-robots",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sim-to-real-transfer",
+    "target": "domain:robotics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quantum-machine-learning",
+    "target": "domain:quantum",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quantum-teleportation",
+    "target": "domain:quantum",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:quantum-simulation",
+    "target": "domain:quantum",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:qaoa",
+    "target": "domain:quantum",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:computer-animation",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:volume-rendering",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:neural-radiance-fields",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gaussian-splatting",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:procedural-generation",
+    "target": "domain:gamedev",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:stablecoin",
+    "target": "domain:blockchain",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:dao",
+    "target": "domain:blockchain",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:nft",
+    "target": "domain:blockchain",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:predictive-maintenance",
+    "target": "domain:iot",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:kicad",
+    "target": "domain:computer-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:matlab",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:simulink",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:gnu-radio",
+    "target": "domain:signal-processing",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:systemverilog",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:chisel",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:yosys",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:biopython",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:blast",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:alphafold",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:gromacs",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:quantlib",
+    "target": "domain:fintech",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:hl7-fhir",
+    "target": "domain:health-informatics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:slurm",
+    "target": "domain:systems",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:qgis",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:tensorflow-lite",
+    "target": "domain:embedded",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:human-computer-interaction",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:interaction-design",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:usability-testing",
+    "target": "domain:hci",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:bioinformatics",
+    "target": "domain:computational-biology",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:digital-logic",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:combinational-logic",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:sequential-logic",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:hdl",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:asic",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:verilog",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:vhdl",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "domain:digital-design",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:scientific-computing",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "domain:software-engineering",
+    "target": "domain:computer-engineering",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:software-engineering",
+    "target": "domain:hci",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:software-engineering",
+    "target": "domain:interdisciplinary",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:computer-engineering",
+    "target": "domain:computer-architecture",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:computer-engineering",
+    "target": "domain:embedded",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:computer-engineering",
+    "target": "domain:digital-design",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:computer-engineering",
+    "target": "domain:signal-processing",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:interdisciplinary",
+    "target": "domain:computational-biology",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:interdisciplinary",
+    "target": "domain:fintech",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "domain:interdisciplinary",
+    "target": "domain:health-informatics",
+    "relationship_type": "has_subdomain"
+  },
+  {
+    "source": "concept:cache-coherence",
+    "target": "concept:cache-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cache-coherence",
+    "target": "concept:multiprocessor-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cache-coherence",
+    "target": "concept:memory-consistency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:simultaneous-multithreading",
+    "target": "concept:thread",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:simultaneous-multithreading",
+    "target": "concept:superscalar",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vliw",
+    "target": "concept:instruction-level-parallelism",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vliw",
+    "target": "concept:superscalar",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:risc",
+    "target": "concept:isa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cisc",
+    "target": "concept:isa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:risc",
+    "target": "concept:cisc",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:risc-v",
+    "target": "concept:risc",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:arm",
+    "target": "concept:risc",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:x86-64",
+    "target": "concept:cisc",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:microarchitecture",
+    "target": "concept:isa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:microarchitecture",
+    "target": "concept:cpu-pipelining",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:instruction-level-parallelism",
+    "target": "concept:out-of-order-execution",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:instruction-level-parallelism",
+    "target": "concept:superscalar",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:speculative-execution",
+    "target": "concept:branch-prediction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:speculative-execution",
+    "target": "concept:side-channel-attack",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:tlb",
+    "target": "concept:virtual-memory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:tlb",
+    "target": "concept:cache-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dram",
+    "target": "concept:memory-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:numa",
+    "target": "concept:multiprocessor-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:numa",
+    "target": "concept:memory-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vector-processor",
+    "target": "concept:simd",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-accelerator",
+    "target": "concept:gpu-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-accelerator",
+    "target": "concept:asic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "concept:hardware-accelerator",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:systolic-array",
+    "target": "concept:hardware-accelerator",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:systolic-array",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:neuromorphic-computing",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:neuromorphic-computing",
+    "target": "concept:computational-neuroscience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:chiplet",
+    "target": "concept:system-on-chip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:chiplet",
+    "target": "concept:semiconductor-fabrication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:heterogeneous-computing",
+    "target": "concept:gpu-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:heterogeneous-computing",
+    "target": "concept:hardware-accelerator",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:cuda",
+    "target": "concept:heterogeneous-computing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:transistor",
+    "target": "concept:cmos",
+    "relationship_type": "enables"
+  },
+  {
+    "source": "concept:cmos",
+    "target": "concept:vlsi",
+    "relationship_type": "enables"
+  },
+  {
+    "source": "concept:cmos",
+    "target": "concept:low-power-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:boolean-algebra",
+    "target": "concept:digital-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:boolean-algebra",
+    "target": "concept:combinational-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:karnaugh-map",
+    "target": "concept:boolean-algebra",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:flip-flop",
+    "target": "concept:sequential-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:register-transfer-level",
+    "target": "concept:hdl",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:verilog",
+    "target": "concept:register-transfer-level",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:vhdl",
+    "target": "concept:register-transfer-level",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:logic-synthesis",
+    "target": "concept:register-transfer-level",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:logic-synthesis",
+    "target": "concept:electronic-design-automation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-level-synthesis",
+    "target": "concept:logic-synthesis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-level-synthesis",
+    "target": "concept:hardware-software-codesign",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:static-timing-analysis",
+    "target": "concept:place-and-route",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:static-timing-analysis",
+    "target": "concept:electronic-design-automation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:place-and-route",
+    "target": "concept:vlsi",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:clock-domain-crossing",
+    "target": "concept:flip-flop",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:clock-domain-crossing",
+    "target": "concept:synchronization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:design-for-testability",
+    "target": "concept:hardware-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:design-for-testability",
+    "target": "concept:jtag",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-verification",
+    "target": "concept:formal-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-verification",
+    "target": "concept:model-checking",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:electronic-design-automation",
+    "target": "concept:vlsi",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:system-on-chip",
+    "target": "concept:asic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:system-on-chip",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:semiconductor-fabrication",
+    "target": "concept:transistor",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vlsi",
+    "target": "concept:asic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:low-power-design",
+    "target": "concept:system-on-chip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:systemverilog",
+    "target": "technology:verilog",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:systemverilog",
+    "target": "concept:hardware-verification",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:systemverilog",
+    "target": "concept:register-transfer-level",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:chisel",
+    "target": "technology:scala",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:chisel",
+    "target": "concept:register-transfer-level",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:chisel",
+    "target": "technology:risc-v",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:yosys",
+    "target": "concept:logic-synthesis",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:yosys",
+    "target": "technology:verilog",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:kicad",
+    "target": "concept:printed-circuit-board",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:kicad",
+    "target": "concept:electronic-design-automation",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:digital-signal-processing",
+    "target": "concept:fourier-transform",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:digital-signal-processing",
+    "target": "concept:sampling-theorem",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fast-fourier-transform",
+    "target": "concept:fourier-transform",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fast-fourier-transform",
+    "target": "concept:divide-and-conquer",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sampling-theorem",
+    "target": "concept:analog-to-digital-conversion",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sampling-theorem",
+    "target": "concept:information-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:z-transform",
+    "target": "concept:digital-filter",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:digital-filter",
+    "target": "concept:convolution",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:convolution",
+    "target": "concept:convolutional-neural-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:convolution",
+    "target": "concept:image-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:modulation",
+    "target": "concept:ofdm",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:modulation",
+    "target": "concept:software-defined-radio",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wavelet-transform",
+    "target": "concept:fourier-transform",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wavelet-transform",
+    "target": "concept:data-compression",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:image-processing",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:image-processing",
+    "target": "concept:medical-imaging",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:audio-signal-processing",
+    "target": "concept:speech-recognition",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:audio-signal-processing",
+    "target": "concept:music-information-retrieval",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ofdm",
+    "target": "concept:wi-fi",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ofdm",
+    "target": "concept:cellular-5g",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mimo",
+    "target": "concept:cellular-5g",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mimo",
+    "target": "concept:wi-fi",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:compressed-sensing",
+    "target": "concept:sampling-theorem",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:compressed-sensing",
+    "target": "concept:medical-imaging",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:adaptive-filter",
+    "target": "concept:digital-filter",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:adaptive-filter",
+    "target": "concept:kalman-filter",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-compression",
+    "target": "concept:information-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-compression",
+    "target": "concept:entropy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:matlab",
+    "target": "concept:digital-signal-processing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:matlab",
+    "target": "concept:numerical-analysis",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:matlab",
+    "target": "technology:julia",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:simulink",
+    "target": "technology:matlab",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:simulink",
+    "target": "concept:control-theory",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:simulink",
+    "target": "concept:cyber-physical-systems",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:gnu-radio",
+    "target": "concept:software-defined-radio",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:gnu-radio",
+    "target": "concept:modulation",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:numpy",
+    "target": "concept:fast-fourier-transform",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:opencv",
+    "target": "concept:image-processing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:pwm",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:pwm",
+    "target": "concept:analog-circuit-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gpio",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gpio",
+    "target": "concept:memory-mapped-io",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:direct-memory-access",
+    "target": "concept:interrupt-handling",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:direct-memory-access",
+    "target": "concept:device-driver",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:watchdog-timer",
+    "target": "concept:fault-tolerance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:watchdog-timer",
+    "target": "concept:firmware",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bootloader",
+    "target": "concept:firmware",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bootloader",
+    "target": "concept:secure-boot",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:memory-mapped-io",
+    "target": "concept:device-driver",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:embedded-linux",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:linux",
+    "target": "concept:embedded-linux",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:raspberry-pi",
+    "target": "concept:embedded-linux",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:raspberry-pi",
+    "target": "concept:gpio",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:arduino",
+    "target": "concept:pwm",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:arduino",
+    "target": "concept:gpio",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:esp32",
+    "target": "concept:tinyml",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:hardware-abstraction-layer",
+    "target": "concept:device-driver",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:zephyr",
+    "target": "concept:hardware-abstraction-layer",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:tinyml",
+    "target": "concept:model-quantization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:tinyml",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:tensorflow-lite",
+    "target": "concept:tinyml",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:tensorflow-lite",
+    "target": "technology:tensorflow",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:tensorflow-lite",
+    "target": "concept:model-quantization",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:cyber-physical-systems",
+    "target": "concept:control-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cyber-physical-systems",
+    "target": "concept:digital-twin",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:jtag",
+    "target": "concept:firmware",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-software-codesign",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-software-codesign",
+    "target": "concept:system-on-chip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:printed-circuit-board",
+    "target": "concept:signal-integrity",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:printed-circuit-board",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:analog-circuit-design",
+    "target": "concept:analog-to-digital-conversion",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:analog-circuit-design",
+    "target": "concept:transistor",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:signal-integrity",
+    "target": "concept:vlsi",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:user-centered-design",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:user-centered-design",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:user-research",
+    "target": "concept:user-centered-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:user-research",
+    "target": "concept:usability-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:personas",
+    "target": "concept:user-research",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cognitive-load",
+    "target": "concept:mental-model",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cognitive-load",
+    "target": "concept:interaction-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mental-model",
+    "target": "concept:information-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fitts-law",
+    "target": "concept:interaction-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fitts-law",
+    "target": "concept:accessibility",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:information-architecture",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ui-prototyping",
+    "target": "concept:usability-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:figma",
+    "target": "concept:ui-prototyping",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:heuristic-evaluation",
+    "target": "concept:usability-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:eye-tracking",
+    "target": "concept:usability-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:eye-tracking",
+    "target": "concept:gesture-recognition",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:conversational-ui",
+    "target": "concept:large-language-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:conversational-ui",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:voice-user-interface",
+    "target": "concept:speech-recognition",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:voice-user-interface",
+    "target": "concept:conversational-ui",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gesture-recognition",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gesture-recognition",
+    "target": "concept:virtual-reality",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:haptics",
+    "target": "concept:virtual-reality",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:haptics",
+    "target": "concept:human-robot-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:brain-computer-interface",
+    "target": "concept:computational-neuroscience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:brain-computer-interface",
+    "target": "concept:digital-signal-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cscw",
+    "target": "concept:real-time-communication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cscw",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ubiquitous-computing",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ubiquitous-computing",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:affective-computing",
+    "target": "concept:sentiment-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:affective-computing",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dark-patterns",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dark-patterns",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:human-robot-interaction",
+    "target": "concept:embodied-ai",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:human-robot-interaction",
+    "target": "concept:humanoid-robots",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-social-science",
+    "target": "concept:graph-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-social-science",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:digital-humanities",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:digital-humanities",
+    "target": "concept:data-visualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:educational-technology",
+    "target": "concept:recommender-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:educational-technology",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-neuroscience",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-neuroscience",
+    "target": "concept:scientific-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:climate-informatics",
+    "target": "concept:time-series-forecasting",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:climate-informatics",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:geographic-information-systems",
+    "target": "concept:computational-geometry",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:geographic-information-systems",
+    "target": "concept:data-visualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:qgis",
+    "target": "concept:geographic-information-systems",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:postgresql",
+    "target": "concept:geographic-information-systems",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:computational-chemistry",
+    "target": "concept:molecular-dynamics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-chemistry",
+    "target": "concept:quantum-simulation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-physics",
+    "target": "concept:monte-carlo-methods",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-physics",
+    "target": "concept:numerical-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-physics",
+    "target": "concept:physics-simulation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:smart-cities",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:smart-cities",
+    "target": "concept:smart-grid",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:precision-agriculture",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:precision-agriculture",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-law",
+    "target": "concept:smart-contracts",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-law",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:music-information-retrieval",
+    "target": "concept:fourier-transform",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-linguistics",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-linguistics",
+    "target": "concept:formal-languages",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sports-analytics",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sports-analytics",
+    "target": "concept:data-visualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:smart-grid",
+    "target": "concept:cyber-physical-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:smart-grid",
+    "target": "concept:industrial-iot",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:scientific-computing",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:genomics",
+    "target": "concept:bioinformatics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:genomics",
+    "target": "concept:next-generation-sequencing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sequence-alignment",
+    "target": "concept:dynamic-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sequence-alignment",
+    "target": "concept:string-matching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:genome-assembly",
+    "target": "concept:graph-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:genome-assembly",
+    "target": "concept:next-generation-sequencing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:phylogenetics",
+    "target": "concept:sequence-alignment",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:phylogenetics",
+    "target": "concept:bayesian-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:protein-structure-prediction",
+    "target": "concept:deep-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:protein-structure-prediction",
+    "target": "concept:molecular-dynamics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gene-expression-analysis",
+    "target": "concept:unsupervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gene-expression-analysis",
+    "target": "concept:genomics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:single-cell-analysis",
+    "target": "concept:dimensionality-reduction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:single-cell-analysis",
+    "target": "concept:gene-expression-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:systems-biology",
+    "target": "concept:biological-network-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:biological-network-analysis",
+    "target": "concept:graph-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:molecular-dynamics",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:molecular-dynamics",
+    "target": "concept:physics-simulation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-drug-discovery",
+    "target": "concept:protein-structure-prediction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-drug-discovery",
+    "target": "concept:graph-neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bioinformatics",
+    "target": "concept:sequence-alignment",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:biopython",
+    "target": "technology:python",
+    "relationship_type": "written_in"
+  },
+  {
+    "source": "technology:biopython",
+    "target": "concept:sequence-alignment",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:biopython",
+    "target": "concept:bioinformatics",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:blast",
+    "target": "concept:sequence-alignment",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:blast",
+    "target": "concept:genomics",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:alphafold",
+    "target": "concept:protein-structure-prediction",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:alphafold",
+    "target": "concept:computational-drug-discovery",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:gromacs",
+    "target": "concept:molecular-dynamics",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:gromacs",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:algorithmic-trading",
+    "target": "concept:quantitative-finance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:algorithmic-trading",
+    "target": "concept:time-series-forecasting",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-frequency-trading",
+    "target": "concept:algorithmic-trading",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-frequency-trading",
+    "target": "concept:order-matching-engine",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:high-frequency-trading",
+    "target": "concept:hardware-accelerator",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantitative-finance",
+    "target": "concept:monte-carlo-methods",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantitative-finance",
+    "target": "concept:probability-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:risk-modeling",
+    "target": "concept:quantitative-finance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:risk-modeling",
+    "target": "concept:monte-carlo-methods",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:payment-systems",
+    "target": "concept:idempotency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:payment-systems",
+    "target": "concept:distributed-transaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:stripe",
+    "target": "concept:payment-systems",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:open-banking",
+    "target": "concept:oauth2",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:open-banking",
+    "target": "concept:rest-api",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fraud-detection",
+    "target": "concept:anomaly-detection",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fraud-detection",
+    "target": "concept:payment-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:credit-scoring",
+    "target": "concept:gradient-boosting",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:credit-scoring",
+    "target": "concept:explainable-ai",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:robo-advisor",
+    "target": "concept:quantitative-finance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:regtech",
+    "target": "concept:risk-modeling",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:regtech",
+    "target": "concept:gdpr",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:order-matching-engine",
+    "target": "concept:message-queue",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cbdc",
+    "target": "concept:distributed-ledger",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cbdc",
+    "target": "concept:payment-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:quantlib",
+    "target": "technology:cpp",
+    "relationship_type": "written_in"
+  },
+  {
+    "source": "technology:quantlib",
+    "target": "concept:quantitative-finance",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:quantlib",
+    "target": "concept:risk-modeling",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:electronic-health-records",
+    "target": "concept:health-data-interoperability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:electronic-health-records",
+    "target": "concept:hipaa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:health-data-interoperability",
+    "target": "concept:rest-api",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:hl7-fhir",
+    "target": "concept:health-data-interoperability",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:hl7-fhir",
+    "target": "concept:electronic-health-records",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:hl7-fhir",
+    "target": "concept:rest-api",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:medical-imaging",
+    "target": "concept:image-segmentation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:medical-imaging",
+    "target": "concept:convolutional-neural-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:clinical-decision-support",
+    "target": "concept:explainable-ai",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:clinical-decision-support",
+    "target": "concept:electronic-health-records",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:telemedicine",
+    "target": "concept:real-time-communication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:telemedicine",
+    "target": "concept:hipaa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wearable-health-monitoring",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wearable-health-monitoring",
+    "target": "concept:digital-signal-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:precision-medicine",
+    "target": "concept:genomics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:precision-medicine",
+    "target": "concept:clinical-decision-support",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hipaa",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hipaa",
+    "target": "concept:gdpr",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:epidemiological-modeling",
+    "target": "concept:computational-social-science",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:epidemiological-modeling",
+    "target": "concept:monte-carlo-methods",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:medical-device-software",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:medical-device-software",
+    "target": "concept:formal-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hidden-markov-model",
+    "target": "concept:probabilistic-graphical-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hidden-markov-model",
+    "target": "concept:speech-recognition",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hidden-markov-model",
+    "target": "concept:markov-decision-process",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:generative-adversarial-network",
+    "target": "concept:deep-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:generative-adversarial-network",
+    "target": "concept:diffusion-models",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:variational-autoencoder",
+    "target": "concept:representation-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:variational-autoencoder",
+    "target": "concept:diffusion-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:recurrent-neural-network",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:recurrent-neural-network",
+    "target": "concept:transformers",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:lstm",
+    "target": "concept:recurrent-neural-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:transfer-learning",
+    "target": "concept:fine-tuning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:transfer-learning",
+    "target": "concept:representation-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:federated-learning",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:federated-learning",
+    "target": "concept:differential-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:explainable-ai",
+    "target": "concept:ai-alignment",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ai-alignment",
+    "target": "concept:rlhf",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ai-alignment",
+    "target": "concept:large-language-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:rlhf",
+    "target": "concept:reinforcement-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:rlhf",
+    "target": "concept:fine-tuning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:knowledge-graph",
+    "target": "concept:graph-database",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:knowledge-graph",
+    "target": "concept:retrieval-augmented-generation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:neo4j",
+    "target": "concept:knowledge-graph",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:object-detection",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:object-detection",
+    "target": "concept:convolutional-neural-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:image-segmentation",
+    "target": "concept:computer-vision",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:opencv",
+    "target": "concept:object-detection",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:speech-recognition",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:speech-recognition",
+    "target": "concept:transformers",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:machine-translation",
+    "target": "concept:transformers",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:machine-translation",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sentiment-analysis",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:named-entity-recognition",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:spacy",
+    "target": "concept:named-entity-recognition",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:huggingface-transformers",
+    "target": "concept:machine-translation",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:mixture-of-experts",
+    "target": "concept:transformers",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mixture-of-experts",
+    "target": "concept:large-language-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:model-quantization",
+    "target": "concept:model-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:ollama",
+    "target": "concept:model-quantization",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:knowledge-distillation",
+    "target": "concept:model-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:knowledge-distillation",
+    "target": "concept:transfer-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:anomaly-detection",
+    "target": "concept:unsupervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:anomaly-detection",
+    "target": "concept:intrusion-detection",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:time-series-forecasting",
+    "target": "concept:recurrent-neural-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:time-series-forecasting",
+    "target": "concept:time-series-database",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:causal-inference",
+    "target": "concept:bayesian-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:causal-inference",
+    "target": "concept:ab-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:contrastive-learning",
+    "target": "concept:self-supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:contrastive-learning",
+    "target": "concept:vector-embeddings",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gradient-boosting",
+    "target": "concept:decision-trees",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:xgboost",
+    "target": "concept:gradient-boosting",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:decision-trees",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:scikit-learn",
+    "target": "concept:decision-trees",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:support-vector-machine",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:scikit-learn",
+    "target": "concept:support-vector-machine",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:k-means-clustering",
+    "target": "concept:unsupervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:scikit-learn",
+    "target": "concept:k-means-clustering",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:dimensionality-reduction",
+    "target": "concept:linear-algebra",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dimensionality-reduction",
+    "target": "concept:unsupervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:scikit-learn",
+    "target": "concept:dimensionality-reduction",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:lambda-calculus",
+    "target": "concept:functional-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:lambda-calculus",
+    "target": "concept:type-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:lambda-calculus",
+    "target": "concept:turing-machine",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:graph-theory",
+    "target": "concept:graph-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:graph-theory",
+    "target": "concept:discrete-mathematics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:discrete-mathematics",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:linear-algebra",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:linear-algebra",
+    "target": "concept:numerical-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:linear-algebra",
+    "target": "concept:quantum-gate",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:probability-theory",
+    "target": "concept:bayesian-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:probability-theory",
+    "target": "concept:randomized-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:game-theory",
+    "target": "concept:multi-agent-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:game-theory",
+    "target": "concept:consensus",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:monte-carlo-methods",
+    "target": "concept:randomized-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:monte-carlo-methods",
+    "target": "concept:probability-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:linear-programming",
+    "target": "concept:convex-optimization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:linear-programming",
+    "target": "concept:approximation-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:convex-optimization",
+    "target": "concept:gradient-descent",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:kolmogorov-complexity",
+    "target": "concept:information-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:kolmogorov-complexity",
+    "target": "concept:computability-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:amortized-analysis",
+    "target": "concept:asymptotic-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:amortized-analysis",
+    "target": "concept:data-structures",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:string-matching",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:string-matching",
+    "target": "concept:full-text-search",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:network-flow",
+    "target": "concept:graph-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:network-flow",
+    "target": "concept:linear-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bloom-filter",
+    "target": "concept:hashing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bloom-filter",
+    "target": "concept:lsm-tree",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:type-inference",
+    "target": "concept:type-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:typescript",
+    "target": "concept:type-inference",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:haskell",
+    "target": "concept:type-inference",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:ocaml",
+    "target": "concept:type-inference",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:generics",
+    "target": "concept:type-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:java",
+    "target": "concept:generics",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:rust",
+    "target": "concept:generics",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:memory-safety",
+    "target": "concept:buffer-overflow",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:memory-safety",
+    "target": "concept:garbage-collection",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:rust",
+    "target": "concept:memory-safety",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:ownership-and-borrowing",
+    "target": "concept:memory-safety",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:rust",
+    "target": "concept:ownership-and-borrowing",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:metaprogramming",
+    "target": "concept:compilation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:clojure",
+    "target": "concept:metaprogramming",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:coroutines",
+    "target": "concept:asynchronous-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:coroutines",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:kotlin",
+    "target": "concept:coroutines",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:actor-model",
+    "target": "concept:message-passing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:actor-model",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:erlang",
+    "target": "concept:actor-model",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:elixir",
+    "target": "concept:actor-model",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:design-by-contract",
+    "target": "concept:hoare-logic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:design-by-contract",
+    "target": "concept:formal-verification",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:software-architecture",
+    "target": "concept:design-patterns",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:software-architecture",
+    "target": "concept:microservices",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:software-architecture",
+    "target": "concept:domain-driven-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:requirements-engineering",
+    "target": "concept:agile",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:requirements-engineering",
+    "target": "concept:software-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:just-in-time-compilation",
+    "target": "concept:compilation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:just-in-time-compilation",
+    "target": "concept:interpreter",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:nodejs",
+    "target": "concept:just-in-time-compilation",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:julia",
+    "target": "concept:just-in-time-compilation",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:interpreter",
+    "target": "concept:parsing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:python",
+    "target": "concept:interpreter",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:amdahls-law",
+    "target": "concept:parallel-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:amdahls-law",
+    "target": "concept:parallel-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:supercomputer",
+    "target": "concept:high-performance-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:supercomputer",
+    "target": "concept:cluster-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:slurm",
+    "target": "concept:supercomputer",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:slurm",
+    "target": "concept:cluster-computing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:slurm",
+    "target": "technology:mpi",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "concept:exascale-computing",
+    "target": "concept:supercomputer",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:exascale-computing",
+    "target": "concept:heterogeneous-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:distributed-shared-memory",
+    "target": "concept:distributed-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:distributed-shared-memory",
+    "target": "concept:memory-consistency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:lock-free-data-structures",
+    "target": "concept:synchronization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:lock-free-data-structures",
+    "target": "concept:concurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:copy-on-write",
+    "target": "concept:virtual-memory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:copy-on-write",
+    "target": "concept:immutability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:page-replacement",
+    "target": "concept:virtual-memory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:page-replacement",
+    "target": "concept:caching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:osi-model",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:osi-model",
+    "target": "concept:packet-switching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:subnetting",
+    "target": "concept:ipv4",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:subnetting",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vlan",
+    "target": "concept:switching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vlan",
+    "target": "concept:sdn",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vpn",
+    "target": "concept:tls",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vpn",
+    "target": "concept:zero-trust",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dhcp",
+    "target": "concept:ipv4",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dhcp",
+    "target": "concept:dns",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:arp",
+    "target": "concept:ipv4",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:arp",
+    "target": "concept:switching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:peer-to-peer-networking",
+    "target": "concept:distributed-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:peer-to-peer-networking",
+    "target": "concept:blockchain",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:ipfs",
+    "target": "concept:peer-to-peer-networking",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:webrtc",
+    "target": "concept:peer-to-peer-networking",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:multicast",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multicast",
+    "target": "concept:real-time-communication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:network-function-virtualization",
+    "target": "concept:sdn",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:network-function-virtualization",
+    "target": "concept:virtualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mesh-networking",
+    "target": "concept:zigbee",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mesh-networking",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vehicle-to-everything",
+    "target": "concept:cellular-5g",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:vehicle-to-everything",
+    "target": "concept:autonomous-navigation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:side-channel-attack",
+    "target": "concept:cryptography",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:side-channel-attack",
+    "target": "concept:cache-hierarchy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:trusted-execution-environment",
+    "target": "concept:zero-trust",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:trusted-execution-environment",
+    "target": "concept:homomorphic-encryption",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:secure-boot",
+    "target": "concept:digital-signature",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:secure-boot",
+    "target": "concept:firmware",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-security-module",
+    "target": "concept:secrets-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:hardware-security-module",
+    "target": "concept:public-key-cryptography",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fuzzing",
+    "target": "concept:penetration-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:fuzzing",
+    "target": "concept:symbolic-execution",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:malware-analysis",
+    "target": "concept:reverse-engineering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:malware-analysis",
+    "target": "concept:sandboxing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:reverse-engineering",
+    "target": "concept:compilation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:intrusion-detection",
+    "target": "concept:observability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:snort",
+    "target": "concept:intrusion-detection",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:falco",
+    "target": "concept:intrusion-detection",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:buffer-overflow",
+    "target": "concept:memory-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:buffer-overflow",
+    "target": "concept:penetration-testing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:csrf",
+    "target": "concept:xss",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:csrf",
+    "target": "concept:session-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ddos-attack",
+    "target": "concept:rate-limiting",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ddos-attack",
+    "target": "concept:content-delivery-network",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:cloudflare",
+    "target": "concept:ddos-attack",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:phishing",
+    "target": "concept:mfa",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:phishing",
+    "target": "concept:authentication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:supply-chain-security",
+    "target": "concept:package-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:supply-chain-security",
+    "target": "concept:ci-cd",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:trivy",
+    "target": "concept:supply-chain-security",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:siem",
+    "target": "concept:observability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:siem",
+    "target": "concept:incident-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sandboxing",
+    "target": "concept:virtualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sandboxing",
+    "target": "concept:containerization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:webassembly",
+    "target": "concept:sandboxing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:b-tree",
+    "target": "concept:database-indexing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:b-tree",
+    "target": "concept:data-structures",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:postgresql",
+    "target": "concept:b-tree",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:sqlite",
+    "target": "concept:b-tree",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:lsm-tree",
+    "target": "concept:b-tree",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:cassandra",
+    "target": "concept:lsm-tree",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:write-ahead-log",
+    "target": "concept:database-transaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:write-ahead-log",
+    "target": "concept:replication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:postgresql",
+    "target": "concept:write-ahead-log",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:mvcc",
+    "target": "concept:database-transaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:mvcc",
+    "target": "concept:acid",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:postgresql",
+    "target": "concept:mvcc",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:query-optimization",
+    "target": "concept:sql",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:query-optimization",
+    "target": "concept:database-indexing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:database-normalization",
+    "target": "concept:relational-databases",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:database-normalization",
+    "target": "concept:sql",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:columnar-storage",
+    "target": "concept:olap",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:columnar-storage",
+    "target": "concept:data-warehouse",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:clickhouse",
+    "target": "concept:columnar-storage",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:apache-parquet",
+    "target": "concept:columnar-storage",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:duckdb",
+    "target": "concept:columnar-storage",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:time-series-database",
+    "target": "concept:nosql",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:influxdb",
+    "target": "concept:time-series-database",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:graph-database",
+    "target": "concept:nosql",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:graph-database",
+    "target": "concept:graph-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:neo4j",
+    "target": "concept:graph-database",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:change-data-capture",
+    "target": "concept:stream-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:change-data-capture",
+    "target": "concept:event-driven-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:kafka",
+    "target": "concept:change-data-capture",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:data-mesh",
+    "target": "concept:data-lake",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-mesh",
+    "target": "concept:domain-driven-design",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multi-tenancy",
+    "target": "concept:cloud-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multi-tenancy",
+    "target": "concept:authorization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cloud-service-models",
+    "target": "concept:cloud-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cloud-service-models",
+    "target": "concept:serverless",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:finops",
+    "target": "concept:cloud-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:finops",
+    "target": "concept:auto-scaling",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:platform-engineering",
+    "target": "concept:infrastructure-as-code",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:platform-engineering",
+    "target": "concept:gitops",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:swarm-robotics",
+    "target": "concept:multi-agent-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:swarm-robotics",
+    "target": "concept:consensus",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:soft-robotics",
+    "target": "concept:robot-dynamics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:soft-robotics",
+    "target": "concept:control-theory",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:humanoid-robots",
+    "target": "concept:embodied-ai",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:humanoid-robots",
+    "target": "concept:inverse-kinematics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sim-to-real-transfer",
+    "target": "concept:physics-simulation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sim-to-real-transfer",
+    "target": "concept:deep-rl",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:gazebo",
+    "target": "concept:sim-to-real-transfer",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:quantum-machine-learning",
+    "target": "concept:quantum-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantum-machine-learning",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantum-machine-learning",
+    "target": "concept:variational-quantum-eigensolver",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:pennylane",
+    "target": "concept:quantum-machine-learning",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:quantum-teleportation",
+    "target": "concept:quantum-entanglement",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantum-teleportation",
+    "target": "concept:quantum-key-distribution",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantum-simulation",
+    "target": "concept:quantum-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:quantum-simulation",
+    "target": "concept:variational-quantum-eigensolver",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:qaoa",
+    "target": "concept:quantum-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:qaoa",
+    "target": "concept:quantum-annealing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:qiskit",
+    "target": "concept:qaoa",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:computer-animation",
+    "target": "concept:forward-kinematics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computer-animation",
+    "target": "concept:physics-simulation",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:blender",
+    "target": "concept:computer-animation",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:volume-rendering",
+    "target": "concept:ray-tracing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:volume-rendering",
+    "target": "concept:scientific-visualization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:volume-rendering",
+    "target": "concept:medical-imaging",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:neural-radiance-fields",
+    "target": "concept:deep-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:neural-radiance-fields",
+    "target": "concept:volume-rendering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gaussian-splatting",
+    "target": "concept:neural-radiance-fields",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:gaussian-splatting",
+    "target": "concept:rasterization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:procedural-generation",
+    "target": "concept:game-engines",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:procedural-generation",
+    "target": "concept:randomized-algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:stablecoin",
+    "target": "concept:cryptocurrency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:stablecoin",
+    "target": "concept:decentralized-finance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dao",
+    "target": "concept:smart-contracts",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dao",
+    "target": "concept:decentralized-finance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:nft",
+    "target": "concept:smart-contracts",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:ethereum",
+    "target": "concept:nft",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:predictive-maintenance",
+    "target": "concept:industrial-iot",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:predictive-maintenance",
+    "target": "concept:anomaly-detection",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:predictive-maintenance",
+    "target": "concept:digital-twin",
     "relationship_type": "related_to"
   }
 ]

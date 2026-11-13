@@ -4058,7 +4058,7 @@
     "name": "FPGA",
     "node_type": "technology",
     "node_subtype": "platform",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "A reconfigurable integrated circuit programmed after manufacturing.",
     "aliases": [
       "Field-Programmable Gate Array"
@@ -4072,7 +4072,7 @@
     "name": "Verilog",
     "node_type": "technology",
     "node_subtype": "programming_language",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "A hardware description language for modeling digital circuits.",
     "wikipedia_title": "Verilog",
     "lifecycle_status": "active"
@@ -4083,7 +4083,7 @@
     "name": "VHDL",
     "node_type": "technology",
     "node_subtype": "programming_language",
-    "primary_domain": "domain:computer-architecture",
+    "primary_domain": "domain:digital-design",
     "short_description": "A hardware description language used for digital system design.",
     "aliases": [
       "VHSIC Hardware Description Language"
@@ -4861,5 +4861,195 @@
     "official_url": "https://stripe.com",
     "documentation_url": "https://docs.stripe.com",
     "wikipedia_title": "Stripe, Inc."
+  },
+  {
+    "id": "technology:kicad",
+    "slug": "kicad",
+    "name": "KiCad",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Open-source suite for schematic capture and PCB layout.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "KiCad",
+    "official_url": "https://www.kicad.org"
+  },
+  {
+    "id": "technology:matlab",
+    "slug": "matlab",
+    "name": "MATLAB",
+    "node_type": "technology",
+    "node_subtype": "programming_language",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Numerical computing environment widely used in engineering and signal processing.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "MATLAB",
+    "official_url": "https://www.mathworks.com/products/matlab.html"
+  },
+  {
+    "id": "technology:simulink",
+    "slug": "simulink",
+    "name": "Simulink",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Block-diagram environment for modelling and simulating dynamic systems.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Simulink",
+    "official_url": "https://www.mathworks.com/products/simulink.html"
+  },
+  {
+    "id": "technology:gnu-radio",
+    "slug": "gnu-radio",
+    "name": "GNU Radio",
+    "node_type": "technology",
+    "node_subtype": "framework",
+    "primary_domain": "domain:signal-processing",
+    "short_description": "Open-source toolkit for building software-defined radios.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "GNU Radio",
+    "official_url": "https://www.gnuradio.org"
+  },
+  {
+    "id": "technology:systemverilog",
+    "slug": "systemverilog",
+    "name": "SystemVerilog",
+    "node_type": "technology",
+    "node_subtype": "programming_language",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Hardware description and verification language extending Verilog.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "SystemVerilog"
+  },
+  {
+    "id": "technology:chisel",
+    "slug": "chisel",
+    "name": "Chisel",
+    "node_type": "technology",
+    "node_subtype": "programming_language",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Hardware construction language embedded in Scala.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Chisel (programming language)",
+    "official_url": "https://www.chisel-lang.org"
+  },
+  {
+    "id": "technology:yosys",
+    "slug": "yosys",
+    "name": "Yosys",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:digital-design",
+    "short_description": "Open-source framework for Verilog RTL synthesis.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Yosys",
+    "official_url": "https://yosyshq.net/yosys/"
+  },
+  {
+    "id": "technology:biopython",
+    "slug": "biopython",
+    "name": "Biopython",
+    "node_type": "technology",
+    "node_subtype": "library",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "Python tools for biological computation and sequence analysis.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Biopython",
+    "official_url": "https://biopython.org"
+  },
+  {
+    "id": "technology:blast",
+    "slug": "blast",
+    "name": "BLAST",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "The standard tool for searching sequence databases by similarity.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "BLAST (biotechnology)",
+    "official_url": "https://blast.ncbi.nlm.nih.gov"
+  },
+  {
+    "id": "technology:alphafold",
+    "slug": "alphafold",
+    "name": "AlphaFold",
+    "node_type": "technology",
+    "node_subtype": "platform",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "DeepMind's AI system that predicts protein structures.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "AlphaFold"
+  },
+  {
+    "id": "technology:gromacs",
+    "slug": "gromacs",
+    "name": "GROMACS",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:computational-biology",
+    "short_description": "High-performance molecular dynamics package.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "GROMACS",
+    "official_url": "https://www.gromacs.org"
+  },
+  {
+    "id": "technology:quantlib",
+    "slug": "quantlib",
+    "name": "QuantLib",
+    "node_type": "technology",
+    "node_subtype": "library",
+    "primary_domain": "domain:fintech",
+    "short_description": "Open-source library for quantitative finance and derivatives pricing.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "QuantLib",
+    "official_url": "https://www.quantlib.org"
+  },
+  {
+    "id": "technology:hl7-fhir",
+    "slug": "hl7-fhir",
+    "name": "HL7 FHIR",
+    "node_type": "technology",
+    "node_subtype": "standard",
+    "primary_domain": "domain:health-informatics",
+    "short_description": "Modern API standard for exchanging healthcare data.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Fast Healthcare Interoperability Resources",
+    "official_url": "https://hl7.org/fhir/"
+  },
+  {
+    "id": "technology:slurm",
+    "slug": "slurm",
+    "name": "Slurm",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:systems",
+    "short_description": "Workload manager that schedules jobs on most of the world's supercomputers.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "Slurm Workload Manager",
+    "official_url": "https://slurm.schedmd.com"
+  },
+  {
+    "id": "technology:qgis",
+    "slug": "qgis",
+    "name": "QGIS",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:interdisciplinary",
+    "short_description": "Free and open-source desktop GIS application.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "QGIS",
+    "official_url": "https://qgis.org"
+  },
+  {
+    "id": "technology:tensorflow-lite",
+    "slug": "tensorflow-lite",
+    "name": "LiteRT (TensorFlow Lite)",
+    "node_type": "technology",
+    "node_subtype": "framework",
+    "primary_domain": "domain:embedded",
+    "short_description": "Google's runtime for running ML models on phones and microcontrollers.",
+    "lifecycle_status": "active",
+    "wikipedia_title": "TensorFlow",
+    "official_url": "https://ai.google.dev/edge/litert"
   }
 ]

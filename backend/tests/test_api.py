@@ -37,7 +37,7 @@ def test_domains_listed():
     r = client.get("/api/v1/domains")
     assert r.status_code == 200
     domains = r.json()
-    assert len(domains) == 20  # 11 original + 6 Phase 1E + Quantum, Blockchain, IoT (1F)
+    assert len(domains) == 28  # 20 through Phase 1G + 3 new fields and 5 sub-fields (1H)
     assert all(d["node_count"] > 0 for d in domains)
 
 

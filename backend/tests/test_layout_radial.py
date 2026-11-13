@@ -28,13 +28,13 @@ def test_canonical_nodes_and_ids_preserved():
     by_domain = Counter(n["primary_domain"] for n in DATASET["nodes"] if n["node_type"] != "domain")
     for domain, count in by_domain.items():
         assert len(_members(coords, domain)) == count
-    assert len(_members(coords, "domain:robotics")) == 29
+    assert len(_members(coords, "domain:robotics")) == 33
 
 
 def test_fourteen_whole_ecosystems_never_overlap():
     coords, ext = LAYOUT["coordinates"], LAYOUT["domain_extents"]
     order = LAYOUT["domain_ring_order"]
-    assert len(order) == 17
+    assert len(order) == 20
     assert LAYOUT["macro_composition"] == gl.MACRO_COMPOSITION == "continents"
     for d in order:
         assert coords[d]["ring"] == 0
@@ -47,8 +47,13 @@ def test_fourteen_whole_ecosystems_never_overlap():
 
 def test_nested_subdomains_are_centered_constellations():
     coords = LAYOUT["coordinates"]
-    nested = {"domain:computer-architecture": "domain:systems",
-              "domain:embedded": "domain:systems",
+    nested = {"domain:computer-architecture": "domain:computer-engineering",
+              "domain:embedded": "domain:computer-engineering",
+              "domain:digital-design": "domain:computer-engineering",
+              "domain:signal-processing": "domain:computer-engineering",
+              "domain:computational-biology": "domain:interdisciplinary",
+              "domain:fintech": "domain:interdisciplinary",
+              "domain:health-informatics": "domain:interdisciplinary",
               "domain:computer-graphics": "domain:gamedev"}
     for sub, parent in nested.items():
         assert coords[sub]["ring"] in (2, 3)

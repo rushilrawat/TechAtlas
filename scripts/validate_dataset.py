@@ -43,9 +43,10 @@ JOURNEYS = ROOT / "data" / "seed" / "journeys.json"
 #    while admitting the planned expansion. Node count is still curation-gated, not a target.
 #  - Phase 1F (Quantum, Blockchain & Web3, IoT domains) raises the ceiling to 380.
 #  - Phase 1G (review gaps: SRE, privacy, UX, analytics, graphics, networks) raises it to 420.
+#  - Phase 1H (Computer Engineering, HCI, interdisciplinary fields, ~250 concepts) raises it to 700.
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
-MAX_CONCEPTS = 420
+MAX_CONCEPTS = 700
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 
