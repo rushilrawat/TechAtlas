@@ -453,6 +453,8 @@ export function GraphCanvas({
   const journeyNodesRef = useRef(new Set(journeyNodeIds));
   const journeyEdgesRef = useRef(new Set(journeyEdgeIds));
   const hoveredRef = useRef<string | null>(null);
+  // Members of a hovered domain, so hovering a field's main dot previews its whole network.
+  const hoverDomainSetRef = useRef<Set<string> | null>(null);
   const [hoverPreview, setHoverPreview] = useState<{ id: string; x: number; y: number; description: string } | null>(null);
   const descriptionsRef = useRef(new Map<string, string>());
   const pendingDescriptionsRef = useRef(new Set<string>());
@@ -830,13 +832,16 @@ export function GraphCanvas({
       }
       // With something selected, hovering another node still previews all of its links.
       const hovered = hoveredRef.current;
-      if (hovered && hovered !== active && (source === hovered || target === hovered)) {
+      const hoverSet = hoverDomainSetRef.current;
+      if (hovered && hovered !== active && (source === hovered || target === hovered
+        || (!!hoverSet && hoverSet.has(source) && hoverSet.has(target)))) {
         return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.75), size: 1.1, zIndex: 2 };
       }
       const set = neighborSetRef.current;
       const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
       const related = domainFocus
-        ? !!set && ((set.has(source) && set.has(target) && (zoomVisible || source === active || target === active))
+        // A clicked or hovered field shows its whole internal network, every edge among its members.
+        ? !!set && ((set.has(source) && set.has(target))
           // A tapped field also reveals its backbone links out to other fields.
           || (cross && backbone && (set.has(source) || set.has(target))))
         : source === active || target === active;
@@ -851,6 +856,8 @@ export function GraphCanvas({
 
     renderer.on("enterNode", ({ node, event }) => {
       hoveredRef.current = node;
+      hoverDomainSetRef.current = graph.getNodeAttribute(node, "nodeType") === "domain"
+        ? new Set<string>([node, ...domainMemberIds(graph, node)]) : null;
       if (window.matchMedia("(hover: hover)").matches && "clientX" in event.original) {
         const bounds = containerRef.current?.getBoundingClientRect();
         const x = Math.min(event.original.clientX - (bounds?.left ?? 0) + 18, (bounds?.width ?? 0) - 250);
@@ -870,6 +877,7 @@ export function GraphCanvas({
     });
     renderer.on("leaveNode", () => {
       hoveredRef.current = null;
+      hoverDomainSetRef.current = null;
       setHoverPreview(null);
       scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "default";
