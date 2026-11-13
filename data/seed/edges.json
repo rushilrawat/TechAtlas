@@ -265,11 +265,6 @@
     "relationship_type": "belongs_to_domain"
   },
   {
-    "source": "concept:real-time-graphics",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:game-engines",
     "target": "domain:gamedev",
     "relationship_type": "belongs_to_domain"
@@ -1243,11 +1238,6 @@
     "source": "technology:webgpu",
     "target": "concept:real-time-graphics",
     "relationship_type": "enables"
-  },
-  {
-    "source": "technology:webgpu",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
   },
   {
     "source": "technology:unity",
@@ -3170,26 +3160,6 @@
     "relationship_type": "belongs_to_domain"
   },
   {
-    "source": "technology:vulkan",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "technology:opengl",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "technology:blender",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "technology:directx",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:memory-management",
     "target": "domain:systems",
     "relationship_type": "belongs_to_domain"
@@ -3245,22 +3215,7 @@
     "relationship_type": "belongs_to_domain"
   },
   {
-    "source": "concept:rendering-pipeline",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
     "source": "concept:physics-engine",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "concept:shaders",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "concept:ray-tracing",
     "target": "domain:gamedev",
     "relationship_type": "belongs_to_domain"
   },
@@ -4066,11 +4021,6 @@
   },
   {
     "source": "technology:sdl",
-    "target": "domain:gamedev",
-    "relationship_type": "belongs_to_domain"
-  },
-  {
-    "source": "technology:metal",
     "target": "domain:gamedev",
     "relationship_type": "belongs_to_domain"
   },
@@ -6358,5 +6308,1410 @@
     "source": "technology:aws-iot-core",
     "target": "concept:internet-of-things",
     "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:rasterization",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:texture-mapping",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:physically-based-rendering",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:global-illumination",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:polygon-mesh",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:https",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:bgp",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:wi-fi",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:bluetooth",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:cellular-5g",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:nat",
+    "target": "domain:networks",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:site-reliability-engineering",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:service-level-objectives",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:incident-management",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:chaos-engineering",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:data-privacy",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:gdpr",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:differential-privacy",
+    "target": "domain:security",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:design-systems",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:usability-testing",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:wcag",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ab-testing",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:product-analytics",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:service-workers",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:core-web-vitals",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:internationalization",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:tokenization",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:ai-agents",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:low-rank-adaptation",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:data-lakehouse",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:sentry",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:jaeger",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:opentofu",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:cloudflare-workers",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:netlify",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:amazon-s3",
+    "target": "domain:cloud-devops",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:apache-parquet",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:apache-iceberg",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:delta-lake",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:bigquery",
+    "target": "domain:databases",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:figma",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:posthog",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:google-analytics",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:htmx",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:indexeddb",
+    "target": "domain:frontend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:webxr",
+    "target": "domain:gamedev",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:openxr",
+    "target": "domain:gamedev",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:model-context-protocol",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:github-copilot",
+    "target": "domain:testing-tooling",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:language-server-protocol",
+    "target": "domain:testing-tooling",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:neovim",
+    "target": "domain:testing-tooling",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:erlang",
+    "target": "domain:backend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:ocaml",
+    "target": "domain:software-engineering",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:julia",
+    "target": "domain:ai-ml",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:stripe",
+    "target": "domain:backend",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:real-time-graphics",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:opengl",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:vulkan",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:webgpu",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:directx",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:metal",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "technology:blender",
+    "target": "domain:computer-graphics",
+    "relationship_type": "belongs_to_domain"
+  },
+  {
+    "source": "concept:rasterization",
+    "target": "concept:rendering-pipeline",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:rasterization",
+    "target": "concept:ray-tracing",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:texture-mapping",
+    "target": "concept:shaders",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:physically-based-rendering",
+    "target": "concept:shaders",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:global-illumination",
+    "target": "concept:ray-tracing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:polygon-mesh",
+    "target": "concept:rasterization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:polygon-mesh",
+    "target": "concept:computational-geometry",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:blender",
+    "target": "concept:polygon-mesh",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:blender",
+    "target": "concept:physically-based-rendering",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:blender",
+    "target": "technology:godot",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:blender",
+    "target": "technology:unity",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:opengl",
+    "target": "concept:rasterization",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:vulkan",
+    "target": "concept:rasterization",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:unreal-engine",
+    "target": "concept:physically-based-rendering",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:real-time-graphics",
+    "target": "concept:rasterization",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:html",
+    "target": "technology:css",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:html",
+    "target": "technology:javascript",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:html",
+    "target": "concept:dom",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:jquery",
+    "target": "technology:javascript",
+    "relationship_type": "written_in"
+  },
+  {
+    "source": "technology:jquery",
+    "target": "concept:dom",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:elixir",
+    "target": "technology:erlang",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:elixir",
+    "target": "concept:concurrency",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:android-sdk",
+    "target": "technology:kotlin",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:android-sdk",
+    "target": "technology:android-studio",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:android-sdk",
+    "target": "concept:mobile-app-lifecycle",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:perl",
+    "target": "technology:python",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:perl",
+    "target": "technology:linux",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:packer",
+    "target": "technology:terraform",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:packer",
+    "target": "concept:infrastructure-as-code",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:nixos",
+    "target": "technology:linux",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:nixos",
+    "target": "concept:package-management",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:x86-64",
+    "target": "concept:isa",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:x86-64",
+    "target": "technology:arm",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "technology:verilog",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "technology:vhdl",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:fpga",
+    "target": "concept:asic",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:progressive-web-app",
+    "target": "concept:service-workers",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:progressive-web-app",
+    "target": "concept:single-page-application",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dom",
+    "target": "concept:virtual-dom",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:javascript",
+    "target": "concept:dom",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:css-in-js",
+    "target": "technology:css",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:css-in-js",
+    "target": "concept:component-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:session-management",
+    "target": "concept:authentication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:session-management",
+    "target": "concept:jwt",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:rate-limiting",
+    "target": "concept:api-gateway",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:nginx",
+    "target": "concept:rate-limiting",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:webhooks",
+    "target": "concept:http",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:webhooks",
+    "target": "concept:event-driven-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:oltp",
+    "target": "concept:olap",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:oltp",
+    "target": "concept:relational-databases",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cap-theorem",
+    "target": "concept:distributed-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cap-theorem",
+    "target": "concept:replication",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:overfitting",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:overfitting",
+    "target": "concept:neural-networks",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:feature-engineering",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:scikit-learn",
+    "target": "concept:feature-engineering",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:recommender-systems",
+    "target": "concept:vector-embeddings",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:recommender-systems",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:blue-green-deployment",
+    "target": "concept:ci-cd",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:blue-green-deployment",
+    "target": "concept:canary-deployment",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:canary-deployment",
+    "target": "concept:ci-cd",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:istio",
+    "target": "concept:canary-deployment",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:sql-injection",
+    "target": "concept:sql",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:owasp-zap",
+    "target": "concept:sql-injection",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:mobile-app-lifecycle",
+    "target": "concept:push-notifications",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:firebase",
+    "target": "concept:push-notifications",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:garbage-collection",
+    "target": "concept:memory-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:java",
+    "target": "concept:garbage-collection",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:go",
+    "target": "concept:garbage-collection",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:code-review",
+    "target": "concept:version-control",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:github",
+    "target": "concept:code-review",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:recursion",
+    "target": "concept:divide-and-conquer",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:recursion",
+    "target": "concept:dynamic-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:refactoring",
+    "target": "concept:clean-code",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:technical-debt",
+    "target": "concept:refactoring",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:idempotency",
+    "target": "concept:rest-api",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:idempotency",
+    "target": "concept:distributed-transaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:monorepo",
+    "target": "concept:version-control",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:monorepo",
+    "target": "concept:package-management",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:agile",
+    "target": "concept:ci-cd",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:agile",
+    "target": "concept:test-driven-development",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multiprocessor-architecture",
+    "target": "concept:parallel-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:multiprocessor-architecture",
+    "target": "concept:memory-consistency",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:i2c",
+    "target": "concept:spi",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:i2c",
+    "target": "concept:microcontroller",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:can-bus",
+    "target": "concept:embedded-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:can-bus",
+    "target": "concept:industrial-iot",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dns",
+    "target": "concept:http",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:dns",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:cloudflare",
+    "target": "concept:dns",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:packet-switching",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:packet-switching",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sdn",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:sdn",
+    "target": "concept:switching",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:type-theory",
+    "target": "concept:functional-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:coq",
+    "target": "concept:type-theory",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:lean",
+    "target": "concept:type-theory",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:computational-geometry",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:computational-geometry",
+    "target": "concept:motion-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bioinformatics",
+    "target": "concept:dynamic-programming",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bioinformatics",
+    "target": "concept:algorithms",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:https",
+    "target": "concept:http",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "concept:https",
+    "target": "concept:tls",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:let-s-encrypt",
+    "target": "concept:https",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:bgp",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wi-fi",
+    "target": "concept:tcp-ip",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bluetooth",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:bluetooth",
+    "target": "concept:zigbee",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:esp32",
+    "target": "concept:wi-fi",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:esp32",
+    "target": "concept:bluetooth",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:cellular-5g",
+    "target": "concept:edge-computing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:cellular-5g",
+    "target": "concept:internet-of-things",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:nat",
+    "target": "concept:ipv4",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:nat",
+    "target": "concept:routing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:site-reliability-engineering",
+    "target": "concept:observability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:site-reliability-engineering",
+    "target": "concept:high-availability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:site-reliability-engineering",
+    "target": "concept:service-level-objectives",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:service-level-objectives",
+    "target": "concept:observability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:incident-management",
+    "target": "concept:site-reliability-engineering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:incident-management",
+    "target": "concept:observability",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:chaos-engineering",
+    "target": "concept:fault-tolerance",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:chaos-engineering",
+    "target": "concept:site-reliability-engineering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:sentry",
+    "target": "concept:observability",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:sentry",
+    "target": "concept:incident-management",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:sentry",
+    "target": "technology:datadog",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:jaeger",
+    "target": "concept:distributed-tracing",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:jaeger",
+    "target": "technology:opentelemetry",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:prometheus",
+    "target": "concept:service-level-objectives",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:grafana",
+    "target": "concept:service-level-objectives",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:opentofu",
+    "target": "technology:terraform",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:opentofu",
+    "target": "concept:infrastructure-as-code",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:cloudflare-workers",
+    "target": "concept:serverless",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:cloudflare-workers",
+    "target": "concept:edge-computing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:cloudflare-workers",
+    "target": "technology:cloudflare",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:cloudflare-workers",
+    "target": "technology:aws-lambda",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:netlify",
+    "target": "technology:vercel",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:netlify",
+    "target": "concept:static-site-generation",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:amazon-s3",
+    "target": "technology:aws",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:amazon-s3",
+    "target": "concept:data-lake",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:minio",
+    "target": "technology:amazon-s3",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:data-privacy",
+    "target": "concept:encryption",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:gdpr",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:differential-privacy",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:differential-privacy",
+    "target": "concept:supervised-learning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:homomorphic-encryption",
+    "target": "concept:data-privacy",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:design-systems",
+    "target": "concept:component-architecture",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:design-systems",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:storybook",
+    "target": "concept:design-systems",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:mui",
+    "target": "concept:design-systems",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "concept:usability-testing",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:usability-testing",
+    "target": "concept:human-computer-interaction",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:wcag",
+    "target": "concept:accessibility",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:figma",
+    "target": "concept:design-systems",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:figma",
+    "target": "concept:interaction-design",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "concept:ab-testing",
+    "target": "concept:product-analytics",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ab-testing",
+    "target": "concept:bayesian-inference",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:product-analytics",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:posthog",
+    "target": "concept:product-analytics",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:posthog",
+    "target": "concept:ab-testing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:google-analytics",
+    "target": "concept:product-analytics",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:posthog",
+    "target": "technology:google-analytics",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "concept:service-workers",
+    "target": "concept:push-notifications",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:indexeddb",
+    "target": "technology:javascript",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:indexeddb",
+    "target": "concept:progressive-web-app",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:core-web-vitals",
+    "target": "concept:server-side-rendering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:core-web-vitals",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:internationalization",
+    "target": "concept:user-experience",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:htmx",
+    "target": "technology:react",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:htmx",
+    "target": "technology:html",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:htmx",
+    "target": "concept:server-side-rendering",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:webxr",
+    "target": "concept:virtual-reality",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:webxr",
+    "target": "concept:augmented-reality",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:webxr",
+    "target": "technology:threejs",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:openxr",
+    "target": "concept:virtual-reality",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:openxr",
+    "target": "concept:augmented-reality",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:unity",
+    "target": "technology:openxr",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:unreal-engine",
+    "target": "technology:openxr",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "concept:tokenization",
+    "target": "concept:large-language-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:tokenization",
+    "target": "concept:natural-language-processing",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:huggingface-transformers",
+    "target": "concept:tokenization",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "concept:ai-agents",
+    "target": "concept:large-language-models",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ai-agents",
+    "target": "concept:multi-agent-systems",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:ai-agents",
+    "target": "concept:ai-planning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:langchain",
+    "target": "concept:ai-agents",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:model-context-protocol",
+    "target": "concept:ai-agents",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:model-context-protocol",
+    "target": "concept:rpc",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:low-rank-adaptation",
+    "target": "concept:fine-tuning",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:huggingface-transformers",
+    "target": "concept:low-rank-adaptation",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:github-copilot",
+    "target": "concept:large-language-models",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:github-copilot",
+    "target": "technology:vscode",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:github-copilot",
+    "target": "technology:github",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "concept:data-lakehouse",
+    "target": "concept:data-lake",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "concept:data-lakehouse",
+    "target": "concept:data-warehouse",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:apache-parquet",
+    "target": "concept:olap",
+    "relationship_type": "used_for"
+  },
+  {
+    "source": "technology:apache-parquet",
+    "target": "technology:spark",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:duckdb",
+    "target": "technology:apache-parquet",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:apache-iceberg",
+    "target": "concept:data-lakehouse",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:apache-iceberg",
+    "target": "technology:apache-parquet",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:delta-lake",
+    "target": "concept:data-lakehouse",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:delta-lake",
+    "target": "technology:apache-iceberg",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:delta-lake",
+    "target": "technology:spark",
+    "relationship_type": "commonly_used_with"
+  },
+  {
+    "source": "technology:bigquery",
+    "target": "concept:data-warehouse",
+    "relationship_type": "implements"
+  },
+  {
+    "source": "technology:bigquery",
+    "target": "technology:snowflake",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:bigquery",
+    "target": "technology:gcp",
+    "relationship_type": "part_of_ecosystem"
+  },
+  {
+    "source": "technology:language-server-protocol",
+    "target": "concept:static-analysis",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:vscode",
+    "target": "technology:language-server-protocol",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:neovim",
+    "target": "technology:language-server-protocol",
+    "relationship_type": "integrates_with"
+  },
+  {
+    "source": "technology:neovim",
+    "target": "technology:c",
+    "relationship_type": "written_in"
+  },
+  {
+    "source": "technology:neovim",
+    "target": "technology:vscode",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:erlang",
+    "target": "concept:concurrency",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:erlang",
+    "target": "concept:fault-tolerance",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:erlang",
+    "target": "concept:message-passing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:ocaml",
+    "target": "concept:functional-programming",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:ocaml",
+    "target": "technology:haskell",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:julia",
+    "target": "concept:scientific-computing",
+    "relationship_type": "supports"
+  },
+  {
+    "source": "technology:julia",
+    "target": "technology:python",
+    "relationship_type": "alternative_to"
+  },
+  {
+    "source": "technology:julia",
+    "target": "technology:llvm",
+    "relationship_type": "built_on"
+  },
+  {
+    "source": "technology:stripe",
+    "target": "concept:rest-api",
+    "relationship_type": "related_to"
+  },
+  {
+    "source": "technology:stripe",
+    "target": "concept:webhooks",
+    "relationship_type": "related_to"
   }
 ]

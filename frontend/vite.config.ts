@@ -14,6 +14,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    // Guided paths are imported from ../data/seed/journeys.json.
+    fs: { allow: [".."] },
     proxy: process.env.VITE_STATIC_API === "true" ? undefined : {
       "/api": {
         target: process.env.TECHATLAS_API ?? "http://localhost:8000",

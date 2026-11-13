@@ -12,6 +12,9 @@ Enforces (spec §16 and docs/relationship-taxonomy.md):
   - unique normalized aliases (warn-level, since collisions can be legitimate)
   - reports inferred (is_curated=false) edges so they are never silently trusted
   - reports orphan nodes (no edges) as a warning
+  - errors on nodes whose only edge is belongs_to_domain (they float without context)
+  - guided paths (data/seed/journeys.json): every step exists, consecutive steps share
+    an edge, no step repeats, titles are unique
 
 With --require-targets, ALSO enforces the Phase 1B milestone counts (>= 250
 technologies and 150..170 concepts). Off by default so intermediate commits during
@@ -29,6 +32,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
+JOURNEYS = ROOT / "data" / "seed" / "journeys.json"
 
 # Dataset milestone targets. Checked only when --require-targets is passed, so
 # intermediate commits are not blocked.
@@ -38,9 +42,10 @@ DATASET = ROOT / "data" / "graph.json"
 #    so the ceiling is raised to a bounded 340 to keep guarding against runaway inflation
 #    while admitting the planned expansion. Node count is still curation-gated, not a target.
 #  - Phase 1F (Quantum, Blockchain & Web3, IoT domains) raises the ceiling to 380.
+#  - Phase 1G (review gaps: SRE, privacy, UX, analytics, graphics, networks) raises it to 420.
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
-MAX_CONCEPTS = 380
+MAX_CONCEPTS = 420
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 
@@ -219,12 +224,20 @@ def validate(dataset: dict) -> Report:
         degree[src] += 1
         degree[tgt] += 1
 
+    typed: dict[str, int] = defaultdict(int)
+    for edge in edges:
+        if edge.get("relationship_type") != "belongs_to_domain":
+            typed[edge.get("source")] += 1
+            typed[edge.get("target")] += 1
+
     for node in nodes:
         nid = node["id"]
         if node["node_type"] == "domain":
             continue  # domains anchored structurally; low-degree is fine
         if degree.get(nid, 0) == 0:
             report.warn(f"Orphan node (no edges): {nid}")
+        elif typed.get(nid, 0) == 0:
+            report.error(f"Node has no typed relationship (only belongs_to_domain): {nid}")
 
     # summary line counts
     counts = defaultdict(int)
@@ -242,6 +255,34 @@ def validate(dataset: dict) -> Report:
     print()
 
     return report
+
+
+def validate_journeys(dataset: dict, journeys: list[dict], report: Report) -> None:
+    ids = {n["id"] for n in dataset.get("nodes", [])}
+    pairs = {frozenset((e["source"], e["target"])) for e in dataset.get("edges", [])}
+    titles: set[str] = set()
+    for j in journeys:
+        title = j.get("title", "")
+        if not title:
+            report.error(f"Guided path without a title: {j!r}")
+        elif title in titles:
+            report.error(f"Duplicate guided path title: {title}")
+        titles.add(title)
+        steps = [s.get("id") for s in j.get("steps", [])]
+        if len(steps) < 2:
+            report.error(f"Guided path '{title}' needs at least two steps")
+        if len(set(steps)) != len(steps):
+            report.error(f"Guided path '{title}' visits a node twice")
+        for sid in steps:
+            if sid not in ids:
+                report.error(f"Guided path '{title}' step does not exist: {sid}")
+        for a, b in zip(steps, steps[1:], strict=False):
+            if a in ids and b in ids and frozenset((a, b)) not in pairs:
+                report.error(f"Guided path '{title}': no edge between {a} and {b}")
+        for s in j.get("steps", []):
+            if not s.get("caption"):
+                report.error(f"Guided path '{title}' step {s.get('id')} has no caption")
+    print(f"  guided paths: {len(journeys)}")
 
 
 def main() -> None:
@@ -263,6 +304,8 @@ def main() -> None:
 
     dataset = json.loads(DATASET.read_text(encoding="utf-8"))
     report = validate(dataset)
+    if JOURNEYS.exists():
+        validate_journeys(dataset, json.loads(JOURNEYS.read_text(encoding="utf-8")), report)
 
     if args.require_targets:
         counts: dict[str, int] = defaultdict(int)
