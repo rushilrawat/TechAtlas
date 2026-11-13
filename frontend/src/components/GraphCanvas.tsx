@@ -379,7 +379,10 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     const w = Math.min(maxW, text + 2);
     const bh = Math.ceil(text / maxW + 0.05) * lineH + (phone ? 2 : 4);
     let best: { score: number; box: Box; foreign: number } | null = null;
-    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45, 1.7, 2] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+    // Second pass only if the strict "nearest to its own cluster" rule left no spot at all.
+    for (const strict of [true, false]) {
+    if (best) break;
+    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45, 1.7, 2] : [0.7, 0.85, 0.95, 1.05, 1.2]) {
       for (let k = 0; k < 24; k++) {
         const a = -Math.PI / 2 + (k * Math.PI) / 12; // start straight above
         const dx = Math.cos(a), dy = Math.sin(a);
@@ -388,7 +391,7 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
-        if (phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
+        if (strict && phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
         const { nodes, curves, own, ownNodes } = obstacles.count(box, h.id);
         // Ring compositions read best with names on the outer rim; maps prefer above.
         const outward = ringLike ? Math.hypot(px - vw / 2, py - vh / 2) < Math.hypot(cx - vw / 2, cy - vh / 2) ? 2 : 0 : 0;
@@ -399,12 +402,22 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         // own cluster; it may not sit nearer (by rim distance) to any other ecosystem.
         const bx = box.x + w / 2, by = box.y + bh / 2;
         const ownGap = Math.hypot(bx - cx, by - cy) - r;
-        if (phone && headings.some((o) => o.id !== h.id && o.disc &&
-          Math.hypot(bx - o.disc.x, by - o.disc.y) - o.disc.r < ownGap - 2)) continue;
+        // A name must read as belonging to its own cluster: it may never sit nearer (by rim
+        // distance, measured from the label's closest edge) to any other ecosystem.
+        const near = (d: { x: number; y: number; r: number }) =>
+          Math.hypot(Math.max(box.x, Math.min(d.x, box.x + w)) - d.x, Math.max(box.y, Math.min(d.y, box.y + bh)) - d.y) - d.r;
+        const ownNear = near(h.disc);
+        if (strict && headings.some((o) => o.id !== h.id && o.disc && (phone
+          ? Math.hypot(bx - o.disc.x, by - o.disc.y) - o.disc.r < ownGap - 2
+          : near(o.disc) < ownNear + 12))) continue;
         // On phones clusters are tiny, so a name on its own nodes hides the cluster itself.
-        const score = nodes * 14 + curves * 9 + ownNodes * (phone ? 12 : 4) + own * 0.6 + reach * 3 + below + outward;
+        // Desktop: names hug their cluster, centred above or below it where there is room.
+        const side = phone ? 0 : Math.abs(dx) * 1.5;
+        const score = nodes * 14 + curves * 9 + ownNodes * (phone ? 12 : 4) + own * 0.6 + reach * 3 + below + outward
+          + side + (phone ? 0 : Math.max(0, ownNear) * 0.12);
         if (!best || score < best.score - 1e-9) best = { score, box, foreign: nodes + curves + ownNodes };
       }
+    }
     }
     if (best) {
       foreign.set(h.id, best.foreign);
@@ -454,6 +467,8 @@ export function GraphCanvas({
   const journeyNodesRef = useRef(new Set(journeyNodeIds));
   const journeyEdgesRef = useRef(new Set(journeyEdgeIds));
   const hoveredRef = useRef<string | null>(null);
+  // Members of a hovered domain, so hovering a field's main dot previews its whole network.
+  const hoverDomainSetRef = useRef<Set<string> | null>(null);
   const [hoverPreview, setHoverPreview] = useState<{ id: string; x: number; y: number; description: string } | null>(null);
   const descriptionsRef = useRef(new Map<string, string>());
   const pendingDescriptionsRef = useRef(new Set<string>());
@@ -503,7 +518,7 @@ export function GraphCanvas({
     sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
     headings: Heading[];
   }>({ sectors: [], headings: [] });
-  const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number }> | null>(null);
+  const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number; hr: number }> | null>(null);
   const domainsRef = useRef(domains);
   domainsRef.current = domains;
 
@@ -824,25 +839,39 @@ export function GraphCanvas({
         : withAlpha(tint, tier === "TierA" ? 0.65 : tier === "TierB" ? 0.58 : 0.22);
       const quietSize = tier === "TierA" ? 1.1 : tier === "TierD" ? 0.6 : cross ? 0.8 : 1;
       if (!active) {
-        return zoomVisible ? { ...dataIn, color: quiet, size: quietSize, zIndex: cross ? 0 : 1 }
+        // Long cross-domain arcs only appear for a hovered or tapped node; at rest the
+        // map shows each field's own structure without lines slicing across it.
+        return zoomVisible && !cross ? { ...dataIn, color: quiet, size: quietSize, zIndex: 1 }
           : { ...dataIn, hidden: true };
+      }
+      // With something selected, hovering another node still previews all of its links.
+      const hovered = hoveredRef.current;
+      const hoverSet = hoverDomainSetRef.current;
+      if (hovered && hovered !== active && (source === hovered || target === hovered
+        || (!!hoverSet && hoverSet.has(source) && hoverSet.has(target)))) {
+        return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.75), size: 1.1, zIndex: 2 };
       }
       const set = neighborSetRef.current;
       const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
       const related = domainFocus
-        ? !!set && set.has(source) && set.has(target) && (zoomVisible || source === active || target === active)
+        // A clicked or hovered field shows its whole internal network, every edge among its members.
+        ? !!set && ((set.has(source) && set.has(target))
+          // A tapped field also reveals its backbone links out to other fields.
+          || (cross && backbone && (set.has(source) || set.has(target))))
         : source === active || target === active;
       if (related) {
         return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.85),
           size: domainFocus ? 0.9 : 1.3, zIndex: 3 };
       }
       // Unrelated relationships stay as the faintest context while something is focused.
-      return zoomVisible ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
+      return zoomVisible && !cross ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
         : { ...dataIn, hidden: true };
     });
 
     renderer.on("enterNode", ({ node, event }) => {
       hoveredRef.current = node;
+      hoverDomainSetRef.current = graph.getNodeAttribute(node, "nodeType") === "domain"
+        ? new Set<string>([node, ...domainMemberIds(graph, node)]) : null;
       if (window.matchMedia("(hover: hover)").matches && "clientX" in event.original) {
         const bounds = containerRef.current?.getBoundingClientRect();
         const x = Math.min(event.original.clientX - (bounds?.left ?? 0) + 18, (bounds?.width ?? 0) - 250);
@@ -862,6 +891,7 @@ export function GraphCanvas({
     });
     renderer.on("leaveNode", () => {
       hoveredRef.current = null;
+      hoverDomainSetRef.current = null;
       setHoverPreview(null);
       scheduleRefresh();
       if (containerRef.current) containerRef.current.style.cursor = "default";
@@ -1349,7 +1379,7 @@ export function GraphCanvas({
     if (!doms || doms.length === 0) { setBackdrop({ sectors: [], headings: [] }); return; }
     const topLevel = doms.filter((d) => graph.hasNode(d.id) && graph.getNodeAttribute(d.id, "ring") === 0);
     if (!domainGeomRef.current) {
-      const geom = new Map<string, { gx: number; gy: number; gr: number }>();
+      const geom = new Map<string, { gx: number; gy: number; gr: number; hr: number }>();
       for (const d of topLevel) {
         const gx = graph.getNodeAttribute(d.id, "x") as number;
         const gy = graph.getNodeAttribute(d.id, "y") as number;
@@ -1359,13 +1389,23 @@ export function GraphCanvas({
             if (attrs.relationshipType === "has_subdomain") owned.add(t);
           });
         }
-        let maxd = 0;
+        // Radius of the cluster's visible body: the 90th percentile member distance, so a
+        // lone outlier does not push the heading (and the backplate) far from the cluster.
+        const dists: number[] = [], own: number[] = [];
         graph.forEachNode((id, a) => {
           if (owned.has(a.cluster as string) || id === d.id) {
-            maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number));
+            const dist = Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number);
+            dists.push(dist);
+            if (a.cluster === d.id || id === d.id) own.push(dist);
           }
         });
-        geom.set(d.id, { gx, gy, gr: maxd });
+        const p90 = (xs: number[]) => {
+          xs.sort((a, b) => a - b);
+          return xs.length ? xs[Math.min(xs.length - 1, Math.floor(xs.length * 0.9))] : 0;
+        };
+        // The heading hugs the domain's own lobe; nested subdomain constellations (e.g.
+        // Graphics inside Game Development) only widen the backplate, not the label ring.
+        geom.set(d.id, { gx, gy, gr: p90(dists), hr: p90(own) || p90(dists) });
       }
       domainGeomRef.current = geom;
     }
@@ -1390,7 +1430,7 @@ export function GraphCanvas({
         sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
         if (vis && !vis.has(d.id)) continue;
         headings.push({ id: d.id, label: d.name, color: d.color, left: c.x, top: c.y, align: "box",
-          disc: { x: c.x, y: c.y, r } });
+          disc: { x: c.x, y: c.y, r: r * (g.hr / (g.gr || 1)) } });
       }
       // What a heading must not cover: every drawn node and the curves currently shown.
       const obstacles = new Obstacles();

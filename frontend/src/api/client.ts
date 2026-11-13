@@ -10,10 +10,12 @@
 // Mode is chosen at build time via VITE_STATIC_API ("true" => static). import.meta.env.BASE_URL
 // is respected so it works under a GitHub Pages sub-path (e.g. /TechAtlas/).
 
+import { rankMatch } from "./searchRank";
 import type {
   DomainSummary,
   GraphResponse,
   NodeDetail,
+  NodeSummary,
   SearchResult,
 } from "./types";
 
@@ -42,6 +44,7 @@ interface SearchIndexEntry {
   node_subtype: string | null;
   primary_domain: string;
   aliases: string[];
+  short_description?: string | null;
 }
 
 let searchIndexPromise: Promise<SearchIndexEntry[]> | null = null;
@@ -57,20 +60,6 @@ function loadSearchIndex(signal?: AbortSignal): Promise<SearchIndexEntry[]> {
     });
   }
   return searchIndexPromise;
-}
-
-function rankMatch(
-  entry: SearchIndexEntry,
-  q: string,
-): { rank: number; matched: SearchResult["matched_on"] } | null {
-  const name = entry.name.toLowerCase();
-  const aliases = entry.aliases.map((a) => a.toLowerCase());
-  if (name === q || aliases.includes(q)) return { rank: 0, matched: name === q ? "name" : "alias" };
-  if (name.startsWith(q)) return { rank: 1, matched: "name" };
-  if (aliases.some((a) => a.startsWith(q))) return { rank: 2, matched: "alias" };
-  if (name.includes(q)) return { rank: 3, matched: "substring" };
-  if (aliases.some((a) => a.includes(q))) return { rank: 4, matched: "alias" };
-  return null;
 }
 
 async function staticSearch(
@@ -101,6 +90,56 @@ async function staticSearch(
   }
   scored.sort((a, b) => a.rank - b.rank || a.res.name.localeCompare(b.res.name));
   return scored.slice(0, limit).map((s) => s.res);
+}
+
+// ---- Wikipedia summaries (browser-side) -----------------------------------
+// The static build has no backend to proxy Wikipedia, but the Wikipedia REST API sends
+// CORS headers, so the panel can fetch a summary directly by the node's curated title.
+// Results (including "no summary") are cached per tab in sessionStorage.
+
+const WIKI_CACHE_PREFIX = "techatlas-wiki:";
+
+interface WikiSummaryResponse {
+  type?: string;
+  extract?: string;
+  lang?: string;
+  content_urls?: { desktop?: { page?: string } };
+}
+
+export async function fetchWikipediaSummary(
+  title: string,
+  signal?: AbortSignal,
+): Promise<NodeSummary | null> {
+  const key = WIKI_CACHE_PREFIX + title;
+  try {
+    const cached = window.sessionStorage.getItem(key);
+    if (cached !== null) return cached ? (JSON.parse(cached) as NodeSummary) : null;
+  } catch {
+    /* storage unavailable: just fetch */
+  }
+  const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, "_"))}`;
+  let summary: NodeSummary | null = null;
+  const res = await fetch(url, { signal, headers: { Accept: "application/json" } });
+  if (res.ok) {
+    const body = (await res.json()) as WikiSummaryResponse;
+    if (body.extract && body.type !== "disambiguation") {
+      summary = {
+        extract: body.extract,
+        source_url: body.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`,
+        lang: body.lang ?? "en",
+        fetched_at: new Date().toISOString(),
+        license: "CC BY-SA 4.0",
+      };
+    }
+  } else if (res.status >= 500) {
+    throw new Error(`Wikipedia unavailable (${res.status})`); // transient: don't cache
+  }
+  try {
+    window.sessionStorage.setItem(key, summary ? JSON.stringify(summary) : "");
+  } catch {
+    /* ignore quota / privacy-mode errors */
+  }
+  return summary;
 }
 
 // ---- public API -------------------------------------------------------------

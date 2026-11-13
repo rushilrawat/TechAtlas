@@ -2,7 +2,12 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   data:
@@ -19,6 +24,10 @@ jobs:
         run: python scripts/validate_dataset.py --require-targets
       - name: Generate layout
         run: python scripts/generate_layout.py
+      # The backend Docker image serves the COMMITTED graph.json, so it must match what
+      # the seed data builds. (layout.json is excluded: float tie-breaks differ by platform.)
+      - name: Committed graph.json is up to date
+        run: git diff --exit-code -- data/graph.json
 
   backend:
     name: Backend tests & lint
@@ -33,9 +42,10 @@ jobs:
           python scripts/build_dataset.py
           python scripts/validate_dataset.py
           python scripts/generate_layout.py
-      - name: Install backend
+      - name: Install backend (pinned runtime deps, same as the Docker image)
         working-directory: backend
         run: |
+          pip install -r requirements.lock
           pip install -e ".[dev]"
       - name: Lint
         working-directory: backend
@@ -43,6 +53,23 @@ jobs:
       - name: Test
         working-directory: backend
         run: pytest -q
+
+  docker:
+    name: Backend Docker image builds and serves /health
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -f backend/Dockerfile -t techatlas-backend .
+      - name: Smoke test /health
+        run: |
+          docker run -d --name api -p 8000:8000 techatlas-backend
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8000/health; then exit 0; fi
+            sleep 1
+          done
+          docker logs api
+          exit 1
 
   frontend:
     name: Frontend typecheck, test, build
@@ -70,6 +97,9 @@ jobs:
       - name: Build
         working-directory: frontend
         run: npm run build
+      - name: Bundle size budget
+        working-directory: frontend
+        run: npm run size
 
       # Repo X-Ray browser e2e (Phase 1.5B): build a SCANNER-ENABLED static bundle and
       # run the Playwright flow against mocked scanner responses. Also needs the static

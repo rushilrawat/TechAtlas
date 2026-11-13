@@ -10,6 +10,7 @@ replace it later without changing the API layer.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from collections import defaultdict
 from functools import lru_cache
@@ -319,37 +320,97 @@ class GraphService:
             return []
         results: list[tuple[int, SearchResult]] = []
         for node in self._raw_nodes.values():
-            name = node["name"].lower()
-            aliases = [a.lower() for a in node.get("aliases", [])]
-            rank: int | None = None
-            matched = ""
-            if name == q or q in aliases:
-                rank, matched = 0, "name" if name == q else "alias"
-            elif name.startswith(q):
-                rank, matched = 1, "name"
-            elif any(a.startswith(q) for a in aliases):
-                rank, matched = 2, "alias"
-            elif q in name:
-                rank, matched = 3, "substring"
-            elif any(q in a for a in aliases):
-                rank, matched = 4, "alias"
-            if rank is not None:
-                results.append(
-                    (
-                        rank,
-                        SearchResult(
-                            id=node["id"],
-                            slug=node["slug"],
-                            name=node["name"],
-                            node_type=node["node_type"],
-                            node_subtype=node.get("node_subtype"),
-                            primary_domain=node["primary_domain"],
-                            matched_on=matched,
-                        ),
-                    )
+            match = rank_match(
+                node["name"], node.get("aliases", []), node.get("short_description"), q
+            )
+            if match is None:
+                continue
+            rank, matched = match
+            results.append(
+                (
+                    rank,
+                    SearchResult(
+                        id=node["id"],
+                        slug=node["slug"],
+                        name=node["name"],
+                        node_type=node["node_type"],
+                        node_subtype=node.get("node_subtype"),
+                        primary_domain=node["primary_domain"],
+                        matched_on=matched,
+                    ),
                 )
+            )
         results.sort(key=lambda r: (r[0], r[1].name))
         return [r for _, r in results[:limit]]
+
+
+_WORD_SPLIT = re.compile(r"[\s/\-_.()&,+]+")
+
+
+def edit_distance(a: str, b: str, max_dist: int) -> int:
+    """Optimal-string-alignment distance; returns max_dist + 1 once it is exceeded."""
+    if abs(len(a) - len(b)) > max_dist:
+        return max_dist + 1
+    rows = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]
+    for i in range(len(a) + 1):
+        rows[i][0] = i
+    for j in range(len(b) + 1):
+        rows[0][j] = j
+    for i in range(1, len(a) + 1):
+        row_min = max_dist + 1
+        for j in range(1, len(b) + 1):
+            cost = 0 if a[i - 1] == b[j - 1] else 1
+            v = min(rows[i - 1][j] + 1, rows[i][j - 1] + 1, rows[i - 1][j - 1] + cost)
+            if i > 1 and j > 1 and a[i - 1] == b[j - 2] and a[i - 2] == b[j - 1]:
+                v = min(v, rows[i - 2][j - 2] + 1)
+            rows[i][j] = v
+            row_min = min(row_min, v)
+        if row_min > max_dist:
+            return max_dist + 1
+    return rows[len(a)][len(b)]
+
+
+def typo_budget(length: int) -> int:
+    if length < 4:
+        return 0
+    return 1 if length < 7 else 2
+
+
+def rank_match(
+    name: str, aliases: list[str], description: str | None, q: str
+) -> tuple[int, str] | None:
+    """Search tiers, mirrored by frontend/src/api/searchRank.ts (keep them in step)."""
+    name = name.lower()
+    aliases = [a.lower() for a in aliases]
+    if name == q:
+        return 0, "name"
+    if q in aliases:
+        return 0, "alias"
+    if name.startswith(q):
+        return 1, "name"
+    if any(a.startswith(q) for a in aliases):
+        return 2, "alias"
+    if q in name:
+        return 3, "substring"
+    if any(q in a for a in aliases):
+        return 4, "alias"
+    haystack = " ".join([name, *aliases])
+    tokens = [t for t in _WORD_SPLIT.split(q) if t]
+    if len(tokens) > 1 and all(t in haystack for t in tokens):
+        return 5, "words"
+    budget = typo_budget(len(q))
+    if budget:
+        candidates: list[str] = [name, *aliases]
+        for s in [name, *aliases]:
+            candidates.extend(w for w in _WORD_SPLIT.split(s) if len(w) >= 3)
+        for c in candidates:
+            if edit_distance(q, c, budget) <= budget:
+                return 6, "fuzzy"
+            if len(q) >= 5 and len(c) > len(q) and edit_distance(q, c[: len(q)], budget) <= budget:
+                return 6, "fuzzy"
+    if len(q) >= 3 and description and q in description.lower():
+        return 7, "description"
+    return None
 
 
 @lru_cache(maxsize=1)

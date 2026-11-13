@@ -36,3 +36,32 @@ export function writeCamera(search: string, camera: SharedCamera): string {
   params.set("zoom", camera.ratio.toFixed(4));
   return params.toString();
 }
+
+
+/** Guided path + step and the compare pair, so a shared link restores exactly that view.
+ *  Paths are addressed by a slug of their title, so reordering journeys.json keeps links. */
+export interface SharedView { path: number | null; step: number; compare: [string, string | null] | null }
+const NODE_ID = /^(technology|concept|domain):[a-z0-9-]+$/;
+export function pathSlug(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+export function readView(search: string, titles: string[]): SharedView {
+  const params = new URLSearchParams(search);
+  const wanted = params.get("path");
+  const index = wanted ? titles.findIndex((t) => pathSlug(t) === wanted) : -1;
+  const path = index >= 0 ? index : null;
+  const st = Number(params.get("step"));
+  const step = path !== null && Number.isInteger(st) && st >= 0 ? st : 0;
+  const pair = params.getAll("compare").filter((id) => NODE_ID.test(id)).slice(0, 2);
+  return { path, step, compare: pair.length ? [pair[0], pair[1] ?? null] : null };
+}
+export function writeView(search: string, view: SharedView, titles: string[]): string {
+  const params = new URLSearchParams(search);
+  for (const key of ["path", "step", "compare"]) params.delete(key);
+  if (view.path !== null && titles[view.path]) {
+    params.set("path", pathSlug(titles[view.path]));
+    if (view.step > 0) params.set("step", String(view.step));
+  }
+  if (view.compare) for (const id of view.compare) if (id) params.append("compare", id);
+  return params.toString();
+}

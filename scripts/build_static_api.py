@@ -84,6 +84,7 @@ def main() -> None:
             "node_subtype": n.get("node_subtype"),
             "primary_domain": n["primary_domain"],
             "aliases": n.get("aliases", []),
+            "short_description": n.get("short_description", ""),
         }
         for n in svc._raw_nodes.values()
     ]

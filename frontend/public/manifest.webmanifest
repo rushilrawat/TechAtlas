@@ -1,0 +1,10 @@
+{
+  "name": "TechAtlas",
+  "short_name": "TechAtlas",
+  "description": "One connected map of software engineering: domains, concepts, and technologies.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

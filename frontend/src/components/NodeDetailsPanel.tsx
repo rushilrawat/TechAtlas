@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../api/client";
-import type { DetectionStatus, NeighborEdge, NodeDetail, RepoScan } from "../api/types";
+import { api, fetchWikipediaSummary } from "../api/client";
+import type { DetectionStatus, NeighborEdge, NodeDetail, NodeSummary, RepoScan } from "../api/types";
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
 import { safeHttpUrl } from "../util/safeUrl";
+import { useLearningMap, type LearningStatus } from "../graph/learning";
 
 interface Props {
   slugOrId: string;
@@ -16,14 +17,21 @@ interface Props {
   // shown in the header so a single tap identifies the domain's name AND size. Null otherwise.
   memberCount?: number | null;
   onPreviewRelationship?: (neighbor: NeighborEdge | null) => void;
+  /** Open Compare with this node and another technology. */
+  onCompare?: (otherId: string) => void;
 }
 
+const LEARNING_OPTIONS: [LearningStatus, string][] = [["known", "Know it"], ["learning", "Learning"], ["goal", "Goal"]];
+
 /** Detail sidebar for a selected node. Loads rich data on demand (spec §6, §10). */
-export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null, onPreviewRelationship }: Props) {
+export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null, onPreviewRelationship, onCompare }: Props) {
   const [detail, setDetail] = useState<NodeDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [lockedNeighbor, setLockedNeighbor] = useState<NeighborEdge | null>(null);
+  const [wikiSummary, setWikiSummary] = useState<NodeSummary | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [learning, setLearning] = useLearningMap();
   const panelRef = useRef<HTMLElement | null>(null);
 
   // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
@@ -59,6 +67,26 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
     return () => controller.abort();
   }, [slugOrId]);
 
+  // No server-side summary (static build, or the backend could not reach Wikipedia):
+  // fetch it in the browser by the curated title.
+  useEffect(() => {
+    setWikiSummary(null);
+    if (!detail || detail.summary || !detail.wikipedia_title) return;
+    const controller = new AbortController();
+    fetchWikipediaSummary(detail.wikipedia_title, controller.signal)
+      .then(setWikiSummary)
+      .catch(() => { /* degrade to the outbound link */ });
+    return () => controller.abort();
+  }, [detail]);
+
+  const summary = detail?.summary ?? wikiSummary;
+  const alternatives = (detail?.neighbors ?? []).filter((n) => n.relationship_type === "alternative_to");
+  const status = detail ? learning[detail.id] : undefined;
+
+  function copyLink() {
+    const done = () => { setCopied(true); window.setTimeout(() => setCopied(false), 1600); };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(window.location.href).then(done, () => {});
+  }
   const grouped = groupNeighbors(detail?.neighbors ?? []);
 
   return (
@@ -94,15 +122,49 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
 
           <p className="details-desc">{detail.short_description}</p>
 
-          {detail.summary && (
+          <div className="details-tools">
+            {detail.node_type !== "domain" && (
+              <div className="learning-toggle" role="group" aria-label="Add to my learning map">
+                {LEARNING_OPTIONS.map(([value, label]) => (
+                  <button key={value} type="button" aria-pressed={status === value}
+                    onClick={() => setLearning(detail.id, status === value ? null : value)}>{label}</button>
+                ))}
+              </div>
+            )}
+            <button type="button" className="copy-link" onClick={copyLink} aria-live="polite">
+              {copied ? "Link copied" : "Copy link"}
+            </button>
+          </div>
+
+          {alternatives.length > 0 && (
+            <section className="details-alternatives" aria-label="Alternatives">
+              <h3>Alternatives</h3>
+              <ul>
+                {alternatives.map((a) => (
+                  <li key={a.node.id}>
+                    <button type="button" className="rel-link" onClick={() => onNavigate(a.node.id)}>
+                      <span className="rel-dot" style={{ background: a.node.color }} aria-hidden />
+                      {a.node.label}
+                    </button>
+                    {onCompare && detail.node_type === "technology" && a.node.node_type === "technology" && (
+                      <button type="button" className="alt-compare" onClick={() => onCompare(a.node.id)}
+                        aria-label={`Compare ${detail.name} with ${a.node.label}`}>Compare</button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {summary && (
             <section className="details-summary" aria-label="Wikipedia summary">
               {/* Rendered as plain text (React escapes it) — never as HTML. */}
-              <p>{detail.summary.extract}</p>
+              <p>{summary.extract}</p>
               <p className="summary-attribution">
                 Summary from{" "}
-                {safeHttpUrl(detail.summary.source_url) ? (
+                {safeHttpUrl(summary.source_url) ? (
                   <a
-                    href={safeHttpUrl(detail.summary.source_url) as string}
+                    href={safeHttpUrl(summary.source_url) as string}
                     target="_blank"
                     rel="noreferrer noopener"
                   >
@@ -111,7 +173,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                 ) : (
                   "Wikipedia"
                 )}{" "}
-                · {detail.summary.license}
+                · {summary.license}
               </p>
             </section>
           )}

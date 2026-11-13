@@ -14,7 +14,8 @@
     "e2e:xray": "playwright test -c playwright.xray.config.ts",
     "e2e:stackview": "playwright test -c playwright.stackview.config.ts",
     "e2e:overview": "playwright test -c playwright.overview.config.ts",
-    "build:xray-test": "VITE_BASE=/TechAtlas/ VITE_STATIC_API=true VITE_SCANNER_API=/api/v1 VITE_TEST_HOOKS=true vite build && rm -rf dist-xray-test && mv dist dist-xray-test"
+    "build:xray-test": "VITE_BASE=/TechAtlas/ VITE_STATIC_API=true VITE_SCANNER_API=/api/v1 VITE_TEST_HOOKS=true vite build && rm -rf dist-xray-test && mv dist dist-xray-test",
+    "size": "node scripts/check-bundle-size.mjs"
   },
   "dependencies": {
     "@sigma/edge-curve": "^3.1.0",

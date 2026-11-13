@@ -5,10 +5,12 @@ import type { NodeDetail } from "../api/types";
 
 // Mock the API client so the panel's on-demand fetch is deterministic and offline.
 const nodeMock = vi.fn();
+const wikiMock = vi.fn();
 vi.mock("../api/client", () => ({
   api: {
     node: (slug: string) => nodeMock(slug),
   },
+  fetchWikipediaSummary: (title: string) => wikiMock(title),
 }));
 
 const base: NodeDetail = {
@@ -63,6 +65,7 @@ describe("NodeDetailsPanel summary (Phase 1C)", () => {
 
   it("falls back to the outbound Wikipedia link when no summary is available", async () => {
     nodeMock.mockResolvedValue({ ...base, summary: null });
+    wikiMock.mockResolvedValue(null);
 
     render(<NodeDetailsPanel slugOrId="python" onClose={() => {}} onNavigate={() => {}} />);
 
@@ -72,6 +75,20 @@ describe("NodeDetailsPanel summary (Phase 1C)", () => {
     // but the outbound Wikipedia action link is still present
     const link = screen.getByRole("link", { name: /wikipedia/i });
     expect(link.getAttribute("href")).toContain("/wiki/Python");
+  });
+
+  it("fetches the summary in the browser when the API has none (static build)", async () => {
+    nodeMock.mockResolvedValue({ ...base, summary: null });
+    wikiMock.mockResolvedValue({
+      extract: "Python is a high-level language.",
+      source_url: "https://en.wikipedia.org/wiki/Python_(programming_language)",
+      lang: "en",
+      fetched_at: "2026-11-13T00:00:00Z",
+      license: "CC BY-SA 4.0",
+    });
+    render(<NodeDetailsPanel slugOrId="python" onClose={() => {}} onNavigate={() => {}} />);
+    await waitFor(() => expect(screen.getByText("Python is a high-level language.")).toBeTruthy());
+    expect(wikiMock).toHaveBeenCalledWith(base.wikipedia_title);
   });
 
   it("renders the extract as text, not HTML (no injection)", async () => {
