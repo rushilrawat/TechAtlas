@@ -278,5 +278,15 @@
     "node_type": "domain",
     "primary_domain": "domain:health-informatics",
     "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:offensive-security",
+    "slug": "offensive-security",
+    "name": "Ethical Hacking & Forensics",
+    "short_description": "Attacking systems with permission, and investigating them after a breach: recon, exploitation, red and blue teams, forensics and reverse engineering.",
+    "importance": 0.65,
+    "node_type": "domain",
+    "primary_domain": "domain:offensive-security",
+    "lifecycle_status": "active"
   }
 ]

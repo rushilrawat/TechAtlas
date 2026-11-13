@@ -2845,5 +2845,235 @@
         "caption": "Every brand works together."
       }
     ]
+  },
+  {
+    "title": "Becoming an ethical hacker",
+    "steps": [
+      {
+        "id": "technology:tryhackme",
+        "caption": "Start with guided, legal labs in the browser."
+      },
+      {
+        "id": "concept:capture-the-flag",
+        "caption": "CTFs turn skills into puzzles with a flag to find."
+      },
+      {
+        "id": "concept:ethical-hacking",
+        "caption": "Ethical hacking applies them with permission."
+      },
+      {
+        "id": "concept:penetration-testing",
+        "caption": "Penetration tests are the paid version for a client."
+      },
+      {
+        "id": "concept:red-teaming",
+        "caption": "Red teams simulate a full, stealthy adversary."
+      }
+    ]
+  },
+  {
+    "title": "Recon before the attack",
+    "steps": [
+      {
+        "id": "technology:maltego",
+        "caption": "Maltego graphs people, domains and infrastructure."
+      },
+      {
+        "id": "concept:osint",
+        "caption": "OSINT gathers what is already public."
+      },
+      {
+        "id": "concept:reconnaissance",
+        "caption": "Recon turns it into a map of the target."
+      },
+      {
+        "id": "concept:network-scanning",
+        "caption": "Scanning shows which hosts and ports are live."
+      },
+      {
+        "id": "technology:nmap",
+        "caption": "Nmap is the classic scanner."
+      }
+    ]
+  },
+  {
+    "title": "Hacking web apps",
+    "steps": [
+      {
+        "id": "concept:web-application-security",
+        "caption": "Web apps are the biggest attack surface."
+      },
+      {
+        "id": "concept:sql-injection",
+        "caption": "SQL injection is the classic flaw."
+      },
+      {
+        "id": "technology:sqlmap",
+        "caption": "sqlmap automates finding and exploiting it."
+      }
+    ]
+  },
+  {
+    "title": "From bug report to bounty",
+    "steps": [
+      {
+        "id": "technology:burp-suite",
+        "caption": "Burp Suite intercepts and replays web traffic."
+      },
+      {
+        "id": "concept:web-application-security",
+        "caption": "Hunt for flaws like IDOR and SSRF."
+      },
+      {
+        "id": "concept:bug-bounty",
+        "caption": "Bug bounty programs pay for valid reports."
+      },
+      {
+        "id": "concept:responsible-disclosure",
+        "caption": "Report privately so it can be fixed first."
+      },
+      {
+        "id": "concept:cve",
+        "caption": "Serious bugs get a CVE number."
+      }
+    ]
+  },
+  {
+    "title": "Cracking passwords",
+    "steps": [
+      {
+        "id": "concept:hashing",
+        "caption": "Systems store password hashes, not passwords."
+      },
+      {
+        "id": "concept:password-cracking",
+        "caption": "Cracking guesses until a hash matches."
+      },
+      {
+        "id": "concept:brute-force-attack",
+        "caption": "Brute force tries everything."
+      },
+      {
+        "id": "concept:mfa",
+        "caption": "MFA makes a cracked password not enough."
+      }
+    ]
+  },
+  {
+    "title": "Pwning a binary",
+    "steps": [
+      {
+        "id": "concept:reverse-engineering",
+        "caption": "Understand what the program does."
+      },
+      {
+        "id": "concept:exploit-development",
+        "caption": "Turn a bug into control of the program."
+      },
+      {
+        "id": "concept:binary-exploitation",
+        "caption": "Memory corruption is the usual way in."
+      },
+      {
+        "id": "concept:return-oriented-programming",
+        "caption": "ROP chains bypass non-executable memory."
+      }
+    ]
+  },
+  {
+    "title": "Inside a malware sample",
+    "steps": [
+      {
+        "id": "technology:virustotal",
+        "caption": "Check the file against dozens of scanners."
+      },
+      {
+        "id": "concept:malware-analysis",
+        "caption": "Then analyse it yourself."
+      },
+      {
+        "id": "concept:disassembly",
+        "caption": "Disassemble it to read the code."
+      },
+      {
+        "id": "concept:decompilation",
+        "caption": "Decompile it for readable logic."
+      },
+      {
+        "id": "technology:ghidra",
+        "caption": "Ghidra does both for free."
+      }
+    ]
+  },
+  {
+    "title": "Investigating a breach",
+    "steps": [
+      {
+        "id": "concept:intrusion-detection",
+        "caption": "An alert fires."
+      },
+      {
+        "id": "concept:endpoint-detection-and-response",
+        "caption": "EDR shows what happened on the machine."
+      },
+      {
+        "id": "concept:security-operations-center",
+        "caption": "The SOC triages it."
+      },
+      {
+        "id": "concept:incident-response",
+        "caption": "Incident response contains the damage."
+      },
+      {
+        "id": "concept:digital-forensics",
+        "caption": "Forensics reconstructs exactly what happened."
+      },
+      {
+        "id": "concept:memory-forensics",
+        "caption": "RAM shows what was running."
+      },
+      {
+        "id": "technology:volatility",
+        "caption": "Volatility is the tool for that."
+      }
+    ]
+  },
+  {
+    "title": "Red, blue and purple",
+    "steps": [
+      {
+        "id": "concept:red-teaming",
+        "caption": "Red teams attack."
+      },
+      {
+        "id": "concept:mitre-attack",
+        "caption": "ATT&CK names every technique they use."
+      },
+      {
+        "id": "concept:purple-teaming",
+        "caption": "Purple teaming pairs each attack with a detection."
+      },
+      {
+        "id": "concept:blue-teaming",
+        "caption": "Blue teams defend."
+      }
+    ]
+  },
+  {
+    "title": "Breaking into Wi-Fi",
+    "steps": [
+      {
+        "id": "concept:wi-fi",
+        "caption": "Wi-Fi broadcasts to anyone nearby."
+      },
+      {
+        "id": "concept:wireless-security",
+        "caption": "Wireless security covers handshakes and rogue access points."
+      },
+      {
+        "id": "technology:aircrack-ng",
+        "caption": "Aircrack-ng captures and cracks handshakes."
+      }
+    ]
   }
 ]
