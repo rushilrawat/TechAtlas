@@ -1,3 +1,4 @@
+/* global process, console */
 // Fails the build when the entry bundle grows past its budget (gzip bytes).
 // Run after `vite build`: node scripts/check-bundle-size.mjs
 import { readdirSync, readFileSync, statSync } from "node:fs";
