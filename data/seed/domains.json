@@ -102,10 +102,10 @@
   {
     "id": "domain:gamedev",
     "slug": "gamedev",
-    "name": "Game Development & Graphics",
+    "name": "Game Development",
     "node_type": "domain",
     "primary_domain": "domain:gamedev",
-    "short_description": "Game engines, real-time rendering, physics, and computer graphics.",
+    "short_description": "Building interactive games: engines, gameplay, physics and XR, on top of the graphics stack.",
     "importance": 0.75,
     "lifecycle_status": "mature"
   },

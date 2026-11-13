@@ -39,11 +39,11 @@ def test_concepts_at_low_bound_passes():
 
 
 def test_concepts_at_high_bound_passes():
-    assert vd.check_targets(_counts(technology=300, concept=380)) == []
+    assert vd.check_targets(_counts(technology=300, concept=vd.MAX_CONCEPTS)) == []
 
 
 def test_concepts_just_above_range_fails():
-    errors = vd.check_targets(_counts(technology=300, concept=381))
+    errors = vd.check_targets(_counts(technology=300, concept=vd.MAX_CONCEPTS + 1))
     assert any("concept" in e for e in errors)
 
 

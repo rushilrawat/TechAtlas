@@ -283,6 +283,7 @@ const SHORT_NAMES: Record<string, string> = {
   "domain:robotics": "Robotics", "domain:software-engineering": "Software Eng.",
   "domain:systems": "Systems", "domain:testing-tooling": "Testing & Tooling", "domain:theory": "Theory",
   "domain:quantum": "Quantum", "domain:blockchain": "Blockchain", "domain:iot": "IoT",
+  "domain:computer-graphics": "Graphics",
 };
 let headingCtx: CanvasRenderingContext2D | null = null;
 
