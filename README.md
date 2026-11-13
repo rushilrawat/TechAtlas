@@ -1,69 +1,125 @@
-# TechAtlas
+<div align="center">
 
-An interactive technology knowledge graph. One continuously connected map of how the
-software engineering world fits together — domains, concepts, and real technologies as
-nodes, with meaningful typed relationships as edges.
+# 🗺️ TechAtlas
 
-This repository is the implementation of the TechAtlas master specification. It is being
-built incrementally, milestone by milestone, per the spec's roadmap.
+**An interactive map of software technologies and how they connect.**
 
-## Current status
+*Explore the landscape. Follow a learning path. See where your own stack fits.*
 
-**Live demo:** https://rushilrawat.github.io/TechAtlas/ — a fully static build (the API
-responses are pre-rendered to JSON by `scripts/build_static_api.py` and fetched client-side;
-Wikipedia summaries are fetched in the browser from the Wikipedia REST API).
+[![CI](https://github.com/rushilrawat/TechAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/rushilrawat/TechAtlas/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB.svg?logo=python&logoColor=white)](backend/)
+[![React + Vite](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61DAFB.svg?logo=react&logoColor=black)](frontend/)
+[![TypeScript](https://img.shields.io/badge/language-TypeScript-3178C6.svg?logo=typescript&logoColor=white)](frontend/)
 
-What exists today:
+**[Explore the atlas](https://rushilrawat.github.io/TechAtlas/)** · **[Run it locally](docs/development-setup.md)**
 
-- **Curated dataset** (`data/seed`, version `0.4.0`): **20 domains, 290 technologies, 352
-  concepts and 1,272 typed relationships**, hand-verified. Run
-  `python scripts/validate_dataset.py` for the exact live counts; `--require-targets`
-  enforces the breadth targets in CI.
-- **Radial Explore atlas** (React + TypeScript + Sigma.js): domain sectors, semantic zoom,
-  a connections panel, arrow-key exploration, fullscreen, light/dark themes, filters,
-  Compare mode and guided learning paths.
-- **Search** with typo tolerance ("kubernets"), multi-word and description matching, and
-  recent/suggested starting points.
-- **Shareable pages**: every domain, technology and concept has a crawlable page with an
-  Open Graph card, JSON-LD and a plain-HTML fallback, plus `sitemap.xml` and `robots.txt`.
-- **FastAPI backend** (`backend/`) serving the graph, nodes, neighbors, search and
-  Wikipedia summaries (two-tier, version-namespaced cache).
-- **Popularity / adoption data:** an offline, source-attributed ingestion pipeline
-  (`scripts/popularity/`) pulling GitHub and npm/PyPI/crates signals.
-- **Discovery-assist** (`scripts/discover/`): a weekly job proposes new technologies from
-  Wikidata and opens a review PR. It never invents richer relationships.
-- **Repo X-Ray**: paste a public GitHub repo URL to highlight its detected stack. Needs the
-  live backend, so it is gated behind `VITE_SCANNER_API`.
+</div>
 
-What does **not** yet exist (and is not claimed to):
+---
 
-- AI project-to-stack recommendations (Phase 2) — designed and specced, not yet built.
+## 🎯 The idea
 
-Production deployment (Render Free) is prepared (`render.yaml`, `backend/Dockerfile`, and
-production safeguards: per-IP rate limiting, a concurrency gate, a scan deadline, a bounded
-result store, strict CORS). The public GitHub Pages site keeps Repo X-Ray hidden until the
-backend URL is configured (`SCANNER_API_URL` repo variable). Exact setup +
-verification steps: `docs/deployment-scanner.md`. Backend runtime dependencies are pinned
-in `backend/requirements.lock` (regenerate with the command at its top after editing
-`requirements.txt`), and CI builds the Docker image and checks `/health` on every PR.
+TechAtlas brings domains, concepts, and real technologies into one connected graph.
+Typed relationships show *why* nodes belong together, while the interactive atlas lets
+you move from a broad field to an individual tool without losing the surrounding context.
 
-See `docs/known-issues.md` for tracked low-severity issues.
+## ✨ Highlights
 
-## Repository layout
+- 🧭 **Explore the graph:** a radial atlas with domain sectors, semantic zoom, search,
+  keyboard navigation, filters, and light and dark themes.
+- 🧩 **Understand connections:** inspect a node's neighbors, compare technologies,
+  or follow **135 curated guided paths** through the graph.
+- 🔗 **Share a view:** domain, technology, and concept pages have crawlable HTML,
+  Open Graph cards, JSON-LD, and links back into the atlas.
+- 🧪 **Inspect a repository:** Repo X-Ray detects a public GitHub repository's stack
+  and highlights it in the atlas when a scanner backend is configured.
+- 📚 **Grow the graph carefully:** curated seed data is validated before publication.
+  Discovery assist can propose additions from Wikidata; richer relationships remain
+  subject to human review.
 
+## 📊 The graph (dataset v0.6.1)
+
+| | |
+|---|---:|
+| Total nodes | **1,103** |
+| Domains | **28** |
+| Technologies | **356** |
+| Concepts | **719** |
+| Typed relationships | **2,775** |
+| Relationship types | **14** |
+| Curated guided paths | **135** |
+| Isolated nodes | **0** |
+
+The largest relationship groups are **belongs to domain (943)**, **related to (900)**,
+**supports (222)**, and **implements (176)**. Counts come from the checked-in
+[`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)
+on `main`; “isolated” means a node with no incident edge. Rebuild and validate the
+graph with `make data` after changing [`data/seed/`](data/seed/).
+
+## 🏗️ How it fits together
+
+```text
+Curated seed data ──► build + validation ──► graph and layout JSON
+                                            │
+                               ┌────────────┴────────────┐
+                               ▼                         ▼
+                         FastAPI graph API       Static API snapshot
+                               │                         │
+                               └────────────┬────────────┘
+                                            ▼
+                              React + TypeScript + Sigma.js
+                                            │
+                                       Explore atlas
 ```
-/data        Canonical schema + curated dataset (source of truth, JSON)
-/scripts     Validation, layout, popularity ingestion, discovery-assist
-/backend     FastAPI service that serves the graph API (+ Wikipedia summaries)
-/frontend    React + TypeScript + Sigma.js interactive graph
-/docs        Architecture, schema, and methodology documentation
-/.kiro/specs Requirements / design / tasks for each milestone
+
+The GitHub Pages build uses the static API snapshot. The FastAPI service adds live
+summaries and Repo X-Ray scanning. See the [architecture notes](docs/architecture.md)
+and [scanner deployment guide](docs/deployment-scanner.md) for details.
+
+## 🚀 Quick start
+
+Requires **Python 3.11+** and **Node.js 20+**. GNU Make is optional but convenient.
+
+```bash
+make setup
+make dev
 ```
 
-The GitHub Pages deploy runs a Playwright browser smoke test on the built site (graph
-renders, nodes select, detail panel opens) as a gate before publishing — an HTTP 200 is
-not treated as deployment success.
+Open **http://localhost:5173**. The frontend runs on port 5173 and the backend on
+port 8000. For manual setup, port overrides, and static mode, see the
+[development guide](docs/development-setup.md).
 
-## Quick start
+## ✅ Checks
 
-See `docs/development-setup.md`.
+```bash
+make data     # rebuild and validate the graph
+make test     # backend and frontend tests
+make lint     # Ruff, TypeScript, and ESLint
+make build    # production frontend bundle
+```
+
+CI also checks the backend Docker health endpoint. The Pages deployment runs a browser
+smoke test before publishing. See [known issues](docs/known-issues.md) and
+[performance notes](docs/performance.md) for current limitations and measurements.
+
+## 📁 Repository map
+
+| Path | Purpose |
+|---|---|
+| [`data/`](data/) | Graph schema, curated seeds, and generated graph data |
+| [`scripts/`](scripts/) | Dataset validation, layout, discovery, and popularity tools |
+| [`backend/`](backend/) | FastAPI graph service and repository scanner |
+| [`frontend/`](frontend/) | React, TypeScript, and Sigma.js atlas |
+| [`docs/`](docs/) | Architecture, setup, deployment, and methodology notes |
+
+## 🔭 Next
+
+AI project-to-stack recommendations are specified but not yet implemented. Repo X-Ray
+on the public site also depends on configuring the scanner backend; see the
+[deployment guide](docs/deployment-scanner.md).
+
+## 📄 License
+
+TechAtlas is licensed under the [MIT License](LICENSE). The bundled font retains its
+own [SIL Open Font License](frontend/public/fonts/OFL.txt).
