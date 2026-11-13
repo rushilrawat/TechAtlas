@@ -1278,3 +1278,9 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 @media (max-width: 820px) {
   .outline-view:not(.is-fallback) { top: 8px; left: 8px; right: 8px; bottom: 8px; width: auto; }
 }
+/* Phones: keyboard help is moot on touch, and the rest of the toolbar must fit beside the logo. */
+@media (max-width: 640px) {
+  .topbar-tools .tool-help { display: none; }
+  .topbar-tools .tool, .topbar-tools .tool-icon { padding: 0 6px; }
+  .topbar-tools { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+}

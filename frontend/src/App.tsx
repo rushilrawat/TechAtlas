@@ -607,7 +607,7 @@ export default function App() {
             title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
           <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
             title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
-          <button type="button" className="tool tool-icon" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
+          <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
             onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
           <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
             onClick={toggleFullscreen}><Icon name="expand" /></button>

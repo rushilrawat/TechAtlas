@@ -378,7 +378,10 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
     const w = Math.min(maxW, text + 2);
     const bh = Math.ceil(text / maxW + 0.05) * lineH + (phone ? 2 : 4);
     let best: { score: number; box: Box; foreign: number } | null = null;
-    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45, 1.7, 2] : [0.55, 0.7, 0.85, 1, 1.15, 1.3]) {
+    // Second pass only if the strict "nearest to its own cluster" rule left no spot at all.
+    for (const strict of [true, false]) {
+    if (best) break;
+    for (const reach of phone ? [0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.25, 1.45, 1.7, 2] : [0.7, 0.85, 0.95, 1.05, 1.2]) {
       for (let k = 0; k < 24; k++) {
         const a = -Math.PI / 2 + (k * Math.PI) / 12; // start straight above
         const dx = Math.cos(a), dy = Math.sin(a);
@@ -387,7 +390,7 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
-        if (phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
+        if (strict && phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
         const { nodes, curves, own, ownNodes } = obstacles.count(box, h.id);
         // Ring compositions read best with names on the outer rim; maps prefer above.
         const outward = ringLike ? Math.hypot(px - vw / 2, py - vh / 2) < Math.hypot(cx - vw / 2, cy - vh / 2) ? 2 : 0 : 0;
@@ -398,12 +401,22 @@ function placeHeadings(headings: Heading[], container: HTMLElement,
         // own cluster; it may not sit nearer (by rim distance) to any other ecosystem.
         const bx = box.x + w / 2, by = box.y + bh / 2;
         const ownGap = Math.hypot(bx - cx, by - cy) - r;
-        if (phone && headings.some((o) => o.id !== h.id && o.disc &&
-          Math.hypot(bx - o.disc.x, by - o.disc.y) - o.disc.r < ownGap - 2)) continue;
+        // A name must read as belonging to its own cluster: it may never sit nearer (by rim
+        // distance, measured from the label's closest edge) to any other ecosystem.
+        const near = (d: { x: number; y: number; r: number }) =>
+          Math.hypot(Math.max(box.x, Math.min(d.x, box.x + w)) - d.x, Math.max(box.y, Math.min(d.y, box.y + bh)) - d.y) - d.r;
+        const ownNear = near(h.disc);
+        if (strict && headings.some((o) => o.id !== h.id && o.disc && (phone
+          ? Math.hypot(bx - o.disc.x, by - o.disc.y) - o.disc.r < ownGap - 2
+          : near(o.disc) < ownNear + 12))) continue;
         // On phones clusters are tiny, so a name on its own nodes hides the cluster itself.
-        const score = nodes * 14 + curves * 9 + ownNodes * (phone ? 12 : 4) + own * 0.6 + reach * 3 + below + outward;
+        // Desktop: names hug their cluster, centred above or below it where there is room.
+        const side = phone ? 0 : Math.abs(dx) * 1.5;
+        const score = nodes * 14 + curves * 9 + ownNodes * (phone ? 12 : 4) + own * 0.6 + reach * 3 + below + outward
+          + side + (phone ? 0 : Math.max(0, ownNear) * 0.12);
         if (!best || score < best.score - 1e-9) best = { score, box, foreign: nodes + curves + ownNodes };
       }
+    }
     }
     if (best) {
       foreign.set(h.id, best.foreign);
@@ -1375,13 +1388,17 @@ export function GraphCanvas({
             if (attrs.relationshipType === "has_subdomain") owned.add(t);
           });
         }
-        let maxd = 0;
+        // Radius of the cluster's visible body: the 90th percentile member distance, so a
+        // lone outlier does not push the heading (and the backplate) far from the cluster.
+        const dists: number[] = [];
         graph.forEachNode((id, a) => {
           if (owned.has(a.cluster as string) || id === d.id) {
-            maxd = Math.max(maxd, Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number));
+            dists.push(Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number));
           }
         });
-        geom.set(d.id, { gx, gy, gr: maxd });
+        dists.sort((a, b) => a - b);
+        const gr = dists.length ? dists[Math.min(dists.length - 1, Math.floor(dists.length * 0.9))] : 0;
+        geom.set(d.id, { gx, gy, gr });
       }
       domainGeomRef.current = geom;
     }
