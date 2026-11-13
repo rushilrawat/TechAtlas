@@ -517,7 +517,7 @@ export function GraphCanvas({
     sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
     headings: Heading[];
   }>({ sectors: [], headings: [] });
-  const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number }> | null>(null);
+  const domainGeomRef = useRef<Map<string, { gx: number; gy: number; gr: number; hr: number }> | null>(null);
   const domainsRef = useRef(domains);
   domainsRef.current = domains;
 
@@ -1378,7 +1378,7 @@ export function GraphCanvas({
     if (!doms || doms.length === 0) { setBackdrop({ sectors: [], headings: [] }); return; }
     const topLevel = doms.filter((d) => graph.hasNode(d.id) && graph.getNodeAttribute(d.id, "ring") === 0);
     if (!domainGeomRef.current) {
-      const geom = new Map<string, { gx: number; gy: number; gr: number }>();
+      const geom = new Map<string, { gx: number; gy: number; gr: number; hr: number }>();
       for (const d of topLevel) {
         const gx = graph.getNodeAttribute(d.id, "x") as number;
         const gy = graph.getNodeAttribute(d.id, "y") as number;
@@ -1390,15 +1390,21 @@ export function GraphCanvas({
         }
         // Radius of the cluster's visible body: the 90th percentile member distance, so a
         // lone outlier does not push the heading (and the backplate) far from the cluster.
-        const dists: number[] = [];
+        const dists: number[] = [], own: number[] = [];
         graph.forEachNode((id, a) => {
           if (owned.has(a.cluster as string) || id === d.id) {
-            dists.push(Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number));
+            const dist = Math.hypot((a.x as number) - gx, (a.y as number) - gy) + (a.size as number);
+            dists.push(dist);
+            if (a.cluster === d.id || id === d.id) own.push(dist);
           }
         });
-        dists.sort((a, b) => a - b);
-        const gr = dists.length ? dists[Math.min(dists.length - 1, Math.floor(dists.length * 0.9))] : 0;
-        geom.set(d.id, { gx, gy, gr });
+        const p90 = (xs: number[]) => {
+          xs.sort((a, b) => a - b);
+          return xs.length ? xs[Math.min(xs.length - 1, Math.floor(xs.length * 0.9))] : 0;
+        };
+        // The heading hugs the domain's own lobe; nested subdomain constellations (e.g.
+        // Graphics inside Game Development) only widen the backplate, not the label ring.
+        geom.set(d.id, { gx, gy, gr: p90(dists), hr: p90(own) || p90(dists) });
       }
       domainGeomRef.current = geom;
     }
@@ -1423,7 +1429,7 @@ export function GraphCanvas({
         sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
         if (vis && !vis.has(d.id)) continue;
         headings.push({ id: d.id, label: d.name, color: d.color, left: c.x, top: c.y, align: "box",
-          disc: { x: c.x, y: c.y, r } });
+          disc: { x: c.x, y: c.y, r: r * (g.hr / (g.gr || 1)) } });
       }
       // What a heading must not cover: every drawn node and the curves currently shown.
       const obstacles = new Obstacles();
