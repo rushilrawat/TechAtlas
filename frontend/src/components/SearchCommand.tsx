@@ -183,6 +183,7 @@ export function SearchCommand({ onPick, domainsById, lookup }: Props) {
               role="option"
               aria-selected={i === active}
               className={i === active ? "search-item active" : "search-item"}
+              title={`${r.name} · ${nodeTypeLabel(r.node_type, r.node_subtype)}${dom && r.node_type !== "domain" ? ` · ${dom.name}` : ""}`}
               onMouseEnter={() => setActive(i)}
               onMouseDown={(e) => {
                 e.preventDefault();
