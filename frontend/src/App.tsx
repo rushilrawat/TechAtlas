@@ -262,6 +262,7 @@ export default function App() {
         } else if (shared.compare && ids.has(shared.compare[0])) {
           setCompareMode(true);
           setCompareFirst(shared.compare[0]);
+          setCompareSecond(shared.compare[1] && ids.has(shared.compare[1]) ? shared.compare[1] : null);
           const second = shared.compare[1] && ids.has(shared.compare[1]) ? shared.compare[1] : null;
           setCompareSecond(second);
           setSelected(second ?? shared.compare[0]);
