@@ -554,7 +554,14 @@ export default function App() {
           aria-label="TechAtlas home — return to the Explore universe"
           title="Return to the Explore universe"
         >
-          <span className="brand-mark" aria-hidden />
+          <svg className="brand-mark" viewBox="0 0 64 64" width="22" height="22" aria-hidden>
+            <rect width="64" height="64" rx="14" fill="#0b0e14" />
+            <circle cx="32" cy="32" r="20" fill="none" stroke="#7aa2f7" strokeWidth="3" />
+            <circle cx="32" cy="32" r="5" fill="#7aa2f7" />
+            <circle cx="32" cy="12" r="4.5" fill="#bb9af7" />
+            <circle cx="49.3" cy="42" r="4.5" fill="#9ece6a" />
+            <circle cx="14.7" cy="42" r="4.5" fill="#e0af68" />
+          </svg>
           <span className="brand-name">TechAtlas</span>
           <span className="brand-sub">the technology knowledge graph</span>
         </button>

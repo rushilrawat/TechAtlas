@@ -823,20 +823,29 @@ export function GraphCanvas({
         : withAlpha(tint, tier === "TierA" ? 0.65 : tier === "TierB" ? 0.58 : 0.22);
       const quietSize = tier === "TierA" ? 1.1 : tier === "TierD" ? 0.6 : cross ? 0.8 : 1;
       if (!active) {
-        return zoomVisible ? { ...dataIn, color: quiet, size: quietSize, zIndex: cross ? 0 : 1 }
+        // Long cross-domain arcs only appear for a hovered or tapped node; at rest the
+        // map shows each field's own structure without lines slicing across it.
+        return zoomVisible && !cross ? { ...dataIn, color: quiet, size: quietSize, zIndex: 1 }
           : { ...dataIn, hidden: true };
+      }
+      // With something selected, hovering another node still previews all of its links.
+      const hovered = hoveredRef.current;
+      if (hovered && hovered !== active && (source === hovered || target === hovered)) {
+        return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.75), size: 1.1, zIndex: 2 };
       }
       const set = neighborSetRef.current;
       const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
       const related = domainFocus
-        ? !!set && set.has(source) && set.has(target) && (zoomVisible || source === active || target === active)
+        ? !!set && ((set.has(source) && set.has(target) && (zoomVisible || source === active || target === active))
+          // A tapped field also reveals its backbone links out to other fields.
+          || (cross && backbone && (set.has(source) || set.has(target))))
         : source === active || target === active;
       if (related) {
         return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.85),
           size: domainFocus ? 0.9 : 1.3, zIndex: 3 };
       }
       // Unrelated relationships stay as the faintest context while something is focused.
-      return zoomVisible ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
+      return zoomVisible && !cross ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
         : { ...dataIn, hidden: true };
     });
 
