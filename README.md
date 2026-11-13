@@ -9,54 +9,43 @@ built incrementally, milestone by milestone, per the spec's roadmap.
 
 ## Current status
 
-**Phases 0–1D complete.** Built incrementally per the spec roadmap; Phase 2 (AI
-recommendations) is the only remaining milestone.
-
 **Live demo:** https://rushilrawat.github.io/TechAtlas/ — a fully static build (the API
 responses are pre-rendered to JSON by `scripts/build_static_api.py` and fetched client-side;
-Wikipedia summaries, which need the live backend, degrade to the outbound link).
+Wikipedia summaries are fetched in the browser from the Wikipedia REST API).
 
 What exists today:
 
-- A canonical graph schema (nodes / edges / aliases) in `data/schema`.
-- The **full curated dataset** (`data/seed`, version `0.2.0`): **251 technologies, 155
-  concepts, 11 domains**, all hand-verified. The validator's `--require-targets` gate
-  enforces the 250+ technology / 150–170 concept breadth targets in CI. Run
-  `python scripts/validate_dataset.py` for the exact live counts.
-- A dataset validation script (`scripts/validate_dataset.py`) enforcing the spec's data
-  quality rules (canonical IDs, no broken edges, valid types, relationship endpoint rules).
-- Deterministic, community-aware offline layout (`scripts/generate_layout.py`).
-- A FastAPI backend (`backend/`) serving the graph, nodes, neighbors, and search.
-- A React + TypeScript + Sigma.js interactive graph with type/domain **filtering** and
-  semantic zoom (`frontend/`).
-- **Wikipedia integration (Phase 1C):** server-side article summaries resolved by curated
-  title, with a two-tier (in-process + on-disk, version-namespaced) cache and attribution.
-- **Popularity / adoption data (Phase 1D):** an offline, source-attributed ingestion
-  pipeline (`scripts/popularity/`) pulling GitHub stars/activity and npm/PyPI/crates
-  download counts, with deterministic scoring. Technology bubbles are sized by sourced
-  adoption where available and fall back to connectivity otherwise (`size_basis` says
-  which). Live-derived artifacts are gitignored, so the committed layout stays reproducible.
-- **Discovery-assist tool (`scripts/discover/`):** proposes genuinely new technologies from
-  Wikidata for human review, plus a weekly GitHub Actions job that auto-ingests new entries
-  with safe placement (real identity + a deterministic domain + the single
-  `belongs_to_domain` edge) and opens a review PR. It never invents richer relationships.
+- **Curated dataset** (`data/seed`, version `0.4.0`): **20 domains, 290 technologies, 352
+  concepts and 1,272 typed relationships**, hand-verified. Run
+  `python scripts/validate_dataset.py` for the exact live counts; `--require-targets`
+  enforces the breadth targets in CI.
+- **Radial Explore atlas** (React + TypeScript + Sigma.js): domain sectors, semantic zoom,
+  a connections panel, arrow-key exploration, fullscreen, light/dark themes, filters,
+  Compare mode and guided learning paths.
+- **Search** with typo tolerance ("kubernets"), multi-word and description matching, and
+  recent/suggested starting points.
+- **Shareable pages**: every domain, technology and concept has a crawlable page with an
+  Open Graph card, JSON-LD and a plain-HTML fallback, plus `sitemap.xml` and `robots.txt`.
+- **FastAPI backend** (`backend/`) serving the graph, nodes, neighbors, search and
+  Wikipedia summaries (two-tier, version-namespaced cache).
+- **Popularity / adoption data:** an offline, source-attributed ingestion pipeline
+  (`scripts/popularity/`) pulling GitHub and npm/PyPI/crates signals.
+- **Discovery-assist** (`scripts/discover/`): a weekly job proposes new technologies from
+  Wikidata and opens a review PR. It never invents richer relationships.
+- **Repo X-Ray**: paste a public GitHub repo URL to highlight its detected stack. Needs the
+  live backend, so it is gated behind `VITE_SCANNER_API`.
 
 What does **not** yet exist (and is not claimed to):
 
 - AI project-to-stack recommendations (Phase 2) — designed and specced, not yet built.
 
-Repo X-Ray / GitHub stack scanner (Phase 1.5A+B) is **built**: paste a public GitHub repo
-URL to highlight its detected technologies across the graph. It needs a live FastAPI
-backend (GitHub calls + token), so it is **gated behind `VITE_SCANNER_API`** and is hidden
-on the public GitHub Pages site (which has no backend). It is available when the app is run
-against a backend; see `docs/development-setup.md`. The scanner performs deterministic
-static analysis only — it never runs repository code.
-
 Production deployment (Render Free) is prepared (`render.yaml`, `backend/Dockerfile`, and
 production safeguards: per-IP rate limiting, a concurrency gate, a scan deadline, a bounded
 result store, strict CORS). The public GitHub Pages site keeps Repo X-Ray hidden until the
 backend URL is configured (`SCANNER_API_URL` repo variable). Exact setup +
-verification steps: `docs/deployment-scanner.md`.
+verification steps: `docs/deployment-scanner.md`. Backend runtime dependencies are pinned
+in `backend/requirements.lock` (regenerate with the command at its top after editing
+`requirements.txt`), and CI builds the Docker image and checks `/health` on every PR.
 
 See `docs/known-issues.md` for tracked low-severity issues.
 

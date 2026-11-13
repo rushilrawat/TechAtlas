@@ -9,8 +9,10 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-COPY backend/requirements.txt /app/backend/requirements.txt
-RUN pip install -r /app/backend/requirements.txt
+# Install from the pinned lock so a rebuild never picks up a new upstream release.
+# Regenerate after editing requirements.txt (command at the top of requirements.lock).
+COPY backend/requirements.lock /app/backend/requirements.lock
+RUN pip install --no-deps -r /app/backend/requirements.lock
 
 COPY backend/app /app/backend/app
 COPY data/graph.json /app/data/graph.json

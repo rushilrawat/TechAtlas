@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../api/client";
-import type { DetectionStatus, NeighborEdge, NodeDetail, RepoScan } from "../api/types";
+import { api, fetchWikipediaSummary } from "../api/client";
+import type { DetectionStatus, NeighborEdge, NodeDetail, NodeSummary, RepoScan } from "../api/types";
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
 import { safeHttpUrl } from "../util/safeUrl";
 
@@ -24,6 +24,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [lockedNeighbor, setLockedNeighbor] = useState<NeighborEdge | null>(null);
+  const [wikiSummary, setWikiSummary] = useState<NodeSummary | null>(null);
   const panelRef = useRef<HTMLElement | null>(null);
 
   // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
@@ -59,6 +60,19 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
     return () => controller.abort();
   }, [slugOrId]);
 
+  // No server-side summary (static build, or the backend could not reach Wikipedia):
+  // fetch it in the browser by the curated title.
+  useEffect(() => {
+    setWikiSummary(null);
+    if (!detail || detail.summary || !detail.wikipedia_title) return;
+    const controller = new AbortController();
+    fetchWikipediaSummary(detail.wikipedia_title, controller.signal)
+      .then(setWikiSummary)
+      .catch(() => { /* degrade to the outbound link */ });
+    return () => controller.abort();
+  }, [detail]);
+
+  const summary = detail?.summary ?? wikiSummary;
   const grouped = groupNeighbors(detail?.neighbors ?? []);
 
   return (
@@ -94,15 +108,15 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
 
           <p className="details-desc">{detail.short_description}</p>
 
-          {detail.summary && (
+          {summary && (
             <section className="details-summary" aria-label="Wikipedia summary">
               {/* Rendered as plain text (React escapes it) — never as HTML. */}
-              <p>{detail.summary.extract}</p>
+              <p>{summary.extract}</p>
               <p className="summary-attribution">
                 Summary from{" "}
-                {safeHttpUrl(detail.summary.source_url) ? (
+                {safeHttpUrl(summary.source_url) ? (
                   <a
-                    href={safeHttpUrl(detail.summary.source_url) as string}
+                    href={safeHttpUrl(summary.source_url) as string}
                     target="_blank"
                     rel="noreferrer noopener"
                   >
@@ -111,7 +125,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                 ) : (
                   "Wikipedia"
                 )}{" "}
-                · {detail.summary.license}
+                · {summary.license}
               </p>
             </section>
           )}

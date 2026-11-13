@@ -12,6 +12,32 @@ const RAW = import.meta.env.VITE_SCANNER_API;
 export const SCANNER_ENABLED = typeof RAW === "string" && RAW.trim().length > 0;
 const SCANNER_BASE = (RAW ?? "").replace(/\/$/, "");
 
+// Health endpoint lives at the service root, not under /api/v1.
+export function healthUrl(base: string = SCANNER_BASE): string {
+  return `${base.replace(/\/api\/v1$/, "")}/health`;
+}
+
+let warming: Promise<boolean> | null = null;
+
+/**
+ * Fire-and-forget wake-up for a sleeping Render Free instance. Called as soon as the
+ * user shows intent (hovering or opening Repo X-Ray) so the 30-60s cold start overlaps
+ * with them typing a URL. Resolves true once the backend answers; never throws.
+ */
+export function warmScanner(): Promise<boolean> {
+  if (!SCANNER_ENABLED) return Promise.resolve(false);
+  if (!warming) {
+    warming = fetch(healthUrl(), { mode: "cors", cache: "no-store" })
+      .then((r) => r.ok)
+      .catch(() => false)
+      .then((ok) => {
+        if (!ok) warming = null; // allow a retry on the next intent
+        return ok;
+      });
+  }
+  return warming;
+}
+
 // Render Free sleeps when idle (~30-60s cold start); the backend scan deadline is ~45s.
 // Give the request up to ~90s before giving up, so a waking service isn't cut off, while
 // never hanging forever. The caller's AbortSignal (repo switch / unmount) still wins.

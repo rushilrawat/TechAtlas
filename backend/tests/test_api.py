@@ -157,3 +157,12 @@ def test_size_basis_flips_to_popularity_when_scored(tmp_path, monkeypatch):
     )
     assert svc._size_basis(other) == "connectivity"
     assert svc._popularity_of(other) is None
+
+
+def test_search_tolerates_typos_and_matches_descriptions():
+    ids = [r["id"] for r in client.get("/api/v1/search", params={"q": "kubernets"}).json()]
+    assert "technology:kubernetes" in ids
+    fuzzy = client.get("/api/v1/search", params={"q": "kubernets"}).json()
+    assert any(r["matched_on"] == "fuzzy" for r in fuzzy)
+    # Exact matches still outrank fuzzy ones.
+    assert client.get("/api/v1/search", params={"q": "react"}).json()[0]["id"] == "technology:react"

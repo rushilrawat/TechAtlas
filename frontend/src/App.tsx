@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api/client";
-import type { DomainSummary, GraphNode, GraphResponse, NeighborEdge } from "./api/types";
+import type { DomainSummary, GraphNode, GraphResponse, NeighborEdge, SearchResult } from "./api/types";
 import { GraphCanvas } from "./components/GraphCanvas";
 import { SearchCommand } from "./components/SearchCommand";
 import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
@@ -9,17 +9,19 @@ import { RelationshipLegend } from "./components/RelationshipLegend";
 import { DomainLegend } from "./components/DomainLegend";
 import { FilterPanel } from "./components/FilterPanel";
 import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
-import { RepoXrayPanel } from "./components/RepoXrayPanel";
 import { XrayLegend } from "./components/XrayLegend";
 import { useRepoScan } from "./graph/useRepoScan";
 import { buildOverlay } from "./graph/scanOverlay";
 import { computeStackLayout, prominenceOf } from "./graph/stackLayout";
 import type { StackNodeInput } from "./graph/stackLayout";
-import { SCANNER_ENABLED } from "./api/scanner";
+import { SCANNER_ENABLED, warmScanner } from "./api/scanner";
 import { Icon } from "./components/Icon";
 import { JOURNEYS } from "./graph/journeys";
 import { readFilter, writeFilter, readCamera, writeCamera } from "./graph/shareView";
 import { connectionPath } from "./graph/compare";
+
+// Repo X-Ray is opt-in and hidden on the public build, so keep it out of the main bundle.
+const RepoXrayPanel = lazy(() => import("./components/RepoXrayPanel").then((m) => ({ default: m.RepoXrayPanel })));
 
 type LoadState =
   | { status: "loading" }
@@ -369,6 +371,11 @@ export default function App() {
     return m;
   }, [state]);
 
+  const searchLookup = useCallback((id: string): SearchResult | null => {
+    const n = nodesById.get(id);
+    return n ? { id: n.id, slug: n.slug, name: n.label, node_type: n.node_type, node_subtype: n.node_subtype ?? null, primary_domain: n.primary_domain, matched_on: "recent" } : null;
+  }, [nodesById]);
+
   // Domain cluster headings (name + color from canonical domain metadata) for the overlay.
   const stackHeadings = useMemo(() => {
     if (!stackView) return null;
@@ -463,7 +470,7 @@ export default function App() {
           <span className="brand-name">TechAtlas</span>
           <span className="brand-sub">the technology knowledge graph</span>
         </button>
-        <SearchCommand onPick={navigate} />
+        <SearchCommand onPick={navigate} domainsById={domainsById} lookup={searchLookup} />
         {SCANNER_ENABLED && xrayOpen && (
           <button
             type="button"
@@ -479,7 +486,9 @@ export default function App() {
             className="xray-entry"
             aria-label="Repo X-Ray"
             title="Scan a GitHub repository"
-            onClick={() => setXrayOpen(true)}
+            onClick={() => { void warmScanner(); setXrayOpen(true); }}
+            onPointerEnter={() => { void warmScanner(); }}
+            onFocus={() => { void warmScanner(); }}
           >
             <Icon name="scan" /><span>Repo X-Ray</span>
           </button>
@@ -599,6 +608,7 @@ export default function App() {
           </div>
         </section>}
         {xrayOpen ? (
+          <Suspense fallback={<div className="xray-status" role="status">Loading Repo X-Ray…</div>}>
           <RepoXrayPanel
             phase={scanPhase}
             onAnalyze={analyze}
@@ -618,6 +628,7 @@ export default function App() {
               window.setTimeout(() => setFitNonce((n) => n + 1), 260);
             }}
           />
+          </Suspense>
         ) : (
           <>
             <button
@@ -648,7 +659,7 @@ export default function App() {
                 Explore the atlas
               </button>
               {SCANNER_ENABLED && (
-                <button type="button" className="hero-secondary" onClick={() => setXrayOpen(true)}>
+                <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={() => { void warmScanner(); setXrayOpen(true); }}>
                   Scan a repo
                 </button>
               )}

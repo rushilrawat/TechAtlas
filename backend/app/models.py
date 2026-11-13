@@ -128,7 +128,7 @@ class SearchResult(BaseModel):
     node_type: str
     node_subtype: str | None = None
     primary_domain: str
-    matched_on: str  # "name" | "alias" | "substring"
+    matched_on: str  # "name" | "alias" | "substring" | "words" | "fuzzy" | "description"
 
 
 class DomainSummary(BaseModel):

@@ -98,3 +98,11 @@ describe("scanner cold-start resilience", () => {
     await expect(p).rejects.toMatchObject({ name: "AbortError" });
   });
 });
+
+describe("healthUrl", () => {
+  it("strips the /api/v1 suffix to reach the root health check", async () => {
+    const { healthUrl } = await import("./scanner");
+    expect(healthUrl("https://x.onrender.com/api/v1")).toBe("https://x.onrender.com/health");
+    expect(healthUrl("/api/v1")).toBe("/health");
+  });
+});

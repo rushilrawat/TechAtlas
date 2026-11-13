@@ -1,8 +1,10 @@
 @font-face {
   font-family: "Inter";
-  src: url("./assets/InterVariable.woff2") format("woff2");
+  /* Latin subset of Inter Variable (wght 400-700, opsz pinned): ~30 KB instead of 352 KB.
+     Regenerate with fontTools: varLib.instancer wght=400:700 opsz=drop, then pyftsubset. */
+  src: url("./assets/InterLatin.woff2") format("woff2");
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
 }
 
@@ -144,8 +146,12 @@ body {
   z-index: 20;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
+.search-item-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.search-group { padding: 6px 12px 2px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dim); list-style: none; }
+.search-item-name { flex: 1; min-width: 0; }
 .search-item {
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
   padding: 8px 10px;
