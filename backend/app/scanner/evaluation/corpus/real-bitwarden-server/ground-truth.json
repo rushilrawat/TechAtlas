@@ -1,0 +1,56 @@
+{
+  "repository": "bitwarden/server",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:aspnet-core"
+    },
+    {
+      "node_id": "technology:dotnet"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:azure"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:rabbitmq"
+    },
+    {
+      "node_id": "technology:stripe"
+    },
+    {
+      "node_id": "technology:aws"
+    },
+    {
+      "node_id": "technology:openapi",
+      "added_in_review": true,
+      "evidence": "src/Api/Api.csproj: Swashbuckle.AspNetCore referenced in Api.csproj"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

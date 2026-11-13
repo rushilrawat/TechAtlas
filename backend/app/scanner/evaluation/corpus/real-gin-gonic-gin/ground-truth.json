@@ -1,0 +1,35 @@
+{
+  "repository": "gin-gonic/gin",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:protobuf"
+    },
+    {
+      "node_id": "technology:mongodb",
+      "added_in_review": true,
+      "evidence": "go.mod: go.mongodb.org/mongo-driver/v2 required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

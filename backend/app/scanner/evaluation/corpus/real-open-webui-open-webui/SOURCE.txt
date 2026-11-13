@@ -1,0 +1,6 @@
+Real-repository snapshot: https://github.com/open-webui/open-webui
+Fetched 2026-11-13 from raw.githubusercontent.com/open-webui/open-webui/HEAD (default branch HEAD that day).
+Only build manifests and config files are included (no source code, no lockfiles), unmodified.
+Each file remains under its upstream project's license; they are used here only as test input.
+Ground truth was written by hand from these files before the scanner was run on them.
+Files: .github/workflows/release.yml, .prettierrc, Dockerfile, backend/requirements.txt, docker-compose.yaml, package.json, pyproject.toml, svelte.config.js, tailwind.config.js, tsconfig.json, vite.config.ts

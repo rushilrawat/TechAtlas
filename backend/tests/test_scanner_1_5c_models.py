@@ -12,7 +12,7 @@ from app.scanner.models import SCANNER_VERSION, Detection, RepoScan
 
 def test_scanner_version_bumped_to_1_5e():
     # 1.5E changed what scans report, so cached 1.5C results must not be reused.
-    assert SCANNER_VERSION == "1.5e.0"
+    assert SCANNER_VERSION == "1.5f.0"
 
 
 def test_detection_classification_optional_default_none():

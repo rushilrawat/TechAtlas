@@ -1,5 +1,5 @@
 {
- "_comment": "Package -> canonical node id, per ecosystem, for packages whose name differs from the node's name. A key ending in '*' is a prefix rule (e.g. '@angular/*'). Exact keys win over prefixes; the longest prefix wins. Extend here, not in code; tests check every target exists.",
+ "_comment": "Package -> canonical node id, per ecosystem, for packages whose name differs from the node's name. A key ending in '*' is a prefix rule (e.g. '@angular/*'). Exact keys win over prefixes; the longest prefix wins. A null target means 'never map' (a same-named package that is something else). Extend here, not in code; tests check every target exists.",
  "npm": {
   "@playwright/test": "technology:playwright",
   "@sentry/*": "technology:sentry",
@@ -150,7 +150,15 @@
   "@okta/*": "technology:okta",
   "keycloak-js": "technology:keycloak",
   "@octokit/*": "technology:github",
-  "@actions/*": "technology:github-actions"
+  "@actions/*": "technology:github-actions",
+  "net": null,
+  "expo-server-sdk": null,
+  "@nuxt/opencollective": null,
+  "eslint-plugin-*": "technology:eslint",
+  "eslint-config-*": "technology:eslint",
+  "jest-cli": "technology:jest",
+  "@swc/jest": "technology:jest",
+  "babel-jest": "technology:jest"
  },
  "pypi": {
   "torch": "technology:pytorch",
@@ -226,14 +234,14 @@
   "django": "technology:django",
   "djangorestframework": "technology:django",
   "huggingface-hub": "technology:huggingface-transformers",
-  "sentence-transformers": "technology:huggingface-transformers",
+  "sentence-transformers": null,
   "llama-cpp-python": "technology:llama-cpp",
   "ollama": "technology:ollama",
   "vllm": "technology:vllm",
   "ray": "technology:ray",
   "dvc": "technology:dvc",
   "matplotlib": "technology:matplotlib",
-  "seaborn": "technology:matplotlib",
+  "seaborn": null,
   "duckdb": "technology:duckdb",
   "polars": "technology:polars",
   "clickhouse-connect": "technology:clickhouse",
@@ -270,7 +278,8 @@
   "scikit-learn": "technology:scikit-learn",
   "tensorflow-lite": "technology:tensorflow-lite",
   "tflite-runtime": "technology:tensorflow-lite",
-  "celery": "technology:celery"
+  "celery": "technology:celery",
+  "babel": null
  },
  "crates": {
   "bevy": "technology:bevy",
@@ -301,7 +310,8 @@
   "alloy": "technology:ethereum",
   "solana-*": "technology:solana",
   "esp-idf-*": "technology:esp32",
-  "esp-hal": "technology:esp32"
+  "esp-hal": "technology:esp32",
+  "nix": null
  },
  "go": {
   "github.com/redis/go-redis*": "technology:redis",
@@ -377,7 +387,9 @@
   "org.neo4j.driver:*": "technology:neo4j",
   "androidx.compose.*": "technology:jetpack-compose",
   "androidx.compose.ui:*": "technology:jetpack-compose",
-  "com.android.tools.build:*": "technology:android-sdk"
+  "com.android.tools.build:*": "technology:android-sdk",
+  "com.auth0:java-jwt": null,
+  "com.auth0:jwks-rsa": null
  },
  "rubygems": {
   "rails": "technology:rails",
@@ -404,7 +416,8 @@
   "google-protobuf": "technology:protobuf",
   "tailwindcss-rails": "technology:tailwind",
   "vite_rails": "technology:vite",
-  "opentelemetry-*": "technology:opentelemetry"
+  "opentelemetry-*": "technology:opentelemetry",
+  "capybara-playwright-driver": "technology:playwright"
  },
  "packagist": {
   "laravel/framework": "technology:laravel",
@@ -450,7 +463,13 @@
   "Microsoft.Maui.*": "technology:dotnet-maui",
   "Elastic.Clients.Elasticsearch": "technology:elasticsearch",
   "NEST": "technology:elasticsearch",
-  "Testcontainers*": "technology:testcontainers"
+  "Testcontainers*": "technology:testcontainers",
+  "Stripe.net": "technology:stripe",
+  "Microsoft.Extensions.Caching.StackExchangeRedis": "technology:redis",
+  "Aspire.StackExchange.Redis*": "technology:redis",
+  "Aspire.Npgsql*": "technology:postgresql",
+  "OllamaSharp": "technology:ollama",
+  "CommunityToolkit.Aspire.OllamaSharp": "technology:ollama"
  },
  "pub": {
   "flutter": "technology:flutter",
@@ -465,6 +484,7 @@
   "grpc": "technology:grpc",
   "protobuf": "technology:protobuf",
   "sentry_flutter": "technology:sentry",
-  "sentry": "technology:sentry"
+  "sentry": "technology:sentry",
+  "html": null
  }
 }

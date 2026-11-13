@@ -1,0 +1,71 @@
+{
+  "repository": "hoppscotch/hoppscotch",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:netlify"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:tauri",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: @tauri-apps/api declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:urql",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: @urql/core declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

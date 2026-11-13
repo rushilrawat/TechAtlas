@@ -1,0 +1,72 @@
+{
+  "repository": "withastro/astro",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:astro",
+      "added_in_review": true,
+      "evidence": "package.json: @astrojs/check declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:biome",
+      "added_in_review": true,
+      "evidence": "package.json: @biomejs/biome declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:hono",
+      "added_in_review": true,
+      "evidence": "packages/astro/package.json: hono declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:playwright",
+      "added_in_review": true,
+      "evidence": "packages/astro/package.json: @playwright/test declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "packages/astro/package.json: sass declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

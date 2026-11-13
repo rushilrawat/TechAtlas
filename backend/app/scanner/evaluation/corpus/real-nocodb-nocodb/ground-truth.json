@@ -1,0 +1,155 @@
+{
+  "repository": "nocodb/nocodb",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nestjs"
+    },
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:nuxt"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: @aws-sdk/client-cognito-identity-provider declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: @azure/storage-blob declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:d3",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: d3-scale declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: @google-cloud/storage declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:github",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: @octokit/plugin-throttling declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:jest",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: jest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:minio",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: minio declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: @modelcontextprotocol/node declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: mysql2 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: openai declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: pg declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:posthog",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: posthog-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:react",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: react declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: ioredis declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: @sentry/vue declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:socketio",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: socket.io-client declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: sqlite3 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: @stripe/stripe-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: @vitest/ui declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vuex-pinia",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: pinia declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

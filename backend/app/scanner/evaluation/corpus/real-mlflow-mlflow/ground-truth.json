@@ -1,0 +1,150 @@
+{
+  "repository": "mlflow/mlflow",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:flask"
+    },
+    {
+      "node_id": "technology:fastapi"
+    },
+    {
+      "node_id": "technology:sqlalchemy"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:mypy"
+    },
+    {
+      "node_id": "technology:apache-arrow",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pyarrow declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: boto3 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: azure-storage-file-datalake declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:docker",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: docker declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: google-cloud-storage declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:kubernetes",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: kubernetes declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:langchain",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: langchain declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:matplotlib",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: matplotlib declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pymysql declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:numpy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: numpy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: opentelemetry-api declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pandas",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pandas declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: psycopg2-binary declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: protobuf declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:scikit-learn",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: scikit-learn declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:keras",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: keras declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: openai declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:polars",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: polars declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:spark",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pyspark declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:tensorflow",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: tensorflow declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

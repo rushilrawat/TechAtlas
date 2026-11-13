@@ -1,0 +1,6 @@
+Real-repository snapshot: https://github.com/lobehub/lobe-chat
+Fetched 2026-11-13 from raw.githubusercontent.com/lobehub/lobe-chat/HEAD (default branch HEAD that day).
+Only build manifests and config files are included (no source code, no lockfiles), unmodified.
+Each file remains under its upstream project's license; they are used here only as test input.
+Ground truth was written by hand from these files before the scanner was run on them.
+Files: .github/workflows/release.yml, .github/workflows/test.yml, Dockerfile, netlify.toml, next.config.ts, package.json, tsconfig.json, vercel.json, vite.config.ts

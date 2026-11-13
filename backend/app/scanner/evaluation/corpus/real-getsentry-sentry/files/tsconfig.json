@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
+
+  "compilerOptions": {
+    // We add esnext to lib to pull in types for all newer ECMAScript features
+    "lib": ["esnext", "dom", "dom.iterable", "webworker"],
+
+    // Explicitly list which @types/* packages to include as global types
+    "types": ["gtag.js", "jest", "node", "@rspack/core/module", "trusted-types"],
+
+    // We do not actually use tsc to output any JavaScript anywhere
+    "noEmit": true,
+
+    // Don't do anything to JSX. This doesn't really matter since we don't use
+    // typescript to compile files, but left here for documentation purposes.
+    "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
+
+    "strictBindCallApply": false,
+
+    "paths": {
+      // The app falls back to core components until they move into scraps.
+      "@sentry/scraps/*": [
+        "./static/packages/scraps/src/*",
+        "./static/app/components/core/*"
+      ],
+      "sentry-images/*": ["./static/images/*"],
+      "sentry-locale/*": ["./src/sentry/locale/*"],
+      "sentry-logos/*": ["./src/sentry/static/sentry/images/logos/*"],
+      "sentry-fonts/*": ["./static/fonts/*"],
+      "getsentry-images/*": ["./static/images/*"]
+    }
+  },
+  "include": [
+    "*.config.*s",
+    "static/app",
+    "static/gsApp",
+    "static/gsAdmin",
+    "static/oxlint",
+    "tests/js",
+    "config",
+    "scripts"
+  ],
+  "exclude": [
+    "./node_modules",
+    "**/*.figma.tsx",
+    "static/app/serviceWorker/worker",
+    // Referenced packages are checked separately and consumed as declarations.
+    "static/packages"
+  ],
+  "references": [
+    {"path": "./static/packages/icons"},
+    {"path": "./static/packages/scraps/tsconfig.test.json"},
+    {"path": "./static/packages/search-syntax"}
+  ]
+}

@@ -1,0 +1,60 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      workspace:
+        description: Workspace to release
+        type: choice
+        required: true
+        default: sentry
+        options:
+          - sentry
+          - static/packages/scraps
+          - static/packages/icons
+          - static/packages/search-syntax
+      version:
+        description: Exact version, bump type (major, minor, patch), or auto; leave blank for the workspace policy
+        required: false
+      force:
+        description: Force a release even when there are release-blockers (optional)
+        required: false
+  schedule:
+    # We want the release to be at 9-10am Pacific Time
+    # We also want it to be 1 hour before the self-hosted release
+    - cron: '0 17 15 * *'
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: 'Release a new version'
+    steps:
+      - name: Get auth token
+        id: token
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        with:
+          app-id: ${{ vars.SENTRY_RELEASE_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SENTRY_RELEASE_BOT_PRIVATE_KEY }}
+          owner: getsentry
+          repositories: |
+            sentry
+            publish
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          token: ${{ steps.token.outputs.token }}
+          fetch-depth: 0
+      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+        if: startsWith(inputs.workspace, 'static/packages/')
+        with:
+          node-version-file: '.node-version'
+      - name: Prepare release
+        uses: getsentry/craft@2e29b0819113d334c15da3d8cac2138cb9dc111a # 3.9.0
+        env:
+          GITHUB_TOKEN: ${{ steps.token.outputs.token }}
+        with:
+          workspace: ${{ inputs.workspace || 'sentry' }}
+          version: ${{ github.event.inputs.version }}
+          force: ${{ github.event.inputs.force }}
+          publish_repo: getsentry/publish

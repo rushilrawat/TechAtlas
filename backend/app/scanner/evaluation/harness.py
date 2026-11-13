@@ -104,6 +104,33 @@ def _load_fixture(d: Path):
     return meta, files, gt
 
 
+def _language_ids() -> set[str]:
+    from app.scanner.manifest_parsers.extra import LANG_EXT
+    return set(LANG_EXT.values()) - {"technology:jupyter"}
+
+
+def _apply_scoring(gt: dict, reported: set[str], expected: set[str]) -> tuple[set[str], set[str]]:
+    """Scoring options for real-repo snapshots (manifests only, no full source tree).
+
+    - ``technologies_only``: concept nodes are derived from technologies, so they are left out.
+    - ``ignore_languages``: language detection needs the full tree, which a snapshot lacks.
+    - ``optional_detections``: nodes a reviewer could defensibly go either way on (e.g. npm for
+      a package.json); they count as neither a false positive nor a false negative.
+    """
+    scoring = gt.get("scoring") or {}
+    drop: set[str] = {o["node_id"] for o in gt.get("optional_detections", [])}
+    if scoring.get("ignore_languages"):
+        drop |= _language_ids()
+    tech_only = bool(scoring.get("technologies_only"))
+
+    def keep(n: str) -> bool:
+        return n not in drop and (not tech_only or n.startswith("technology:"))
+
+    reported = {n for n in reported if keep(n)}
+    expected = {n for n in expected if keep(n)}
+    return reported, expected
+
+
 def evaluate_fixture(d: Path) -> RepoEval:
     meta, files, gt = _load_fixture(d)
     gh_client = FixtureGitHub(
@@ -119,6 +146,7 @@ def evaluate_fixture(d: Path) -> RepoEval:
 
     reported = {d_.node_id for d_ in scan.detections}
     expected = {e["node_id"] for e in gt.get("expected_detections", [])}
+    reported, expected = _apply_scoring(gt, reported, expected)
     tp = reported & expected
     fp = sorted(reported - expected)
     fn = sorted(expected - reported)

@@ -1,0 +1,14 @@
+{
+  "repository": "example/neg-name-collisions-npm",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:javascript"
+    }
+  ]
+}

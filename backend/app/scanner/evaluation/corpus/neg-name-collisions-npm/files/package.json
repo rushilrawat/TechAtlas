@@ -1,0 +1,9 @@
+{
+  "name": "svc",
+  "dependencies": {
+    "express": "^4.19.0",
+    "net": "^1.0.2",
+    "@nuxt/opencollective": "^0.4.0",
+    "expo-server-sdk": "^3.10.0"
+  }
+}

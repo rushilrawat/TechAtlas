@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./plugins/CoreVue/types/index.d.ts"
+    ],
+    "types": [
+      "jquery",
+      "jqueryui",
+      "materialize-css",
+      "mousetrap"
+    ],
+    "paths": {
+      "*": ["@types/*", "*"]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "./plugins/CoreVue/types/index.d.ts",
+    "plugins/*/vue/src/**/*.ts",
+    "plugins/*/vue/src/**/*.tsx",
+    "plugins/*/vue/src/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

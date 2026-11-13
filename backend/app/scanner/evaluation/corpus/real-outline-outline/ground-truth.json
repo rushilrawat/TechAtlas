@@ -1,0 +1,79 @@
+{
+  "repository": "outline/outline",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "package.json: @aws-sdk/client-s3 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:github",
+      "added_in_review": true,
+      "evidence": "package.json: @octokit/auth-app declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "package.json: @modelcontextprotocol/server declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:socketio",
+      "added_in_review": true,
+      "evidence": "package.json: socket.io declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "package.json: @vitest/ui declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

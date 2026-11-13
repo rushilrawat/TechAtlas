@@ -1,0 +1,73 @@
+{
+  "repository": "jitsi/jitsi-meet",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:react-native"
+    },
+    {
+      "node_id": "technology:redux"
+    },
+    {
+      "node_id": "technology:webpack"
+    },
+    {
+      "node_id": "technology:babel"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:jquery",
+      "added_in_review": true,
+      "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mui",
+      "added_in_review": true,
+      "evidence": "package.json: @mui/material declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vite",
+      "added_in_review": true,
+      "evidence": "package.json: vite declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "package.json: vitest declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

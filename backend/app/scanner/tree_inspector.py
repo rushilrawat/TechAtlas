@@ -55,12 +55,20 @@ MANIFEST_BASENAMES = {
 }
 _K8S_DIRS = {"k8s", "kube", "kubernetes", "manifests", "deploy", "deployment", "deployments",
              "kustomize"}
+def _is_requirements_dir_file(path: str) -> bool:
+    """requirements/base.txt, requirements/pytorch/test.txt: pip files split by purpose."""
+    parts = path.split("/")
+    return path.endswith(".txt") and "requirements" in parts[:-1]
+
+
 # Prefix/suffix patterns for manifests/config.
 def _is_manifest(path: str) -> bool:
     base = path.rsplit("/", 1)[-1]
     if base in MANIFEST_BASENAMES:
         return True
     if base.startswith("requirements") and base.endswith(".txt"):
+        return True
+    if _is_requirements_dir_file(path):
         return True
     if base.startswith("Dockerfile"):
         return True

@@ -6,6 +6,9 @@
   "expected_detections": [
     {
       "node_id": "technology:spring-boot"
+    },
+    {
+      "node_id": "technology:gradle"
     }
   ]
 }

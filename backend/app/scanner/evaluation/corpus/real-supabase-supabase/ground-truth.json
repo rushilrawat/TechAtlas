@@ -1,0 +1,105 @@
+{
+  "repository": "supabase/supabase",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nextjs"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:supabase"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "package.json: @aws-sdk/client-secrets-manager declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:babel",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @babel/core declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:d3",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: d3-geo declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:eslint",
+      "added_in_review": true,
+      "evidence": "package.json: eslint declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @modelcontextprotocol/sdk declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: openai declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @sentry/nextjs declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @stripe/react-stripe-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:tanstack-query",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @tanstack/react-query declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vercel",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @vercel/functions declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vite",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @vitejs/plugin-react declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: @vitest/coverage-v8 declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

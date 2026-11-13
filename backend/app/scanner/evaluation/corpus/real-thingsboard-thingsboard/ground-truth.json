@@ -1,0 +1,103 @@
+{
+  "repository": "thingsboard/thingsboard",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:maven"
+    },
+    {
+      "node_id": "technology:spring-boot"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "pom.xml: software.amazon.awssdk:bom declared in pom.xml"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.azure:azure-sdk-bom declared in pom.xml"
+    },
+    {
+      "node_id": "technology:cassandra",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.datastax.oss:java-driver-core declared in pom.xml"
+    },
+    {
+      "node_id": "technology:firebase",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.google.firebase:firebase-admin declared in pom.xml"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.google.cloud:google-cloud-pubsub declared in pom.xml"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "pom.xml: io.grpc:grpc-netty-shaded declared in pom.xml"
+    },
+    {
+      "node_id": "technology:junit",
+      "added_in_review": true,
+      "evidence": "pom.xml: io.takari.junit:takari-cpsuite declared in pom.xml"
+    },
+    {
+      "node_id": "technology:kafka",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.apache.kafka:kafka-clients declared in pom.xml"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "pom.xml: io.opentelemetry:opentelemetry-bom declared in pom.xml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.postgresql:postgresql declared in pom.xml"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.google.protobuf:protobuf-java declared in pom.xml"
+    },
+    {
+      "node_id": "technology:rabbitmq",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.rabbitmq:amqp-client declared in pom.xml"
+    },
+    {
+      "node_id": "technology:spring",
+      "added_in_review": true,
+      "evidence": "application/pom.xml: org.springframework:spring-context-support declared in pom.xml"
+    },
+    {
+      "node_id": "technology:testcontainers",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.testcontainers:testcontainers declared in pom.xml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

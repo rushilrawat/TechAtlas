@@ -1,0 +1,14 @@
+{
+  "repository": "example/neg-config-lookalikes",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:javascript"
+    }
+  ]
+}

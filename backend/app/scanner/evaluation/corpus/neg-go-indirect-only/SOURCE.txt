@@ -1,0 +1,3 @@
+Synthetic negative fixture (noise trap), hand-written for this corpus; no third-party content.
+Go module whose only cloud/database requirements are // indirect (pulled in by a dependency, not used here).
+Ground truth is human-authored and was written before the scanner was run.

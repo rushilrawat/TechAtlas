@@ -1,0 +1,14 @@
+{
+  "repository": "example/neg-name-collisions-dart",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:flutter"
+    },
+    {
+      "node_id": "technology:dart"
+    }
+  ]
+}

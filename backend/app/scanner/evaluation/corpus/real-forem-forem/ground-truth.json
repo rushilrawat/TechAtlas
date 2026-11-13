@@ -1,0 +1,93 @@
+{
+  "repository": "forem/forem",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:rails"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:jest"
+    },
+    {
+      "node_id": "technology:preact"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:cypress"
+    },
+    {
+      "node_id": "technology:storybook"
+    },
+    {
+      "node_id": "technology:sass"
+    },
+    {
+      "node_id": "technology:babel",
+      "added_in_review": true,
+      "evidence": "package.json: @babel/core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:esbuild",
+      "added_in_review": true,
+      "evidence": "package.json: esbuild declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "Gemfile: pg declared in Gemfile"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "Gemfile: sentry-rails declared in Gemfile"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "Gemfile: stripe declared in Gemfile"
+    },
+    {
+      "node_id": "technology:vault",
+      "added_in_review": true,
+      "evidence": "Gemfile: vault declared in Gemfile"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

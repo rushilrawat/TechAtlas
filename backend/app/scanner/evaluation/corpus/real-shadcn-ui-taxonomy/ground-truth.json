@@ -1,0 +1,63 @@
+{
+  "repository": "shadcn-ui/taxonomy",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nextjs"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:prisma"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "prisma/schema.prisma: Prisma datasource provider 'mysql'"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "package.json: stripe declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vercel",
+      "added_in_review": true,
+      "evidence": "package.json: @vercel/analytics declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

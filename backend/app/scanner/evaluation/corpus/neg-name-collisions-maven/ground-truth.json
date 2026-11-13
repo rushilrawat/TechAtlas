@@ -1,0 +1,17 @@
+{
+  "repository": "example/neg-name-collisions-maven",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:maven"
+    },
+    {
+      "node_id": "technology:spring-boot"
+    },
+    {
+      "node_id": "technology:java"
+    }
+  ]
+}

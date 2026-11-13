@@ -1,0 +1,114 @@
+{
+  "repository": "home-assistant/core",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:sqlalchemy"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: aiobotocore declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: azure-eventhub declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:datadog",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: datadog declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: google-cloud-pubsub declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:influxdb",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: influxdb-client declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:kafka",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: aiokafka declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:minio",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: minio declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: mcp declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:numpy",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: numpy declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:ollama",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: ollama declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: openai declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:prometheus",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: prometheus-client declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: sentry-sdk declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:shodan",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: shodan declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "requirements.txt: uv declared in requirements.txt"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

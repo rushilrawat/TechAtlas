@@ -1,0 +1,38 @@
+{
+  "repository": "fastify/fastify",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:fastify"
+    },
+    {
+      "node_id": "technology:github-actions",
+      "added_in_review": true,
+      "evidence": ".github/workflows/ci.yml: GitHub Actions workflow present"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

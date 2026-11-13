@@ -1,0 +1,57 @@
+{
+  "repository": "plausible/analytics",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:d3",
+      "added_in_review": true,
+      "evidence": "assets/package.json: d3 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:jest",
+      "added_in_review": true,
+      "evidence": "assets/package.json: jest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:tanstack-query",
+      "added_in_review": true,
+      "evidence": "assets/package.json: @tanstack/react-query declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

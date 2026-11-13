@@ -1,0 +1,7 @@
+{
+  "repository": "example/neg-docs-only-mentions",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": []
+}

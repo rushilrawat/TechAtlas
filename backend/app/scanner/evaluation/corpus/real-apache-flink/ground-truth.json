@@ -1,0 +1,46 @@
+{
+  "repository": "apache/flink",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:maven"
+    },
+    {
+      "node_id": "technology:junit"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:flink",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.apache.flink:flink-shaded-force-shading declared in pom.xml"
+    },
+    {
+      "node_id": "technology:testcontainers",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.testcontainers:testcontainers-junit-jupiter declared in pom.xml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

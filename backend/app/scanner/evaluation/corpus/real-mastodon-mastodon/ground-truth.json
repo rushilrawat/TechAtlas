@@ -1,0 +1,85 @@
+{
+  "repository": "mastodon/mastodon",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:rails"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:redux"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "Gemfile: aws-sdk-core declared in Gemfile"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "Gemfile: opentelemetry-api declared in Gemfile"
+    },
+    {
+      "node_id": "technology:playwright",
+      "added_in_review": true,
+      "evidence": "package.json: playwright declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "package.json: sass declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:storybook",
+      "added_in_review": true,
+      "evidence": "package.json: @storybook/addon-a11y declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

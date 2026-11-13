@@ -1,0 +1,39 @@
+{
+  "repository": "JetBrains/kotlinconf-app",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:gradle"
+    },
+    {
+      "node_id": "technology:kotlin-multiplatform"
+    },
+    {
+      "node_id": "technology:jetpack-compose"
+    },
+    {
+      "node_id": "technology:firebase"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

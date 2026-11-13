@@ -1,0 +1,96 @@
+{
+  "repository": "go-gitea/gitea",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:esbuild",
+      "added_in_review": true,
+      "evidence": "package.json: esbuild declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/grpc required in go.mod"
+    },
+    {
+      "node_id": "technology:jquery",
+      "added_in_review": true,
+      "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/go-sql-driver/mysql required in go.mod"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/lib/pq required in go.mod"
+    },
+    {
+      "node_id": "technology:prometheus",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/prometheus/client_golang required in go.mod"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/protobuf required in go.mod"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/redis/go-redis/v9 required in go.mod"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/mattn/go-sqlite3 required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

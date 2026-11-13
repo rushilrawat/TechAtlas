@@ -1,0 +1,73 @@
+{
+  "repository": "rails/rails",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "Gemfile: aws-sdk-s3 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "Gemfile: google-cloud-storage declared in Gemfile"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "Gemfile: mysql2 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "Gemfile: pg declared in Gemfile"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "Gemfile: redis declared in Gemfile"
+    },
+    {
+      "node_id": "technology:selenium",
+      "added_in_review": true,
+      "evidence": "Gemfile: selenium-webdriver declared in Gemfile"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "Gemfile: sqlite3 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:tailwind",
+      "added_in_review": true,
+      "evidence": "Gemfile: tailwindcss-rails declared in Gemfile"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}
