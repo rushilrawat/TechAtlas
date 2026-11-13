@@ -88,7 +88,32 @@ def parse_pyproject(path: str, text: str) -> list[RawDetection]:
     for key in (poetry.get("dev-dependencies", {}) or {}):
         if key.lower() != "python":
             add(key)
+    for group in (poetry.get("group", {}) or {}).values():
+        for key in ((group or {}).get("dependencies", {}) or {}):
+            if key.lower() != "python":
+                add(key)
+    # PEP 735 [dependency-groups] (dev/test/lint groups); {include-group = ...} is skipped.
+    for group in (data.get("dependency-groups", {}) or {}).values():
+        for dep in group or []:
+            if isinstance(dep, str):
+                nm = _req_name(dep)
+                if nm:
+                    add(nm)
+    # A [tool.<name>] table configures that tool for this project.
+    tools = data.get("tool", {}) or {}
+    for tool, node_id in _TOOL_TABLES.items():
+        if tool in tools:
+            out.append(RawDetection(
+                ecosystem=None, package=None, node_id=node_id,
+                evidence_type="configuration", file_path=path,
+                description=f"[tool.{tool}] configured in pyproject.toml",
+                detection_status="declared", rule="python.pyproject_tool",
+            ))
     return out
+
+
+_TOOL_TABLES = {"pytest": "technology:pytest", "mypy": "technology:mypy", "ruff": "technology:ruff",
+                "uv": "technology:uv"}
 
 
 def parse_poetry_lock(path: str, text: str) -> list[RawDetection]:

@@ -1,0 +1,100 @@
+{
+  "repository": "nestjs/nest",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nestjs"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:fastify"
+    },
+    {
+      "node_id": "technology:graphql-apollo",
+      "added_in_review": true,
+      "evidence": "package.json: @apollo/server declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "package.json: @grpc/grpc-js declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:kafka",
+      "added_in_review": true,
+      "evidence": "package.json: kafkajs declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:mongodb",
+      "added_in_review": true,
+      "evidence": "package.json: mongoose declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "package.json: mysql2 declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:nats",
+      "added_in_review": true,
+      "evidence": "package.json: nats declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rabbitmq",
+      "added_in_review": true,
+      "evidence": "package.json: amqplib declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "package.json: ioredis declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:socketio",
+      "added_in_review": true,
+      "evidence": "package.json: socket.io declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vite",
+      "added_in_review": true,
+      "evidence": "package.json: vite declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "package.json: @vitest/coverage-istanbul declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

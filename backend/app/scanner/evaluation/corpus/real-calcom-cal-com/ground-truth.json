@@ -1,0 +1,88 @@
+{
+  "repository": "calcom/cal.com",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nextjs"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:prisma"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:biome"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:stripe"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:tanstack-query"
+    },
+    {
+      "node_id": "technology:babel",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: @babel/core declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "packages/prisma/schema.prisma: Prisma datasource provider 'postgresql'"
+    },
+    {
+      "node_id": "technology:posthog",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: posthog-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: @upstash/redis declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vercel",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: @vercel/edge-config declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

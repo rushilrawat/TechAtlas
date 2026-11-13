@@ -1,0 +1,96 @@
+{
+  "repository": "chatwoot/chatwoot",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:rails"
+    },
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:pgvector"
+    },
+    {
+      "node_id": "technology:opentelemetry"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "Gemfile: aws-sdk-s3 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:datadog",
+      "added_in_review": true,
+      "evidence": "Gemfile: datadog declared in Gemfile"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "Gemfile: google-cloud-storage declared in Gemfile"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "Gemfile: grpc declared in Gemfile"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "Gemfile: stripe declared in Gemfile"
+    },
+    {
+      "node_id": "technology:vuex-pinia",
+      "added_in_review": true,
+      "evidence": "package.json: pinia declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "repository": "example/neg-name-collisions-rust",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:cargo"
+    },
+    {
+      "node_id": "technology:rust"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "repository": "bevyengine/bevy",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:cargo"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:bevy",
+      "added_in_review": true,
+      "evidence": "Cargo.toml: bevy_internal declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:webassembly",
+      "added_in_review": true,
+      "evidence": "Cargo.toml: wasm-bindgen declared in Cargo.toml [dev]"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

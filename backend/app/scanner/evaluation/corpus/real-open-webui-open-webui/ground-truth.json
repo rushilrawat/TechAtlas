@@ -1,0 +1,200 @@
+{
+  "repository": "open-webui/open-webui",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:svelte"
+    },
+    {
+      "node_id": "technology:sveltekit"
+    },
+    {
+      "node_id": "technology:fastapi"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:sqlalchemy"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:apache-arrow",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pyarrow declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: boto3 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "package.json: @azure/msal-browser declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chroma",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: chromadb declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:cypress",
+      "added_in_review": true,
+      "evidence": "package.json: cypress declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:elasticsearch",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: elasticsearch declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:eslint",
+      "added_in_review": true,
+      "evidence": "package.json: @typescript-eslint/eslint-plugin declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: google-cloud-storage declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:huggingface-transformers",
+      "added_in_review": true,
+      "evidence": "package.json: @huggingface/transformers declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:langchain",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: langchain-core declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mariadb",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: mariadb declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "package.json: @modelcontextprotocol/ext-apps declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pymysql declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:onnx",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: onnxruntime declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: openai declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:opencv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: opencv-python-headless declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: opentelemetry-api declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:pandas",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pandas declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pgvector",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pgvector declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pinecone",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pinecone declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:playwright",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: playwright declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: psycopg declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:qdrant",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: qdrant-client declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: redis declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:socketio",
+      "added_in_review": true,
+      "evidence": "package.json: socket.io-client declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:threejs",
+      "added_in_review": true,
+      "evidence": "package.json: three declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "package.json: vitest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:ruff",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: ruff declared in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

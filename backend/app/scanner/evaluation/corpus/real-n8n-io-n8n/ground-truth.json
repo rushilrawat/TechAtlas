@@ -1,0 +1,123 @@
+{
+  "repository": "n8n-io/n8n",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:biome"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @aws-sdk/client-secrets-manager declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @azure/identity declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:esbuild",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: esbuild declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @google-cloud/secret-manager declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @grpc/grpc-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:langchain",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @langchain/core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @modelcontextprotocol/node declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: openai declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @opentelemetry/api declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: pg declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: ioredis declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @sentry/node declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: sqlite3 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:supabase",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: @supabase/supabase-js declared in package.json (dependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "repository": "example/neg-name-collisions-pypi",
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:flask"
+    },
+    {
+      "node_id": "technology:python"
+    }
+  ]
+}

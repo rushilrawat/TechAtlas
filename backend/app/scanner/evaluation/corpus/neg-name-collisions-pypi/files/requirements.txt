@@ -1,0 +1,6 @@
+flask==3.0.0
+babel==2.14.0
+seaborn==0.13.2
+sentence-transformers==3.0.0
+html5lib==1.1
+markdown==3.6

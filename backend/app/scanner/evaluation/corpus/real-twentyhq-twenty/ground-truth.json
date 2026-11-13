@@ -1,0 +1,140 @@
+{
+  "repository": "twentyhq/twenty",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:nestjs"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:jest"
+    },
+    {
+      "node_id": "technology:storybook"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: @aws-sdk/client-lambda declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: @azure/msal-node declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:babel",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: @babel/core declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:cloudflare",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: cloudflare declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:d3",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: d3-shape declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:esbuild",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: esbuild declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:express",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: express declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:graphql-apollo",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: @apollo/client declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:model-context-protocol",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: @modelcontextprotocol/sdk declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: @opentelemetry/api declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:playwright",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: playwright declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: pg declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: ioredis declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: @sentry/nestjs declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: stripe declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:testcontainers",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: testcontainers declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: @vitest/coverage-istanbul declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:eslint",
+      "added_in_review": true,
+      "evidence": "package.json: eslint-plugin-lingui declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

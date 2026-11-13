@@ -1,0 +1,59 @@
+{
+  "repository": "monicahq/monica",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:laravel"
+    },
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "package.json: sass declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

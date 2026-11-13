@@ -1,0 +1,3 @@
+Synthetic negative fixture (noise trap), hand-written for this corpus; no third-party content.
+Python app whose dependencies share names with unrelated atlas nodes: PyPI 'babel' (i18n, not the JS compiler), 'seaborn' (not matplotlib itself), 'sentence-transformers', 'docker' is fine but 'html5lib'/'markdown' are not HTML.
+Ground truth is human-authored and was written before the scanner was run.

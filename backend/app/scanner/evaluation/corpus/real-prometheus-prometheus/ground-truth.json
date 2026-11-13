@@ -1,0 +1,92 @@
+{
+  "repository": "prometheus/prometheus",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/aws/aws-sdk-go-v2 required in go.mod"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/Azure/azure-sdk-for-go/sdk/azcore required in go.mod"
+    },
+    {
+      "node_id": "technology:consul",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/hashicorp/consul/api required in go.mod"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/grpc required in go.mod"
+    },
+    {
+      "node_id": "technology:jest",
+      "added_in_review": true,
+      "evidence": "web/ui/package.json: ts-jest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:kubernetes",
+      "added_in_review": true,
+      "evidence": "go.mod: k8s.io/api required in go.mod"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "go.mod: go.opentelemetry.io/collector/component required in go.mod"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "web/ui/package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:prometheus",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/prometheus/client_golang required in go.mod"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/protobuf required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

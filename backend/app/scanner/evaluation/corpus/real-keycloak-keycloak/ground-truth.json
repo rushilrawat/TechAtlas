@@ -1,0 +1,46 @@
+{
+  "repository": "keycloak/keycloak",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:maven"
+    },
+    {
+      "node_id": "technology:junit"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:keycloak",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.keycloak:keycloak-client-registration-api declared in pom.xml"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.mysql:mysql-connector-j declared in pom.xml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

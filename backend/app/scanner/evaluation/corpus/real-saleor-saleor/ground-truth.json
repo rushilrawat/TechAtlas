@@ -1,0 +1,90 @@
+{
+  "repository": "saleor/saleor",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:django"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:mypy"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:celery"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: boto3 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: azure-common declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: google-cloud-pubsub declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: opentelemetry-api declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: psycopg declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: redis declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sentry-sdk declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: stripe declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

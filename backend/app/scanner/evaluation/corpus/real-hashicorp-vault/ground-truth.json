@@ -1,0 +1,78 @@
+{
+  "repository": "hashicorp/vault",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/aws/aws-sdk-go-v2 required in go.mod"
+    },
+    {
+      "node_id": "technology:consul",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/hashicorp/consul/api required in go.mod"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "go.mod: cloud.google.com/go/cloudsqlconn required in go.mod"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/grpc required in go.mod"
+    },
+    {
+      "node_id": "technology:mongodb",
+      "added_in_review": true,
+      "evidence": "go.mod: go.mongodb.org/mongo-driver required in go.mod"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/go-sql-driver/mysql required in go.mod"
+    },
+    {
+      "node_id": "technology:opentelemetry",
+      "added_in_review": true,
+      "evidence": "go.mod: go.opentelemetry.io/otel required in go.mod"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/jackc/pgx/v5 required in go.mod"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/golang/protobuf required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

@@ -26,10 +26,12 @@ def own_module(go_mod_text: str) -> str | None:
     return m.group(1) if m else None
 # require lines: single `require path v1.2.3 [// indirect]` or inside a require ( ... ) block.
 _REQUIRE_SINGLE_RE = re.compile(
-    r"^\s*require\s+(\S+)\s+\S+(\s*//\s*indirect)?\s*$", re.MULTILINE
+    r"^\s*require\s+(\S+)\s+\S+\s*(//.*)?$", re.MULTILINE
 )
 _REQUIRE_BLOCK_RE = re.compile(r"require\s*\((.*?)\)", re.DOTALL)
-_BLOCK_LINE_RE = re.compile(r"^\s*(\S+)\s+\S+(\s*//\s*indirect)?\s*$", re.MULTILINE)
+# A trailing comment may be `// indirect` or any note (`// @team/owner`, `// pinned`).
+_BLOCK_LINE_RE = re.compile(r"^\s*(\S+)\s+\S+\s*(//.*)?$", re.MULTILINE)
+_INDIRECT_RE = re.compile(r"\bindirect\b")
 
 
 def _is_external_module(path: str, own_module: str | None) -> bool:
@@ -64,7 +66,8 @@ def parse_go_mod(path: str, text: str) -> list[RawDetection]:
 
     # Single-line requires.
     for m in _REQUIRE_SINGLE_RE.finditer(text):
-        emit(m.group(1), bool(m.group(2)), text.count("\n", 0, m.start()) + 1)
+        indirect = bool(_INDIRECT_RE.search(m.group(2) or ""))
+        emit(m.group(1), indirect, text.count("\n", 0, m.start()) + 1)
     # require ( ... ) blocks.
     for blk in _REQUIRE_BLOCK_RE.finditer(text):
         block_start = blk.start(1)
@@ -73,7 +76,7 @@ def parse_go_mod(path: str, text: str) -> list[RawDetection]:
             if mod in ("require", "(", ")"):
                 continue
             line = text.count("\n", 0, block_start + m.start()) + 1
-            emit(mod, bool(m.group(2)), line)
+            emit(mod, bool(_INDIRECT_RE.search(m.group(2) or "")), line)
     return out
 
 

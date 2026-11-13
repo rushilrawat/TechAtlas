@@ -63,7 +63,9 @@ class TechnologyMatcher:
             exact = self._pkg_exact.setdefault(eco, {})
             prefixes = self._pkg_prefix.setdefault(eco, [])
             for key, target in entries.items():
-                if not isinstance(target, str) or target not in self._valid_ids:
+                if target is None:
+                    pass  # explicit "never map": a same-named package that is something else
+                elif not isinstance(target, str) or target not in self._valid_ids:
                     continue  # a target missing from this dataset never matches
                 if key.endswith("*"):
                     prefixes.append((key[:-1].lower(), target))
@@ -98,10 +100,12 @@ class TechnologyMatcher:
         if hit:
             return hit
 
-        # 1b. curated catalog: exact name, then the longest matching prefix rule.
-        hit = self._pkg_exact.get(ecosystem, {}).get(lower)
-        if hit:
-            return hit
+        # 1b. curated catalog: exact name, then the longest matching prefix rule. A null
+        # target blocks the name fallbacks below (e.g. PyPI "babel" is an i18n library,
+        # not the JavaScript compiler; the "nix" crate is Unix bindings, not NixOS).
+        exact = self._pkg_exact.get(ecosystem, {})
+        if lower in exact:
+            return exact[lower]
         for prefix, target in self._pkg_prefix.get(ecosystem, []):
             if lower.startswith(prefix):
                 return target

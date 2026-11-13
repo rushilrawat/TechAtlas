@@ -9,6 +9,9 @@
     },
     {
       "node_id": "technology:rust"
+    },
+    {
+      "node_id": "technology:cargo"
     }
   ]
 }

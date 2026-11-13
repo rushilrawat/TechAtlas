@@ -1,0 +1,99 @@
+{
+  "repository": "immich-app/immich",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:nestjs"
+    },
+    {
+      "node_id": "technology:svelte"
+    },
+    {
+      "node_id": "technology:sveltekit"
+    },
+    {
+      "node_id": "technology:flutter"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:socketio"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:opentelemetry"
+    },
+    {
+      "node_id": "technology:express",
+      "added_in_review": true,
+      "evidence": "server/package.json: express declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:openapi",
+      "added_in_review": true,
+      "evidence": "mobile/pubspec.yaml: openapi declared in pubspec.yaml (dependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "server/package.json: pg declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react",
+      "added_in_review": true,
+      "evidence": "server/package.json: react declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "mobile/pubspec.yaml: sqlite3 declared in pubspec.yaml (dependencies)"
+    },
+    {
+      "node_id": "technology:testcontainers",
+      "added_in_review": true,
+      "evidence": "server/package.json: testcontainers declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

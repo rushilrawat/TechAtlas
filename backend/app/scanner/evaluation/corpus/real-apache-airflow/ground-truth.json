@@ -1,0 +1,52 @@
+{
+  "repository": "apache/airflow",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:mypy"
+    },
+    {
+      "node_id": "technology:uv"
+    },
+    {
+      "node_id": "technology:airflow",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: apache-airflow-task-sdk declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sentry-sdk declared in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

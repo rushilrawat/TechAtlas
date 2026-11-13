@@ -1,0 +1,100 @@
+{
+  "repository": "directus/directus",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:vue"
+    },
+    {
+      "node_id": "technology:express"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:model-context-protocol"
+    },
+    {
+      "node_id": "technology:opentelemetry"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "api/package.json: @aws-sdk/client-sesv2 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "api/package.json: mysql2 declared in package.json (optionalDependencies)"
+    },
+    {
+      "node_id": "technology:netlify",
+      "added_in_review": true,
+      "evidence": "api/package.json: @netlify/api declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "api/package.json: pg declared in package.json (optionalDependencies)"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "api/package.json: sqlite3 declared in package.json (optionalDependencies)"
+    },
+    {
+      "node_id": "technology:threejs",
+      "added_in_review": true,
+      "evidence": "app/package.json: three declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vite",
+      "added_in_review": true,
+      "evidence": "app/package.json: @vitejs/plugin-vue declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vuex-pinia",
+      "added_in_review": true,
+      "evidence": "app/package.json: pinia declared in package.json (devDependencies)"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

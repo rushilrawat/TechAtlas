@@ -1,0 +1,117 @@
+{
+  "repository": "zulip/zulip",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:django"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:webpack"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:babel",
+      "added_in_review": true,
+      "evidence": "package.json: @babel/core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:jquery",
+      "added_in_review": true,
+      "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sentry",
+      "added_in_review": true,
+      "evidence": "package.json: @sentry/browser declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: boto3 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:firebase",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: firebase-admin declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mongodb",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pymongo declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mypy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: mypy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: openai declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: psycopg2 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:prometheus",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: prometheus-client declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:rabbitmq",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pika declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: redis declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:ruff",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: ruff declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: stripe declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

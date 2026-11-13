@@ -1,0 +1,6 @@
+Real-repository snapshot: https://github.com/go-gitea/gitea
+Fetched 2026-11-13 from raw.githubusercontent.com/go-gitea/gitea/HEAD (default branch HEAD that day).
+Only build manifests and config files are included (no source code, no lockfiles), unmodified.
+Each file remains under its upstream project's license; they are used here only as test input.
+Ground truth was written by hand from these files before the scanner was run on them.
+Files: Dockerfile, go.mod, package.json, playwright.config.ts, pyproject.toml, tailwind.config.ts, tsconfig.json, vite.config.ts, vitest.config.ts

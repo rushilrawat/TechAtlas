@@ -1,0 +1,75 @@
+{
+  "repository": "minio/minio",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/Azure/azure-sdk-for-go/sdk/azcore required in go.mod"
+    },
+    {
+      "node_id": "technology:elasticsearch",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/elastic/go-elasticsearch/v7 required in go.mod"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "go.mod: cloud.google.com/go/storage required in go.mod"
+    },
+    {
+      "node_id": "technology:kafka",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/IBM/sarama required in go.mod"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/go-sql-driver/mysql required in go.mod"
+    },
+    {
+      "node_id": "technology:nats",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/nats-io/nats.go required in go.mod"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/lib/pq required in go.mod"
+    },
+    {
+      "node_id": "technology:prometheus",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/prometheus/client_golang required in go.mod"
+    },
+    {
+      "node_id": "technology:rabbitmq",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/rabbitmq/amqp091-go required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

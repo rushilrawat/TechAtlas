@@ -60,7 +60,8 @@ def _parse_file(path: str, kind: str, text: str,
             out += pyparser.parse_poetry_lock(path, text)
         elif base == "uv.lock":
             out += pyparser.parse_uv_lock(path, text)
-        elif base.startswith("requirements") and base.endswith(".txt"):
+        elif (base.startswith("requirements") and base.endswith(".txt")) or \
+                "requirements" in path.split("/")[:-1] and base.endswith(".txt"):
             out += pyparser.parse_requirements(path, text)
         elif base.startswith("Dockerfile"):
             out += infra.parse_dockerfile(path, text)
@@ -69,12 +70,17 @@ def _parse_file(path: str, kind: str, text: str,
             out += infra.parse_compose(path, text)
         elif base == "Cargo.toml":
             out += rust.parse_cargo_toml(path, text)
+            out += extra.build_tool_detections(path)
         elif base == "Cargo.lock":
             out += rust.parse_cargo_lock(path, text)
         elif base == "pom.xml":
             out += java.parse_pom_xml(path, text)
+            out += extra.build_tool_detections(path)
         elif base in ("build.gradle", "build.gradle.kts"):
             out += java.parse_gradle(path, text, gradle_catalog)
+            out += extra.build_tool_detections(path)
+        elif base in ("settings.gradle", "settings.gradle.kts"):
+            out += extra.build_tool_detections(path)
         elif base == "go.mod":
             out += goparser.parse_go_mod(path, text)
         elif base == "go.sum":
@@ -220,7 +226,10 @@ def build_scan(
             slot["components"].add(comp)
         # Classification signals: a manifest declaration with direct=True -> direct;
         # a lockfile rule (or direct=False) -> transitive candidate (Req 5.1-5.4).
-        if rd.rule in _LOCKFILE_RULES or rd.direct is False:
+        transitive_signal = rd.rule in _LOCKFILE_RULES or rd.direct is False
+        if not transitive_signal:
+            slot["other_evidence"] = True  # a manifest, config file, Dockerfile, import, ...
+        if transitive_signal:
             slot["lockfile_only_seen"] = True
         elif rd.evidence_type in ("dependency_manifest", "source_import", "source_usage") \
                 and rd.direct is True:
@@ -238,9 +247,16 @@ def build_scan(
 
     detections: list[Detection] = []
     tech_count = concept_count = 0
+    transitive_only: list[str] = []
     for node_id, slot in by_node.items():
         if not slot["eids"]:
             continue  # no-zero-evidence invariant (Req 7.3): never emit evidence-less
+        if _classify(slot) == "transitive" and not slot.get("other_evidence"):
+            # Seen only in a lockfile / go.sum / go.mod `// indirect`: a dependency of a
+            # dependency, not something this project uses. On real repositories these were
+            # the largest source of false positives (e.g. every cloud SDK under a Go CLI).
+            transitive_only.append(node_id)
+            continue
         node_type = "concept" if node_id.startswith("concept:") else "technology"
         if node_type == "technology":
             tech_count += 1
@@ -303,6 +319,12 @@ def build_scan(
     if manifests_discovered > 0 and important_skipped == 0 and not cov.tree_truncated:
         cov.notes.append(
             f"All {manifests_discovered} dependency manifest/config file(s) were inspected."
+        )
+    if transitive_only:
+        cov.notes.append(
+            f"{len(transitive_only)} technolog{'y' if len(transitive_only) == 1 else 'ies'} "
+            "appeared only as indirect dependencies (lockfile or go.mod // indirect) and "
+            "were left out."
         )
     if source_skipped > 0:
         cov.notes.append(

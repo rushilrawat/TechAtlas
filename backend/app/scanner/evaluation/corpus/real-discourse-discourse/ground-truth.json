@@ -1,0 +1,68 @@
+{
+  "repository": "discourse/discourse",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:rails"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "Gemfile: aws-sdk-s3 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "Gemfile: mysql2 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:sqlite",
+      "added_in_review": true,
+      "evidence": "Gemfile: sqlite3 declared in Gemfile"
+    },
+    {
+      "node_id": "technology:stripe",
+      "added_in_review": true,
+      "evidence": "Gemfile: stripe declared in Gemfile"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

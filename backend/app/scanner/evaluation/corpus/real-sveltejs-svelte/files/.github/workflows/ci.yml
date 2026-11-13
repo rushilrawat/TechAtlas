@@ -1,0 +1,106 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+# cancel superseded pull request runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  Tests:
+    permissions: {}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        include:
+          # Vitest 4 requires Node 20+, so tests run on 20/22/24. The published
+          # Svelte package still supports Node >=18 (see packages/svelte/package.json).
+          - node-version: 20
+            os: windows-latest
+          - node-version: 20
+            os: macOS-latest
+          - node-version: 20
+            os: ubuntu-latest
+          - node-version: 22
+            os: ubuntu-latest
+          - node-version: 24
+            os: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: pnpm playwright install chromium
+      - run: pnpm test
+        env:
+          CI: true
+  TestNoAsync:
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+        with:
+          node-version: 22
+      - run: pnpm playwright install chromium
+      - run: pnpm test runtime-runes
+        env:
+          CI: true
+          SVELTE_NO_ASYNC: true
+  TSGo:
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+      - name: install tsgo
+        run: cd packages/svelte && pnpm i -D @typescript/native-preview
+      - name: type check
+        run: cd packages/svelte && pnpm check:tsgo
+  Lint:
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+      - name: build and check generated types
+        run: pnpm build && { [ "`git status --porcelain=v1`" == "" ] || (echo "Generated types have changed — please regenerate types locally with \`cd packages/svelte && pnpm generate:types\` and commit the changes after you have reviewed them"; git diff; exit 1); }
+      - name: check browser-support docs page is up to date
+        if: ${{ !cancelled() }}
+        run: '{ [ "`git status --porcelain=v1 documentation/docs/07-misc/.generated/`" == "" ] || (echo "The browser-support docs page is out of date — please regenerate it locally with \`cd packages/svelte && pnpm generate:browser-support\` and commit the changes"; git diff documentation/docs/07-misc/.generated/; exit 1); }'
+      - name: type check
+        if: ${{ !cancelled() }}
+        run: pnpm -r check
+      - name: lint
+        if: ${{ !cancelled() }}
+        run: pnpm lint
+  Benchmarks:
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+      - run: pnpm bench
+        env:
+          CI: true

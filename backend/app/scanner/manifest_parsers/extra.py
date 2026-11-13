@@ -253,6 +253,23 @@ def parse_tool_config(path: str, text: str) -> list[RawDetection]:
     return out
 
 
+# ---------------------------------------------------------------- build tools by manifest
+BUILD_TOOL_FILES: dict[str, tuple[str, str]] = {
+    "Cargo.toml": ("technology:cargo", "Cargo manifest"),
+    "pom.xml": ("technology:maven", "Maven project (pom.xml)"),
+    "build.gradle": ("technology:gradle", "Gradle build script"),
+    "build.gradle.kts": ("technology:gradle", "Gradle build script (Kotlin DSL)"),
+    "settings.gradle": ("technology:gradle", "Gradle settings"),
+    "settings.gradle.kts": ("technology:gradle", "Gradle settings (Kotlin DSL)"),
+}
+
+
+def build_tool_detections(path: str) -> list[RawDetection]:
+    """The manifest itself is evidence of the build tool that reads it."""
+    hit = BUILD_TOOL_FILES.get(path.rsplit("/", 1)[-1])
+    return [_node(hit[0], path, "config.build_tool", hit[1])] if hit else []
+
+
 # ---------------------------------------------------------------- languages by extension
 LANG_EXT: dict[str, str] = {
     ".py": "technology:python", ".ipynb": "technology:jupyter",

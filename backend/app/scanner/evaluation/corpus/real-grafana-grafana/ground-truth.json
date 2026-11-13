@@ -1,0 +1,139 @@
+{
+  "repository": "grafana/grafana",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:redux"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:jest"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:prometheus"
+    },
+    {
+      "node_id": "technology:opentelemetry"
+    },
+    {
+      "node_id": "technology:d3",
+      "added_in_review": true,
+      "evidence": "package.json: d3 declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:esbuild",
+      "added_in_review": true,
+      "evidence": "package.json: esbuild declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:jquery",
+      "added_in_review": true,
+      "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sass",
+      "added_in_review": true,
+      "evidence": "package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:vitest",
+      "added_in_review": true,
+      "evidence": "package.json: vitest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:webpack",
+      "added_in_review": true,
+      "evidence": "package.json: webpack declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:aws",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/aws/aws-sdk-go-v2 required in go.mod"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/Azure/azure-sdk-for-go required in go.mod"
+    },
+    {
+      "node_id": "technology:gcp",
+      "added_in_review": true,
+      "evidence": "go.mod: cloud.google.com/go/aiplatform required in go.mod"
+    },
+    {
+      "node_id": "technology:grpc",
+      "added_in_review": true,
+      "evidence": "go.mod: google.golang.org/grpc required in go.mod"
+    },
+    {
+      "node_id": "technology:kubernetes",
+      "added_in_review": true,
+      "evidence": "go.mod: k8s.io/api required in go.mod"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/go-sql-driver/mysql required in go.mod"
+    },
+    {
+      "node_id": "technology:nats",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/nats-io/nats.go required in go.mod"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/jackc/pgx/v5 required in go.mod"
+    },
+    {
+      "node_id": "technology:protobuf",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/golang/protobuf required in go.mod"
+    },
+    {
+      "node_id": "technology:redis",
+      "added_in_review": true,
+      "evidence": "go.mod: github.com/redis/go-redis/extra/redisotel/v9 required in go.mod"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

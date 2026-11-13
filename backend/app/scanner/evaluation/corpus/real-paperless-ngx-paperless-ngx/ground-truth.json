@@ -1,0 +1,109 @@
+{
+  "repository": "paperless-ngx/paperless-ngx",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:django"
+    },
+    {
+      "node_id": "technology:celery"
+    },
+    {
+      "node_id": "technology:redis"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:angular"
+    },
+    {
+      "node_id": "technology:jest"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:azure",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: azure-ai-documentintelligence declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:eslint",
+      "added_in_review": true,
+      "evidence": "src-ui/package.json: @typescript-eslint/eslint-plugin declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:llamaindex",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: llama-index-core declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mysql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: mysqlclient declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:openai-api",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: openai declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: psycopg declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:prettier",
+      "added_in_review": true,
+      "evidence": "src-ui/package.json: prettier declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:pytorch",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: torch declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:scikit-learn",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: scikit-learn declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mypy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: mypy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

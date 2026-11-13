@@ -1,0 +1,51 @@
+{
+  "repository": "spring-projects/spring-petclinic",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:spring-boot"
+    },
+    {
+      "node_id": "technology:maven"
+    },
+    {
+      "node_id": "technology:gradle"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:mysql"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:junit"
+    },
+    {
+      "node_id": "technology:testcontainers"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

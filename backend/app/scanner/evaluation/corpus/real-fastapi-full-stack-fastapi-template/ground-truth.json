@@ -1,0 +1,79 @@
+{
+  "repository": "fastapi/full-stack-fastapi-template",
+  "source": "real-snapshot",
+  "scoring": {
+    "technologies_only": true,
+    "ignore_languages": true
+  },
+  "expected_detections": [
+    {
+      "node_id": "technology:fastapi"
+    },
+    {
+      "node_id": "technology:docker"
+    },
+    {
+      "node_id": "technology:docker-compose"
+    },
+    {
+      "node_id": "technology:pytest"
+    },
+    {
+      "node_id": "technology:mypy"
+    },
+    {
+      "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:sqlalchemy"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:biome"
+    },
+    {
+      "node_id": "technology:tanstack-query"
+    },
+    {
+      "node_id": "technology:postgresql",
+      "added_in_review": true,
+      "evidence": "backend/pyproject.toml: psycopg declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uv",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    }
+  ],
+  "optional_detections": [
+    {
+      "node_id": "technology:nodejs"
+    },
+    {
+      "node_id": "technology:npm"
+    },
+    {
+      "node_id": "technology:pip"
+    },
+    {
+      "node_id": "technology:json"
+    },
+    {
+      "node_id": "technology:yaml"
+    }
+  ]
+}

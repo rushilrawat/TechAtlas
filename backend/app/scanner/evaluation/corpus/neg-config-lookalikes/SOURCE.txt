@@ -1,0 +1,3 @@
+Synthetic negative fixture (noise trap), hand-written for this corpus; no third-party content.
+Files whose names resemble tool configs but are not: a 'docker-compose.md' doc, 'jest.setup.notes.txt', a 'tailwind' folder of images, and a 'terraform' doc folder.
+Ground truth is human-authored and was written before the scanner was run.
