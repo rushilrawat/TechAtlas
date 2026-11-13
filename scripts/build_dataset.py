@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SEED_DIR = ROOT / "data" / "seed"
 OUTPUT = ROOT / "data" / "graph.json"
-DATASET_VERSION = "0.6.1"
+DATASET_VERSION = "0.6.2"
 
 
 def _load(name: str) -> list:

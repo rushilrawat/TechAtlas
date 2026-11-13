@@ -1,5 +1,5 @@
 {
-  "version": "0.6.1",
+  "version": "0.6.2",
   "nodes": [
     {
       "id": "domain:software-engineering",
@@ -279,6 +279,16 @@
       "importance": 0.6,
       "node_type": "domain",
       "primary_domain": "domain:health-informatics",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "domain:offensive-security",
+      "slug": "offensive-security",
+      "name": "Ethical Hacking & Forensics",
+      "short_description": "Attacking systems with permission, and investigating them after a breach: recon, exploitation, red and blue teams, forensics and reverse engineering.",
+      "importance": 0.65,
+      "node_type": "domain",
+      "primary_domain": "domain:offensive-security",
       "lifecycle_status": "active"
     },
     {
@@ -1546,7 +1556,7 @@
       "slug": "penetration-testing",
       "name": "Penetration Testing",
       "node_type": "concept",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "Authorized simulated attacks to evaluate system security.",
       "lifecycle_status": "active",
       "aliases": [
@@ -7072,7 +7082,7 @@
       "slug": "malware-analysis",
       "name": "Malware Analysis",
       "node_type": "concept",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "Studying malicious software to understand and stop it.",
       "importance": 0.4,
       "wikipedia_title": "Malware analysis"
@@ -7082,7 +7092,7 @@
       "slug": "reverse-engineering",
       "name": "Reverse Engineering",
       "node_type": "concept",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "Working out how software or hardware works from the finished product.",
       "importance": 0.45,
       "wikipedia_title": "Reverse engineering"
@@ -7141,7 +7151,7 @@
       "slug": "phishing",
       "name": "Phishing",
       "node_type": "concept",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "Fraudulent messages that trick people into revealing secrets.",
       "importance": 0.45,
       "wikipedia_title": "Phishing"
@@ -8385,6 +8395,577 @@
       "primary_domain": "domain:testing-tooling",
       "short_description": "Comparing screenshots to catch unintended UI changes.",
       "importance": 0.3
+    },
+    {
+      "id": "concept:ethical-hacking",
+      "slug": "ethical-hacking",
+      "name": "Ethical Hacking",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Breaking into systems with permission to find weaknesses before attackers do.",
+      "importance": 0.6,
+      "wikipedia_title": "White hat (computer security)",
+      "aliases": [
+        "White-Hat Hacking"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:bug-bounty",
+      "slug": "bug-bounty",
+      "name": "Bug Bounty",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Programs that pay outside researchers for responsibly reported vulnerabilities.",
+      "importance": 0.45,
+      "wikipedia_title": "Bug bounty program",
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:responsible-disclosure",
+      "slug": "responsible-disclosure",
+      "name": "Responsible Disclosure",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Reporting a vulnerability privately and giving the vendor time to fix it before going public.",
+      "importance": 0.4,
+      "wikipedia_title": "Coordinated vulnerability disclosure",
+      "aliases": [
+        "Coordinated Vulnerability Disclosure"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:capture-the-flag",
+      "slug": "capture-the-flag",
+      "name": "Capture the Flag (CTF)",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Security competitions where players exploit challenges to find hidden flags.",
+      "importance": 0.5,
+      "wikipedia_title": "Capture the flag (cybersecurity)",
+      "aliases": [
+        "CTF"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:red-teaming",
+      "slug": "red-teaming",
+      "name": "Red Teaming",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Simulating a real adversary end to end to test an organisation's defences.",
+      "importance": 0.5,
+      "wikipedia_title": "Red team",
+      "aliases": [
+        "Red Team"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:blue-teaming",
+      "slug": "blue-teaming",
+      "name": "Blue Teaming",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Defending systems: monitoring, detection and incident response.",
+      "importance": 0.45,
+      "wikipedia_title": "Blue team (computer security)",
+      "aliases": [
+        "Blue Team"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:purple-teaming",
+      "slug": "purple-teaming",
+      "name": "Purple Teaming",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Red and blue teams working together so every attack improves a detection.",
+      "importance": 0.35,
+      "aliases": [
+        "Purple Team"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:vulnerability-assessment",
+      "slug": "vulnerability-assessment",
+      "name": "Vulnerability Assessment",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Systematically finding and ranking known weaknesses across systems.",
+      "importance": 0.45,
+      "wikipedia_title": "Vulnerability assessment (computing)",
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:cve",
+      "slug": "cve",
+      "name": "CVE",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Common Vulnerabilities and Exposures: the public catalogue of known security flaws.",
+      "importance": 0.5,
+      "wikipedia_title": "Common Vulnerabilities and Exposures",
+      "aliases": [
+        "Common Vulnerabilities and Exposures"
+      ],
+      "node_subtype": "standard"
+    },
+    {
+      "id": "concept:cvss",
+      "slug": "cvss",
+      "name": "CVSS",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "A standard 0 to 10 score for how severe a vulnerability is.",
+      "importance": 0.35,
+      "wikipedia_title": "Common Vulnerability Scoring System",
+      "aliases": [
+        "Common Vulnerability Scoring System"
+      ],
+      "node_subtype": "standard"
+    },
+    {
+      "id": "concept:mitre-attack",
+      "slug": "mitre-attack",
+      "name": "MITRE ATT&CK",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A knowledge base of real attacker tactics and techniques used to plan tests and detections.",
+      "importance": 0.5,
+      "wikipedia_title": "ATT&CK",
+      "aliases": [
+        "ATT&CK"
+      ],
+      "node_subtype": "standard"
+    },
+    {
+      "id": "concept:cyber-kill-chain",
+      "slug": "cyber-kill-chain",
+      "name": "Cyber Kill Chain",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "The stages of an intrusion, from reconnaissance to actions on objectives.",
+      "importance": 0.35,
+      "wikipedia_title": "Kill chain (military)",
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:threat-intelligence",
+      "slug": "threat-intelligence",
+      "name": "Threat Intelligence",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Evidence about attackers, their tools and indicators, used to anticipate attacks.",
+      "importance": 0.45,
+      "wikipedia_title": "Cyber threat intelligence",
+      "aliases": [
+        "CTI"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:security-operations-center",
+      "slug": "security-operations-center",
+      "name": "Security Operations Center",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "The team and tooling that watches an organisation's security around the clock.",
+      "importance": 0.4,
+      "wikipedia_title": "Information security operations center",
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:incident-response",
+      "slug": "incident-response",
+      "name": "Incident Response",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Detecting, containing and recovering from a security breach.",
+      "importance": 0.5,
+      "wikipedia_title": "Computer security incident management",
+      "aliases": [
+        "IR"
+      ],
+      "node_subtype": "methodology"
+    },
+    {
+      "id": "concept:endpoint-detection-and-response",
+      "slug": "endpoint-detection-and-response",
+      "name": "Endpoint Detection and Response",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "Agents on laptops and servers that record activity and flag attacks.",
+      "importance": 0.4,
+      "wikipedia_title": "Endpoint detection and response",
+      "aliases": [
+        "EDR"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:honeypot",
+      "slug": "honeypot",
+      "name": "Honeypot",
+      "node_type": "concept",
+      "primary_domain": "domain:security",
+      "short_description": "A decoy system that lures attackers so their behaviour can be studied.",
+      "importance": 0.35,
+      "wikipedia_title": "Honeypot (computing)",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:osint",
+      "slug": "osint",
+      "name": "OSINT",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Open-source intelligence: gathering facts about a target from public sources.",
+      "importance": 0.5,
+      "wikipedia_title": "Open-source intelligence",
+      "aliases": [
+        "Open-Source Intelligence"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:reconnaissance",
+      "slug": "reconnaissance",
+      "name": "Reconnaissance",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Mapping a target's people, domains, hosts and services before any attack.",
+      "importance": 0.45,
+      "aliases": [
+        "Recon"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:network-scanning",
+      "slug": "network-scanning",
+      "name": "Network Scanning",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Probing hosts and ports to see what is running and reachable.",
+      "importance": 0.45,
+      "wikipedia_title": "Port scanner",
+      "aliases": [
+        "Port Scanning"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:google-dorking",
+      "slug": "google-dorking",
+      "name": "Google Dorking",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Using advanced search operators to find exposed files and pages.",
+      "importance": 0.3,
+      "wikipedia_title": "Google hacking",
+      "aliases": [
+        "Google Hacking"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:web-application-security",
+      "slug": "web-application-security",
+      "name": "Web Application Security",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Finding and fixing flaws in web apps, guided by the OWASP Top 10.",
+      "importance": 0.55,
+      "wikipedia_title": "Web application security",
+      "aliases": [
+        "AppSec"
+      ]
+    },
+    {
+      "id": "concept:ssrf",
+      "slug": "ssrf",
+      "name": "Server-Side Request Forgery",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Tricking a server into making requests to places the attacker cannot reach.",
+      "importance": 0.4,
+      "wikipedia_title": "Server-side request forgery",
+      "aliases": [
+        "SSRF"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:idor",
+      "slug": "idor",
+      "name": "Insecure Direct Object Reference",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Reading other users' data by changing an ID the server failed to check.",
+      "importance": 0.35,
+      "wikipedia_title": "Insecure direct object reference",
+      "aliases": [
+        "IDOR"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:exploit-development",
+      "slug": "exploit-development",
+      "name": "Exploit Development",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Turning a bug into reliable code that takes control of a program.",
+      "importance": 0.45,
+      "wikipedia_title": "Exploit (computer security)",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:binary-exploitation",
+      "slug": "binary-exploitation",
+      "name": "Binary Exploitation",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Attacking compiled programs through memory corruption bugs.",
+      "importance": 0.4,
+      "aliases": [
+        "Pwn"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:return-oriented-programming",
+      "slug": "return-oriented-programming",
+      "name": "Return-Oriented Programming",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Chaining existing code fragments to bypass non-executable memory.",
+      "importance": 0.35,
+      "wikipedia_title": "Return-oriented programming",
+      "aliases": [
+        "ROP"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:privilege-escalation",
+      "slug": "privilege-escalation",
+      "name": "Privilege Escalation",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Going from a normal account to administrator or root.",
+      "importance": 0.45,
+      "wikipedia_title": "Privilege escalation",
+      "aliases": [
+        "Privesc"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:lateral-movement",
+      "slug": "lateral-movement",
+      "name": "Lateral Movement",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Moving from the first compromised machine to others on the network.",
+      "importance": 0.35,
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:command-and-control",
+      "slug": "command-and-control",
+      "name": "Command and Control",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "The channel attackers use to steer compromised machines.",
+      "importance": 0.35,
+      "wikipedia_title": "Botnet",
+      "aliases": [
+        "C2"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:active-directory-attacks",
+      "slug": "active-directory-attacks",
+      "name": "Active Directory Attacks",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Abusing Windows domain trust, Kerberos and permissions to take over a network.",
+      "importance": 0.35,
+      "wikipedia_title": "Active Directory",
+      "aliases": [
+        "AD Attacks"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:password-cracking",
+      "slug": "password-cracking",
+      "name": "Password Cracking",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Recovering passwords from their hashes by guessing at enormous speed.",
+      "importance": 0.45,
+      "wikipedia_title": "Password cracking",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:brute-force-attack",
+      "slug": "brute-force-attack",
+      "name": "Brute-Force Attack",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Trying every possible key or password until one works.",
+      "importance": 0.4,
+      "wikipedia_title": "Brute-force attack",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:rainbow-table",
+      "slug": "rainbow-table",
+      "name": "Rainbow Table",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Precomputed hash chains that trade storage for faster password cracking.",
+      "importance": 0.3,
+      "wikipedia_title": "Rainbow table",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:man-in-the-middle-attack",
+      "slug": "man-in-the-middle-attack",
+      "name": "Man-in-the-Middle Attack",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Secretly relaying and altering traffic between two parties.",
+      "importance": 0.45,
+      "wikipedia_title": "Man-in-the-middle attack",
+      "aliases": [
+        "MITM"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:packet-sniffing",
+      "slug": "packet-sniffing",
+      "name": "Packet Sniffing",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Capturing network traffic to read or analyse it.",
+      "importance": 0.4,
+      "wikipedia_title": "Packet analyzer",
+      "aliases": [
+        "Packet Capture"
+      ],
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:wireless-security",
+      "slug": "wireless-security",
+      "name": "Wireless Security",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Attacking and defending Wi-Fi and Bluetooth: handshakes, rogue access points and WPA3.",
+      "importance": 0.4,
+      "wikipedia_title": "Wireless security",
+      "aliases": [
+        "Wi-Fi Hacking"
+      ]
+    },
+    {
+      "id": "concept:social-engineering",
+      "slug": "social-engineering",
+      "name": "Social Engineering",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Manipulating people, not machines, into giving up access.",
+      "importance": 0.5,
+      "wikipedia_title": "Social engineering (security)",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:digital-forensics",
+      "slug": "digital-forensics",
+      "name": "Digital Forensics",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Recovering and analysing evidence from computers and phones.",
+      "importance": 0.5,
+      "wikipedia_title": "Digital forensics",
+      "aliases": [
+        "Computer Forensics"
+      ]
+    },
+    {
+      "id": "concept:memory-forensics",
+      "slug": "memory-forensics",
+      "name": "Memory Forensics",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Analysing a RAM snapshot to find running malware and secrets.",
+      "importance": 0.35,
+      "wikipedia_title": "Memory forensics",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:disk-forensics",
+      "slug": "disk-forensics",
+      "name": "Disk Forensics",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Examining disk images for deleted files, timelines and artefacts.",
+      "importance": 0.3,
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:disassembly",
+      "slug": "disassembly",
+      "name": "Disassembly",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Turning machine code back into readable assembly.",
+      "importance": 0.4,
+      "wikipedia_title": "Disassembler",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:decompilation",
+      "slug": "decompilation",
+      "name": "Decompilation",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Reconstructing higher-level source code from a compiled binary.",
+      "importance": 0.35,
+      "wikipedia_title": "Decompiler",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:dynamic-analysis",
+      "slug": "dynamic-analysis",
+      "name": "Dynamic Analysis",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Studying a program while it runs, with debuggers, hooks and sandboxes.",
+      "importance": 0.4,
+      "wikipedia_title": "Dynamic program analysis",
+      "node_subtype": "technique"
+    },
+    {
+      "id": "concept:steganography",
+      "slug": "steganography",
+      "name": "Steganography",
+      "node_type": "concept",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Hiding data inside images, audio or other innocent-looking files.",
+      "importance": 0.3,
+      "wikipedia_title": "Steganography",
+      "node_subtype": "technique"
     },
     {
       "id": "technology:python",
@@ -10771,7 +11352,7 @@
       "name": "Metasploit",
       "node_type": "technology",
       "node_subtype": "developer_tool",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "A penetration testing framework for developing and executing exploits.",
       "lifecycle_status": "active",
       "official_url": "https://www.metasploit.com",
@@ -10786,7 +11367,7 @@
       "name": "Burp Suite",
       "node_type": "technology",
       "node_subtype": "developer_tool",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "A platform for web application security testing.",
       "lifecycle_status": "active",
       "official_url": "https://portswigger.net/burp",
@@ -10799,7 +11380,7 @@
       "name": "Nmap",
       "node_type": "technology",
       "node_subtype": "developer_tool",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "A network scanner for discovery and security auditing.",
       "lifecycle_status": "active",
       "official_url": "https://nmap.org",
@@ -10845,7 +11426,7 @@
       "name": "OWASP ZAP",
       "node_type": "technology",
       "node_subtype": "developer_tool",
-      "primary_domain": "domain:security",
+      "primary_domain": "domain:offensive-security",
       "short_description": "An open-source web application security scanner.",
       "lifecycle_status": "active",
       "aliases": [
@@ -13721,6 +14302,469 @@
       "lifecycle_status": "active",
       "wikipedia_title": "VisionOS",
       "official_url": "https://developer.apple.com/visionos/"
+    },
+    {
+      "id": "technology:kali-linux",
+      "slug": "kali-linux",
+      "name": "Kali Linux",
+      "node_type": "technology",
+      "node_subtype": "operating_system",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A Linux distribution preloaded with hundreds of penetration-testing tools.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Kali Linux",
+      "official_url": "https://www.kali.org"
+    },
+    {
+      "id": "technology:parrot-os",
+      "slug": "parrot-os",
+      "name": "Parrot OS",
+      "node_type": "technology",
+      "node_subtype": "operating_system",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A security-focused Linux distribution for pentesting and privacy.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Parrot OS",
+      "official_url": "https://parrotsec.org"
+    },
+    {
+      "id": "technology:maltego",
+      "slug": "maltego",
+      "name": "Maltego",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Graph-based OSINT tool that links people, domains and infrastructure.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Maltego",
+      "official_url": "https://www.maltego.com"
+    },
+    {
+      "id": "technology:shodan",
+      "slug": "shodan",
+      "name": "Shodan",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A search engine for internet-connected devices and their open services.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Shodan (website)",
+      "official_url": "https://www.shodan.io"
+    },
+    {
+      "id": "technology:theharvester",
+      "slug": "theharvester",
+      "name": "theHarvester",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Collects emails, subdomains and hosts about a target from public sources.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/laramies/theHarvester"
+    },
+    {
+      "id": "technology:spiderfoot",
+      "slug": "spiderfoot",
+      "name": "SpiderFoot",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Automates OSINT collection across hundreds of data sources.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/smicallef/spiderfoot"
+    },
+    {
+      "id": "technology:sqlmap",
+      "slug": "sqlmap",
+      "name": "sqlmap",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Automatically finds and exploits SQL injection flaws.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Sqlmap",
+      "official_url": "https://sqlmap.org"
+    },
+    {
+      "id": "technology:ffuf",
+      "slug": "ffuf",
+      "name": "ffuf",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A fast web fuzzer for discovering hidden paths, parameters and virtual hosts.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/ffuf/ffuf"
+    },
+    {
+      "id": "technology:nuclei",
+      "slug": "nuclei",
+      "name": "Nuclei",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Template-driven scanner for known vulnerabilities and misconfigurations.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/projectdiscovery/nuclei"
+    },
+    {
+      "id": "technology:nessus",
+      "slug": "nessus",
+      "name": "Nessus",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A widely used commercial vulnerability scanner.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Nessus (software)",
+      "official_url": "https://www.tenable.com/products/nessus"
+    },
+    {
+      "id": "technology:openvas",
+      "slug": "openvas",
+      "name": "OpenVAS",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An open-source vulnerability scanner from Greenbone.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "OpenVAS",
+      "official_url": "https://www.openvas.org"
+    },
+    {
+      "id": "technology:hashcat",
+      "slug": "hashcat",
+      "name": "Hashcat",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "GPU-accelerated password recovery for hundreds of hash types.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Hashcat",
+      "official_url": "https://hashcat.net"
+    },
+    {
+      "id": "technology:john-the-ripper",
+      "slug": "john-the-ripper",
+      "name": "John the Ripper",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A classic, flexible password cracker.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "John the Ripper",
+      "official_url": "https://www.openwall.com/john/"
+    },
+    {
+      "id": "technology:hydra",
+      "slug": "hydra",
+      "name": "THC Hydra",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Online brute-force login tester for many network protocols.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/vanhauser-thc/thc-hydra"
+    },
+    {
+      "id": "technology:aircrack-ng",
+      "slug": "aircrack-ng",
+      "name": "Aircrack-ng",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A suite for capturing and cracking Wi-Fi handshakes.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Aircrack-ng",
+      "official_url": "https://www.aircrack-ng.org"
+    },
+    {
+      "id": "technology:bettercap",
+      "slug": "bettercap",
+      "name": "Bettercap",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A framework for network attacks and monitoring, including man-in-the-middle.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.bettercap.org"
+    },
+    {
+      "id": "technology:gophish",
+      "slug": "gophish",
+      "name": "Gophish",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An open-source phishing simulation toolkit for awareness testing.",
+      "lifecycle_status": "active",
+      "official_url": "https://getgophish.com"
+    },
+    {
+      "id": "technology:bloodhound",
+      "slug": "bloodhound",
+      "name": "BloodHound",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Maps Active Directory relationships as a graph to find attack paths.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/SpecterOps/BloodHound"
+    },
+    {
+      "id": "technology:mimikatz",
+      "slug": "mimikatz",
+      "name": "Mimikatz",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Extracts Windows credentials from memory; a staple of AD testing.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Mimikatz",
+      "official_url": "https://github.com/gentilkiwi/mimikatz"
+    },
+    {
+      "id": "technology:sliver",
+      "slug": "sliver",
+      "name": "Sliver",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An open-source command-and-control framework for red teams.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/BishopFox/sliver"
+    },
+    {
+      "id": "technology:ghidra",
+      "slug": "ghidra",
+      "name": "Ghidra",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "The NSA's free reverse-engineering suite with a decompiler.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Ghidra",
+      "official_url": "https://ghidra-sre.org"
+    },
+    {
+      "id": "technology:ida-pro",
+      "slug": "ida-pro",
+      "name": "IDA Pro",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "The long-standing commercial disassembler and decompiler.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Interactive Disassembler",
+      "official_url": "https://hex-rays.com/ida-pro"
+    },
+    {
+      "id": "technology:radare2",
+      "slug": "radare2",
+      "name": "radare2",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An open-source command-line reverse-engineering framework.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Radare2",
+      "official_url": "https://rada.re"
+    },
+    {
+      "id": "technology:binary-ninja",
+      "slug": "binary-ninja",
+      "name": "Binary Ninja",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A modern reverse-engineering platform with a scriptable IL.",
+      "lifecycle_status": "active",
+      "official_url": "https://binary.ninja"
+    },
+    {
+      "id": "technology:gdb",
+      "slug": "gdb",
+      "name": "GDB",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:systems",
+      "short_description": "The GNU debugger for stepping through and inspecting native programs.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "GNU Debugger",
+      "official_url": "https://www.sourceware.org/gdb/"
+    },
+    {
+      "id": "technology:x64dbg",
+      "slug": "x64dbg",
+      "name": "x64dbg",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An open-source Windows debugger popular for malware analysis.",
+      "lifecycle_status": "active",
+      "official_url": "https://x64dbg.com"
+    },
+    {
+      "id": "technology:frida",
+      "slug": "frida",
+      "name": "Frida",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Dynamic instrumentation: inject scripts into running apps on desktop and mobile.",
+      "lifecycle_status": "active",
+      "official_url": "https://frida.re"
+    },
+    {
+      "id": "technology:pwntools",
+      "slug": "pwntools",
+      "name": "pwntools",
+      "node_type": "technology",
+      "node_subtype": "library",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A Python library for writing CTF and exploit scripts.",
+      "lifecycle_status": "active",
+      "official_url": "https://github.com/Gallopsled/pwntools"
+    },
+    {
+      "id": "technology:autopsy",
+      "slug": "autopsy",
+      "name": "Autopsy",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A graphical digital-forensics platform built on The Sleuth Kit.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Autopsy (software)",
+      "official_url": "https://www.autopsy.com"
+    },
+    {
+      "id": "technology:volatility",
+      "slug": "volatility",
+      "name": "Volatility",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "The standard open-source framework for memory forensics.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Volatility (software)",
+      "official_url": "https://volatilityfoundation.org"
+    },
+    {
+      "id": "technology:yara",
+      "slug": "yara",
+      "name": "YARA",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Pattern rules for identifying and classifying malware samples.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "YARA",
+      "official_url": "https://virustotal.github.io/yara/"
+    },
+    {
+      "id": "technology:cuckoo-sandbox",
+      "slug": "cuckoo-sandbox",
+      "name": "Cuckoo Sandbox",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Runs suspicious files in an isolated VM and reports what they do.",
+      "lifecycle_status": "active",
+      "official_url": "https://cuckoosandbox.org"
+    },
+    {
+      "id": "technology:virustotal",
+      "slug": "virustotal",
+      "name": "VirusTotal",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Scans files and URLs with dozens of antivirus engines at once.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "VirusTotal",
+      "official_url": "https://www.virustotal.com"
+    },
+    {
+      "id": "technology:splunk",
+      "slug": "splunk",
+      "name": "Splunk",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:security",
+      "short_description": "A log analytics platform widely used as a SIEM.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Splunk",
+      "official_url": "https://www.splunk.com"
+    },
+    {
+      "id": "technology:wazuh",
+      "slug": "wazuh",
+      "name": "Wazuh",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:security",
+      "short_description": "Open-source SIEM and endpoint security monitoring.",
+      "lifecycle_status": "active",
+      "official_url": "https://wazuh.com"
+    },
+    {
+      "id": "technology:zeek",
+      "slug": "zeek",
+      "name": "Zeek",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:security",
+      "short_description": "A network monitor that turns traffic into rich, searchable logs.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Zeek",
+      "official_url": "https://zeek.org"
+    },
+    {
+      "id": "technology:suricata",
+      "slug": "suricata",
+      "name": "Suricata",
+      "node_type": "technology",
+      "node_subtype": "developer_tool",
+      "primary_domain": "domain:security",
+      "short_description": "A high-performance open-source IDS and IPS engine.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "Suricata (software)",
+      "official_url": "https://suricata.io"
+    },
+    {
+      "id": "technology:hack-the-box",
+      "slug": "hack-the-box",
+      "name": "Hack The Box",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "An online platform of vulnerable machines and CTF challenges for practice.",
+      "lifecycle_status": "active",
+      "official_url": "https://www.hackthebox.com"
+    },
+    {
+      "id": "technology:tryhackme",
+      "slug": "tryhackme",
+      "name": "TryHackMe",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "Guided, browser-based hacking labs for beginners and up.",
+      "lifecycle_status": "active",
+      "official_url": "https://tryhackme.com"
+    },
+    {
+      "id": "technology:hackerone",
+      "slug": "hackerone",
+      "name": "HackerOne",
+      "node_type": "technology",
+      "node_subtype": "platform",
+      "primary_domain": "domain:offensive-security",
+      "short_description": "A bug bounty and vulnerability disclosure platform.",
+      "lifecycle_status": "active",
+      "wikipedia_title": "HackerOne",
+      "official_url": "https://www.hackerone.com"
     }
   ],
   "edges": [
@@ -16535,32 +17579,12 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "technology:metasploit",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "technology:burp-suite",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "technology:nmap",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
       "source": "technology:snort",
       "target": "domain:security",
       "relationship_type": "belongs_to_domain"
     },
     {
       "source": "technology:let-s-encrypt",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "technology:owasp-zap",
       "target": "domain:security",
       "relationship_type": "belongs_to_domain"
     },
@@ -16602,11 +17626,6 @@
     {
       "source": "technology:dotnet-maui",
       "target": "domain:mobile",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "concept:penetration-testing",
-      "target": "domain:security",
       "relationship_type": "belongs_to_domain"
     },
     {
@@ -22470,16 +23489,6 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "concept:malware-analysis",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "concept:reverse-engineering",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
       "source": "concept:intrusion-detection",
       "target": "domain:security",
       "relationship_type": "belongs_to_domain"
@@ -22496,11 +23505,6 @@
     },
     {
       "source": "concept:ddos-attack",
-      "target": "domain:security",
-      "relationship_type": "belongs_to_domain"
-    },
-    {
-      "source": "concept:phishing",
       "target": "domain:security",
       "relationship_type": "belongs_to_domain"
     },
@@ -27598,6 +28602,1466 @@
       "source": "technology:storybook",
       "target": "concept:visual-regression-testing",
       "relationship_type": "supports"
+    },
+    {
+      "source": "concept:penetration-testing",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:malware-analysis",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:reverse-engineering",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:phishing",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:metasploit",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:burp-suite",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:nmap",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:owasp-zap",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:bug-bounty",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:responsible-disclosure",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:capture-the-flag",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:blue-teaming",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:purple-teaming",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:vulnerability-assessment",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cve",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cvss",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:mitre-attack",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:cyber-kill-chain",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:threat-intelligence",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:security-operations-center",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:incident-response",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:endpoint-detection-and-response",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:honeypot",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:osint",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:reconnaissance",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:network-scanning",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:google-dorking",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:ssrf",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:idor",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:exploit-development",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:binary-exploitation",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:return-oriented-programming",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:privilege-escalation",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:lateral-movement",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:command-and-control",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:active-directory-attacks",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:password-cracking",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:brute-force-attack",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:rainbow-table",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:man-in-the-middle-attack",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:packet-sniffing",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:wireless-security",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:social-engineering",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:digital-forensics",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:memory-forensics",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:disk-forensics",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:disassembly",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:decompilation",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:dynamic-analysis",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:steganography",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:parrot-os",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:maltego",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:shodan",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:theharvester",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:spiderfoot",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:sqlmap",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ffuf",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:nuclei",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:nessus",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:openvas",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:hashcat",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:john-the-ripper",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:hydra",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:aircrack-ng",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:bettercap",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:gophish",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:bloodhound",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:mimikatz",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:sliver",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ghidra",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:ida-pro",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:radare2",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:binary-ninja",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:gdb",
+      "target": "domain:systems",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:x64dbg",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:frida",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:pwntools",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:autopsy",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:volatility",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:yara",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:cuckoo-sandbox",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:virustotal",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:splunk",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:wazuh",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:zeek",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:suricata",
+      "target": "domain:security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:hack-the-box",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:tryhackme",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "technology:hackerone",
+      "target": "domain:offensive-security",
+      "relationship_type": "belongs_to_domain"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:penetration-testing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:red-teaming",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:bug-bounty",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:capture-the-flag",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:reconnaissance",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:social-engineering",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:web-application-security",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:ethical-hacking",
+      "target": "concept:threat-modeling",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:bug-bounty",
+      "target": "concept:responsible-disclosure",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:responsible-disclosure",
+      "target": "concept:cve",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:cve",
+      "target": "concept:cvss",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:cve",
+      "target": "concept:vulnerability-assessment",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:vulnerability-assessment",
+      "target": "concept:penetration-testing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "concept:purple-teaming",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:blue-teaming",
+      "target": "concept:purple-teaming",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "concept:mitre-attack",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "concept:penetration-testing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "concept:ai-red-teaming",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:red-teaming",
+      "target": "concept:command-and-control",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:blue-teaming",
+      "target": "concept:security-operations-center",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:blue-teaming",
+      "target": "concept:incident-response",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:blue-teaming",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:purple-teaming",
+      "target": "concept:mitre-attack",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:mitre-attack",
+      "target": "concept:cyber-kill-chain",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:mitre-attack",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:security-operations-center",
+      "target": "concept:siem",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:security-operations-center",
+      "target": "concept:incident-response",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:incident-response",
+      "target": "concept:digital-forensics",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:incident-response",
+      "target": "concept:incident-management",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:endpoint-detection-and-response",
+      "target": "concept:intrusion-detection",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:endpoint-detection-and-response",
+      "target": "concept:security-operations-center",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:honeypot",
+      "target": "concept:intrusion-detection",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:honeypot",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:capture-the-flag",
+      "target": "concept:binary-exploitation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:capture-the-flag",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:capture-the-flag",
+      "target": "concept:cryptography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:capture-the-flag",
+      "target": "concept:steganography",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reconnaissance",
+      "target": "concept:osint",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reconnaissance",
+      "target": "concept:network-scanning",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reconnaissance",
+      "target": "concept:cyber-kill-chain",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:osint",
+      "target": "concept:google-dorking",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:osint",
+      "target": "concept:social-engineering",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:osint",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:network-scanning",
+      "target": "concept:tcp-ip",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:network-scanning",
+      "target": "concept:vulnerability-assessment",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:sql-injection",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:xss",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:csrf",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:ssrf",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:idor",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:http",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:web-application-security",
+      "target": "concept:bug-bounty",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:idor",
+      "target": "concept:authorization",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:exploit-development",
+      "target": "concept:binary-exploitation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:exploit-development",
+      "target": "concept:cve",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:exploit-development",
+      "target": "concept:fuzzing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:binary-exploitation",
+      "target": "concept:buffer-overflow",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:binary-exploitation",
+      "target": "concept:return-oriented-programming",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:binary-exploitation",
+      "target": "concept:memory-safety",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:privilege-escalation",
+      "target": "concept:penetration-testing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:privilege-escalation",
+      "target": "concept:lateral-movement",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:lateral-movement",
+      "target": "concept:active-directory-attacks",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:lateral-movement",
+      "target": "concept:command-and-control",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:active-directory-attacks",
+      "target": "concept:authentication",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:password-cracking",
+      "target": "concept:hashing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:password-cracking",
+      "target": "concept:brute-force-attack",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:password-cracking",
+      "target": "concept:rainbow-table",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:password-cracking",
+      "target": "concept:penetration-testing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:brute-force-attack",
+      "target": "concept:mfa",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:rainbow-table",
+      "target": "concept:hashing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:man-in-the-middle-attack",
+      "target": "concept:packet-sniffing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:man-in-the-middle-attack",
+      "target": "concept:tls",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:packet-sniffing",
+      "target": "concept:tcp-ip",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:packet-sniffing",
+      "target": "concept:intrusion-detection",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:wireless-security",
+      "target": "concept:wi-fi",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:wireless-security",
+      "target": "concept:bluetooth",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:wireless-security",
+      "target": "concept:man-in-the-middle-attack",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:wireless-security",
+      "target": "concept:password-cracking",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:social-engineering",
+      "target": "concept:phishing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:digital-forensics",
+      "target": "concept:memory-forensics",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:digital-forensics",
+      "target": "concept:disk-forensics",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:digital-forensics",
+      "target": "concept:malware-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:disk-forensics",
+      "target": "concept:file-system",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:memory-forensics",
+      "target": "concept:malware-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:memory-forensics",
+      "target": "concept:memory-management",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reverse-engineering",
+      "target": "concept:disassembly",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reverse-engineering",
+      "target": "concept:decompilation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reverse-engineering",
+      "target": "concept:dynamic-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:reverse-engineering",
+      "target": "concept:exploit-development",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:disassembly",
+      "target": "concept:decompilation",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:decompilation",
+      "target": "concept:compiler-theory",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:dynamic-analysis",
+      "target": "concept:sandboxing",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:dynamic-analysis",
+      "target": "concept:malware-analysis",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:malware-analysis",
+      "target": "concept:disassembly",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:malware-analysis",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:malware-analysis",
+      "target": "concept:command-and-control",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:steganography",
+      "target": "concept:digital-forensics",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "technology:linux",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:parrot-os",
+      "target": "technology:linux",
+      "relationship_type": "built_on"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "technology:parrot-os",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "concept:penetration-testing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "concept:ethical-hacking",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:parrot-os",
+      "target": "concept:ethical-hacking",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "technology:metasploit",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:kali-linux",
+      "target": "technology:nmap",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:maltego",
+      "target": "concept:osint",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:shodan",
+      "target": "concept:osint",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:shodan",
+      "target": "concept:network-scanning",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:theharvester",
+      "target": "concept:osint",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:theharvester",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:spiderfoot",
+      "target": "concept:osint",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:spiderfoot",
+      "target": "technology:maltego",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:nmap",
+      "target": "concept:network-scanning",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:nmap",
+      "target": "concept:reconnaissance",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:sqlmap",
+      "target": "concept:sql-injection",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:sqlmap",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:burp-suite",
+      "target": "concept:web-application-security",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:owasp-zap",
+      "target": "concept:web-application-security",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ffuf",
+      "target": "concept:web-application-security",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ffuf",
+      "target": "technology:go",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:nuclei",
+      "target": "concept:vulnerability-assessment",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:nuclei",
+      "target": "technology:go",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:nessus",
+      "target": "concept:vulnerability-assessment",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:openvas",
+      "target": "concept:vulnerability-assessment",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:openvas",
+      "target": "technology:nessus",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:metasploit",
+      "target": "concept:exploit-development",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:hashcat",
+      "target": "concept:password-cracking",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:hashcat",
+      "target": "concept:brute-force-attack",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:hashcat",
+      "target": "technology:cuda",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:john-the-ripper",
+      "target": "concept:password-cracking",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:john-the-ripper",
+      "target": "technology:hashcat",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:hydra",
+      "target": "concept:brute-force-attack",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:aircrack-ng",
+      "target": "concept:wireless-security",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:aircrack-ng",
+      "target": "concept:packet-sniffing",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:bettercap",
+      "target": "concept:man-in-the-middle-attack",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:bettercap",
+      "target": "concept:wireless-security",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:bettercap",
+      "target": "technology:go",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:wireshark",
+      "target": "concept:packet-sniffing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:gophish",
+      "target": "concept:phishing",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:gophish",
+      "target": "concept:social-engineering",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:bloodhound",
+      "target": "concept:active-directory-attacks",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:bloodhound",
+      "target": "technology:neo4j",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:mimikatz",
+      "target": "concept:active-directory-attacks",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:mimikatz",
+      "target": "concept:privilege-escalation",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:sliver",
+      "target": "concept:command-and-control",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:sliver",
+      "target": "concept:red-teaming",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:sliver",
+      "target": "technology:go",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:ghidra",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ghidra",
+      "target": "concept:decompilation",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:ghidra",
+      "target": "technology:java",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:ida-pro",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:ida-pro",
+      "target": "concept:disassembly",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:ida-pro",
+      "target": "technology:ghidra",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:radare2",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:radare2",
+      "target": "concept:disassembly",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:radare2",
+      "target": "technology:c",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:binary-ninja",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:binary-ninja",
+      "target": "technology:ida-pro",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:gdb",
+      "target": "concept:dynamic-analysis",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:gdb",
+      "target": "concept:binary-exploitation",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:gdb",
+      "target": "technology:gcc",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:x64dbg",
+      "target": "concept:dynamic-analysis",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:x64dbg",
+      "target": "concept:malware-analysis",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:frida",
+      "target": "concept:dynamic-analysis",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:frida",
+      "target": "concept:reverse-engineering",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:pwntools",
+      "target": "concept:binary-exploitation",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:pwntools",
+      "target": "concept:capture-the-flag",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:pwntools",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:pwntools",
+      "target": "technology:gdb",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:autopsy",
+      "target": "concept:disk-forensics",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:autopsy",
+      "target": "concept:digital-forensics",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:volatility",
+      "target": "concept:memory-forensics",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:volatility",
+      "target": "technology:python",
+      "relationship_type": "written_in"
+    },
+    {
+      "source": "technology:yara",
+      "target": "concept:malware-analysis",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:yara",
+      "target": "concept:threat-intelligence",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:cuckoo-sandbox",
+      "target": "concept:malware-analysis",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:cuckoo-sandbox",
+      "target": "concept:dynamic-analysis",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:cuckoo-sandbox",
+      "target": "concept:sandboxing",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:virustotal",
+      "target": "concept:malware-analysis",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:virustotal",
+      "target": "technology:yara",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:splunk",
+      "target": "concept:siem",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:splunk",
+      "target": "concept:security-operations-center",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:wazuh",
+      "target": "concept:siem",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:wazuh",
+      "target": "concept:endpoint-detection-and-response",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:wazuh",
+      "target": "technology:splunk",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:wazuh",
+      "target": "technology:elasticsearch",
+      "relationship_type": "integrates_with"
+    },
+    {
+      "source": "technology:zeek",
+      "target": "concept:intrusion-detection",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:zeek",
+      "target": "concept:packet-sniffing",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:suricata",
+      "target": "concept:intrusion-detection",
+      "relationship_type": "implements"
+    },
+    {
+      "source": "technology:suricata",
+      "target": "technology:snort",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:hack-the-box",
+      "target": "concept:capture-the-flag",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:hack-the-box",
+      "target": "concept:ethical-hacking",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:tryhackme",
+      "target": "concept:capture-the-flag",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "technology:tryhackme",
+      "target": "technology:hack-the-box",
+      "relationship_type": "alternative_to"
+    },
+    {
+      "source": "technology:hackerone",
+      "target": "concept:bug-bounty",
+      "relationship_type": "used_for"
+    },
+    {
+      "source": "technology:hackerone",
+      "target": "concept:responsible-disclosure",
+      "relationship_type": "supports"
+    },
+    {
+      "source": "concept:network-scanning",
+      "target": "concept:osi-model",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "concept:packet-sniffing",
+      "target": "concept:packet-switching",
+      "relationship_type": "related_to"
+    },
+    {
+      "source": "domain:security",
+      "target": "domain:offensive-security",
+      "relationship_type": "has_subdomain"
     }
   ]
 }

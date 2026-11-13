@@ -1264,7 +1264,7 @@
     "slug": "penetration-testing",
     "name": "Penetration Testing",
     "node_type": "concept",
-    "primary_domain": "domain:security",
+    "primary_domain": "domain:offensive-security",
     "short_description": "Authorized simulated attacks to evaluate system security.",
     "lifecycle_status": "active",
     "aliases": [
@@ -6790,7 +6790,7 @@
     "slug": "malware-analysis",
     "name": "Malware Analysis",
     "node_type": "concept",
-    "primary_domain": "domain:security",
+    "primary_domain": "domain:offensive-security",
     "short_description": "Studying malicious software to understand and stop it.",
     "importance": 0.4,
     "wikipedia_title": "Malware analysis"
@@ -6800,7 +6800,7 @@
     "slug": "reverse-engineering",
     "name": "Reverse Engineering",
     "node_type": "concept",
-    "primary_domain": "domain:security",
+    "primary_domain": "domain:offensive-security",
     "short_description": "Working out how software or hardware works from the finished product.",
     "importance": 0.45,
     "wikipedia_title": "Reverse engineering"
@@ -6859,7 +6859,7 @@
     "slug": "phishing",
     "name": "Phishing",
     "node_type": "concept",
-    "primary_domain": "domain:security",
+    "primary_domain": "domain:offensive-security",
     "short_description": "Fraudulent messages that trick people into revealing secrets.",
     "importance": 0.45,
     "wikipedia_title": "Phishing"
@@ -8103,5 +8103,576 @@
     "primary_domain": "domain:testing-tooling",
     "short_description": "Comparing screenshots to catch unintended UI changes.",
     "importance": 0.3
+  },
+  {
+    "id": "concept:ethical-hacking",
+    "slug": "ethical-hacking",
+    "name": "Ethical Hacking",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Breaking into systems with permission to find weaknesses before attackers do.",
+    "importance": 0.6,
+    "wikipedia_title": "White hat (computer security)",
+    "aliases": [
+      "White-Hat Hacking"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:bug-bounty",
+    "slug": "bug-bounty",
+    "name": "Bug Bounty",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Programs that pay outside researchers for responsibly reported vulnerabilities.",
+    "importance": 0.45,
+    "wikipedia_title": "Bug bounty program",
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:responsible-disclosure",
+    "slug": "responsible-disclosure",
+    "name": "Responsible Disclosure",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Reporting a vulnerability privately and giving the vendor time to fix it before going public.",
+    "importance": 0.4,
+    "wikipedia_title": "Coordinated vulnerability disclosure",
+    "aliases": [
+      "Coordinated Vulnerability Disclosure"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:capture-the-flag",
+    "slug": "capture-the-flag",
+    "name": "Capture the Flag (CTF)",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Security competitions where players exploit challenges to find hidden flags.",
+    "importance": 0.5,
+    "wikipedia_title": "Capture the flag (cybersecurity)",
+    "aliases": [
+      "CTF"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:red-teaming",
+    "slug": "red-teaming",
+    "name": "Red Teaming",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Simulating a real adversary end to end to test an organisation's defences.",
+    "importance": 0.5,
+    "wikipedia_title": "Red team",
+    "aliases": [
+      "Red Team"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:blue-teaming",
+    "slug": "blue-teaming",
+    "name": "Blue Teaming",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Defending systems: monitoring, detection and incident response.",
+    "importance": 0.45,
+    "wikipedia_title": "Blue team (computer security)",
+    "aliases": [
+      "Blue Team"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:purple-teaming",
+    "slug": "purple-teaming",
+    "name": "Purple Teaming",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Red and blue teams working together so every attack improves a detection.",
+    "importance": 0.35,
+    "aliases": [
+      "Purple Team"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:vulnerability-assessment",
+    "slug": "vulnerability-assessment",
+    "name": "Vulnerability Assessment",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Systematically finding and ranking known weaknesses across systems.",
+    "importance": 0.45,
+    "wikipedia_title": "Vulnerability assessment (computing)",
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:cve",
+    "slug": "cve",
+    "name": "CVE",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Common Vulnerabilities and Exposures: the public catalogue of known security flaws.",
+    "importance": 0.5,
+    "wikipedia_title": "Common Vulnerabilities and Exposures",
+    "aliases": [
+      "Common Vulnerabilities and Exposures"
+    ],
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:cvss",
+    "slug": "cvss",
+    "name": "CVSS",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A standard 0 to 10 score for how severe a vulnerability is.",
+    "importance": 0.35,
+    "wikipedia_title": "Common Vulnerability Scoring System",
+    "aliases": [
+      "Common Vulnerability Scoring System"
+    ],
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:mitre-attack",
+    "slug": "mitre-attack",
+    "name": "MITRE ATT&CK",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "A knowledge base of real attacker tactics and techniques used to plan tests and detections.",
+    "importance": 0.5,
+    "wikipedia_title": "ATT&CK",
+    "aliases": [
+      "ATT&CK"
+    ],
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:cyber-kill-chain",
+    "slug": "cyber-kill-chain",
+    "name": "Cyber Kill Chain",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "The stages of an intrusion, from reconnaissance to actions on objectives.",
+    "importance": 0.35,
+    "wikipedia_title": "Kill chain (military)",
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:threat-intelligence",
+    "slug": "threat-intelligence",
+    "name": "Threat Intelligence",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Evidence about attackers, their tools and indicators, used to anticipate attacks.",
+    "importance": 0.45,
+    "wikipedia_title": "Cyber threat intelligence",
+    "aliases": [
+      "CTI"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:security-operations-center",
+    "slug": "security-operations-center",
+    "name": "Security Operations Center",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "The team and tooling that watches an organisation's security around the clock.",
+    "importance": 0.4,
+    "wikipedia_title": "Information security operations center",
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:incident-response",
+    "slug": "incident-response",
+    "name": "Incident Response",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Detecting, containing and recovering from a security breach.",
+    "importance": 0.5,
+    "wikipedia_title": "Computer security incident management",
+    "aliases": [
+      "IR"
+    ],
+    "node_subtype": "methodology"
+  },
+  {
+    "id": "concept:endpoint-detection-and-response",
+    "slug": "endpoint-detection-and-response",
+    "name": "Endpoint Detection and Response",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Agents on laptops and servers that record activity and flag attacks.",
+    "importance": 0.4,
+    "wikipedia_title": "Endpoint detection and response",
+    "aliases": [
+      "EDR"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:honeypot",
+    "slug": "honeypot",
+    "name": "Honeypot",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "A decoy system that lures attackers so their behaviour can be studied.",
+    "importance": 0.35,
+    "wikipedia_title": "Honeypot (computing)",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:osint",
+    "slug": "osint",
+    "name": "OSINT",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Open-source intelligence: gathering facts about a target from public sources.",
+    "importance": 0.5,
+    "wikipedia_title": "Open-source intelligence",
+    "aliases": [
+      "Open-Source Intelligence"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:reconnaissance",
+    "slug": "reconnaissance",
+    "name": "Reconnaissance",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Mapping a target's people, domains, hosts and services before any attack.",
+    "importance": 0.45,
+    "aliases": [
+      "Recon"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:network-scanning",
+    "slug": "network-scanning",
+    "name": "Network Scanning",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Probing hosts and ports to see what is running and reachable.",
+    "importance": 0.45,
+    "wikipedia_title": "Port scanner",
+    "aliases": [
+      "Port Scanning"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:google-dorking",
+    "slug": "google-dorking",
+    "name": "Google Dorking",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Using advanced search operators to find exposed files and pages.",
+    "importance": 0.3,
+    "wikipedia_title": "Google hacking",
+    "aliases": [
+      "Google Hacking"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:web-application-security",
+    "slug": "web-application-security",
+    "name": "Web Application Security",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Finding and fixing flaws in web apps, guided by the OWASP Top 10.",
+    "importance": 0.55,
+    "wikipedia_title": "Web application security",
+    "aliases": [
+      "AppSec"
+    ]
+  },
+  {
+    "id": "concept:ssrf",
+    "slug": "ssrf",
+    "name": "Server-Side Request Forgery",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Tricking a server into making requests to places the attacker cannot reach.",
+    "importance": 0.4,
+    "wikipedia_title": "Server-side request forgery",
+    "aliases": [
+      "SSRF"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:idor",
+    "slug": "idor",
+    "name": "Insecure Direct Object Reference",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Reading other users' data by changing an ID the server failed to check.",
+    "importance": 0.35,
+    "wikipedia_title": "Insecure direct object reference",
+    "aliases": [
+      "IDOR"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:exploit-development",
+    "slug": "exploit-development",
+    "name": "Exploit Development",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Turning a bug into reliable code that takes control of a program.",
+    "importance": 0.45,
+    "wikipedia_title": "Exploit (computer security)",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:binary-exploitation",
+    "slug": "binary-exploitation",
+    "name": "Binary Exploitation",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Attacking compiled programs through memory corruption bugs.",
+    "importance": 0.4,
+    "aliases": [
+      "Pwn"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:return-oriented-programming",
+    "slug": "return-oriented-programming",
+    "name": "Return-Oriented Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Chaining existing code fragments to bypass non-executable memory.",
+    "importance": 0.35,
+    "wikipedia_title": "Return-oriented programming",
+    "aliases": [
+      "ROP"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:privilege-escalation",
+    "slug": "privilege-escalation",
+    "name": "Privilege Escalation",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Going from a normal account to administrator or root.",
+    "importance": 0.45,
+    "wikipedia_title": "Privilege escalation",
+    "aliases": [
+      "Privesc"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:lateral-movement",
+    "slug": "lateral-movement",
+    "name": "Lateral Movement",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Moving from the first compromised machine to others on the network.",
+    "importance": 0.35,
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:command-and-control",
+    "slug": "command-and-control",
+    "name": "Command and Control",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "The channel attackers use to steer compromised machines.",
+    "importance": 0.35,
+    "wikipedia_title": "Botnet",
+    "aliases": [
+      "C2"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:active-directory-attacks",
+    "slug": "active-directory-attacks",
+    "name": "Active Directory Attacks",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Abusing Windows domain trust, Kerberos and permissions to take over a network.",
+    "importance": 0.35,
+    "wikipedia_title": "Active Directory",
+    "aliases": [
+      "AD Attacks"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:password-cracking",
+    "slug": "password-cracking",
+    "name": "Password Cracking",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Recovering passwords from their hashes by guessing at enormous speed.",
+    "importance": 0.45,
+    "wikipedia_title": "Password cracking",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:brute-force-attack",
+    "slug": "brute-force-attack",
+    "name": "Brute-Force Attack",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Trying every possible key or password until one works.",
+    "importance": 0.4,
+    "wikipedia_title": "Brute-force attack",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:rainbow-table",
+    "slug": "rainbow-table",
+    "name": "Rainbow Table",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Precomputed hash chains that trade storage for faster password cracking.",
+    "importance": 0.3,
+    "wikipedia_title": "Rainbow table",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:man-in-the-middle-attack",
+    "slug": "man-in-the-middle-attack",
+    "name": "Man-in-the-Middle Attack",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Secretly relaying and altering traffic between two parties.",
+    "importance": 0.45,
+    "wikipedia_title": "Man-in-the-middle attack",
+    "aliases": [
+      "MITM"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:packet-sniffing",
+    "slug": "packet-sniffing",
+    "name": "Packet Sniffing",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Capturing network traffic to read or analyse it.",
+    "importance": 0.4,
+    "wikipedia_title": "Packet analyzer",
+    "aliases": [
+      "Packet Capture"
+    ],
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:wireless-security",
+    "slug": "wireless-security",
+    "name": "Wireless Security",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Attacking and defending Wi-Fi and Bluetooth: handshakes, rogue access points and WPA3.",
+    "importance": 0.4,
+    "wikipedia_title": "Wireless security",
+    "aliases": [
+      "Wi-Fi Hacking"
+    ]
+  },
+  {
+    "id": "concept:social-engineering",
+    "slug": "social-engineering",
+    "name": "Social Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Manipulating people, not machines, into giving up access.",
+    "importance": 0.5,
+    "wikipedia_title": "Social engineering (security)",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:digital-forensics",
+    "slug": "digital-forensics",
+    "name": "Digital Forensics",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Recovering and analysing evidence from computers and phones.",
+    "importance": 0.5,
+    "wikipedia_title": "Digital forensics",
+    "aliases": [
+      "Computer Forensics"
+    ]
+  },
+  {
+    "id": "concept:memory-forensics",
+    "slug": "memory-forensics",
+    "name": "Memory Forensics",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Analysing a RAM snapshot to find running malware and secrets.",
+    "importance": 0.35,
+    "wikipedia_title": "Memory forensics",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:disk-forensics",
+    "slug": "disk-forensics",
+    "name": "Disk Forensics",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Examining disk images for deleted files, timelines and artefacts.",
+    "importance": 0.3,
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:disassembly",
+    "slug": "disassembly",
+    "name": "Disassembly",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Turning machine code back into readable assembly.",
+    "importance": 0.4,
+    "wikipedia_title": "Disassembler",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:decompilation",
+    "slug": "decompilation",
+    "name": "Decompilation",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Reconstructing higher-level source code from a compiled binary.",
+    "importance": 0.35,
+    "wikipedia_title": "Decompiler",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:dynamic-analysis",
+    "slug": "dynamic-analysis",
+    "name": "Dynamic Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Studying a program while it runs, with debuggers, hooks and sandboxes.",
+    "importance": 0.4,
+    "wikipedia_title": "Dynamic program analysis",
+    "node_subtype": "technique"
+  },
+  {
+    "id": "concept:steganography",
+    "slug": "steganography",
+    "name": "Steganography",
+    "node_type": "concept",
+    "primary_domain": "domain:offensive-security",
+    "short_description": "Hiding data inside images, audio or other innocent-looking files.",
+    "importance": 0.3,
+    "wikipedia_title": "Steganography",
+    "node_subtype": "technique"
   }
 ]

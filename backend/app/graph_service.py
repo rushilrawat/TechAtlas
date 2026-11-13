@@ -77,6 +77,7 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:fintech": "#a28cf2",               # deep lavender (within Interdisciplinary)
     "domain:health-informatics": "#ddd3ff",    # pale lavender (within Interdisciplinary)
     "domain:computer-graphics": "#ffb0c2",     # light coral (within Game Dev)
+    "domain:offensive-security": "#ff8fa3",       # light crimson (within Security)
 }
 FALLBACK_COLOR = "#9aa5ce"
 

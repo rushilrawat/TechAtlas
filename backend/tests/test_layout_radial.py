@@ -54,7 +54,8 @@ def test_nested_subdomains_are_centered_constellations():
               "domain:computational-biology": "domain:interdisciplinary",
               "domain:fintech": "domain:interdisciplinary",
               "domain:health-informatics": "domain:interdisciplinary",
-              "domain:computer-graphics": "domain:gamedev"}
+              "domain:computer-graphics": "domain:gamedev",
+              "domain:offensive-security": "domain:security"}
     for sub, parent in nested.items():
         assert coords[sub]["ring"] in (2, 3)
         dist = math.dist((coords[sub]["x"], coords[sub]["y"]),
