@@ -1,0 +1,2849 @@
+[
+  {
+    "title": "How a web request works",
+    "steps": [
+      {
+        "id": "concept:dns",
+        "caption": "DNS translates a name into a destination."
+      },
+      {
+        "id": "domain:networks",
+        "caption": "The network carries the request to a server."
+      },
+      {
+        "id": "concept:http",
+        "caption": "HTTP defines the request and response."
+      },
+      {
+        "id": "concept:rest-api",
+        "caption": "A REST API exposes resources over HTTP."
+      },
+      {
+        "id": "technology:fastapi",
+        "caption": "A server framework implements the API."
+      }
+    ]
+  },
+  {
+    "title": "From Python to model serving",
+    "steps": [
+      {
+        "id": "technology:python",
+        "caption": "Start with Python's data and model ecosystem."
+      },
+      {
+        "id": "technology:pytorch",
+        "caption": "Train and run neural networks with PyTorch."
+      },
+      {
+        "id": "technology:vllm",
+        "caption": "Serve language models efficiently with vLLM."
+      },
+      {
+        "id": "concept:model-inference",
+        "caption": "Inference turns a trained model into predictions."
+      }
+    ]
+  },
+  {
+    "title": "Ship a modern web app",
+    "steps": [
+      {
+        "id": "technology:javascript",
+        "caption": "JavaScript runs everywhere a browser does."
+      },
+      {
+        "id": "technology:typescript",
+        "caption": "TypeScript adds types that catch mistakes before users do."
+      },
+      {
+        "id": "technology:react",
+        "caption": "React builds the interface from reusable components."
+      },
+      {
+        "id": "technology:nextjs",
+        "caption": "Next.js adds routing and server-side rendering on top of React."
+      },
+      {
+        "id": "technology:vercel",
+        "caption": "Vercel deploys and hosts the finished app."
+      }
+    ]
+  },
+  {
+    "title": "From commit to production",
+    "steps": [
+      {
+        "id": "technology:git",
+        "caption": "Every change starts as a commit in version control."
+      },
+      {
+        "id": "technology:github-actions",
+        "caption": "GitHub Actions runs builds and tests on each push."
+      },
+      {
+        "id": "concept:ci-cd",
+        "caption": "CI/CD turns passing builds into releases automatically."
+      },
+      {
+        "id": "concept:gitops",
+        "caption": "GitOps treats the repository as the source of truth for deploys."
+      },
+      {
+        "id": "technology:argocd",
+        "caption": "Argo CD syncs the cluster with what the repository declares."
+      },
+      {
+        "id": "technology:kubernetes",
+        "caption": "Kubernetes runs and scales the deployed containers."
+      }
+    ]
+  },
+  {
+    "title": "LLM apps with retrieval",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "Large language models generate text from a prompt."
+      },
+      {
+        "id": "concept:retrieval-augmented-generation",
+        "caption": "RAG grounds answers in documents fetched at query time."
+      },
+      {
+        "id": "concept:vector-embeddings",
+        "caption": "Embeddings turn text into vectors that can be compared."
+      },
+      {
+        "id": "concept:vector-databases",
+        "caption": "Vector databases search those embeddings by similarity."
+      },
+      {
+        "id": "technology:pgvector",
+        "caption": "pgvector brings vector search into PostgreSQL."
+      },
+      {
+        "id": "technology:postgresql",
+        "caption": "PostgreSQL stores the data alongside its embeddings."
+      }
+    ]
+  },
+  {
+    "title": "Streaming data pipelines",
+    "steps": [
+      {
+        "id": "technology:kafka",
+        "caption": "Kafka carries a continuous stream of events."
+      },
+      {
+        "id": "concept:stream-processing",
+        "caption": "Stream processing transforms events as they arrive."
+      },
+      {
+        "id": "technology:spark",
+        "caption": "Spark processes large datasets in batches or streams."
+      },
+      {
+        "id": "technology:airflow",
+        "caption": "Airflow schedules and orchestrates the pipeline's jobs."
+      },
+      {
+        "id": "concept:data-pipeline",
+        "caption": "Together they form a data pipeline from source to warehouse."
+      }
+    ]
+  },
+  {
+    "title": "Securing logins",
+    "steps": [
+      {
+        "id": "concept:authentication",
+        "caption": "Authentication proves who a user is."
+      },
+      {
+        "id": "concept:mfa",
+        "caption": "Multi-factor authentication adds a second proof beyond a password."
+      },
+      {
+        "id": "technology:keycloak",
+        "caption": "Keycloak is an open-source identity server that handles both."
+      },
+      {
+        "id": "concept:oauth2",
+        "caption": "OAuth 2.0 lets apps act for a user without seeing their password."
+      }
+    ]
+  },
+  {
+    "title": "How HTTPS stays private",
+    "steps": [
+      {
+        "id": "concept:cryptography",
+        "caption": "Cryptography protects data from being read or altered."
+      },
+      {
+        "id": "concept:public-key-cryptography",
+        "caption": "Public-key cryptography lets strangers agree on secrets."
+      },
+      {
+        "id": "concept:tls",
+        "caption": "TLS uses it to encrypt every HTTPS connection."
+      },
+      {
+        "id": "technology:let-s-encrypt",
+        "caption": "Let's Encrypt issues the free certificates TLS relies on."
+      }
+    ]
+  },
+  {
+    "title": "Infrastructure as code",
+    "steps": [
+      {
+        "id": "technology:aws",
+        "caption": "Cloud providers like AWS rent compute, storage and networking."
+      },
+      {
+        "id": "technology:terraform",
+        "caption": "Terraform describes that infrastructure in versioned files."
+      },
+      {
+        "id": "concept:infrastructure-as-code",
+        "caption": "Infrastructure as code makes environments reproducible."
+      },
+      {
+        "id": "technology:ansible",
+        "caption": "Ansible configures the machines once they exist."
+      }
+    ]
+  },
+  {
+    "title": "Building games",
+    "steps": [
+      {
+        "id": "technology:cpp",
+        "caption": "C++ powers most performance-critical game code."
+      },
+      {
+        "id": "technology:unity",
+        "caption": "Unity is a widely used engine for 2D, 3D and mobile games."
+      },
+      {
+        "id": "concept:game-engines",
+        "caption": "Game engines bundle rendering, physics, audio and input."
+      },
+      {
+        "id": "technology:godot",
+        "caption": "Godot is a lightweight open-source alternative."
+      }
+    ]
+  },
+  {
+    "title": "How robots find their way",
+    "steps": [
+      {
+        "id": "concept:robot-localization",
+        "caption": "Localization estimates where the robot is."
+      },
+      {
+        "id": "concept:slam",
+        "caption": "SLAM builds a map while localizing within it."
+      },
+      {
+        "id": "concept:occupancy-grid",
+        "caption": "An occupancy grid records which cells are free or blocked."
+      }
+    ]
+  },
+  {
+    "title": "How a quantum computer computes",
+    "steps": [
+      {
+        "id": "concept:qubit",
+        "caption": "A qubit can hold a blend of 0 and 1 at the same time."
+      },
+      {
+        "id": "concept:quantum-computing",
+        "caption": "Quantum computers manipulate many qubits together."
+      },
+      {
+        "id": "concept:quantum-gate",
+        "caption": "Quantum gates are the operations applied to qubits."
+      },
+      {
+        "id": "concept:quantum-circuit",
+        "caption": "Gates in sequence form a quantum circuit, the program."
+      },
+      {
+        "id": "technology:qiskit",
+        "caption": "Qiskit lets you write circuits in Python."
+      },
+      {
+        "id": "technology:ibm-quantum-platform",
+        "caption": "IBM Quantum runs them on real superconducting hardware."
+      }
+    ]
+  },
+  {
+    "title": "Why quantum threatens encryption",
+    "steps": [
+      {
+        "id": "concept:quantum-algorithms",
+        "caption": "Some algorithms only run efficiently on quantum hardware."
+      },
+      {
+        "id": "concept:shors-algorithm",
+        "caption": "Shor's algorithm factors large numbers in polynomial time."
+      },
+      {
+        "id": "concept:public-key-cryptography",
+        "caption": "That breaks the public-key schemes behind RSA."
+      },
+      {
+        "id": "concept:cryptography",
+        "caption": "Cryptographers are preparing replacements now."
+      },
+      {
+        "id": "concept:post-quantum-cryptography",
+        "caption": "Post-quantum cryptography resists attacks by quantum computers."
+      }
+    ]
+  },
+  {
+    "title": "One codebase, every phone",
+    "steps": [
+      {
+        "id": "technology:react",
+        "caption": "Start from a React web skill set."
+      },
+      {
+        "id": "technology:react-native",
+        "caption": "React Native renders those components as native mobile views."
+      },
+      {
+        "id": "concept:cross-platform-development",
+        "caption": "Cross-platform development ships one codebase to iOS and Android."
+      },
+      {
+        "id": "technology:flutter",
+        "caption": "Flutter is the main alternative, drawing its own UI."
+      },
+      {
+        "id": "technology:dart",
+        "caption": "Flutter apps are written in Dart."
+      }
+    ]
+  },
+  {
+    "title": "Native iOS and Android UI",
+    "steps": [
+      {
+        "id": "technology:swift",
+        "caption": "Swift is Apple's language for iOS and macOS."
+      },
+      {
+        "id": "technology:swiftui",
+        "caption": "SwiftUI builds Apple interfaces declaratively."
+      },
+      {
+        "id": "technology:jetpack-compose",
+        "caption": "Jetpack Compose is Android's declarative counterpart."
+      },
+      {
+        "id": "technology:kotlin",
+        "caption": "Compose apps are written in Kotlin."
+      }
+    ]
+  },
+  {
+    "title": "Choosing a database",
+    "steps": [
+      {
+        "id": "concept:sql",
+        "caption": "SQL queries tables with a shared, declarative language."
+      },
+      {
+        "id": "concept:relational-databases",
+        "caption": "Relational databases store data as related tables."
+      },
+      {
+        "id": "technology:postgresql",
+        "caption": "PostgreSQL is the go-to open-source relational database."
+      },
+      {
+        "id": "concept:acid",
+        "caption": "ACID transactions keep its data consistent through failures."
+      }
+    ]
+  },
+  {
+    "title": "Beyond tables: NoSQL",
+    "steps": [
+      {
+        "id": "concept:nosql",
+        "caption": "NoSQL trades fixed schemas for scale and flexibility."
+      },
+      {
+        "id": "technology:mongodb",
+        "caption": "MongoDB stores flexible JSON-like documents."
+      },
+      {
+        "id": "technology:express",
+        "caption": "It pairs naturally with Node.js servers like Express."
+      },
+      {
+        "id": "technology:nodejs",
+        "caption": "Node.js runs JavaScript on the server."
+      }
+    ]
+  },
+  {
+    "title": "Python for data science",
+    "steps": [
+      {
+        "id": "technology:python",
+        "caption": "Python is the default language of data work."
+      },
+      {
+        "id": "technology:pandas",
+        "caption": "pandas loads and cleans tables of data."
+      },
+      {
+        "id": "technology:numpy",
+        "caption": "NumPy does the fast numerical work underneath."
+      },
+      {
+        "id": "technology:matplotlib",
+        "caption": "Matplotlib turns results into charts."
+      }
+    ]
+  },
+  {
+    "title": "Deep learning stack",
+    "steps": [
+      {
+        "id": "concept:neural-networks",
+        "caption": "Neural networks learn patterns from examples."
+      },
+      {
+        "id": "concept:deep-learning",
+        "caption": "Deep learning stacks many layers to learn rich features."
+      },
+      {
+        "id": "technology:pytorch",
+        "caption": "PyTorch is the most widely used deep learning framework."
+      },
+      {
+        "id": "technology:cuda",
+        "caption": "CUDA runs the heavy math on NVIDIA GPUs."
+      },
+      {
+        "id": "concept:parallel-computing",
+        "caption": "That is parallel computing at massive scale."
+      }
+    ]
+  },
+  {
+    "title": "Seeing inside production",
+    "steps": [
+      {
+        "id": "concept:observability",
+        "caption": "Observability answers what a running system is doing."
+      },
+      {
+        "id": "technology:prometheus",
+        "caption": "Prometheus collects metrics over time."
+      },
+      {
+        "id": "technology:grafana",
+        "caption": "Grafana turns metrics and logs into dashboards."
+      },
+      {
+        "id": "technology:loki",
+        "caption": "Loki stores the logs Grafana searches."
+      }
+    ]
+  },
+  {
+    "title": "Containers, step by step",
+    "steps": [
+      {
+        "id": "concept:virtualization",
+        "caption": "Virtualization runs isolated machines on shared hardware."
+      },
+      {
+        "id": "concept:containerization",
+        "caption": "Containers isolate apps more lightly than full VMs."
+      },
+      {
+        "id": "technology:docker",
+        "caption": "Docker builds and runs containers."
+      },
+      {
+        "id": "technology:kubernetes",
+        "caption": "Kubernetes schedules containers across a cluster."
+      },
+      {
+        "id": "technology:helm",
+        "caption": "Helm packages apps for Kubernetes."
+      }
+    ]
+  },
+  {
+    "title": "What computers can compute",
+    "steps": [
+      {
+        "id": "concept:finite-automata",
+        "caption": "Finite automata are the simplest machines, with no memory."
+      },
+      {
+        "id": "concept:automata-theory",
+        "caption": "Automata theory ranks machines by what they can recognize."
+      },
+      {
+        "id": "concept:turing-machine",
+        "caption": "The Turing machine defines what is computable at all."
+      }
+    ]
+  },
+  {
+    "title": "Hard problems",
+    "steps": [
+      {
+        "id": "concept:computational-complexity",
+        "caption": "Complexity theory classifies problems by the resources they need."
+      },
+      {
+        "id": "concept:complexity-class-np",
+        "caption": "NP holds problems whose answers are quick to check."
+      },
+      {
+        "id": "concept:np-completeness",
+        "caption": "NP-complete problems are the hardest in NP."
+      },
+      {
+        "id": "concept:approximation-algorithms",
+        "caption": "Approximation algorithms find good-enough answers fast."
+      }
+    ]
+  },
+  {
+    "title": "Designing algorithms",
+    "steps": [
+      {
+        "id": "concept:algorithms",
+        "caption": "An algorithm is a precise recipe for solving a problem."
+      },
+      {
+        "id": "concept:algorithm-design",
+        "caption": "Design techniques give reusable ways to build them."
+      },
+      {
+        "id": "concept:dynamic-programming",
+        "caption": "Dynamic programming reuses answers to overlapping subproblems."
+      }
+    ]
+  },
+  {
+    "title": "Inside the operating system",
+    "steps": [
+      {
+        "id": "concept:process-scheduling",
+        "caption": "The scheduler decides which program runs next."
+      },
+      {
+        "id": "concept:operating-systems",
+        "caption": "The operating system shares the hardware between programs."
+      },
+      {
+        "id": "concept:system-call",
+        "caption": "System calls are the doorway from user code into the kernel."
+      }
+    ]
+  },
+  {
+    "title": "From source code to machine code",
+    "steps": [
+      {
+        "id": "technology:c",
+        "caption": "C is close to the hardware and still everywhere."
+      },
+      {
+        "id": "technology:gcc",
+        "caption": "GCC compiles C into machine code."
+      },
+      {
+        "id": "concept:compilation",
+        "caption": "Compilation translates source into instructions a CPU runs."
+      }
+    ]
+  },
+  {
+    "title": "How a CPU goes fast",
+    "steps": [
+      {
+        "id": "concept:branch-prediction",
+        "caption": "Branch prediction guesses which way the code will go."
+      },
+      {
+        "id": "concept:cpu-pipelining",
+        "caption": "Good guesses keep the instruction pipeline full."
+      },
+      {
+        "id": "concept:superscalar",
+        "caption": "Superscalar CPUs issue several instructions per cycle."
+      },
+      {
+        "id": "concept:out-of-order-execution",
+        "caption": "Out-of-order execution runs whatever is ready first."
+      }
+    ]
+  },
+  {
+    "title": "Instruction sets",
+    "steps": [
+      {
+        "id": "technology:arm",
+        "caption": "ARM dominates phones and is spreading to laptops and servers."
+      },
+      {
+        "id": "concept:isa",
+        "caption": "An instruction set is the contract between software and the CPU."
+      },
+      {
+        "id": "technology:risc-v",
+        "caption": "RISC-V is a free, open instruction set."
+      }
+    ]
+  },
+  {
+    "title": "Embedded and real-time",
+    "steps": [
+      {
+        "id": "technology:esp32",
+        "caption": "The ESP32 is a popular Wi-Fi capable microcontroller."
+      },
+      {
+        "id": "concept:microcontroller",
+        "caption": "A microcontroller is a tiny computer on one chip."
+      },
+      {
+        "id": "concept:spi",
+        "caption": "SPI is a fast serial bus for talking to sensors and displays."
+      }
+    ]
+  },
+  {
+    "title": "Real-time operating systems",
+    "steps": [
+      {
+        "id": "concept:real-time-scheduling",
+        "caption": "Real-time scheduling runs tasks predictably, on deadline."
+      },
+      {
+        "id": "concept:rtos",
+        "caption": "A real-time OS guarantees those deadlines are met."
+      },
+      {
+        "id": "technology:freertos",
+        "caption": "FreeRTOS runs on billions of microcontrollers."
+      }
+    ]
+  },
+  {
+    "title": "Testing with confidence",
+    "steps": [
+      {
+        "id": "concept:test-driven-development",
+        "caption": "Test-driven development writes the test before the code."
+      },
+      {
+        "id": "concept:unit-testing",
+        "caption": "Unit tests check small pieces in isolation."
+      },
+      {
+        "id": "technology:vitest",
+        "caption": "Vitest runs fast unit tests for Vite projects."
+      },
+      {
+        "id": "technology:jest",
+        "caption": "Jest is the long-standing JavaScript alternative."
+      }
+    ]
+  },
+  {
+    "title": "Testing the whole app",
+    "steps": [
+      {
+        "id": "concept:end-to-end-testing",
+        "caption": "End-to-end tests drive the real app like a user would."
+      },
+      {
+        "id": "technology:playwright",
+        "caption": "Playwright automates Chromium, Firefox and WebKit."
+      },
+      {
+        "id": "technology:cypress",
+        "caption": "Cypress is a popular alternative with an interactive runner."
+      }
+    ]
+  },
+  {
+    "title": "Moving a robot arm",
+    "steps": [
+      {
+        "id": "concept:inverse-kinematics",
+        "caption": "Inverse kinematics finds joint angles that reach a target."
+      },
+      {
+        "id": "concept:robot-kinematics",
+        "caption": "Kinematics relates joint angles to where the arm ends up."
+      },
+      {
+        "id": "concept:robot-dynamics",
+        "caption": "Dynamics models the forces needed to move."
+      }
+    ]
+  },
+  {
+    "title": "Keeping a robot on course",
+    "steps": [
+      {
+        "id": "concept:control-theory",
+        "caption": "Control theory keeps a system near its goal."
+      },
+      {
+        "id": "concept:feedback-control",
+        "caption": "Feedback control corrects using measured error."
+      },
+      {
+        "id": "concept:pid-control",
+        "caption": "PID is the most common feedback controller."
+      }
+    ]
+  },
+  {
+    "title": "Building an API",
+    "steps": [
+      {
+        "id": "concept:http",
+        "caption": "HTTP carries requests and responses on the web."
+      },
+      {
+        "id": "concept:rest-api",
+        "caption": "REST organizes an API around resources and verbs."
+      },
+      {
+        "id": "technology:django",
+        "caption": "Django is a batteries-included Python web framework."
+      },
+      {
+        "id": "concept:orm",
+        "caption": "Its ORM maps Python objects to database rows."
+      }
+    ]
+  },
+  {
+    "title": "Microservices",
+    "steps": [
+      {
+        "id": "concept:microservices",
+        "caption": "Microservices split a system into small deployable services."
+      },
+      {
+        "id": "technology:grpc",
+        "caption": "gRPC gives services fast, typed calls to each other."
+      },
+      {
+        "id": "concept:http",
+        "caption": "It runs over HTTP/2."
+      }
+    ]
+  },
+  {
+    "title": "How the internet moves packets",
+    "steps": [
+      {
+        "id": "concept:ipv4",
+        "caption": "IPv4 addresses route packets between networks."
+      },
+      {
+        "id": "concept:tcp-ip",
+        "caption": "TCP/IP is the protocol suite the internet runs on."
+      },
+      {
+        "id": "concept:congestion-control",
+        "caption": "Congestion control keeps senders from overwhelming the network."
+      }
+    ]
+  },
+  {
+    "title": "How Bitcoin works",
+    "steps": [
+      {
+        "id": "concept:hashing",
+        "caption": "Hashing fingerprints data so any change is obvious."
+      },
+      {
+        "id": "concept:merkle-tree",
+        "caption": "A Merkle tree hashes a whole block of transactions into one root."
+      },
+      {
+        "id": "concept:blockchain",
+        "caption": "Each block links to the last by hash, forming a blockchain."
+      },
+      {
+        "id": "technology:bitcoin",
+        "caption": "Bitcoin was the first blockchain, created for digital money."
+      },
+      {
+        "id": "concept:proof-of-work",
+        "caption": "Miners spend computation to agree on the next block."
+      }
+    ]
+  },
+  {
+    "title": "Building on Ethereum",
+    "steps": [
+      {
+        "id": "concept:smart-contracts",
+        "caption": "Smart contracts are programs that live on a blockchain."
+      },
+      {
+        "id": "technology:solidity",
+        "caption": "Solidity is the main language for writing them."
+      },
+      {
+        "id": "technology:hardhat",
+        "caption": "Hardhat compiles, tests and deploys contracts."
+      },
+      {
+        "id": "technology:typescript",
+        "caption": "Its tooling and scripts are written in TypeScript."
+      }
+    ]
+  },
+  {
+    "title": "From sensor to cloud",
+    "steps": [
+      {
+        "id": "technology:arduino",
+        "caption": "Arduino boards read sensors and drive motors."
+      },
+      {
+        "id": "concept:microcontroller",
+        "caption": "At their heart is a microcontroller."
+      },
+      {
+        "id": "concept:internet-of-things",
+        "caption": "Connect many of them and you have the Internet of Things."
+      },
+      {
+        "id": "concept:mqtt",
+        "caption": "MQTT is the lightweight protocol devices use to report in."
+      },
+      {
+        "id": "technology:aws-iot-core",
+        "caption": "AWS IoT Core receives and routes those messages in the cloud."
+      }
+    ]
+  },
+  {
+    "title": "A smart home",
+    "steps": [
+      {
+        "id": "concept:zigbee",
+        "caption": "Zigbee links low-power sensors and bulbs in a mesh."
+      },
+      {
+        "id": "concept:home-automation",
+        "caption": "Home automation ties lights, heating and locks together."
+      },
+      {
+        "id": "technology:home-assistant",
+        "caption": "Home Assistant runs it all locally, without a cloud."
+      },
+      {
+        "id": "technology:python",
+        "caption": "It is written in Python, so it is easy to extend."
+      }
+    ]
+  },
+  {
+    "title": "Keeping a service reliable",
+    "steps": [
+      {
+        "id": "concept:service-level-objectives",
+        "caption": "SLOs set how reliable the service must be, measured by indicators like latency."
+      },
+      {
+        "id": "concept:site-reliability-engineering",
+        "caption": "SRE runs production with software and spends an error budget against those SLOs."
+      },
+      {
+        "id": "concept:incident-management",
+        "caption": "When things break, incident response, on-call and postmortems take over."
+      },
+      {
+        "id": "technology:sentry",
+        "caption": "Sentry groups errors so the team can find the failing code fast."
+      }
+    ]
+  },
+  {
+    "title": "Drawing a frame on the GPU",
+    "steps": [
+      {
+        "id": "concept:polygon-mesh",
+        "caption": "3D models are meshes of vertices and triangles."
+      },
+      {
+        "id": "concept:rasterization",
+        "caption": "Rasterization turns those triangles into screen pixels."
+      },
+      {
+        "id": "technology:vulkan",
+        "caption": "Low-level APIs like Vulkan drive the GPU's rasterizer."
+      }
+    ]
+  },
+  {
+    "title": "Analytics on a data lakehouse",
+    "steps": [
+      {
+        "id": "technology:amazon-s3",
+        "caption": "Cheap object storage holds the raw data."
+      },
+      {
+        "id": "concept:data-lake",
+        "caption": "Files land there as a data lake."
+      },
+      {
+        "id": "concept:data-lakehouse",
+        "caption": "A lakehouse adds tables and transactions on top of those files."
+      },
+      {
+        "id": "technology:apache-iceberg",
+        "caption": "Apache Iceberg is the open table format that makes it work."
+      },
+      {
+        "id": "technology:apache-parquet",
+        "caption": "Underneath, the data is stored as columnar Parquet files."
+      },
+      {
+        "id": "technology:spark",
+        "caption": "Spark reads and writes them at scale."
+      }
+    ]
+  },
+  {
+    "title": "Building an AI agent",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "A large language model does the reasoning."
+      },
+      {
+        "id": "concept:ai-agents",
+        "caption": "An agent loops: plan, call a tool, read the result, repeat."
+      },
+      {
+        "id": "technology:model-context-protocol",
+        "caption": "MCP gives the agent a standard way to reach tools and data."
+      }
+    ]
+  },
+  {
+    "title": "Shipping a secure website",
+    "steps": [
+      {
+        "id": "concept:dns",
+        "caption": "DNS points your domain name at a server."
+      },
+      {
+        "id": "concept:http",
+        "caption": "Browsers then talk to it over HTTP."
+      },
+      {
+        "id": "concept:https",
+        "caption": "HTTPS wraps that conversation in TLS encryption."
+      },
+      {
+        "id": "technology:let-s-encrypt",
+        "caption": "Let's Encrypt issues the certificate for free."
+      }
+    ]
+  },
+  {
+    "title": "Designing a usable interface",
+    "steps": [
+      {
+        "id": "technology:figma",
+        "caption": "Designers sketch and prototype screens in Figma."
+      },
+      {
+        "id": "concept:design-systems",
+        "caption": "A design system keeps components and styles consistent."
+      },
+      {
+        "id": "concept:user-experience",
+        "caption": "Consistency is one part of a good user experience."
+      },
+      {
+        "id": "concept:usability-testing",
+        "caption": "Usability tests with real people show what still confuses them."
+      }
+    ]
+  },
+  {
+    "title": "From transistor to chip",
+    "steps": [
+      {
+        "id": "concept:transistor",
+        "caption": "A transistor is a tiny electrically controlled switch."
+      },
+      {
+        "id": "concept:cmos",
+        "caption": "CMOS pairs transistors so logic draws almost no idle power."
+      },
+      {
+        "id": "concept:vlsi",
+        "caption": "VLSI packs billions of them onto one die."
+      },
+      {
+        "id": "concept:asic",
+        "caption": "An ASIC is a chip built for one job."
+      },
+      {
+        "id": "concept:system-on-chip",
+        "caption": "A system on a chip puts a whole computer on that die."
+      }
+    ]
+  },
+  {
+    "title": "Designing digital logic",
+    "steps": [
+      {
+        "id": "concept:boolean-algebra",
+        "caption": "Boolean algebra is the maths of true and false."
+      },
+      {
+        "id": "concept:combinational-logic",
+        "caption": "Combinational logic computes outputs from current inputs."
+      },
+      {
+        "id": "concept:digital-logic",
+        "caption": "Gates combine into adders, multiplexers and more."
+      },
+      {
+        "id": "concept:sequential-logic",
+        "caption": "Sequential logic adds memory and a clock."
+      },
+      {
+        "id": "concept:flip-flop",
+        "caption": "Flip-flops store each bit between clock ticks."
+      }
+    ]
+  },
+  {
+    "title": "Writing hardware like software",
+    "steps": [
+      {
+        "id": "technology:verilog",
+        "caption": "Verilog describes circuits as text."
+      },
+      {
+        "id": "concept:register-transfer-level",
+        "caption": "RTL models data moving between registers each cycle."
+      },
+      {
+        "id": "concept:logic-synthesis",
+        "caption": "Synthesis turns RTL into a netlist of gates."
+      },
+      {
+        "id": "concept:electronic-design-automation",
+        "caption": "EDA tools carry the design toward silicon."
+      },
+      {
+        "id": "concept:static-timing-analysis",
+        "caption": "Timing analysis checks every path meets the clock."
+      }
+    ]
+  },
+  {
+    "title": "Open-source silicon",
+    "steps": [
+      {
+        "id": "technology:risc-v",
+        "caption": "RISC-V is an open instruction set anyone can implement."
+      },
+      {
+        "id": "technology:chisel",
+        "caption": "Chisel generates RISC-V cores from Scala."
+      },
+      {
+        "id": "concept:register-transfer-level",
+        "caption": "The output is synthesizable RTL."
+      },
+      {
+        "id": "concept:logic-synthesis",
+        "caption": "Synthesis maps RTL onto real gates."
+      },
+      {
+        "id": "technology:yosys",
+        "caption": "Yosys does it with fully open tools."
+      }
+    ]
+  },
+  {
+    "title": "Hearing signals digitally",
+    "steps": [
+      {
+        "id": "concept:analog-to-digital-conversion",
+        "caption": "An ADC samples a voltage into numbers."
+      },
+      {
+        "id": "concept:sampling-theorem",
+        "caption": "Sample fast enough and nothing is lost."
+      },
+      {
+        "id": "concept:digital-signal-processing",
+        "caption": "DSP algorithms then work on the samples."
+      },
+      {
+        "id": "concept:fourier-transform",
+        "caption": "The Fourier transform reveals the frequencies inside."
+      },
+      {
+        "id": "concept:fast-fourier-transform",
+        "caption": "The FFT computes it fast enough for real time."
+      }
+    ]
+  },
+  {
+    "title": "How Wi-Fi carries data",
+    "steps": [
+      {
+        "id": "concept:modulation",
+        "caption": "Modulation encodes bits onto radio waves."
+      },
+      {
+        "id": "concept:ofdm",
+        "caption": "OFDM splits data across many narrow carriers."
+      },
+      {
+        "id": "concept:wi-fi",
+        "caption": "Wi-Fi uses it on the local network."
+      },
+      {
+        "id": "concept:wi-fi-7",
+        "caption": "Wi-Fi 7 adds wider channels and multi-link."
+      }
+    ]
+  },
+  {
+    "title": "Programming a microcontroller",
+    "steps": [
+      {
+        "id": "concept:microcontroller",
+        "caption": "A microcontroller is a tiny computer on one chip."
+      },
+      {
+        "id": "concept:gpio",
+        "caption": "GPIO pins read buttons and drive LEDs."
+      },
+      {
+        "id": "concept:memory-mapped-io",
+        "caption": "Peripherals are controlled through special addresses."
+      },
+      {
+        "id": "concept:device-driver",
+        "caption": "Drivers wrap those registers in a clean interface."
+      },
+      {
+        "id": "concept:direct-memory-access",
+        "caption": "DMA moves data without the CPU."
+      },
+      {
+        "id": "concept:interrupt-handling",
+        "caption": "Interrupts let hardware get the CPU's attention."
+      }
+    ]
+  },
+  {
+    "title": "Machine learning on tiny devices",
+    "steps": [
+      {
+        "id": "concept:model-inference",
+        "caption": "Inference runs a trained model on new data."
+      },
+      {
+        "id": "concept:model-quantization",
+        "caption": "Quantization shrinks it to fewer bits."
+      },
+      {
+        "id": "concept:tinyml",
+        "caption": "TinyML fits it onto a microcontroller."
+      },
+      {
+        "id": "technology:esp32",
+        "caption": "An ESP32 can run it on a coin-cell budget."
+      }
+    ]
+  },
+  {
+    "title": "Inside a modern processor",
+    "steps": [
+      {
+        "id": "concept:isa",
+        "caption": "The ISA is the contract between software and hardware."
+      },
+      {
+        "id": "concept:microarchitecture",
+        "caption": "The microarchitecture implements it."
+      },
+      {
+        "id": "concept:cpu-pipelining",
+        "caption": "Pipelining overlaps instructions like an assembly line."
+      },
+      {
+        "id": "concept:superscalar",
+        "caption": "Superscalar cores issue several per cycle."
+      },
+      {
+        "id": "concept:out-of-order-execution",
+        "caption": "Out-of-order execution keeps every unit busy."
+      }
+    ]
+  },
+  {
+    "title": "Why memory is the bottleneck",
+    "steps": [
+      {
+        "id": "concept:dram",
+        "caption": "DRAM is dense but slow compared to the CPU."
+      },
+      {
+        "id": "concept:memory-hierarchy",
+        "caption": "A hierarchy of faster, smaller memories sits in between."
+      },
+      {
+        "id": "concept:cache-hierarchy",
+        "caption": "Caches hide most of DRAM's latency."
+      },
+      {
+        "id": "concept:cache-coherence",
+        "caption": "Coherence keeps every core's copy consistent."
+      },
+      {
+        "id": "concept:cxl",
+        "caption": "CXL extends coherent memory across devices."
+      }
+    ]
+  },
+  {
+    "title": "Chips for AI",
+    "steps": [
+      {
+        "id": "concept:gpu-architecture",
+        "caption": "GPUs run thousands of threads in parallel."
+      },
+      {
+        "id": "concept:hardware-accelerator",
+        "caption": "Accelerators specialise even further."
+      },
+      {
+        "id": "concept:systolic-array",
+        "caption": "Systolic arrays stream matrix multiplies, as in TPUs."
+      },
+      {
+        "id": "concept:neural-networks",
+        "caption": "Neural networks are mostly those multiplies."
+      }
+    ]
+  },
+  {
+    "title": "AI hardware at the edge",
+    "steps": [
+      {
+        "id": "concept:system-on-chip",
+        "caption": "Phones and laptops are built around an SoC."
+      },
+      {
+        "id": "concept:npu",
+        "caption": "An NPU inside it runs neural networks efficiently."
+      },
+      {
+        "id": "concept:edge-ai",
+        "caption": "That makes on-device AI possible."
+      },
+      {
+        "id": "concept:small-language-models",
+        "caption": "Small language models run there too."
+      }
+    ]
+  },
+  {
+    "title": "How chips are made",
+    "steps": [
+      {
+        "id": "concept:gate-all-around-transistors",
+        "caption": "Gate-all-around transistors are the newest switch."
+      },
+      {
+        "id": "concept:transistor",
+        "caption": "They are still transistors, just better controlled."
+      },
+      {
+        "id": "concept:semiconductor-fabrication",
+        "caption": "Fabs print them with lithography and etching."
+      },
+      {
+        "id": "concept:chiplet",
+        "caption": "Chiplets combine several dies into one package."
+      },
+      {
+        "id": "concept:system-on-chip",
+        "caption": "Together they form a complete system."
+      }
+    ]
+  },
+  {
+    "title": "Designing a circuit board",
+    "steps": [
+      {
+        "id": "concept:analog-circuit-design",
+        "caption": "Analog circuits handle power and sensors."
+      },
+      {
+        "id": "concept:transistor",
+        "caption": "Transistors amplify and switch."
+      },
+      {
+        "id": "concept:cmos",
+        "caption": "Digital chips are built in CMOS."
+      },
+      {
+        "id": "concept:low-power-design",
+        "caption": "Low-power design stretches battery life."
+      },
+      {
+        "id": "concept:system-on-chip",
+        "caption": "An SoC is the board's brain."
+      }
+    ]
+  },
+  {
+    "title": "Designing around people",
+    "steps": [
+      {
+        "id": "concept:personas",
+        "caption": "Personas summarise who you are designing for."
+      },
+      {
+        "id": "concept:user-research",
+        "caption": "They come from real user research."
+      },
+      {
+        "id": "concept:user-centered-design",
+        "caption": "User-centered design iterates with those users."
+      },
+      {
+        "id": "concept:human-computer-interaction",
+        "caption": "HCI is the science behind it."
+      },
+      {
+        "id": "concept:cscw",
+        "caption": "It extends to how people work together."
+      }
+    ]
+  },
+  {
+    "title": "Testing a design before building it",
+    "steps": [
+      {
+        "id": "technology:figma",
+        "caption": "Mock up the screens in Figma."
+      },
+      {
+        "id": "concept:ui-prototyping",
+        "caption": "Link them into a clickable prototype."
+      },
+      {
+        "id": "concept:usability-testing",
+        "caption": "Watch real people try it."
+      },
+      {
+        "id": "concept:eye-tracking",
+        "caption": "Eye tracking shows where attention goes."
+      }
+    ]
+  },
+  {
+    "title": "Why some interfaces feel easy",
+    "steps": [
+      {
+        "id": "concept:mental-model",
+        "caption": "Users carry a mental model of how things work."
+      },
+      {
+        "id": "concept:cognitive-load",
+        "caption": "Matching it keeps cognitive load low."
+      },
+      {
+        "id": "concept:interaction-design",
+        "caption": "Interaction design shapes each step."
+      },
+      {
+        "id": "concept:fitts-law",
+        "caption": "Fitts's law sizes and places the targets."
+      },
+      {
+        "id": "concept:accessibility",
+        "caption": "Accessible design works for everyone."
+      }
+    ]
+  },
+  {
+    "title": "Talking to computers",
+    "steps": [
+      {
+        "id": "concept:speech-recognition",
+        "caption": "Speech recognition turns voice into text."
+      },
+      {
+        "id": "concept:voice-user-interface",
+        "caption": "Voice interfaces act on it."
+      },
+      {
+        "id": "concept:conversational-ui",
+        "caption": "Conversational UIs keep the dialogue going."
+      },
+      {
+        "id": "concept:large-language-models",
+        "caption": "LLMs make that dialogue flexible."
+      }
+    ]
+  },
+  {
+    "title": "Beyond the screen",
+    "steps": [
+      {
+        "id": "concept:gesture-recognition",
+        "caption": "Gestures become input."
+      },
+      {
+        "id": "concept:spatial-computing",
+        "caption": "Spatial computing places apps around you."
+      },
+      {
+        "id": "technology:visionos",
+        "caption": "visionOS is one platform for it."
+      },
+      {
+        "id": "technology:swiftui",
+        "caption": "Apps are built with SwiftUI."
+      }
+    ]
+  },
+  {
+    "title": "Reading the brain",
+    "steps": [
+      {
+        "id": "concept:digital-signal-processing",
+        "caption": "Brain signals are noisy electrical traces."
+      },
+      {
+        "id": "concept:brain-computer-interface",
+        "caption": "A BCI decodes intent from them."
+      },
+      {
+        "id": "concept:computational-neuroscience",
+        "caption": "Computational neuroscience explains what they mean."
+      },
+      {
+        "id": "concept:neural-networks",
+        "caption": "Neural networks borrowed the idea, loosely."
+      }
+    ]
+  },
+  {
+    "title": "Design ethics",
+    "steps": [
+      {
+        "id": "concept:user-experience",
+        "caption": "Good UX serves the user."
+      },
+      {
+        "id": "concept:dark-patterns",
+        "caption": "Dark patterns serve someone else."
+      },
+      {
+        "id": "concept:data-privacy",
+        "caption": "They often trade away privacy."
+      },
+      {
+        "id": "concept:gdpr",
+        "caption": "Laws like GDPR push back."
+      }
+    ]
+  },
+  {
+    "title": "Reading a genome",
+    "steps": [
+      {
+        "id": "concept:next-generation-sequencing",
+        "caption": "Sequencers read millions of short DNA fragments."
+      },
+      {
+        "id": "concept:genome-assembly",
+        "caption": "Assembly stitches them back together."
+      },
+      {
+        "id": "concept:graph-algorithms",
+        "caption": "It is really a graph problem over overlapping reads."
+      }
+    ]
+  },
+  {
+    "title": "Searching DNA fast",
+    "steps": [
+      {
+        "id": "concept:dynamic-programming",
+        "caption": "Dynamic programming finds optimal alignments."
+      },
+      {
+        "id": "concept:sequence-alignment",
+        "caption": "Alignment scores how similar two sequences are."
+      },
+      {
+        "id": "technology:blast",
+        "caption": "BLAST finds matches in huge databases."
+      },
+      {
+        "id": "concept:genomics",
+        "caption": "That powers modern genomics."
+      }
+    ]
+  },
+  {
+    "title": "Predicting protein shapes",
+    "steps": [
+      {
+        "id": "concept:deep-learning",
+        "caption": "Deep learning learns patterns from known structures."
+      },
+      {
+        "id": "concept:protein-structure-prediction",
+        "caption": "Structure prediction folds new sequences."
+      },
+      {
+        "id": "technology:alphafold",
+        "caption": "AlphaFold made it accurate."
+      },
+      {
+        "id": "concept:computational-drug-discovery",
+        "caption": "Drug discovery builds on the shapes."
+      }
+    ]
+  },
+  {
+    "title": "Simulating molecules",
+    "steps": [
+      {
+        "id": "concept:physics-simulation",
+        "caption": "Physics tells atoms how to move."
+      },
+      {
+        "id": "concept:molecular-dynamics",
+        "caption": "Molecular dynamics steps them through time."
+      },
+      {
+        "id": "technology:gromacs",
+        "caption": "GROMACS does it at scale."
+      },
+      {
+        "id": "concept:high-performance-computing",
+        "caption": "On supercomputer-class hardware."
+      }
+    ]
+  },
+  {
+    "title": "Cells, one at a time",
+    "steps": [
+      {
+        "id": "concept:genomics",
+        "caption": "Genomics reads the DNA."
+      },
+      {
+        "id": "concept:gene-expression-analysis",
+        "caption": "Expression analysis measures which genes are on."
+      },
+      {
+        "id": "concept:single-cell-analysis",
+        "caption": "Single-cell methods do it cell by cell."
+      },
+      {
+        "id": "concept:spatial-transcriptomics",
+        "caption": "Spatial methods keep where each cell sits."
+      }
+    ]
+  },
+  {
+    "title": "How card payments work",
+    "steps": [
+      {
+        "id": "concept:payment-systems",
+        "caption": "Payment networks move money between banks."
+      },
+      {
+        "id": "technology:stripe",
+        "caption": "Processors like Stripe expose them to apps."
+      },
+      {
+        "id": "concept:webhooks",
+        "caption": "Webhooks tell your app what happened."
+      }
+    ]
+  },
+  {
+    "title": "Instant money",
+    "steps": [
+      {
+        "id": "concept:open-banking",
+        "caption": "Open banking exposes accounts through APIs."
+      },
+      {
+        "id": "concept:real-time-payments",
+        "caption": "Real-time rails settle in seconds."
+      },
+      {
+        "id": "concept:payment-systems",
+        "caption": "They join the wider payment system."
+      },
+      {
+        "id": "concept:fraud-detection",
+        "caption": "Fraud detection watches every transfer."
+      }
+    ]
+  },
+  {
+    "title": "Trading with algorithms",
+    "steps": [
+      {
+        "id": "concept:probability-theory",
+        "caption": "Prices are modelled as random processes."
+      },
+      {
+        "id": "concept:quantitative-finance",
+        "caption": "Quant finance builds on that."
+      },
+      {
+        "id": "concept:algorithmic-trading",
+        "caption": "Algorithms place the trades."
+      },
+      {
+        "id": "concept:high-frequency-trading",
+        "caption": "HFT does it in microseconds."
+      },
+      {
+        "id": "concept:order-matching-engine",
+        "caption": "The exchange's matching engine fills them."
+      }
+    ]
+  },
+  {
+    "title": "Pricing risk",
+    "steps": [
+      {
+        "id": "concept:monte-carlo-methods",
+        "caption": "Simulate thousands of possible futures."
+      },
+      {
+        "id": "concept:risk-modeling",
+        "caption": "Risk models summarise the losses."
+      },
+      {
+        "id": "technology:quantlib",
+        "caption": "QuantLib implements the standard models."
+      },
+      {
+        "id": "concept:quantitative-finance",
+        "caption": "That is the core of quant finance."
+      }
+    ]
+  },
+  {
+    "title": "Catching fraud",
+    "steps": [
+      {
+        "id": "concept:anomaly-detection",
+        "caption": "Anomaly detection spots unusual behaviour."
+      },
+      {
+        "id": "concept:fraud-detection",
+        "caption": "Fraud detection applies it to payments."
+      },
+      {
+        "id": "concept:payment-systems",
+        "caption": "Every transaction is scored."
+      },
+      {
+        "id": "concept:distributed-transaction",
+        "caption": "Then committed safely across systems."
+      }
+    ]
+  },
+  {
+    "title": "Health records that talk",
+    "steps": [
+      {
+        "id": "concept:electronic-health-records",
+        "caption": "EHRs hold each patient's history."
+      },
+      {
+        "id": "concept:health-data-interoperability",
+        "caption": "Interoperability lets systems share it."
+      },
+      {
+        "id": "technology:hl7-fhir",
+        "caption": "FHIR is the modern standard API."
+      },
+      {
+        "id": "concept:rest-api",
+        "caption": "It is built on REST."
+      }
+    ]
+  },
+  {
+    "title": "AI in the clinic",
+    "steps": [
+      {
+        "id": "concept:medical-imaging",
+        "caption": "Scans produce huge images."
+      },
+      {
+        "id": "concept:image-segmentation",
+        "caption": "Segmentation outlines organs and tumours."
+      },
+      {
+        "id": "concept:computer-vision",
+        "caption": "Computer vision models do the work."
+      },
+      {
+        "id": "concept:object-detection",
+        "caption": "Detection flags findings for the clinician."
+      }
+    ]
+  },
+  {
+    "title": "Personalised medicine",
+    "steps": [
+      {
+        "id": "concept:genomics",
+        "caption": "Genomics reads a patient's DNA."
+      },
+      {
+        "id": "concept:precision-medicine",
+        "caption": "Precision medicine tailors treatment to it."
+      },
+      {
+        "id": "concept:clinical-decision-support",
+        "caption": "Decision support brings it to the bedside."
+      },
+      {
+        "id": "concept:explainable-ai",
+        "caption": "Explanations keep clinicians in the loop."
+      }
+    ]
+  },
+  {
+    "title": "Mapping the world",
+    "steps": [
+      {
+        "id": "technology:qgis",
+        "caption": "QGIS is a free desktop GIS."
+      },
+      {
+        "id": "concept:geographic-information-systems",
+        "caption": "GIS stores and analyses spatial data."
+      },
+      {
+        "id": "concept:computational-geometry",
+        "caption": "Geometry algorithms do the heavy lifting."
+      },
+      {
+        "id": "concept:polygon-mesh",
+        "caption": "The same maths shapes 3D meshes."
+      }
+    ]
+  },
+  {
+    "title": "Computing for the climate",
+    "steps": [
+      {
+        "id": "concept:high-performance-computing",
+        "caption": "Climate models need enormous compute."
+      },
+      {
+        "id": "concept:climate-informatics",
+        "caption": "Climate informatics adds machine learning."
+      },
+      {
+        "id": "concept:time-series-forecasting",
+        "caption": "Forecasting predicts what comes next."
+      },
+      {
+        "id": "concept:recurrent-neural-network",
+        "caption": "Sequence models learn from the past."
+      }
+    ]
+  },
+  {
+    "title": "Smarter cities and grids",
+    "steps": [
+      {
+        "id": "concept:internet-of-things",
+        "caption": "Sensors connect everything."
+      },
+      {
+        "id": "concept:smart-cities",
+        "caption": "Cities use them to run services."
+      },
+      {
+        "id": "concept:smart-grid",
+        "caption": "Smart grids balance power in real time."
+      },
+      {
+        "id": "concept:cyber-physical-systems",
+        "caption": "They are cyber-physical systems."
+      },
+      {
+        "id": "concept:control-theory",
+        "caption": "Control theory keeps them stable."
+      }
+    ]
+  },
+  {
+    "title": "Language, from linguistics to LLMs",
+    "steps": [
+      {
+        "id": "concept:formal-languages",
+        "caption": "Formal languages model grammar precisely."
+      },
+      {
+        "id": "concept:computational-linguistics",
+        "caption": "Computational linguistics studies real language."
+      },
+      {
+        "id": "concept:natural-language-processing",
+        "caption": "NLP builds systems on it."
+      },
+      {
+        "id": "concept:machine-translation",
+        "caption": "Machine translation is a classic task."
+      },
+      {
+        "id": "concept:transformers",
+        "caption": "Transformers made it work."
+      }
+    ]
+  },
+  {
+    "title": "AI accelerating science",
+    "steps": [
+      {
+        "id": "concept:scientific-computing",
+        "caption": "Scientific computing simulates nature."
+      },
+      {
+        "id": "concept:ai-for-science",
+        "caption": "AI speeds up discovery."
+      },
+      {
+        "id": "concept:protein-structure-prediction",
+        "caption": "Protein folding was a landmark."
+      },
+      {
+        "id": "concept:molecular-dynamics",
+        "caption": "Simulation checks the predictions."
+      }
+    ]
+  },
+  {
+    "title": "How an LLM answers",
+    "steps": [
+      {
+        "id": "concept:tokenization",
+        "caption": "Text is split into tokens."
+      },
+      {
+        "id": "concept:large-language-models",
+        "caption": "An LLM reads them."
+      },
+      {
+        "id": "concept:transformers",
+        "caption": "Its transformer processes them together."
+      },
+      {
+        "id": "concept:attention-mechanism",
+        "caption": "Attention decides what matters."
+      },
+      {
+        "id": "concept:kv-cache",
+        "caption": "The KV cache avoids recomputing the past."
+      },
+      {
+        "id": "technology:vllm",
+        "caption": "Servers like vLLM manage it for many users."
+      }
+    ]
+  },
+  {
+    "title": "Making models think longer",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "LLMs predict the next token."
+      },
+      {
+        "id": "concept:reasoning-models",
+        "caption": "Reasoning models are trained to think first."
+      },
+      {
+        "id": "concept:test-time-compute",
+        "caption": "They spend more compute when it helps."
+      },
+      {
+        "id": "concept:model-inference",
+        "caption": "That shifts cost to inference."
+      }
+    ]
+  },
+  {
+    "title": "Aligning AI with people",
+    "steps": [
+      {
+        "id": "concept:rlhf",
+        "caption": "RLHF rewards answers people prefer."
+      },
+      {
+        "id": "concept:ai-alignment",
+        "caption": "Alignment is the broader goal."
+      },
+      {
+        "id": "concept:explainable-ai",
+        "caption": "Explanations help check it."
+      },
+      {
+        "id": "concept:mechanistic-interpretability",
+        "caption": "Interpretability looks inside the network."
+      }
+    ]
+  },
+  {
+    "title": "Agents that use tools",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "An LLM plans the next step."
+      },
+      {
+        "id": "concept:tool-use",
+        "caption": "Tool use lets it call functions."
+      },
+      {
+        "id": "technology:model-context-protocol",
+        "caption": "MCP standardises those tools."
+      },
+      {
+        "id": "technology:claude-code",
+        "caption": "Coding agents build on it."
+      }
+    ]
+  },
+  {
+    "title": "Running AI locally",
+    "steps": [
+      {
+        "id": "concept:small-language-models",
+        "caption": "Small models fit on a laptop."
+      },
+      {
+        "id": "technology:llama-cpp",
+        "caption": "llama.cpp runs them on ordinary hardware."
+      },
+      {
+        "id": "technology:ollama",
+        "caption": "Ollama makes it one command."
+      },
+      {
+        "id": "concept:model-quantization",
+        "caption": "Quantization keeps them fast."
+      }
+    ]
+  },
+  {
+    "title": "Generating images and video",
+    "steps": [
+      {
+        "id": "concept:generative-adversarial-network",
+        "caption": "GANs pit a generator against a critic."
+      },
+      {
+        "id": "concept:diffusion-models",
+        "caption": "Diffusion models replaced them for quality."
+      },
+      {
+        "id": "concept:text-to-video",
+        "caption": "Text-to-video extends diffusion through time."
+      }
+    ]
+  },
+  {
+    "title": "Classic machine learning",
+    "steps": [
+      {
+        "id": "concept:supervised-learning",
+        "caption": "Learn from labelled examples."
+      },
+      {
+        "id": "concept:decision-trees",
+        "caption": "Decision trees ask yes/no questions."
+      },
+      {
+        "id": "concept:gradient-boosting",
+        "caption": "Boosting combines many trees."
+      },
+      {
+        "id": "technology:xgboost",
+        "caption": "XGBoost is the go-to implementation."
+      }
+    ]
+  },
+  {
+    "title": "Finding structure without labels",
+    "steps": [
+      {
+        "id": "concept:k-means-clustering",
+        "caption": "K-means groups similar points."
+      },
+      {
+        "id": "concept:unsupervised-learning",
+        "caption": "It is one form of unsupervised learning."
+      },
+      {
+        "id": "concept:dimensionality-reduction",
+        "caption": "Dimensionality reduction compresses features."
+      },
+      {
+        "id": "concept:linear-algebra",
+        "caption": "Both rest on linear algebra."
+      }
+    ]
+  },
+  {
+    "title": "Robots that understand instructions",
+    "steps": [
+      {
+        "id": "concept:vision-language-models",
+        "caption": "Vision-language models see and read."
+      },
+      {
+        "id": "concept:vision-language-action-models",
+        "caption": "VLA models also output actions."
+      },
+      {
+        "id": "concept:robot-foundation-models",
+        "caption": "Robot foundation models scale that up."
+      },
+      {
+        "id": "technology:lerobot",
+        "caption": "LeRobot shares the models and data."
+      }
+    ]
+  },
+  {
+    "title": "The maths behind computing",
+    "steps": [
+      {
+        "id": "concept:discrete-mathematics",
+        "caption": "Discrete maths covers logic, sets and counting."
+      },
+      {
+        "id": "concept:graph-theory",
+        "caption": "Graph theory models connections."
+      },
+      {
+        "id": "concept:graph-algorithms",
+        "caption": "Graph algorithms work on them."
+      },
+      {
+        "id": "concept:network-flow",
+        "caption": "Network flow finds maximum throughput."
+      }
+    ]
+  },
+  {
+    "title": "Functions as computation",
+    "steps": [
+      {
+        "id": "concept:lambda-calculus",
+        "caption": "Lambda calculus is computation with only functions."
+      },
+      {
+        "id": "concept:functional-programming",
+        "caption": "Functional programming grew from it."
+      },
+      {
+        "id": "technology:haskell",
+        "caption": "Haskell is the purest example."
+      }
+    ]
+  },
+  {
+    "title": "Optimisation",
+    "steps": [
+      {
+        "id": "concept:linear-programming",
+        "caption": "Optimise a linear goal under constraints."
+      },
+      {
+        "id": "concept:convex-optimization",
+        "caption": "Convex problems have one global best."
+      },
+      {
+        "id": "concept:gradient-descent",
+        "caption": "Gradient descent walks downhill to it, which is how networks learn."
+      }
+    ]
+  },
+  {
+    "title": "Randomness as a tool",
+    "steps": [
+      {
+        "id": "concept:probability-theory",
+        "caption": "Probability theory describes chance."
+      },
+      {
+        "id": "concept:monte-carlo-methods",
+        "caption": "Monte Carlo estimates by sampling."
+      },
+      {
+        "id": "concept:randomized-algorithms",
+        "caption": "Randomized algorithms use chance for speed."
+      }
+    ]
+  },
+  {
+    "title": "Memory safety without a garbage collector",
+    "steps": [
+      {
+        "id": "concept:buffer-overflow",
+        "caption": "Buffer overflows corrupt memory."
+      },
+      {
+        "id": "concept:memory-safety",
+        "caption": "Memory safety rules them out."
+      },
+      {
+        "id": "concept:ownership-and-borrowing",
+        "caption": "Rust enforces it at compile time."
+      },
+      {
+        "id": "technology:rust",
+        "caption": "Rust brings it to systems code."
+      },
+      {
+        "id": "concept:rust-for-linux",
+        "caption": "Now even inside the Linux kernel."
+      }
+    ]
+  },
+  {
+    "title": "How code runs fast in a dynamic language",
+    "steps": [
+      {
+        "id": "concept:parsing",
+        "caption": "The source is parsed."
+      },
+      {
+        "id": "concept:interpreter",
+        "caption": "An interpreter runs it directly."
+      },
+      {
+        "id": "concept:just-in-time-compilation",
+        "caption": "A JIT compiles hot code while it runs."
+      },
+      {
+        "id": "technology:nodejs",
+        "caption": "Node.js gets its speed this way."
+      }
+    ]
+  },
+  {
+    "title": "Concurrency with messages",
+    "steps": [
+      {
+        "id": "concept:concurrency",
+        "caption": "Many things happen at once."
+      },
+      {
+        "id": "concept:actor-model",
+        "caption": "Actors share nothing and send messages."
+      },
+      {
+        "id": "technology:erlang",
+        "caption": "Erlang made it famous."
+      },
+      {
+        "id": "technology:elixir",
+        "caption": "Elixir brings it to a modern syntax."
+      }
+    ]
+  },
+  {
+    "title": "Coding with AI",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "LLMs learned to write code."
+      },
+      {
+        "id": "concept:ai-assisted-programming",
+        "caption": "Assistants now help in the editor."
+      },
+      {
+        "id": "technology:cursor",
+        "caption": "AI-first editors like Cursor build it in."
+      },
+      {
+        "id": "technology:github-copilot",
+        "caption": "Copilot pioneered inline suggestions."
+      }
+    ]
+  },
+  {
+    "title": "Architecting a system",
+    "steps": [
+      {
+        "id": "concept:requirements-engineering",
+        "caption": "Start from what the system must do."
+      },
+      {
+        "id": "concept:software-architecture",
+        "caption": "Choose a structure that fits."
+      },
+      {
+        "id": "concept:domain-driven-design",
+        "caption": "Model the business domain."
+      },
+      {
+        "id": "concept:microservices",
+        "caption": "Split into services where it pays off."
+      }
+    ]
+  },
+  {
+    "title": "Supercomputing",
+    "steps": [
+      {
+        "id": "concept:amdahls-law",
+        "caption": "Amdahl's law limits parallel speed-up."
+      },
+      {
+        "id": "concept:parallel-computing",
+        "caption": "Parallel computing splits the work."
+      },
+      {
+        "id": "technology:openmp",
+        "caption": "OpenMP spreads loops across cores."
+      },
+      {
+        "id": "concept:high-performance-computing",
+        "caption": "HPC scales it to whole machines."
+      },
+      {
+        "id": "concept:supercomputer",
+        "caption": "Supercomputers are the largest."
+      },
+      {
+        "id": "technology:slurm",
+        "caption": "Slurm schedules the jobs."
+      }
+    ]
+  },
+  {
+    "title": "Fast I/O on Linux",
+    "steps": [
+      {
+        "id": "concept:system-call",
+        "caption": "Programs ask the kernel for I/O with system calls."
+      },
+      {
+        "id": "concept:io-uring",
+        "caption": "io_uring batches them through shared rings."
+      },
+      {
+        "id": "concept:asynchronous-programming",
+        "caption": "Async code keeps many requests in flight."
+      }
+    ]
+  },
+  {
+    "title": "Getting onto a network",
+    "steps": [
+      {
+        "id": "concept:dhcp",
+        "caption": "DHCP hands your device an address."
+      },
+      {
+        "id": "concept:ipv4",
+        "caption": "That address is usually IPv4."
+      },
+      {
+        "id": "concept:subnetting",
+        "caption": "Subnets divide the address space."
+      },
+      {
+        "id": "concept:routing",
+        "caption": "Routers move packets between them."
+      }
+    ]
+  },
+  {
+    "title": "Private networks over the internet",
+    "steps": [
+      {
+        "id": "concept:tls",
+        "caption": "TLS encrypts traffic."
+      },
+      {
+        "id": "concept:vpn",
+        "caption": "A VPN tunnels a whole device through it."
+      },
+      {
+        "id": "concept:zero-trust",
+        "caption": "Zero trust checks every request anyway."
+      }
+    ]
+  },
+  {
+    "title": "Internet from space",
+    "steps": [
+      {
+        "id": "concept:cellular-5g",
+        "caption": "5G serves dense areas."
+      },
+      {
+        "id": "concept:leo-satellite-internet",
+        "caption": "Satellites reach everywhere else."
+      },
+      {
+        "id": "concept:routing",
+        "caption": "Packets are routed through orbit."
+      }
+    ]
+  },
+  {
+    "title": "Signing in without passwords",
+    "steps": [
+      {
+        "id": "concept:authentication",
+        "caption": "Prove who you are."
+      },
+      {
+        "id": "concept:passkeys",
+        "caption": "Passkeys use a key pair instead of a password."
+      },
+      {
+        "id": "concept:public-key-cryptography",
+        "caption": "Only the public key leaves your device."
+      },
+      {
+        "id": "concept:cryptography",
+        "caption": "It rests on well-studied cryptography."
+      },
+      {
+        "id": "concept:digital-signature",
+        "caption": "Each sign-in is a fresh signature."
+      }
+    ]
+  },
+  {
+    "title": "Attacking AI systems",
+    "steps": [
+      {
+        "id": "concept:sql-injection",
+        "caption": "SQL injection mixed data with commands."
+      },
+      {
+        "id": "concept:prompt-injection",
+        "caption": "Prompt injection does the same to LLMs."
+      },
+      {
+        "id": "concept:ai-guardrails",
+        "caption": "Guardrails filter inputs and outputs."
+      },
+      {
+        "id": "concept:ai-alignment",
+        "caption": "Alignment tackles the root cause."
+      }
+    ]
+  },
+  {
+    "title": "Securing the software supply chain",
+    "steps": [
+      {
+        "id": "concept:package-management",
+        "caption": "Apps pull in hundreds of packages."
+      },
+      {
+        "id": "concept:supply-chain-security",
+        "caption": "Any of them can be tampered with."
+      },
+      {
+        "id": "technology:sigstore",
+        "caption": "Sigstore signs what you ship."
+      },
+      {
+        "id": "concept:digital-signature",
+        "caption": "Signatures prove where it came from."
+      }
+    ]
+  },
+  {
+    "title": "Finding bugs automatically",
+    "steps": [
+      {
+        "id": "concept:fuzzing",
+        "caption": "Fuzzing throws random input at code."
+      },
+      {
+        "id": "concept:symbolic-execution",
+        "caption": "Symbolic execution reasons about every path."
+      },
+      {
+        "id": "concept:static-analysis",
+        "caption": "Static analysis checks code without running it."
+      },
+      {
+        "id": "concept:formal-verification",
+        "caption": "Formal verification proves properties outright."
+      }
+    ]
+  },
+  {
+    "title": "Hardware you can trust",
+    "steps": [
+      {
+        "id": "concept:firmware",
+        "caption": "Firmware runs before the OS."
+      },
+      {
+        "id": "concept:secure-boot",
+        "caption": "Secure boot checks its signature."
+      },
+      {
+        "id": "concept:digital-signature",
+        "caption": "Signatures prove it is genuine."
+      }
+    ]
+  },
+  {
+    "title": "Inside a database engine",
+    "steps": [
+      {
+        "id": "concept:sql",
+        "caption": "You ask in SQL."
+      },
+      {
+        "id": "concept:query-optimization",
+        "caption": "The optimiser picks a plan."
+      },
+      {
+        "id": "concept:database-indexing",
+        "caption": "Indexes find rows quickly."
+      },
+      {
+        "id": "concept:b-tree",
+        "caption": "Most indexes are B-trees."
+      }
+    ]
+  },
+  {
+    "title": "Never losing a write",
+    "steps": [
+      {
+        "id": "concept:database-transaction",
+        "caption": "Transactions group changes."
+      },
+      {
+        "id": "concept:write-ahead-log",
+        "caption": "The WAL records them first."
+      },
+      {
+        "id": "concept:replication",
+        "caption": "Replicas copy the log elsewhere."
+      }
+    ]
+  },
+  {
+    "title": "Many readers, many writers",
+    "steps": [
+      {
+        "id": "concept:acid",
+        "caption": "ACID promises correct transactions."
+      },
+      {
+        "id": "concept:mvcc",
+        "caption": "MVCC gives each reader a snapshot."
+      },
+      {
+        "id": "technology:postgresql",
+        "caption": "PostgreSQL is built on it."
+      }
+    ]
+  },
+  {
+    "title": "Fast analytics",
+    "steps": [
+      {
+        "id": "concept:olap",
+        "caption": "Analytics scan many rows."
+      },
+      {
+        "id": "concept:columnar-storage",
+        "caption": "Columnar storage reads only what is needed."
+      },
+      {
+        "id": "technology:apache-arrow",
+        "caption": "Arrow keeps it columnar in memory."
+      },
+      {
+        "id": "technology:polars",
+        "caption": "Polars processes it fast."
+      }
+    ]
+  },
+  {
+    "title": "Search that understands meaning",
+    "steps": [
+      {
+        "id": "concept:full-text-search",
+        "caption": "Keyword search matches words."
+      },
+      {
+        "id": "concept:hybrid-search",
+        "caption": "Hybrid search adds vectors."
+      },
+      {
+        "id": "concept:vector-databases",
+        "caption": "Vector databases store them."
+      },
+      {
+        "id": "concept:vector-embeddings",
+        "caption": "Embeddings capture meaning as numbers."
+      },
+      {
+        "id": "concept:retrieval-augmented-generation",
+        "caption": "RAG feeds the results to an LLM."
+      }
+    ]
+  },
+  {
+    "title": "Building an internal platform",
+    "steps": [
+      {
+        "id": "concept:infrastructure-as-code",
+        "caption": "Infrastructure lives in code."
+      },
+      {
+        "id": "concept:platform-engineering",
+        "caption": "A platform team turns it into paved roads."
+      },
+      {
+        "id": "technology:backstage",
+        "caption": "Backstage is the developer portal."
+      },
+      {
+        "id": "concept:developer-experience",
+        "caption": "Good DX is the goal."
+      }
+    ]
+  },
+  {
+    "title": "Kubernetes networking with eBPF",
+    "steps": [
+      {
+        "id": "technology:kubernetes",
+        "caption": "Kubernetes runs the containers."
+      },
+      {
+        "id": "technology:cilium",
+        "caption": "Cilium wires up their networking."
+      },
+      {
+        "id": "technology:ebpf",
+        "caption": "It runs safe programs inside the kernel."
+      }
+    ]
+  },
+  {
+    "title": "Modern React",
+    "steps": [
+      {
+        "id": "technology:react",
+        "caption": "React builds UIs from components."
+      },
+      {
+        "id": "concept:react-server-components",
+        "caption": "Server components render on the server."
+      },
+      {
+        "id": "concept:hydration",
+        "caption": "Hydration makes the rest interactive."
+      },
+      {
+        "id": "concept:islands-architecture",
+        "caption": "Islands hydrate only what needs it."
+      }
+    ]
+  },
+  {
+    "title": "Apps that work offline",
+    "steps": [
+      {
+        "id": "concept:progressive-web-app",
+        "caption": "A PWA installs like an app."
+      },
+      {
+        "id": "concept:local-first-software",
+        "caption": "Local-first keeps the data on the device."
+      },
+      {
+        "id": "concept:replication",
+        "caption": "Sync replicates it in the background."
+      }
+    ]
+  },
+  {
+    "title": "Workflows that survive crashes",
+    "steps": [
+      {
+        "id": "concept:fault-tolerance",
+        "caption": "Failures happen."
+      },
+      {
+        "id": "concept:durable-execution",
+        "caption": "Durable execution records every step."
+      },
+      {
+        "id": "technology:temporal",
+        "caption": "Temporal resumes where it left off."
+      }
+    ]
+  },
+  {
+    "title": "Self-driving cars",
+    "steps": [
+      {
+        "id": "concept:lidar",
+        "caption": "Lidar maps the surroundings in 3D."
+      },
+      {
+        "id": "concept:autonomous-vehicles",
+        "caption": "Self-driving cars rely on it."
+      },
+      {
+        "id": "concept:sensor-fusion",
+        "caption": "Fusion combines it with cameras and radar."
+      },
+      {
+        "id": "concept:state-estimation",
+        "caption": "State estimation tracks where everything is."
+      }
+    ]
+  },
+  {
+    "title": "Training robots in simulation",
+    "steps": [
+      {
+        "id": "technology:isaac-sim",
+        "caption": "Simulate the robot and world."
+      },
+      {
+        "id": "concept:sim-to-real-transfer",
+        "caption": "Make the policy work on real hardware."
+      },
+      {
+        "id": "concept:deep-rl",
+        "caption": "Deep RL learns the policy."
+      }
+    ]
+  },
+  {
+    "title": "Toward fault-tolerant quantum computers",
+    "steps": [
+      {
+        "id": "concept:qubit",
+        "caption": "Physical qubits are fragile."
+      },
+      {
+        "id": "concept:quantum-error-correction",
+        "caption": "Error correction spreads information across many."
+      },
+      {
+        "id": "concept:logical-qubits",
+        "caption": "That creates stable logical qubits."
+      }
+    ]
+  },
+  {
+    "title": "A quantum internet",
+    "steps": [
+      {
+        "id": "concept:quantum-entanglement",
+        "caption": "Entangled particles share a state."
+      },
+      {
+        "id": "concept:quantum-teleportation",
+        "caption": "Teleportation moves a qubit using it."
+      },
+      {
+        "id": "concept:quantum-internet",
+        "caption": "A quantum internet links devices this way."
+      }
+    ]
+  },
+  {
+    "title": "Scaling Ethereum",
+    "steps": [
+      {
+        "id": "technology:ethereum",
+        "caption": "Ethereum runs smart contracts."
+      },
+      {
+        "id": "concept:smart-contracts",
+        "caption": "Every node re-executes them."
+      },
+      {
+        "id": "concept:blockchain",
+        "caption": "That limits how much the chain can do."
+      },
+      {
+        "id": "concept:layer-2-scaling",
+        "caption": "Layer 2 moves work off the main chain."
+      },
+      {
+        "id": "concept:zk-rollups",
+        "caption": "ZK-rollups prove it was done right."
+      }
+    ]
+  },
+  {
+    "title": "Next-gen game graphics",
+    "steps": [
+      {
+        "id": "concept:ray-tracing",
+        "caption": "Ray tracing simulates light paths."
+      },
+      {
+        "id": "concept:real-time-path-tracing",
+        "caption": "Path tracing does it fully, in real time."
+      },
+      {
+        "id": "concept:ai-upscaling",
+        "caption": "AI upscaling makes it affordable."
+      }
+    ]
+  },
+  {
+    "title": "3D from photos",
+    "steps": [
+      {
+        "id": "concept:deep-learning",
+        "caption": "Networks learn a scene from photos."
+      },
+      {
+        "id": "concept:neural-radiance-fields",
+        "caption": "NeRFs model it as a radiance field."
+      },
+      {
+        "id": "concept:gaussian-splatting",
+        "caption": "Gaussian splatting renders it in real time."
+      },
+      {
+        "id": "concept:rasterization",
+        "caption": "Using fast rasterization."
+      }
+    ]
+  },
+  {
+    "title": "Testing smarter",
+    "steps": [
+      {
+        "id": "concept:unit-testing",
+        "caption": "Unit tests check examples."
+      },
+      {
+        "id": "concept:property-based-testing",
+        "caption": "Property tests check rules over many inputs."
+      },
+      {
+        "id": "concept:fuzzing",
+        "caption": "Fuzzing goes further with random input."
+      }
+    ]
+  },
+  {
+    "title": "Do your tests catch bugs?",
+    "steps": [
+      {
+        "id": "concept:code-coverage",
+        "caption": "Coverage shows what ran."
+      },
+      {
+        "id": "concept:mutation-testing",
+        "caption": "Mutation testing shows what would be caught."
+      },
+      {
+        "id": "concept:unit-testing",
+        "caption": "Then strengthen the unit tests."
+      }
+    ]
+  },
+  {
+    "title": "Testing services together",
+    "steps": [
+      {
+        "id": "concept:microservices",
+        "caption": "Services evolve independently."
+      },
+      {
+        "id": "concept:contract-testing",
+        "caption": "Contract tests pin their agreements."
+      },
+      {
+        "id": "concept:integration-testing",
+        "caption": "Integration tests check them together."
+      }
+    ]
+  },
+  {
+    "title": "Smart homes that just work",
+    "steps": [
+      {
+        "id": "technology:thread-protocol",
+        "caption": "Thread is a low-power mesh."
+      },
+      {
+        "id": "technology:matter",
+        "caption": "Matter runs on top of it."
+      },
+      {
+        "id": "concept:home-automation",
+        "caption": "Every brand works together."
+      }
+    ]
+  }
+]

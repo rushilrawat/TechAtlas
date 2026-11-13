@@ -66,7 +66,8 @@ describe("RepoXrayPanel", () => {
   it("renders a completed result grouped by domain with focusable techs", () => {
     const onFocusNode = vi.fn();
     render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan() }, onFocusNode })} />);
-    expect(screen.getByText("Frontend Development")).toBeTruthy();
+    expect(screen.getByText("Frontend Development", { selector: "h4" })).toBeTruthy();
+    expect(screen.getByRole("region", { name: "Scan statistics" })).toBeTruthy();
     const tech = screen.getByRole("button", { name: /React/ });
     fireEvent.click(tech);
     expect(onFocusNode).toHaveBeenCalledWith("technology:react");

@@ -65,9 +65,17 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:quantum": "#e9f07a",               # lime-lemon (>=18 from all under CVD sims)
     "domain:blockchain": "#df7205",            # deep bitcoin orange (>=14.9 under CVD sims)
     "domain:iot": "#b7f91f",                   # electric lime (>=14.9 under CVD sims)
+    "domain:computer-engineering": "#e3c78a",  # warm sand
+    "domain:hci": "#ff8a5c",                   # salmon
+    "domain:interdisciplinary": "#b9a6ff",     # soft lavender
     # Subdomains — tints within the PARENT family (hierarchy honest, §12).
-    "domain:computer-architecture": "#d98b55", # lighter copper (within Systems)
-    "domain:embedded": "#c9732f",              # deep copper-tan (within Systems)
+    "domain:computer-architecture": "#d6b46a", # deeper sand (within Computer Engineering)
+    "domain:embedded": "#c9a35c",              # ochre sand (within Computer Engineering)
+    "domain:digital-design": "#efd9a6",        # pale sand (within Computer Engineering)
+    "domain:signal-processing": "#cdb27a",     # khaki sand (within Computer Engineering)
+    "domain:computational-biology": "#cfc2ff", # light lavender (within Interdisciplinary)
+    "domain:fintech": "#a28cf2",               # deep lavender (within Interdisciplinary)
+    "domain:health-informatics": "#ddd3ff",    # pale lavender (within Interdisciplinary)
     "domain:computer-graphics": "#ffb0c2",     # light coral (within Game Dev)
 }
 FALLBACK_COLOR = "#9aa5ce"

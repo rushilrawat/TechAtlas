@@ -6,10 +6,6 @@ this file lists what was deliberately deferred.
 
 ## Data quality (dataset is valid; these are editorial)
 
-- **36 weakly-connected nodes.** Some concept nodes connect only to their domain via
-  `belongs_to_domain` (e.g. `concept:cap-theorem`, `concept:overfitting`,
-  `concept:webhooks`). They render as near-isolated bubbles. Fix: hand-curate richer
-  typed edges for these concepts. Low priority; they are valid, just sparse.
 - **Shared Wikipedia title.** `technology:spring-boot` and `technology:spring` both use
   the "Spring Framework" article, so both show the same summary. Fix: give Spring Boot a
   distinct curated title or none.

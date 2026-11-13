@@ -19,6 +19,8 @@ single validated `graph.json` by `scripts/build_dataset.py`.
 - `concepts.json`     — fundamental concepts / terms / protocols / standards
 - `technologies.json` — concrete languages, frameworks, libraries, tools, platforms
 - `edges.json`        — typed relationships between all of the above
+- `journeys.json`     — guided learning paths; the validator checks that every step exists
+  and that consecutive steps share an edge
 
 Run `python scripts/build_dataset.py` to compile and `python scripts/validate_dataset.py`
 to verify. The validator prints the exact live counts — trust those numbers, not this doc.

@@ -114,6 +114,7 @@ export default function App() {
   const [compareMode, setCompareMode] = useState(false);
   const [compareFirst, setCompareFirst] = useState<string | null>(null);
   const [compareSecond, setCompareSecond] = useState<string | null>(null);
+  const [compareCopied, setCompareCopied] = useState(false);
   const [journeyIndex, setJourneyIndex] = useState<number | null>(null);
   const [journeyStep, setJourneyStep] = useState(0);
   const [desktopRail, setDesktopRail] = useState<"domains" | "filters" | null>(null);
@@ -165,7 +166,7 @@ export default function App() {
       window.removeEventListener("pointerdown", onDown);
     };
   }, [heroVisible]);
-  useEffect(() => { if (selected || xrayOpen) setHeroVisible(false); }, [selected, xrayOpen]);
+  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex]);
   // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
   // Fullscreen: the browser Fullscreen API where available, plus an immersive layout that
   // hides the chrome so the atlas fills the screen (also the fallback on iPhone Safari).
@@ -262,6 +263,10 @@ export default function App() {
           setCompareMode(true);
           setCompareFirst(shared.compare[0]);
           setCompareSecond(shared.compare[1] && ids.has(shared.compare[1]) ? shared.compare[1] : null);
+          const second = shared.compare[1] && ids.has(shared.compare[1]) ? shared.compare[1] : null;
+          setCompareSecond(second);
+          setSelected(second ?? shared.compare[0]);
+          setFocus(second ?? shared.compare[0]);
         }
         const deep = shared.path === null ? slugFromPath() : null;
         if (deep) {
@@ -282,13 +287,13 @@ export default function App() {
 
   // Resolve a slug-or-id to a node id, update selection, camera, and URL.
   const navigate = useCallback(
-    (slugOrId: string) => {
+    (slugOrId: string, keepCompare = false) => {
       if (state.status !== "ready") return;
       const node =
         state.graph.nodes.find((n) => n.id === slugOrId) ??
         state.graph.nodes.find((n) => n.slug === slugOrId);
       if (!node) return;
-      if (compareMode && node.node_type === "technology") {
+      if (compareMode && !keepCompare && node.node_type === "technology") {
         if (!compareFirst || compareSecond) { setCompareFirst(node.id); setCompareSecond(null); }
         else if (node.id !== compareFirst) setCompareSecond(node.id);
       }
@@ -691,15 +696,30 @@ export default function App() {
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
           <h2>Compare technologies</h2>
-          <p>{compareFirst ? nodesById.get(compareFirst)?.label : "Select the first technology on the atlas or in search."} <span aria-hidden>↔</span> {compareSecond ? nodesById.get(compareSecond)?.label : "Select a second technology"}</p>
+          <p className="compare-pair">{compareFirst ? <button type="button" onClick={() => navigate(compareFirst, true)}>{nodesById.get(compareFirst)?.label}</button> : "Select the first technology on the atlas or in search."} <span aria-hidden>↔</span> {compareSecond ? <button type="button" onClick={() => navigate(compareSecond, true)}>{nodesById.get(compareSecond)?.label}</button> : "Select a second technology"}</p>
           {comparison && <>
+            <div className="compare-actions">
+              <button type="button" onClick={() => { setCompareFirst(compareSecond); setCompareSecond(compareFirst); }}>Swap</button>
+              <button type="button" onClick={() => { setCompareFirst(null); setCompareSecond(null); }}>Clear</button>
+              <button type="button" onClick={() => {
+                void navigator.clipboard?.writeText(window.location.href).then(() => { setCompareCopied(true); window.setTimeout(() => setCompareCopied(false), 1500); }, () => undefined);
+              }}>{compareCopied ? "Link copied" : "Copy link"}</button>
+            </div>
             <p>{comparison.direct ? `Direct relationship: ${comparison.direct.replaceAll("_", " ")}` : "No direct relationship in the graph."}</p>
             <h3>Connection path</h3>
             <p>{comparison.path.length ? comparison.path.map((id) => nodesById.get(id)?.label ?? id).join(" → ") : "No relationship path within five steps."}</p>
-            {comparison.alternatives.some((list) => list.length) && <><h3>Alternatives</h3><p>{comparison.alternatives.map((list, index) =>
-              `${nodesById.get(index === 0 ? compareFirst! : compareSecond!)?.label}: ${list.length ? list.map((id) => nodesById.get(id)?.label ?? id).join(", ") : "none listed"}`).join(" · ")}</p></>}
+            {comparison.alternatives.some((list) => list.length) && <><h3>Alternatives</h3>
+              {comparison.alternatives.map((list, index) => {
+                const own = index === 0 ? compareFirst! : compareSecond!;
+                const other = index === 0 ? compareSecond! : compareFirst!;
+                const options = list.filter((id) => id !== other);
+                return <p key={own} className="compare-alts"><span>{nodesById.get(own)?.label}:</span> {options.length ? options.map((id) =>
+                  <button key={id} type="button" title={`Compare ${nodesById.get(own)?.label} with ${nodesById.get(id)?.label}`}
+                    onClick={() => { setCompareFirst(own); setCompareSecond(id); navigate(id, true); }}>{nodesById.get(id)?.label ?? id}</button>)
+                  : <em>{list.length ? "only each other" : "none listed"}</em>}</p>;
+              })}</>}
             <h3>Shared connections · {comparison.shared.length}</h3>
-            <ul>{comparison.shared.slice(0, 12).map((id) => <li key={id}><button type="button" onClick={() => navigate(id)}>{nodesById.get(id)?.label}</button></li>)}</ul>
+            <ul>{comparison.shared.slice(0, 12).map((id) => <li key={id}><button type="button" onClick={() => navigate(id, true)}>{nodesById.get(id)?.label}</button></li>)}</ul>
           </>}
         </section>}
         {journey && !xrayOpen && <section className="journey-panel" aria-label="Guided path">
@@ -815,6 +835,8 @@ export default function App() {
               setCompareMode(true);
               setCompareFirst(selected);
               setCompareSecond(other);
+              setSelected(other);
+              setFocus(other);
             }}
           />
         )}
