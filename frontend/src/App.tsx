@@ -17,8 +17,17 @@ import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED, warmScanner } from "./api/scanner";
 import { Icon } from "./components/Icon";
 import { JOURNEYS } from "./graph/journeys";
-import { readFilter, writeFilter, readCamera, writeCamera } from "./graph/shareView";
+import { readFilter, writeFilter, readCamera, writeCamera, readView, writeView } from "./graph/shareView";
+import { OutlineView, supportsWebGL } from "./components/OutlineView";
+import { ShortcutsHelp } from "./components/ShortcutsHelp";
+import { LearningPanel } from "./components/LearningPanel";
 import { connectionPath } from "./graph/compare";
+
+const PATH_TITLES = JOURNEYS.map((j) => j.title);
+const DONE_PATHS_KEY = "techatlas-paths-done";
+function readDonePaths(): Set<string> {
+  try { return new Set(JSON.parse(window.localStorage.getItem(DONE_PATHS_KEY) ?? "[]") as string[]); } catch { return new Set(); }
+}
 
 // Repo X-Ray is opt-in and hidden on the public build, so keep it out of the main bundle.
 const RepoXrayPanel = lazy(() => import("./components/RepoXrayPanel").then((m) => ({ default: m.RepoXrayPanel })));
@@ -108,6 +117,22 @@ export default function App() {
   const [journeyIndex, setJourneyIndex] = useState<number | null>(null);
   const [journeyStep, setJourneyStep] = useState(0);
   const [desktopRail, setDesktopRail] = useState<"domains" | "filters" | null>(null);
+  const [outlineOpen, setOutlineOpen] = useState(false);
+  const [learningOpen, setLearningOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [webgl] = useState(supportsWebGL);
+  const [donePaths, setDonePaths] = useState<Set<string>>(readDonePaths);
+  const [announcement, setAnnouncement] = useState("");
+  // Tablet/phone breakpoint, tracked so resizing across it re-renders the legend state.
+  const [compact, setCompact] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const on = () => setCompact(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
   // X-Ray opens on the full atlas with detections highlighted. Stack is the
   // optional clustered reprojection of the same scan.
   const [xrayView, setXrayView] = useState<"stack" | "universe">("universe");
@@ -163,6 +188,9 @@ export default function App() {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
       if (event.key === "f" || event.key === "F") { event.preventDefault(); toggleFullscreen(); }
+      else if (event.key === "?") { event.preventDefault(); setHelpOpen((v) => !v); }
+      else if (event.key === "o" || event.key === "O") { event.preventDefault(); setOutlineOpen((v) => !v); }
+      else if (event.key === "m" || event.key === "M") { event.preventDefault(); setLearningOpen((v) => !v); }
       else if (event.key === "Escape" && immersive && !document.fullscreenElement) setImmersive(false);
     };
     window.addEventListener("keydown", onKey);
@@ -221,7 +249,21 @@ export default function App() {
     Promise.all([api.graph(controller.signal), api.domains(controller.signal)])
       .then(([graph, domains]) => {
         setState({ status: "ready", graph, domains });
-        const deep = slugFromPath();
+        const shared = readView(window.location.search, PATH_TITLES);
+        const ids = new Set(graph.nodes.map((n) => n.id));
+        if (shared.path !== null) {
+          const steps = JOURNEYS[shared.path].steps;
+          const step = Math.min(shared.step, steps.length - 1);
+          setJourneyIndex(shared.path);
+          setJourneyStep(step);
+          setSelected(steps[step].id);
+          setFocus(steps[step].id);
+        } else if (shared.compare && ids.has(shared.compare[0])) {
+          setCompareMode(true);
+          setCompareFirst(shared.compare[0]);
+          setCompareSecond(shared.compare[1] && ids.has(shared.compare[1]) ? shared.compare[1] : null);
+        }
+        const deep = shared.path === null ? slugFromPath() : null;
         if (deep) {
           const node = graph.nodes.find((n) => n.slug === deep);
           if (node) {
@@ -289,6 +331,38 @@ export default function App() {
           : (item.source === selected && item.target === neighbor.node.id) ||
             (item.target === selected && item.source === neighbor.node.id)));
     setPreviewEdge(edge?.id ?? null);
+  }, [selected, state]);
+
+  // Keep guided-path and compare state in the URL so a copied link restores the view.
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    const query = writeView(window.location.search, {
+      path: journeyIndex,
+      step: journeyStep,
+      compare: compareMode && compareFirst ? [compareFirst, compareSecond] : null,
+    }, PATH_TITLES);
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  }, [state.status, journeyIndex, journeyStep, compareMode, compareFirst, compareSecond]);
+
+  // Remember finished guided paths (reaching the last step counts).
+  useEffect(() => {
+    if (journeyIndex === null) return;
+    const j = JOURNEYS[journeyIndex];
+    if (journeyStep !== j.steps.length - 1 || donePaths.has(j.title)) return;
+    const next = new Set(donePaths).add(j.title);
+    setDonePaths(next);
+    try { window.localStorage.setItem(DONE_PATHS_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+  }, [journeyIndex, journeyStep, donePaths]);
+
+  // Screen-reader announcement for every selection made on the canvas, by keyboard or search.
+  useEffect(() => {
+    if (state.status !== "ready" || !selected) return;
+    const node = state.graph.nodes.find((n) => n.id === selected);
+    if (!node) return;
+    const links = state.graph.edges.filter((e) => e.source === selected || e.target === selected).length;
+    const domain = state.domains.find((d) => d.id === node.primary_domain);
+    const kind = node.node_type === "domain" ? "domain" : `${node.node_type}${domain ? ` in ${domain.name}` : ""}`;
+    setAnnouncement(`Selected ${node.label}, ${kind}, ${links} connection${links === 1 ? "" : "s"}.`);
   }, [selected, state]);
 
   // Compute visible node/edge sets from the active filter. null = no filter (show all),
@@ -418,6 +492,20 @@ export default function App() {
       (edge.source === journey.steps[i].id && edge.target === step.id) ||
       (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
   }, [journey, graphData]);
+  // Guided paths grouped by the domain of their first step, for the picker.
+  const pathGroups = useMemo(() => {
+    const groups = new Map<string, { label: string; items: { item: (typeof JOURNEYS)[number]; index: number }[] }>();
+    JOURNEYS.forEach((item, index) => {
+      const first = nodesById.get(item.steps[0].id);
+      const domainId = first?.node_type === "domain" ? first.id : first?.primary_domain ?? "";
+      const label = domainsById.get(domainId)?.name ?? "Other";
+      const g = groups.get(label) ?? { label, items: [] };
+      g.items.push({ item, index });
+      groups.set(label, g);
+    });
+    return [...groups.values()].sort((a, b) => a.label.localeCompare(b.label));
+  }, [nodesById, domainsById]);
+
   const comparison = useMemo(() => {
     if (!graphData || !compareFirst || !compareSecond) return null;
     const neighbors = (id: string) => new Set(graphData.edges.filter((edge) => edge.source === id || edge.target === id)
@@ -466,7 +554,14 @@ export default function App() {
           aria-label="TechAtlas home — return to the Explore universe"
           title="Return to the Explore universe"
         >
-          <span className="brand-mark" aria-hidden />
+          <svg className="brand-mark" viewBox="0 0 64 64" width="22" height="22" aria-hidden>
+            <rect width="64" height="64" rx="14" fill="#0b0e14" />
+            <circle cx="32" cy="32" r="20" fill="none" stroke="#7aa2f7" strokeWidth="3" />
+            <circle cx="32" cy="32" r="5" fill="#7aa2f7" />
+            <circle cx="32" cy="12" r="4.5" fill="#bb9af7" />
+            <circle cx="49.3" cy="42" r="4.5" fill="#9ece6a" />
+            <circle cx="14.7" cy="42" r="4.5" fill="#e0af68" />
+          </svg>
           <span className="brand-name">TechAtlas</span>
           <span className="brand-sub">the technology knowledge graph</span>
         </button>
@@ -508,6 +603,12 @@ export default function App() {
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
+          <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
+            title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
+          <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
+            title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
+          <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
+            onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
           <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
             onClick={toggleFullscreen}><Icon name="expand" /></button>
           <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
@@ -543,7 +644,8 @@ export default function App() {
           <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
           <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}><Icon name="filters" /></button>
         </nav>}
-        <GraphCanvas
+        {!webgl && <OutlineView nodes={state.graph.nodes} domains={state.domains} onPick={navigate} fallback />}
+        {webgl && <GraphCanvas
           data={state.graph}
           theme={theme}
           journeyNodeIds={journeyNodeIds}
@@ -581,7 +683,12 @@ export default function App() {
                 }
               : null
           }
-        />
+        />}
+        <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
+        {webgl && outlineOpen && <OutlineView nodes={state.graph.nodes} domains={state.domains}
+          onPick={(id) => { navigate(id); if (compact) setOutlineOpen(false); }} onClose={() => setOutlineOpen(false)} />}
+        {learningOpen && !compareMode && journeyIndex === null && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
+        {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
           <h2>Compare technologies</h2>
           <p>{compareFirst ? nodesById.get(compareFirst)?.label : "Select the first technology on the atlas or in search."} <span aria-hidden>↔</span> {compareSecond ? nodesById.get(compareSecond)?.label : "Select a second technology"}</p>
@@ -598,7 +705,11 @@ export default function App() {
         {journey && !xrayOpen && <section className="journey-panel" aria-label="Guided path">
           <select aria-label="Choose guided path" value={journeyIndex ?? 0} onChange={(event) => {
             const index = Number(event.target.value); setJourneyIndex(index); setJourneyStep(0); navigate(JOURNEYS[index].steps[0].id);
-          }}>{JOURNEYS.map((item, index) => <option key={item.title} value={index}>{item.title}</option>)}</select>
+          }}>{pathGroups.map((group) => <optgroup key={group.label} label={group.label}>
+            {group.items.map(({ item, index }) => <option key={item.title} value={index}>
+              {donePaths.has(item.title) ? "✓ " : ""}{item.title} ({item.steps.length} steps)
+            </option>)}
+          </optgroup>)}</select>
           <p className="journey-progress">Step {journeyStep + 1} of {journey.steps.length}</p>
           <h2>{nodesById.get(journey.steps[journeyStep].id)?.label}</h2>
           <p>{journey.steps[journeyStep].caption}</p>
@@ -674,10 +785,10 @@ export default function App() {
           onPick={(id) => {
             // On narrow screens the legend is a sheet over the atlas: close it so the
             // focused ecosystem is visible above the details sheet.
-            if (window.matchMedia("(max-width: 1023px)").matches) setLegendCollapsed(true);
+            if (compact) setLegendCollapsed(true);
             navigate(id);
           }}
-          collapsed={window.matchMedia("(max-width: 1023px)").matches ? legendCollapsed : desktopRail !== "domains" || legendCollapsed}
+          collapsed={compact ? legendCollapsed : desktopRail !== "domains" || legendCollapsed}
           onToggle={() => { setLegendCollapsed((v) => !v); setDesktopRail(null); }}
         />
         {selected && !compareMode && (
@@ -698,6 +809,13 @@ export default function App() {
             memberCount={domainsById.get(selected)?.node_count ?? null}
             onClose={() => handleSelect(null)}
             onNavigate={navigate}
+            onCompare={(other) => {
+              setJourneyIndex(null);
+              setLearningOpen(false);
+              setCompareMode(true);
+              setCompareFirst(selected);
+              setCompareSecond(other);
+            }}
           />
         )}
         {edgeDetail && nodesById.get(edgeDetail.source) && nodesById.get(edgeDetail.target) && (
