@@ -1,0 +1,35 @@
+{
+  "repository": "example/infra-terraform-k8s",
+  "ecosystems": [
+    "terraform"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:terraform"
+    },
+    {
+      "node_id": "technology:aws"
+    },
+    {
+      "node_id": "technology:amazon-s3"
+    },
+    {
+      "node_id": "technology:kubernetes"
+    },
+    {
+      "node_id": "technology:helm"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "concept:ci-cd"
+    },
+    {
+      "node_id": "concept:infrastructure-as-code"
+    },
+    {
+      "node_id": "concept:container-orchestration"
+    }
+  ]
+}

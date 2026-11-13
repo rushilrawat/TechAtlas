@@ -1,0 +1,21 @@
+{
+  "repository": "example/php-laravel-app",
+  "ecosystems": [
+    "packagist",
+    "npm"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:laravel"
+    },
+    {
+      "node_id": "technology:php"
+    },
+    {
+      "node_id": "technology:vite"
+    },
+    {
+      "node_id": "technology:tailwind"
+    }
+  ]
+}

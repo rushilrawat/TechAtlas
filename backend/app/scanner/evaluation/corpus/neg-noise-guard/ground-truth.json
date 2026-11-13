@@ -1,0 +1,11 @@
+{
+  "repository": "example/neg-noise-guard",
+  "ecosystems": [
+    "pypi"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:python"
+    }
+  ]
+}

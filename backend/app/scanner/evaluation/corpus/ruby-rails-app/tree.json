@@ -1,0 +1,7 @@
+{
+  "owner": "example",
+  "name": "ruby-rails-app",
+  "commit_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "default_branch": "main",
+  "language": "Ruby"
+}

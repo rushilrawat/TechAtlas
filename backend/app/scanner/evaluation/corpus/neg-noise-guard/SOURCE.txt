@@ -1,0 +1,3 @@
+Synthetic negative fixture (Phase 1.5E): a Python library with tooling noise that must
+not be reported: one helper shell script, a JS build config (rollup.config.js), a docs YAML that looks like
+Kubernetes but is not a deployment, and unknown packages. Ground truth is human-authored.

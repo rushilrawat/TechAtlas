@@ -1,0 +1,26 @@
+{
+  "repository": "example/dotnet-api",
+  "ecosystems": [
+    "nuget"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:aspnet-core"
+    },
+    {
+      "node_id": "technology:dotnet"
+    },
+    {
+      "node_id": "technology:csharp"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "concept:orm"
+    },
+    {
+      "node_id": "technology:openapi"
+    }
+  ]
+}

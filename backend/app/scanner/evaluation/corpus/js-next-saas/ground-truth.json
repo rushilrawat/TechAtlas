@@ -1,0 +1,59 @@
+{
+  "repository": "example/js-next-saas",
+  "ecosystems": [
+    "npm"
+  ],
+  "expected_detections": [
+    {
+      "node_id": "technology:nextjs"
+    },
+    {
+      "node_id": "technology:react"
+    },
+    {
+      "node_id": "technology:prisma"
+    },
+    {
+      "node_id": "technology:tanstack-query"
+    },
+    {
+      "node_id": "technology:stripe"
+    },
+    {
+      "node_id": "technology:sentry"
+    },
+    {
+      "node_id": "technology:typescript"
+    },
+    {
+      "node_id": "technology:tailwind"
+    },
+    {
+      "node_id": "technology:eslint"
+    },
+    {
+      "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:vitest"
+    },
+    {
+      "node_id": "technology:playwright"
+    },
+    {
+      "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:vercel"
+    },
+    {
+      "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "concept:ci-cd"
+    },
+    {
+      "node_id": "concept:orm"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+totally-internal-lib==1.0
+another-private-pkg

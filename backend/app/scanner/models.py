@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 # Scanner + mapping versions are part of the cache key: bump SCANNER_VERSION when
 # detection/parsing rules change; MAPPING_VERSION tracks the dataset's package/alias
 # mapping data (it is the dataset version, surfaced for cache invalidation).
-SCANNER_VERSION = "1.5c.1"
+SCANNER_VERSION = "1.5e.0"
 
 DetectionStatus = Literal["confirmed", "declared", "inferred", "related"]
 # Direct vs transitive dependency classification (Phase 1.5C). Distinct from

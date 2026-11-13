@@ -15,6 +15,9 @@ import json
 from pathlib import Path
 
 _ALIAS_FILE = Path(__file__).resolve().parent / "import_aliases.json"
+# Curated package -> node id catalog for names that differ from the node (Phase 1.5E):
+# "@prisma/client" -> Prisma, "torch" -> PyTorch, "Npgsql*" -> PostgreSQL, ...
+_PACKAGE_MAP_FILE = Path(__file__).resolve().parent / "package_map.json"
 
 
 def _norm(s: str) -> str:
@@ -48,6 +51,25 @@ class TechnologyMatcher:
             self._import_aliases = json.loads(_ALIAS_FILE.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             self._import_aliases = {}
+        self._pkg_exact: dict[str, dict[str, str]] = {}
+        self._pkg_prefix: dict[str, list[tuple[str, str]]] = {}
+        try:
+            catalog = json.loads(_PACKAGE_MAP_FILE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            catalog = {}
+        for eco, entries in catalog.items():
+            if not isinstance(entries, dict):
+                continue
+            exact = self._pkg_exact.setdefault(eco, {})
+            prefixes = self._pkg_prefix.setdefault(eco, [])
+            for key, target in entries.items():
+                if not isinstance(target, str) or target not in self._valid_ids:
+                    continue  # a target missing from this dataset never matches
+                if key.endswith("*"):
+                    prefixes.append((key[:-1].lower(), target))
+                else:
+                    exact[key.lower()] = target
+            prefixes.sort(key=lambda p: -len(p[0]))  # longest prefix wins
 
     def has(self, node_id: str) -> bool:
         return node_id in self._valid_ids
@@ -75,6 +97,14 @@ class TechnologyMatcher:
         hit = self._by_pkg.get((ecosystem, lower))
         if hit:
             return hit
+
+        # 1b. curated catalog: exact name, then the longest matching prefix rule.
+        hit = self._pkg_exact.get(ecosystem, {}).get(lower)
+        if hit:
+            return hit
+        for prefix, target in self._pkg_prefix.get(ecosystem, []):
+            if lower.startswith(prefix):
+                return target
 
         # 2. ecosystem-specific identifier shapes -> repo / artifact match.
         if ecosystem == "go":
