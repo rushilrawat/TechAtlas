@@ -48,7 +48,7 @@ def test_no_loose_substring_match():
 
 def test_mapping_version_is_current():
     g = json.loads((_ROOT / "data" / "graph.json").read_text())
-    assert g["version"] == "0.4.0"
+    assert g["version"] == "0.5.0"
 
 
 def test_import_aliases_file_is_valid_json_and_expanded():

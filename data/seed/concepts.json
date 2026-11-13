@@ -548,7 +548,7 @@
     "name": "Real-Time Graphics",
     "node_type": "concept",
     "node_subtype": "technique",
-    "primary_domain": "domain:gamedev",
+    "primary_domain": "domain:computer-graphics",
     "short_description": "Rendering images fast enough for interactive, real-time applications.",
     "importance": 0.55
   },
@@ -1529,7 +1529,7 @@
     "slug": "rendering-pipeline",
     "name": "Graphics Pipeline",
     "node_type": "concept",
-    "primary_domain": "domain:gamedev",
+    "primary_domain": "domain:computer-graphics",
     "short_description": "The sequence of steps converting 3D scene data into a 2D image.",
     "lifecycle_status": "active",
     "aliases": [
@@ -1552,7 +1552,7 @@
     "slug": "shaders",
     "name": "Shader",
     "node_type": "concept",
-    "primary_domain": "domain:gamedev",
+    "primary_domain": "domain:computer-graphics",
     "short_description": "A program that runs on the GPU to compute rendering effects.",
     "lifecycle_status": "active",
     "aliases": [
@@ -1565,7 +1565,7 @@
     "slug": "ray-tracing",
     "name": "Ray Tracing",
     "node_type": "concept",
-    "primary_domain": "domain:gamedev",
+    "primary_domain": "domain:computer-graphics",
     "short_description": "A rendering technique that simulates light by tracing ray paths.",
     "lifecycle_status": "active",
     "wikipedia_title": "Ray tracing (graphics)"
@@ -4027,5 +4027,390 @@
     ],
     "importance": 0.45,
     "wikipedia_title": "Industrial internet of things"
+  },
+  {
+    "id": "concept:rasterization",
+    "slug": "rasterization",
+    "name": "Rasterization",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Converting triangles into screen pixels; the core of real-time GPU rendering.",
+    "importance": 0.65,
+    "wikipedia_title": "Rasterisation"
+  },
+  {
+    "id": "concept:texture-mapping",
+    "slug": "texture-mapping",
+    "name": "Texture Mapping",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Wrapping 2D images onto 3D surfaces to add colour and detail.",
+    "importance": 0.5,
+    "wikipedia_title": "Texture mapping"
+  },
+  {
+    "id": "concept:physically-based-rendering",
+    "slug": "physically-based-rendering",
+    "name": "Physically Based Rendering",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Shading that models how light really interacts with materials.",
+    "aliases": [
+      "PBR"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Physically based rendering"
+  },
+  {
+    "id": "concept:global-illumination",
+    "slug": "global-illumination",
+    "name": "Global Illumination",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Lighting that accounts for light bouncing between surfaces, not just direct light.",
+    "importance": 0.5,
+    "wikipedia_title": "Global illumination"
+  },
+  {
+    "id": "concept:polygon-mesh",
+    "slug": "polygon-mesh",
+    "name": "Polygon Mesh",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "Vertices, edges and faces that define the shape of a 3D object.",
+    "aliases": [
+      "3D mesh"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Polygon mesh"
+  },
+  {
+    "id": "concept:https",
+    "slug": "https",
+    "name": "HTTPS",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "HTTP carried over TLS, so requests are encrypted and the server is authenticated.",
+    "node_subtype": "protocol",
+    "importance": 0.75,
+    "wikipedia_title": "HTTPS"
+  },
+  {
+    "id": "concept:bgp",
+    "slug": "bgp",
+    "name": "BGP",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Border Gateway Protocol: how networks on the internet announce routes to each other.",
+    "node_subtype": "protocol",
+    "aliases": [
+      "Border Gateway Protocol"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Border Gateway Protocol"
+  },
+  {
+    "id": "concept:wi-fi",
+    "slug": "wi-fi",
+    "name": "Wi-Fi",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "The IEEE 802.11 family of wireless local-area networking standards.",
+    "node_subtype": "standard",
+    "aliases": [
+      "WiFi",
+      "802.11"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Wi-Fi"
+  },
+  {
+    "id": "concept:bluetooth",
+    "slug": "bluetooth",
+    "name": "Bluetooth",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Short-range wireless standard for connecting peripherals and low-power devices.",
+    "node_subtype": "standard",
+    "aliases": [
+      "BLE",
+      "Bluetooth Low Energy"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Bluetooth"
+  },
+  {
+    "id": "concept:cellular-5g",
+    "slug": "cellular-5g",
+    "name": "5G",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Fifth-generation cellular networks with higher bandwidth and lower latency.",
+    "node_subtype": "standard",
+    "aliases": [
+      "5G NR"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "5G"
+  },
+  {
+    "id": "concept:nat",
+    "slug": "nat",
+    "name": "Network Address Translation",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Rewriting addresses at a router so many devices share one public IP.",
+    "aliases": [
+      "NAT"
+    ],
+    "importance": 0.45,
+    "wikipedia_title": "Network address translation"
+  },
+  {
+    "id": "concept:site-reliability-engineering",
+    "slug": "site-reliability-engineering",
+    "name": "Site Reliability Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Running production systems with software engineering: error budgets, automation, SLOs.",
+    "node_subtype": "methodology",
+    "aliases": [
+      "SRE"
+    ],
+    "importance": 0.7,
+    "wikipedia_title": "Site reliability engineering"
+  },
+  {
+    "id": "concept:service-level-objectives",
+    "slug": "service-level-objectives",
+    "name": "Service Level Objectives",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Target reliability levels (SLOs) measured by indicators (SLIs) such as latency.",
+    "aliases": [
+      "SLO",
+      "SLI",
+      "SLA"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Service-level objective"
+  },
+  {
+    "id": "concept:incident-management",
+    "slug": "incident-management",
+    "name": "Incident Management",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Detecting, responding to and learning from outages, including on-call and postmortems.",
+    "node_subtype": "methodology",
+    "aliases": [
+      "On-call",
+      "Postmortem"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Incident management"
+  },
+  {
+    "id": "concept:chaos-engineering",
+    "slug": "chaos-engineering",
+    "name": "Chaos Engineering",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Injecting failures on purpose to prove a system survives them.",
+    "node_subtype": "technique",
+    "importance": 0.5,
+    "wikipedia_title": "Chaos engineering"
+  },
+  {
+    "id": "concept:data-privacy",
+    "slug": "data-privacy",
+    "name": "Data Privacy",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Collecting and handling personal data lawfully, minimally and with consent.",
+    "aliases": [
+      "Information privacy"
+    ],
+    "importance": 0.6,
+    "wikipedia_title": "Information privacy"
+  },
+  {
+    "id": "concept:gdpr",
+    "slug": "gdpr",
+    "name": "GDPR",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "The EU General Data Protection Regulation governing personal data.",
+    "node_subtype": "standard",
+    "aliases": [
+      "General Data Protection Regulation"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "General Data Protection Regulation"
+  },
+  {
+    "id": "concept:differential-privacy",
+    "slug": "differential-privacy",
+    "name": "Differential Privacy",
+    "node_type": "concept",
+    "primary_domain": "domain:security",
+    "short_description": "Adding calibrated noise so aggregate results reveal nothing about any one person.",
+    "node_subtype": "technique",
+    "importance": 0.5,
+    "wikipedia_title": "Differential privacy"
+  },
+  {
+    "id": "concept:design-systems",
+    "slug": "design-systems",
+    "name": "Design Systems",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Shared components, tokens and guidelines that keep a product's UI consistent.",
+    "importance": 0.6,
+    "wikipedia_title": "Design system"
+  },
+  {
+    "id": "concept:usability-testing",
+    "slug": "usability-testing",
+    "name": "Usability Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Watching real users attempt tasks to find where an interface confuses them.",
+    "node_subtype": "technique",
+    "importance": 0.5,
+    "wikipedia_title": "Usability testing"
+  },
+  {
+    "id": "concept:wcag",
+    "slug": "wcag",
+    "name": "WCAG",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Web Content Accessibility Guidelines: the W3C standard for accessible web content.",
+    "node_subtype": "standard",
+    "aliases": [
+      "Web Content Accessibility Guidelines"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Web Content Accessibility Guidelines"
+  },
+  {
+    "id": "concept:ab-testing",
+    "slug": "ab-testing",
+    "name": "A/B Testing",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Comparing two variants with real users to see which performs better.",
+    "node_subtype": "technique",
+    "aliases": [
+      "Split testing"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "A/B testing"
+  },
+  {
+    "id": "concept:product-analytics",
+    "slug": "product-analytics",
+    "name": "Product Analytics",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Measuring how people use a product: events, funnels, retention.",
+    "importance": 0.5,
+    "wikipedia_title": "Web analytics"
+  },
+  {
+    "id": "concept:service-workers",
+    "slug": "service-workers",
+    "name": "Service Workers",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Background scripts that let web apps work offline and receive push messages.",
+    "node_subtype": "standard",
+    "importance": 0.5,
+    "wikipedia_title": "Service worker"
+  },
+  {
+    "id": "concept:core-web-vitals",
+    "slug": "core-web-vitals",
+    "name": "Core Web Vitals",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Google's page-experience metrics: loading (LCP), responsiveness (INP), stability (CLS).",
+    "aliases": [
+      "Web Vitals",
+      "LCP",
+      "CLS",
+      "INP"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Web performance"
+  },
+  {
+    "id": "concept:internationalization",
+    "slug": "internationalization",
+    "name": "Internationalization",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Designing software so it can be translated and adapted to locales.",
+    "aliases": [
+      "i18n",
+      "Localization",
+      "l10n"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Internationalization and localization"
+  },
+  {
+    "id": "concept:tokenization",
+    "slug": "tokenization",
+    "name": "Tokenization",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Splitting text into the sub-word units a language model reads and writes.",
+    "node_subtype": "technique",
+    "importance": 0.55,
+    "wikipedia_title": "Large language model"
+  },
+  {
+    "id": "concept:ai-agents",
+    "slug": "ai-agents",
+    "name": "AI Agents",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "LLM-driven systems that plan, call tools and act over multiple steps.",
+    "aliases": [
+      "Agentic AI",
+      "LLM agents"
+    ],
+    "importance": 0.65,
+    "wikipedia_title": "Intelligent agent"
+  },
+  {
+    "id": "concept:low-rank-adaptation",
+    "slug": "low-rank-adaptation",
+    "name": "LoRA",
+    "node_type": "concept",
+    "primary_domain": "domain:ai-ml",
+    "short_description": "Fine-tuning a large model by training small low-rank weight updates.",
+    "node_subtype": "technique",
+    "aliases": [
+      "Low-Rank Adaptation"
+    ],
+    "importance": 0.5,
+    "wikipedia_title": "Fine-tuning (deep learning)"
+  },
+  {
+    "id": "concept:data-lakehouse",
+    "slug": "data-lakehouse",
+    "name": "Data Lakehouse",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A data lake with warehouse features: tables, transactions and schemas on open files.",
+    "node_subtype": "architecture",
+    "aliases": [
+      "Lakehouse"
+    ],
+    "importance": 0.55,
+    "wikipedia_title": "Data lake"
   }
 ]

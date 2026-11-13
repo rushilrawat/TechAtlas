@@ -74,6 +74,11 @@ def test_parents_are_central_with_full_360_coverage():
         members = _members(coords, anchor)
         if len(members) < 8:
             continue
+        # A nested subdomain constellation fills its own sector of the parent's ring, so
+        # its anchor counts toward angular coverage (e.g. Graphics inside Game Dev).
+        members += [e["target"] for e in DATASET["edges"]
+                    if e["relationship_type"] == "has_subdomain" and e["source"] == anchor
+                    and coords[e["target"]]["cluster"] != anchor]
         ax, ay = c["x"], c["y"]
         angles = sorted(math.atan2(coords[m]["y"] - ay, coords[m]["x"] - ax) for m in members)
         gaps = [b - a for a, b in zip(angles, angles[1:], strict=False)]
@@ -109,7 +114,9 @@ def test_edge_tiers_are_a_sparse_canonical_backbone():
     assert set(tiers.values()) == {"TierA", "TierB", "TierC", "TierD"}
     counts = Counter(tiers.values())
     # Rush asked for more visible connections than the original 100-170 target.
-    assert 250 <= counts["TierA"] + counts["TierB"] + counts["TierC"] <= 360
+    # The ceiling scales with the dataset so visible density stays about a quarter of edges.
+    visible = counts["TierA"] + counts["TierB"] + counts["TierC"]
+    assert 250 <= visible <= max(360, 0.26 * gl.EXPECTED_EDGES)
     assert counts["TierC"] <= gl.TIER_C_CAP
     for i, edge in enumerate(DATASET["edges"]):
         tier = tiers[f"e{i}"]
