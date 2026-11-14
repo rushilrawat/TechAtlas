@@ -1,0 +1,123 @@
+[
+  {
+    "id": "frontend-engineer",
+    "title": "Frontend engineer",
+    "summary": "Builds the part of a product people see and touch: interfaces that are fast, accessible and work on every screen.",
+    "stages": [
+      {"title": "Foundations", "caption": "The web platform every framework sits on.", "nodes": ["html", "css", "javascript", "dom", "http", "responsive-design", "accessibility"]},
+      {"title": "Core stack", "caption": "A typed language, a component framework and how state flows through it.", "nodes": ["typescript", "react", "component-architecture", "state-management", "single-page-application", "tailwind-css"]},
+      {"title": "Tooling and quality", "caption": "Build, test and ship with confidence.", "nodes": ["git", "npm", "vite", "eslint", "vitest", "playwright"]},
+      {"title": "Going further", "caption": "What separates senior frontend work: rendering strategy, performance and design systems.", "nodes": ["nextjs", "server-side-rendering", "core-web-vitals", "design-systems", "internationalization", "progressive-web-app"]}
+    ]
+  },
+  {
+    "id": "backend-engineer",
+    "title": "Backend engineer",
+    "summary": "Builds the services, APIs and data layer behind a product, and keeps them correct and reliable under load.",
+    "stages": [
+      {"title": "Foundations", "caption": "One server language well, and how the web talks.", "nodes": ["python", "http", "rest-api", "sql", "relational-databases", "data-structures", "algorithms"]},
+      {"title": "Core stack", "caption": "A framework, a database and the habits that keep data consistent.", "nodes": ["fastapi", "postgresql", "orm", "database-indexing", "database-transaction", "authentication", "authorization"]},
+      {"title": "Shipping it", "caption": "Package, test and deploy your service.", "nodes": ["git", "pytest", "docker", "ci-cd", "redis", "caching"]},
+      {"title": "Going further", "caption": "Systems that span many machines and many teams.", "nodes": ["message-queue", "kafka", "microservices", "distributed-systems", "idempotency", "rate-limiting", "observability"]}
+    ]
+  },
+  {
+    "id": "full-stack-engineer",
+    "title": "Full-stack engineer",
+    "summary": "Owns a feature end to end, from the database to the button, usually in one language across both sides.",
+    "stages": [
+      {"title": "Foundations", "caption": "The web platform plus one language for both sides.", "nodes": ["html", "css", "javascript", "typescript", "http", "sql"]},
+      {"title": "Core stack", "caption": "One framework that covers UI and server, plus a database and auth.", "nodes": ["react", "nextjs", "nodejs", "rest-api", "postgresql", "prisma", "authentication"]},
+      {"title": "Shipping it", "caption": "Test, deploy and watch what you ship.", "nodes": ["git", "vitest", "playwright", "github-actions", "vercel", "sentry"]},
+      {"title": "Going further", "caption": "The trade-offs you own when you own the whole feature.", "nodes": ["server-side-rendering", "caching", "graphql", "websockets", "stripe", "accessibility"]}
+    ]
+  },
+  {
+    "id": "mobile-developer",
+    "title": "Mobile developer",
+    "summary": "Builds apps for phones and tablets, native or cross-platform, that feel fast and work offline.",
+    "stages": [
+      {"title": "Foundations", "caption": "A mobile language and how apps live on a device.", "nodes": ["swift", "kotlin", "mobile-app-lifecycle", "object-oriented-programming", "asynchronous-programming"]},
+      {"title": "Native UI", "caption": "The declarative UI toolkits on each platform.", "nodes": ["swiftui", "jetpack-compose", "xcode", "android-studio", "android-sdk"]},
+      {"title": "Cross-platform", "caption": "One codebase for both stores.", "nodes": ["cross-platform-development", "flutter", "dart", "react-native", "expo"]},
+      {"title": "Going further", "caption": "The services and polish real apps need.", "nodes": ["push-notifications", "firebase", "rest-api", "local-first-software", "accessibility", "ci-cd"]}
+    ]
+  },
+  {
+    "id": "devops-engineer",
+    "title": "DevOps / platform engineer",
+    "summary": "Builds the paths code takes to production and keeps the systems it runs on healthy, repeatable and observable.",
+    "stages": [
+      {"title": "Foundations", "caption": "The operating system, networks and a scripting language.", "nodes": ["linux", "bash", "tcp-ip", "dns", "git", "python"]},
+      {"title": "Containers and delivery", "caption": "Package everything the same way and ship it automatically.", "nodes": ["containerization", "docker", "ci-cd", "github-actions", "yaml"]},
+      {"title": "Infrastructure", "caption": "Clusters and clouds, described as code.", "nodes": ["cloud-computing", "aws", "infrastructure-as-code", "terraform", "kubernetes", "helm", "load-balancing"]},
+      {"title": "Reliability", "caption": "Know when things break, and break less.", "nodes": ["observability", "prometheus", "grafana", "opentelemetry", "site-reliability-engineering", "gitops", "secrets-management", "platform-engineering"]}
+    ]
+  },
+  {
+    "id": "data-engineer",
+    "title": "Data engineer",
+    "summary": "Moves, cleans and models data so analysts and models can trust it, in batch and in real time.",
+    "stages": [
+      {"title": "Foundations", "caption": "SQL, a data language and how databases store things.", "nodes": ["sql", "python", "relational-databases", "database-normalization", "postgresql"]},
+      {"title": "Pipelines", "caption": "Extract, transform, load, on a schedule.", "nodes": ["etl", "data-pipeline", "airflow", "pandas", "duckdb-dbt", "apache-parquet"]},
+      {"title": "Warehouses and lakes", "caption": "Where analytics data lives at scale.", "nodes": ["data-warehouse", "olap", "columnar-storage", "snowflake", "bigquery", "data-lake", "spark"]},
+      {"title": "Going further", "caption": "Streaming and the modern lakehouse.", "nodes": ["stream-processing", "kafka", "flink", "change-data-capture", "data-lakehouse", "apache-iceberg"]}
+    ]
+  },
+  {
+    "id": "ml-engineer",
+    "title": "Machine learning engineer",
+    "summary": "Trains, evaluates and serves models, and turns research results into reliable product features.",
+    "stages": [
+      {"title": "Foundations", "caption": "The maths and the Python stack underneath every model.", "nodes": ["python", "linear-algebra", "probability-theory", "numpy", "pandas", "jupyter"]},
+      {"title": "Classical ML", "caption": "Learning from labelled data, and knowing when it's working.", "nodes": ["supervised-learning", "feature-engineering", "overfitting", "gradient-descent", "scikit-learn", "gradient-boosting"]},
+      {"title": "Deep learning", "caption": "Neural networks and the frameworks that train them.", "nodes": ["neural-networks", "deep-learning", "backpropagation", "pytorch", "transformers", "fine-tuning"]},
+      {"title": "Production", "caption": "From notebook to a model people depend on.", "nodes": ["mlops", "mlflow", "model-inference", "model-quantization", "docker", "llm-evaluation"]}
+    ]
+  },
+  {
+    "id": "ai-engineer",
+    "title": "AI application engineer",
+    "summary": "Builds products on top of large language models: retrieval, agents, evaluation and guardrails.",
+    "stages": [
+      {"title": "Foundations", "caption": "How LLMs work, at the level an app builder needs.", "nodes": ["python", "large-language-models", "transformers", "tokenization", "prompt-engineering"]},
+      {"title": "Retrieval", "caption": "Give the model the right context.", "nodes": ["vector-embeddings", "retrieval-augmented-generation", "vector-databases", "pgvector", "hybrid-search"]},
+      {"title": "Agents and tools", "caption": "Let the model act, safely.", "nodes": ["tool-use", "ai-agents", "model-context-protocol", "langgraph", "openai-api"]},
+      {"title": "Going further", "caption": "Measure quality and keep it safe.", "nodes": ["llm-evaluation", "ai-guardrails", "prompt-injection", "fine-tuning", "observability"]}
+    ]
+  },
+  {
+    "id": "security-engineer",
+    "title": "Security engineer",
+    "summary": "Finds and fixes weaknesses before attackers do, and builds systems that stay safe when something fails.",
+    "stages": [
+      {"title": "Foundations", "caption": "Networks, operating systems and the basics of cryptography.", "nodes": ["linux", "tcp-ip", "http", "cryptography", "public-key-cryptography", "hashing", "tls"]},
+      {"title": "Identity and access", "caption": "Who are you, and what may you do?", "nodes": ["authentication", "authorization", "oauth2", "jwt", "mfa", "zero-trust"]},
+      {"title": "Application security", "caption": "The bugs that show up again and again.", "nodes": ["threat-modeling", "xss", "sql-injection", "csrf", "web-application-security", "burp-suite", "supply-chain-security"]},
+      {"title": "Offense and response", "caption": "Think like an attacker, respond like a defender.", "nodes": ["penetration-testing", "nmap", "metasploit", "vulnerability-assessment", "incident-response", "siem", "mitre-attack"]}
+    ]
+  },
+  {
+    "id": "game-developer",
+    "title": "Game developer",
+    "summary": "Builds interactive worlds: gameplay code, rendering, physics and the tools artists use.",
+    "stages": [
+      {"title": "Foundations", "caption": "A performance-minded language and the maths of space.", "nodes": ["cpp", "csharp", "linear-algebra", "data-structures", "object-oriented-programming"]},
+      {"title": "Engines", "caption": "Where most games are built today.", "nodes": ["game-engines", "unity", "unreal-engine", "godot", "physics-engine"]},
+      {"title": "Graphics", "caption": "How a frame gets drawn.", "nodes": ["rendering-pipeline", "shaders", "real-time-graphics", "opengl", "vulkan", "blender"]},
+      {"title": "Going further", "caption": "Worlds that generate themselves, and new platforms.", "nodes": ["procedural-generation", "physics-simulation", "virtual-reality", "augmented-reality", "openxr"]}
+    ]
+  },
+  {
+    "id": "embedded-engineer",
+    "title": "Embedded engineer",
+    "summary": "Writes the software inside devices, close to the hardware, where memory and timing are tight.",
+    "stages": [
+      {"title": "Foundations", "caption": "C, memory and how a computer actually runs code.", "nodes": ["c", "memory-management", "operating-systems", "assembly", "bare-metal-programming"]},
+      {"title": "Microcontrollers", "caption": "Talking to hardware directly.", "nodes": ["microcontroller", "firmware", "gpio", "interrupt-handling", "uart", "i2c", "spi"]},
+      {"title": "Real-time systems", "caption": "Deadlines that must never be missed.", "nodes": ["rtos", "freertos", "zephyr", "real-time-scheduling", "watchdog-timer"]},
+      {"title": "Going further", "caption": "Connected devices and Linux on the edge.", "nodes": ["esp32", "embedded-linux", "internet-of-things", "mqtt", "rust", "tinyml"]}
+    ]
+  }
+]
