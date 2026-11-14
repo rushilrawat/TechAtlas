@@ -172,7 +172,8 @@ def index_entry(example: Example, scan: dict) -> dict:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("repos", nargs="*", help="owner/name to rebuild (default: all)")
     ap.add_argument("--source", choices=["api", "git"], default="api")
     args = ap.parse_args()
@@ -199,7 +200,8 @@ def main() -> int:
                 json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
             index[slug_of(example.repo)] = index_entry(example, payload)
             print(f"  {payload['summary']['matched_technology_count']} technologies, "
-                  f"{payload['summary']['matched_concept_count']} concepts, status {payload['status']}")
+                  f"{payload['summary']['matched_concept_count']} concepts, "
+                  f"status {payload['status']}")
 
     order = [slug_of(e.repo) for e in EXAMPLES]
     entries = [index[s] for s in order if s in index]
