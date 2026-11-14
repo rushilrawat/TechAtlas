@@ -36,6 +36,9 @@ jobs:
       # and the next deploy automatically exposes the feature. Not a secret (it is a public
       # URL); the GITHUB_TOKEN lives only in the backend environment, never here.
       VITE_SCANNER_API: ${{ vars.SCANNER_API_URL }}
+      # Cookieless analytics, off unless the ANALYTICS repo variable is set, e.g.
+      # "plausible:rushilrawat.github.io" or "goatcounter:techatlas". See docs/analytics.md.
+      VITE_ANALYTICS: ${{ vars.ANALYTICS }}
     steps:
       - uses: actions/checkout@v4
 
