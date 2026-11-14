@@ -148,3 +148,65 @@ def test_falsy_titles_short_circuit(tmp_path, title):
     svc = _svc(tmp_path, client)
     assert svc.get("python", title) is None
     assert client.calls == 0
+
+
+class FakeClock:
+    def __init__(self, now: float = 1_800_000_000.0):
+        self.now = now
+
+    def __call__(self) -> float:
+        return self.now
+
+
+def _svc_at(tmp_path, client, clock, ttl_days=30) -> SummaryService:
+    return SummaryService(
+        "0.2.0", ttl_days=ttl_days, cache_root=tmp_path, client=client, clock=clock
+    )
+
+
+def test_404_is_negatively_cached_for_a_day(tmp_path):
+    client, clock = FakeClient(status_code=404), FakeClock()
+    svc = _svc_at(tmp_path, client, clock)
+    assert svc.get("ghost", "No such page") is None
+    assert svc.get("ghost", "No such page") is None
+    assert client.calls == 1
+    clock.now += 23 * 3600
+    svc.get("ghost", "No such page")
+    assert client.calls == 1
+    clock.now += 2 * 3600
+    svc.get("ghost", "No such page")
+    assert client.calls == 2
+
+
+def test_transient_error_is_retried_after_five_minutes(tmp_path):
+    client, clock = FakeClient(raise_error=True), FakeClock()
+    svc = _svc_at(tmp_path, client, clock)
+    svc.get("python", "Python (programming language)")
+    svc.get("python", "Python (programming language)")
+    assert client.calls == 1
+    clock.now += 301
+    svc.get("python", "Python (programming language)")
+    assert client.calls == 2
+
+
+def test_stale_entry_served_after_failure_is_refreshed_later(tmp_path):
+    clock = FakeClock()
+    good = FakeClient()
+    svc = _svc_at(tmp_path, good, clock, ttl_days=1)
+    first = svc.get("python", "Python (programming language)")
+    assert first is not None and good.calls == 1
+
+    # Two days later the entry is stale and Wikipedia is down: serve the stale copy.
+    clock.now += 2 * 86400
+    svc._client = FakeClient(raise_error=True)
+    assert svc.get("python", "Python (programming language)") == first
+    assert svc.get("python", "Python (programming language)") == first
+    assert svc._client.calls == 1  # backing off, served from memory
+
+    # Once the failure window passes and Wikipedia is back, the entry is refreshed.
+    clock.now += 301
+    recovered = FakeClient()
+    svc._client = recovered
+    fresh = svc.get("python", "Python (programming language)")
+    assert recovered.calls == 1
+    assert fresh is not None and fresh.fetched_at != first.fetched_at

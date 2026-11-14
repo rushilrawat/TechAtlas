@@ -13,7 +13,11 @@ Design rules enforced here (requirements 2.1-2.8):
   - never fetch when the node has no ``wikipedia_title``;
   - degrade gracefully: any fetch error/timeout returns ``None`` (the caller renders
     the curated fields + outbound link, no hard error);
-  - record attribution (source url + license) alongside the extract.
+  - record attribution (source url + license) alongside the extract;
+  - remember failed fetches for a while (a 404 for a day, a timeout or 5xx for five
+    minutes) so a broken title does not cost a request on every view;
+  - re-check the age of in-process entries, so a stale summary served after a failed
+    refetch is retried once the failure window passes.
 
 It sits behind its own narrow boundary (Option A), uses no graph database, and does
 not change existing API shapes — the summary is attached as an optional field.
@@ -36,6 +40,10 @@ CACHE_ROOT = DATA_DIR / "cache" / "wikipedia"
 WIKIPEDIA_LICENSE = "CC BY-SA 4.0"
 REST_SUMMARY = "https://{lang}.wikipedia.org/api/rest_v1/page/summary/{title}"
 
+# How long a failed fetch is remembered before the title is tried again.
+MISS_TTL_NOT_FOUND = 24 * 3600   # the page does not exist (404/410) or has no extract
+MISS_TTL_ERROR = 5 * 60          # timeout, network error or other non-200
+
 
 @dataclass(frozen=True)
 class NodeSummary:
@@ -57,6 +65,7 @@ class SummaryService:
         lru_size: int = 512,
         timeout_seconds: float = 3.0,
         client: httpx.Client | None = None,
+        clock=time.time,
     ) -> None:
         self._version = dataset_version
         self._lang = lang
@@ -67,6 +76,9 @@ class SummaryService:
         # Injectable client so tests never hit the network.
         self._client = client
         self._lru: OrderedDict[str, NodeSummary] = OrderedDict()
+        # slug -> time until which a failed fetch is not retried (negative cache).
+        self._misses: dict[str, float] = {}
+        self._clock = clock
 
     # ---- public API ----------------------------------------------------------
 
@@ -80,25 +92,39 @@ class SummaryService:
             return None
 
         cached = self._lru_get(slug)
-        if cached is not None:
+        backing_off = self._recently_failed(slug)
+        if cached is not None and (backing_off or not self._is_stale(cached)):
             return cached
 
         disk = self._disk_get(slug)
         if disk is not None and not self._is_stale(disk):
             self._lru_put(slug, disk)
             return disk
+        if backing_off:
+            return disk or cached
 
-        fetched = self._fetch(wikipedia_title)
+        fetched, not_found = self._fetch(wikipedia_title)
         if fetched is not None:
+            self._misses.pop(slug, None)
             self._disk_put(slug, fetched)
             self._lru_put(slug, fetched)
             return fetched
 
-        # Fetch failed. A stale disk entry is better than nothing (stale-while-error).
-        if disk is not None:
-            self._lru_put(slug, disk)
-            return disk
-        return None
+        # Fetch failed: remember it, then fall back to a stale copy (stale-while-error).
+        self._misses[slug] = self._clock() + (MISS_TTL_NOT_FOUND if not_found else MISS_TTL_ERROR)
+        stale = disk or cached
+        if stale is not None:
+            self._lru_put(slug, stale)
+        return stale
+
+    def _recently_failed(self, slug: str) -> bool:
+        until = self._misses.get(slug)
+        if until is None:
+            return False
+        if self._clock() >= until:
+            del self._misses[slug]
+            return False
+        return True
 
     # ---- LRU -----------------------------------------------------------------
 
@@ -151,11 +177,13 @@ class SummaryService:
             fetched = calendar.timegm(time.strptime(summary.fetched_at, "%Y-%m-%dT%H:%M:%SZ"))
         except (ValueError, TypeError):
             return True
-        return (time.time() - fetched) > self._ttl_seconds
+        return (self._clock() - fetched) > self._ttl_seconds
 
     # ---- fetch ---------------------------------------------------------------
 
-    def _fetch(self, wikipedia_title: str) -> NodeSummary | None:
+    def _fetch(self, wikipedia_title: str) -> tuple[NodeSummary | None, bool]:
+        """Return (summary, not_found). not_found marks a definitive miss (404/410 or an
+        empty extract) as opposed to a transient error."""
         # The REST summary endpoint takes the page title with spaces as underscores.
         title = wikipedia_title.replace(" ", "_")
         url = REST_SUMMARY.format(lang=self._lang, title=title)
@@ -170,14 +198,14 @@ class SummaryService:
                     headers={"User-Agent": "TechAtlas/0.2 (knowledge graph)"},
                 )
             if resp.status_code != 200:
-                return None
+                return None, resp.status_code in (404, 410)
             data = resp.json()
         except (httpx.HTTPError, ValueError):
-            return None
+            return None, False
 
         extract = (data.get("extract") or "").strip()
         if not extract:
-            return None
+            return None, True
         source_url = (
             data.get("content_urls", {}).get("desktop", {}).get("page")
             or f"https://{self._lang}.wikipedia.org/wiki/{title}"
@@ -186,6 +214,6 @@ class SummaryService:
             extract=extract,
             source_url=source_url,
             lang=self._lang,
-            fetched_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            fetched_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(self._clock())),
             license=WIKIPEDIA_LICENSE,
-        )
+        ), False
