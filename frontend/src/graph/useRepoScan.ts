@@ -3,17 +3,24 @@
 
 import { useCallback, useRef, useState } from "react";
 import { ScanError, scanner } from "../api/scanner";
+import { findExample, loadExampleScan } from "../api/exampleScans";
 import type { RepoScan } from "../api/types";
 
 export type ScanPhase =
   | { kind: "idle" }
   | { kind: "analyzing"; url: string }
-  | { kind: "done"; scan: RepoScan } // completed OR partial (scan.status says which)
+  // completed OR partial (scan.status says which). `example` is the slug when the result
+  // is a pre-computed example scan rather than a live one.
+  | { kind: "done"; scan: RepoScan; example?: string }
   | { kind: "error"; code: string; message: string; retryAfter: number | null };
 
 export interface RepoScanController {
   phase: ScanPhase;
   analyze: (url: string) => void;
+  /** Load a pre-computed example scan (static JSON, no backend needed). */
+  loadExample: (slug: string) => void;
+  /** Show a scan that is already in hand (e.g. decoded from a share link). */
+  load: (scan: RepoScan, example?: string) => void;
   reset: () => void;
 }
 
@@ -53,11 +60,36 @@ export function useRepoScan(): RepoScanController {
       });
   }, []);
 
+  const loadExample = useCallback((slug: string) => {
+    const meta = findExample(slug);
+    if (!meta) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    const myReq = ++reqIdRef.current;
+    setPhase({ kind: "analyzing", url: `https://github.com/${meta.repo}` });
+    loadExampleScan(slug, controller.signal)
+      .then((scan) => {
+        if (myReq !== reqIdRef.current) return;
+        setPhase({ kind: "done", scan, example: slug });
+      })
+      .catch((err) => {
+        if (myReq !== reqIdRef.current || err?.name === "AbortError") return;
+        setPhase({ kind: "error", code: "example", message: "Could not load this example scan.", retryAfter: null });
+      });
+  }, []);
+
+  const load = useCallback((scan: RepoScan, example?: string) => {
+    abortRef.current?.abort();
+    reqIdRef.current++;
+    setPhase({ kind: "done", scan, example });
+  }, []);
+
   const reset = useCallback(() => {
     abortRef.current?.abort();
     reqIdRef.current++; // invalidate any late response
     setPhase({ kind: "idle" });
   }, []);
 
-  return { phase, analyze, reset };
+  return { phase, analyze, loadExample, load, reset };
 }

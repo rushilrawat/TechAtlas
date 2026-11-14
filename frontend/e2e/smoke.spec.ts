@@ -86,31 +86,33 @@ test("selecting a second node (via search) updates the panel — no stale highli
   await expect(panel.getByRole("heading", { name: "React" })).toHaveCount(0);
 });
 
-// The Repo X-Ray entry point is gated on the build-time VITE_SCANNER_API variable
-// (frontend/src/api/scanner.ts -> SCANNER_ENABLED). The same variable is set on the
-// job that builds AND runs this suite, so the test process reads it from process.env to
-// assert the behavior that matches the build under test. Both scenarios are defined as
-// tests; the one that does not match the current build configuration is marked skipped
-// (never removed) so the opposite case stays documented and runs under the other config.
+// Repo X-Ray is always reachable. Whether live scanning is offered depends on the
+// build-time VITE_SCANNER_API variable (frontend/src/api/scanner.ts -> SCANNER_ENABLED),
+// which is set on the job that builds AND runs this suite, so the test reads it from
+// process.env. Pre-computed example scans (public/example-scans/) work in both builds.
 const SCANNER_CONFIGURED =
   typeof process.env.VITE_SCANNER_API === "string" &&
   process.env.VITE_SCANNER_API.trim().length > 0;
 
-test("Repo X-Ray entry is visible when the scanner IS configured", async ({ page }) => {
-  test.skip(!SCANNER_CONFIGURED, "VITE_SCANNER_API is unset for this build");
-  // This build has VITE_SCANNER_API set (e.g. the production Pages deploy pointing at
-  // the Render backend), so the Repo X-Ray entry point must be present and usable.
+test("Repo X-Ray is visible and an example scan loads without a backend", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
+  await page.getByRole("button", { name: "Repo X-Ray" }).click();
+  const panel = page.getByRole("region", { name: "Repo X-Ray" });
+  await expect(panel.getByLabel("GitHub repository URL")).toHaveCount(SCANNER_CONFIGURED ? 1 : 0);
+  await panel.getByRole("button", { name: /X-ray django\/django/ }).click();
+  await expect(panel.getByRole("link", { name: "django/django" })).toBeVisible();
+  await expect(panel.getByText("Example scan")).toBeVisible();
+  // The example is in the URL, so the result can be shared.
+  await expect(page).toHaveURL(/[?&]xray=django-django/);
 });
 
-test("Repo X-Ray entry is hidden when the scanner is NOT configured", async ({ page }) => {
-  test.skip(SCANNER_CONFIGURED, "VITE_SCANNER_API is set for this build");
-  // This build has no VITE_SCANNER_API, matching a scanner-less static deploy.
-  await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByRole("button", { name: "Repo X-Ray" })).toHaveCount(0);
+test("An ?xray= link opens straight onto that example scan", async ({ page }) => {
+  await page.goto("./?xray=bevyengine-bevy");
+  const panel = page.getByRole("region", { name: "Repo X-Ray" });
+  await expect(panel.getByRole("link", { name: "bevyengine/bevy" })).toBeVisible({ timeout: 20_000 });
+  await panel.getByRole("button", { name: "Back to Universe" }).first().click();
+  await expect(page).not.toHaveURL(/xray=/);
 });
 
 test("About page has a direct static route", async ({ page }) => {

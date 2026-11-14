@@ -15,6 +15,7 @@ import { buildOverlay } from "./graph/scanOverlay";
 import { computeStackLayout, prominenceOf } from "./graph/stackLayout";
 import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED, warmScanner } from "./api/scanner";
+import { readExampleParam, writeExampleParam } from "./api/exampleScans";
 import { Icon } from "./components/Icon";
 import { JOURNEYS } from "./graph/journeys";
 import { readFilter, writeFilter, readCamera, writeCamera, readView, writeView } from "./graph/shareView";
@@ -29,7 +30,7 @@ function readDonePaths(): Set<string> {
   try { return new Set(JSON.parse(window.localStorage.getItem(DONE_PATHS_KEY) ?? "[]") as string[]); } catch { return new Set(); }
 }
 
-// Repo X-Ray is opt-in and hidden on the public build, so keep it out of the main bundle.
+// Repo X-Ray is a secondary mode, so keep it out of the main bundle.
 const RepoXrayPanel = lazy(() => import("./components/RepoXrayPanel").then((m) => ({ default: m.RepoXrayPanel })));
 
 type LoadState =
@@ -72,6 +73,8 @@ function measureRightPanelWidth(): number {
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [initialCamera] = useState(() => readCamera(window.location.search));
+  // Read before any effect rewrites the query string.
+  const [initialExample] = useState(() => readExampleParam(window.location.search));
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
   const [previewEdge, setPreviewEdge] = useState<string | null>(null);
@@ -211,7 +214,16 @@ export default function App() {
     const t = window.setTimeout(() => setHeroRendered(false), 220);
     return () => window.clearTimeout(t);
   }, [heroVisible]);
-  const { phase: scanPhase, analyze, reset: resetScan } = useRepoScan();
+  const { phase: scanPhase, analyze, loadExample, reset: resetScan } = useRepoScan();
+  // X-Ray is always reachable: with no scanner backend it offers pre-computed example
+  // scans, and with one it offers both (examples load instantly while the backend wakes).
+  const openXray = useCallback(() => { void warmScanner(); setXrayOpen(true); }, []);
+  // Keep the open example in the URL (?xray=<slug>) so an example result can be shared.
+  const exampleSlug = xrayOpen && scanPhase.kind === "done" ? scanPhase.example ?? null : null;
+  useEffect(() => {
+    const query = writeExampleParam(window.location.search, exampleSlug);
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  }, [exampleSlug]);
 
   // Auto-minimize the domain legend on entering X-Ray; restore on leaving.
   // Auto-minimize the domain legend when entering X-Ray OR on narrow (mobile/tablet)
@@ -268,6 +280,7 @@ export default function App() {
           setSelected(second ?? shared.compare[0]);
           setFocus(second ?? shared.compare[0]);
         }
+        if (initialExample) { setXrayOpen(true); loadExample(initialExample); }
         const deep = shared.path === null ? slugFromPath() : null;
         if (deep) {
           const node = graph.nodes.find((n) => n.slug === deep);
@@ -571,7 +584,7 @@ export default function App() {
           <span className="brand-sub">the technology knowledge graph</span>
         </button>
         <SearchCommand onPick={navigate} domainsById={domainsById} lookup={searchLookup} />
-        {SCANNER_ENABLED && xrayOpen && (
+        {xrayOpen && (
           <button
             type="button"
             className="explore-back"
@@ -580,13 +593,13 @@ export default function App() {
             ← Back to Explore
           </button>
         )}
-        {SCANNER_ENABLED && !xrayOpen && (
+        {!xrayOpen && (
           <button
             type="button"
             className="xray-entry"
             aria-label="Repo X-Ray"
-            title="Scan a GitHub repository"
-            onClick={() => { void warmScanner(); setXrayOpen(true); }}
+            title={SCANNER_ENABLED ? "Scan a GitHub repository" : "See the stack behind famous repositories"}
+            onClick={openXray}
             onPointerEnter={() => { void warmScanner(); }}
             onFocus={() => { void warmScanner(); }}
           >
@@ -743,6 +756,8 @@ export default function App() {
           <RepoXrayPanel
             phase={scanPhase}
             onAnalyze={analyze}
+            onLoadExample={loadExample}
+            liveEnabled={SCANNER_ENABLED}
             onExit={exitXray}
             onAnalyzeAnother={resetScan}
             onFocusStack={focusStack}
@@ -789,11 +804,9 @@ export default function App() {
               <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
                 Explore the atlas
               </button>
-              {SCANNER_ENABLED && (
-                <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={() => { void warmScanner(); setXrayOpen(true); }}>
-                  Scan a repo
-                </button>
-              )}
+              <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
+                X-ray a repo
+              </button>
             </div>
           </section>
         )}
