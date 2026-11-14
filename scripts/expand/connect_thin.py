@@ -106,6 +106,7 @@ THIN_EDGES = [
     e("concept:paxos", R, "concept:distributed-systems"),
     e("concept:paxos", R, "concept:replication"),
     e("concept:paxos", R, "concept:byzantine-fault-tolerance"),
+    e("concept:byzantine-fault-tolerance", R, "concept:proof-of-stake"),
     # --- algorithms and complexity ---
     e("concept:space-complexity", R, "concept:time-complexity"),
     e("concept:space-complexity", R, "concept:asymptotic-analysis"),

@@ -32409,6 +32409,11 @@
       "source": "technology:hydra",
       "target": "technology:kali-linux",
       "relationship_type": "part_of_ecosystem"
+    },
+    {
+      "source": "concept:byzantine-fault-tolerance",
+      "target": "concept:proof-of-stake",
+      "relationship_type": "related_to"
     }
   ]
 }
