@@ -3,7 +3,7 @@
 // panel styling. Graph highlighting itself happens in GraphCanvas via the overlay; this
 // panel drives the scan lifecycle and lets the user jump to detected nodes.
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type {
   DetectionStatus,
   DomainSummary,
@@ -14,6 +14,7 @@ import type { ScanPhase } from "../graph/useRepoScan";
 import { safeHttpUrl } from "../util/safeUrl";
 import { CONFIDENCE_ORDER, computeScanStats, pct, scanSummaryMarkdown } from "../graph/scanStats";
 import { EXAMPLE_SCANS, findExample, type ExampleScanMeta } from "../api/exampleScans";
+import { ReportCard } from "./ReportCard";
 
 interface Props {
   phase: ScanPhase;
@@ -322,12 +323,23 @@ function Results({
 }) {
   const repo = scan.repository;
   const noMatches = scan.detections.length === 0;
+  // ?card=1 (from a /report/<slug>/ page) opens the report card straight away.
+  const [cardOpen, setCardOpen] = useState(() => !!example && new URLSearchParams(window.location.search).get("card") === "1");
+  const closeCard = useCallback(() => {
+    setCardOpen(false);
+    const p = new URLSearchParams(window.location.search);
+    if (p.get("card") === "1") { p.delete("card"); window.history.replaceState(null, "", `${window.location.pathname}${p.size ? `?${p}` : ""}`); }
+  }, []);
+  const nodeIds = useMemo(() => scan.detections.map((d) => d.node_id), [scan]);
+  const exampleMeta = findExample(example);
   const { tools, concepts } = groupSplit(scan.detections, nodesById);
   const repoUrl = safeHttpUrl(repo.url);
   const partial = scan.status === "partial";
 
   return (
     <div className="xray-results">
+      {cardOpen && <ReportCard repo={`${repo.owner}/${repo.name}`} nodeIds={nodeIds} nodesById={nodesById} domainsById={domainsById}
+        example={example} scannedOn={exampleMeta?.scanned_on} onPick={onFocusNode} onClose={closeCard} />}
       {/* Section B: repository identity */}
       <div className="xray-repo">
         <div className="xray-repo-title">
@@ -393,6 +405,9 @@ function Results({
           Focus on Stack
         </button>
         <div className="xray-actions-secondary">
+          {!noMatches && <button type="button" className="xray-action-btn" onClick={() => setCardOpen(true)}>
+            Report card
+          </button>}
           {repoUrl && (
             <a className="xray-action-btn" href={repoUrl as string}
                target="_blank" rel="noreferrer noopener">Open GitHub</a>

@@ -1449,3 +1449,32 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 .role-status { flex: none; color: var(--accent); font-size: 10px; }
 :root[data-theme="light"] .role-list strong { color: #1d3046; }
 :root[data-theme="light"] .role-node.is-known .role-check { color: #fff; background: #16a34a; border-color: #16a34a; }
+
+/* Repo report card */
+.report-card { position: relative; width: min(560px, 100%); max-height: calc(100dvh - 32px); overflow: auto; padding: 22px 24px 20px;
+  background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+.report-card:focus { outline: none; }
+.report-card .outline-close { top: 10px; right: 10px; }
+.report-kicker { margin: 0; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.report-card h2 { margin: 4px 0 2px; color: #fff; font-size: 22px; word-break: break-word; }
+.report-headline { margin: 0 0 14px; color: var(--text); font-size: 15px; }
+.report-headline span { color: var(--text-dim); }
+.report-bar { display: flex; height: 10px; overflow: hidden; border-radius: 999px; background: var(--panel-border); gap: 2px; }
+.report-bar span { min-width: 4px; }
+.report-fields { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.report-field-head { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 12.5px; font-weight: 600; }
+.report-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.report-n { margin-left: auto; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.report-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 0 17px; }
+.report-chips button, .report-chips span { padding: 2px 8px; border: 1px solid var(--panel-border); border-radius: 999px; background: transparent;
+  color: var(--text); font: inherit; font-size: 11.5px; }
+.report-chips button { cursor: pointer; }
+.report-chips button:hover { border-color: var(--accent); }
+.report-chips .report-more { border-style: dashed; color: var(--text-dim); }
+.report-foot { margin: 14px 0 0; font-size: 11.5px; }
+.report-actions { flex-wrap: wrap; align-items: center; margin-top: 12px; }
+.report-actions .stack-go { height: 32px; }
+.report-link { margin-left: auto; color: var(--accent); font-size: 12.5px; text-decoration: none; }
+.report-link:hover { text-decoration: underline; }
+:root[data-theme="light"] .report-card h2 { color: #1d3046; }
+@media (max-width: 560px) { .report-link { margin-left: 0; } }

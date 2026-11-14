@@ -70,10 +70,11 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
-      - name: Build social preview pages
+      - name: Build social preview pages and repo report cards
         run: |
           pip install Pillow
           python scripts/build_share_pages.py
+          python scripts/build_report_cards.py
       - name: SPA fallback for deep links
         working-directory: frontend
         run: cp dist/index.html dist/404.html
