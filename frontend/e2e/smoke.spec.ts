@@ -122,3 +122,24 @@ test("About page has a direct static route", async ({ page }) => {
   await page.getByRole("button", { name: "Back to atlas" }).first().click();
   await expect(page.locator(".graph-canvas")).toBeVisible();
 });
+
+test("Guided paths library: search, start a path, step through, share", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "Guided paths" }).click();
+  const library = page.getByRole("dialog", { name: "Guided paths" });
+  await expect(library.getByText("Start here")).toBeVisible();
+  await library.getByLabel("Search guided paths").fill("kubernetes");
+  await expect(library.getByText(/matching path/)).toBeVisible();
+  await library.getByLabel("Search guided paths").fill("");
+  await library.getByRole("button", { name: /^How a web request works/ }).first().click();
+  await expect(library).toHaveCount(0);
+  const panel = page.getByRole("region", { name: "Guided path" });
+  await expect(panel.getByText("Step 1 of")).toBeVisible();
+  await panel.getByRole("button", { name: "Next" }).click();
+  await expect(panel.getByText("Step 2 of")).toBeVisible();
+  await expect(page).toHaveURL(/[?&]path=how-a-web-request-works/);
+  // Reopening the library marks the path as in progress.
+  await panel.getByRole("button", { name: "All paths" }).click();
+  await expect(library.getByText(/Step 2 of/).first()).toBeVisible();
+});

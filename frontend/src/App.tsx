@@ -23,12 +23,13 @@ import { OutlineView, supportsWebGL } from "./components/OutlineView";
 import { ShortcutsHelp } from "./components/ShortcutsHelp";
 import { LearningPanel } from "./components/LearningPanel";
 import { connectionPath } from "./graph/compare";
+import { PathsLibrary } from "./components/PathsLibrary";
+import {
+  buildPathEntries, featuredPaths, readDonePaths, readPathProgress, suggestNextPath,
+  writeDonePaths, writePathProgress,
+} from "./graph/pathsLibrary";
 
 const PATH_TITLES = JOURNEYS.map((j) => j.title);
-const DONE_PATHS_KEY = "techatlas-paths-done";
-function readDonePaths(): Set<string> {
-  try { return new Set(JSON.parse(window.localStorage.getItem(DONE_PATHS_KEY) ?? "[]") as string[]); } catch { return new Set(); }
-}
 
 // Repo X-Ray is a secondary mode, so keep it out of the main bundle.
 const RepoXrayPanel = lazy(() => import("./components/RepoXrayPanel").then((m) => ({ default: m.RepoXrayPanel })));
@@ -126,6 +127,9 @@ export default function App() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [webgl] = useState(supportsWebGL);
   const [donePaths, setDonePaths] = useState<Set<string>>(readDonePaths);
+  const [pathProgress, setPathProgress] = useState<Record<string, number>>(readPathProgress);
+  const [pathsOpen, setPathsOpen] = useState(false);
+  const [pathCopied, setPathCopied] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   // Tablet/phone breakpoint, tracked so resizing across it re-renders the legend state.
   const [compact, setCompact] = useState(
@@ -169,7 +173,7 @@ export default function App() {
       window.removeEventListener("pointerdown", onDown);
     };
   }, [heroVisible]);
-  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex]);
+  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null || pathsOpen) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex, pathsOpen]);
   // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
   // Fullscreen: the browser Fullscreen API where available, plus an immersive layout that
   // hides the chrome so the atlas fills the screen (also the fallback on iPhone Safari).
@@ -195,6 +199,7 @@ export default function App() {
       else if (event.key === "?") { event.preventDefault(); setHelpOpen((v) => !v); }
       else if (event.key === "o" || event.key === "O") { event.preventDefault(); setOutlineOpen((v) => !v); }
       else if (event.key === "m" || event.key === "M") { event.preventDefault(); setLearningOpen((v) => !v); }
+      else if (event.key === "p" || event.key === "P") { event.preventDefault(); setPathsOpen((v) => !v); }
       else if (event.key === "Escape" && immersive && !document.fullscreenElement) setImmersive(false);
     };
     window.addEventListener("keydown", onKey);
@@ -362,15 +367,7 @@ export default function App() {
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   }, [state.status, journeyIndex, journeyStep, compareMode, compareFirst, compareSecond]);
 
-  // Remember finished guided paths (reaching the last step counts).
-  useEffect(() => {
-    if (journeyIndex === null) return;
-    const j = JOURNEYS[journeyIndex];
-    if (journeyStep !== j.steps.length - 1 || donePaths.has(j.title)) return;
-    const next = new Set(donePaths).add(j.title);
-    setDonePaths(next);
-    try { window.localStorage.setItem(DONE_PATHS_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
-  }, [journeyIndex, journeyStep, donePaths]);
+
 
   // Screen-reader announcement for every selection made on the canvas, by keyboard or search.
   useEffect(() => {
@@ -510,19 +507,38 @@ export default function App() {
       (edge.source === journey.steps[i].id && edge.target === step.id) ||
       (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
   }, [journey, graphData]);
-  // Guided paths grouped by the domain of their first step, for the picker.
-  const pathGroups = useMemo(() => {
-    const groups = new Map<string, { label: string; items: { item: (typeof JOURNEYS)[number]; index: number }[] }>();
-    JOURNEYS.forEach((item, index) => {
-      const first = nodesById.get(item.steps[0].id);
-      const domainId = first?.node_type === "domain" ? first.id : first?.primary_domain ?? "";
-      const label = domainsById.get(domainId)?.name ?? "Other";
-      const g = groups.get(label) ?? { label, items: [] };
-      g.items.push({ item, index });
-      groups.set(label, g);
-    });
-    return [...groups.values()].sort((a, b) => a.label.localeCompare(b.label));
-  }, [nodesById, domainsById]);
+  // Every guided path with its field, step labels and search text, for the library.
+  const pathEntries = useMemo(() => buildPathEntries(JOURNEYS, nodesById, domainsById), [nodesById, domainsById]);
+  // Remember how far each guided path got, and finished paths (reaching the last step counts).
+  useEffect(() => {
+    if (journeyIndex === null) return;
+    const j = JOURNEYS[journeyIndex];
+    const slug = pathEntries[journeyIndex]?.slug;
+    if (slug && journeyStep > (pathProgress[slug] ?? 0)) {
+      const next = { ...pathProgress, [slug]: journeyStep };
+      setPathProgress(next);
+      writePathProgress(next);
+    }
+    if (journeyStep !== j.steps.length - 1 || donePaths.has(j.title)) return;
+    const next = new Set(donePaths).add(j.title);
+    setDonePaths(next);
+    writeDonePaths(next);
+  }, [journeyIndex, journeyStep, donePaths, pathProgress, pathEntries]);
+  const startPath = useCallback((index: number, step = 0) => {
+    setCompareMode(false);
+    setPathsOpen(false);
+    setJourneyIndex(index);
+    setJourneyStep(step);
+    navigate(JOURNEYS[index].steps[step].id);
+  }, [navigate]);
+  const nextPath = useMemo(() => journeyIndex === null || journeyStep !== JOURNEYS[journeyIndex].steps.length - 1
+    ? null : suggestNextPath(pathEntries, JOURNEYS, journeyIndex, donePaths), [pathEntries, journeyIndex, journeyStep, donePaths]);
+  // A returning visitor with an unfinished path is offered to pick it up from the hero.
+  const resumePath = useMemo(() => {
+    const started = pathEntries.filter((e) => !donePaths.has(e.title) && (pathProgress[e.slug] ?? 0) > 0);
+    return started.length ? started[started.length - 1] : null;
+  }, [pathEntries, donePaths, pathProgress]);
+  const heroPaths = useMemo(() => featuredPaths(pathEntries).slice(0, 3), [pathEntries]);
 
   const comparison = useMemo(() => {
     if (!graphData || !compareFirst || !compareSecond) return null;
@@ -613,11 +629,9 @@ export default function App() {
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
               setCompareMode((open) => !open); setJourneyIndex(null); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
             }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
-          <button type="button" className="tool" aria-label={journeyIndex === null ? "Guided paths" : "Exit path"}
-            aria-pressed={journeyIndex !== null} title="Follow a guided path" onClick={() => {
-              if (journeyIndex === null) { setCompareMode(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
-              else { setJourneyIndex(null); handleSelect(null); }
-            }}><Icon name="paths" /><span>{journeyIndex === null ? "Guided paths" : "Exit path"}</span></button>
+          <button type="button" className="tool" aria-label="Guided paths" aria-haspopup="dialog"
+            aria-pressed={pathsOpen || journeyIndex !== null} title="Browse guided paths (P)"
+            onClick={() => setPathsOpen(true)}><Icon name="paths" /><span>Guided paths</span></button>
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
@@ -735,22 +749,48 @@ export default function App() {
             <ul>{comparison.shared.slice(0, 12).map((id) => <li key={id}><button type="button" onClick={() => navigate(id, true)}>{nodesById.get(id)?.label}</button></li>)}</ul>
           </>}
         </section>}
-        {journey && !xrayOpen && <section className="journey-panel" aria-label="Guided path">
-          <select aria-label="Choose guided path" value={journeyIndex ?? 0} onChange={(event) => {
-            const index = Number(event.target.value); setJourneyIndex(index); setJourneyStep(0); navigate(JOURNEYS[index].steps[0].id);
-          }}>{pathGroups.map((group) => <optgroup key={group.label} label={group.label}>
-            {group.items.map(({ item, index }) => <option key={item.title} value={index}>
-              {donePaths.has(item.title) ? "✓ " : ""}{item.title} ({item.steps.length} steps)
-            </option>)}
-          </optgroup>)}</select>
+        {journey && journeyIndex !== null && !xrayOpen && <section className="journey-panel" aria-label="Guided path">
+          <div className="journey-top">
+            <span className="journey-field">
+              <span className="path-dot" style={{ background: pathEntries[journeyIndex]?.color }} aria-hidden />
+              {pathEntries[journeyIndex]?.fieldName}
+            </span>
+            <button type="button" className="journey-link" onClick={() => setPathsOpen(true)}>All paths</button>
+            <button type="button" className="journey-close" aria-label="Exit path" title="Exit path"
+              onClick={() => { setJourneyIndex(null); handleSelect(null); }}>×</button>
+          </div>
+          <h2 className="journey-title">{journey.title}</h2>
+          <ol className="journey-dots" aria-label={`Step ${journeyStep + 1} of ${journey.steps.length}`}>
+            {journey.steps.map((step, i) => (
+              <li key={step.id}>
+                <button type="button" aria-current={i === journeyStep ? "step" : undefined}
+                  className={i < journeyStep ? "is-past" : i === journeyStep ? "is-current" : ""}
+                  title={`Step ${i + 1}: ${nodesById.get(step.id)?.label ?? step.id}`}
+                  aria-label={`Step ${i + 1}: ${nodesById.get(step.id)?.label ?? step.id}`}
+                  onClick={() => { setJourneyStep(i); navigate(step.id); }} />
+              </li>
+            ))}
+          </ol>
           <p className="journey-progress">Step {journeyStep + 1} of {journey.steps.length}</p>
-          <h2>{nodesById.get(journey.steps[journeyStep].id)?.label}</h2>
+          <h3 className="journey-step">{nodesById.get(journey.steps[journeyStep].id)?.label}</h3>
           <p>{journey.steps[journeyStep].caption}</p>
+          {journeyStep === journey.steps.length - 1 && (
+            <div className="journey-done" role="status">
+              <strong>Path complete.</strong>
+              {nextPath && <> Up next:{" "}
+                <button type="button" className="journey-link" onClick={() => startPath(nextPath.index)}>{nextPath.title}</button></>}
+            </div>
+          )}
           <div className="journey-actions">
             <button disabled={journeyStep === 0} onClick={() => { setJourneyStep(journeyStep - 1); navigate(journey.steps[journeyStep - 1].id); }}>Previous</button>
+            <button type="button" className="journey-share" onClick={() => {
+              void navigator.clipboard?.writeText(window.location.href).then(() => { setPathCopied(true); window.setTimeout(() => setPathCopied(false), 1500); }, () => undefined);
+            }}>{pathCopied ? "Link copied" : "Copy link"}</button>
             <button disabled={journeyStep === journey.steps.length - 1} onClick={() => { setJourneyStep(journeyStep + 1); navigate(journey.steps[journeyStep + 1].id); }}>Next</button>
           </div>
         </section>}
+        {pathsOpen && <PathsLibrary entries={pathEntries} done={donePaths} progress={pathProgress}
+          activeIndex={journeyIndex} onStart={(i) => startPath(i)} onClose={() => setPathsOpen(false)} />}
         {xrayOpen ? (
           <Suspense fallback={<div className="xray-status" role="status">Loading Repo X-Ray…</div>}>
           <RepoXrayPanel
@@ -804,10 +844,24 @@ export default function App() {
               <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
                 Explore the atlas
               </button>
+              <button type="button" className="hero-secondary" onClick={() => setPathsOpen(true)}>
+                Follow a path
+              </button>
               <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
                 X-ray a repo
               </button>
             </div>
+            <p className="hero-paths">
+              {resumePath ? <>
+                <span>Welcome back.</span>{" "}
+                <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>
+                  Continue &ldquo;{resumePath.title}&rdquo;
+                </button>
+              </> : <>
+                <span>Start here:</span>
+                {heroPaths.map((p) => <button key={p.slug} type="button" onClick={() => startPath(p.index)}>{p.title}</button>)}
+              </>}
+            </p>
           </section>
         )}
         {overlay && <XrayLegend />}
