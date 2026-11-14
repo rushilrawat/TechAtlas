@@ -60,7 +60,17 @@ describe("clickEvent", () => {
       <section class="compare-panel"><button id="c">Copy link</button></section>
       <aside class="details"><button id="n"><span>Copy link</span></button></aside>
       <button aria-label="Repo X-Ray"><svg></svg><span>Repo X-Ray</span></button>
+      <button class="hero-secondary" id="hp">Follow a path</button>
+      <button class="hero-secondary" id="hs">X-ray a repo</button>
+      <p class="hero-paths"><button id="fp">How a web request works</button></p>
+      <button aria-label="Guided paths" id="gp"><span>Guided paths</span></button>
+      <section class="journey-panel"><button id="j">Copy link</button></section>
       <button id="other">Zoom in</button>`;
+    expect(clickEvent(document.querySelector("#hp")!)).toEqual(["hero_paths"]);
+    expect(clickEvent(document.querySelector("#hs")!)).toEqual(["hero_scan"]);
+    expect(clickEvent(document.querySelector("#fp")!)).toEqual(["hero_featured_path"]);
+    expect(clickEvent(document.querySelector("#gp span")!)).toEqual(["paths_library_opened"]);
+    expect(clickEvent(document.querySelector("#j")!)).toEqual(["share_link_copied", { from: "path" }]);
     expect(clickEvent(document.querySelector(".hero-primary")!)).toEqual(["hero_explore"]);
     expect(clickEvent(document.querySelector("#c")!)).toEqual(["share_link_copied", { from: "compare" }]);
     expect(clickEvent(document.querySelector("#n span")!)).toEqual(["share_link_copied", { from: "node" }]);

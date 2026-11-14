@@ -7,6 +7,7 @@ const SHORTCUTS: [string, string][] = [
   ["F", "Fullscreen"],
   ["O", "Atlas outline (list view)"],
   ["M", "My learning map"],
+  ["P", "Guided paths library"],
   ["?", "This help"],
 ];
 
