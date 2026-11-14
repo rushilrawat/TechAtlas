@@ -1069,6 +1069,94 @@ body {
 .journey-actions { display: flex; justify-content: space-between; margin-top: 12px; }
 .journey-actions button { color: var(--text); background: transparent; border: 1px solid var(--panel-border); border-radius: 6px; padding: 5px 9px; cursor: pointer; }
 .journey-actions button:disabled { opacity: .4; cursor: default; }
+.journey-top { display: flex; align-items: center; gap: 8px; }
+.journey-field { display: inline-flex; align-items: center; gap: 6px; min-width: 0; font-size: 11px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.journey-link { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; text-align: left; }
+.journey-link:hover { text-decoration: underline; }
+.journey-top .journey-link { margin-left: auto; white-space: nowrap; }
+.journey-close { width: 26px; height: 26px; flex: none; border: 0; border-radius: 6px; background: none; color: var(--text-dim); font-size: 18px; line-height: 1; cursor: pointer; }
+.journey-close:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+.journey-panel .journey-title { margin: 6px 0 8px; font-size: 13px; font-weight: 600; color: var(--text); }
+.journey-dots { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.journey-dots li { flex: 1; }
+.journey-dots button { display: block; width: 100%; height: 6px; padding: 0; border: 0; border-radius: 3px; background: var(--panel-border); cursor: pointer; }
+.journey-dots button.is-past { background: color-mix(in srgb, var(--accent) 55%, var(--panel-border)); }
+.journey-dots button.is-current { background: var(--accent); }
+.journey-dots button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.journey-panel .journey-progress { margin: 8px 0 0; }
+.journey-panel .journey-step { margin: 2px 0 0; color: #fff; font-size: 16px; }
+.journey-done { margin: 8px 0 0; padding: 8px 10px; border-radius: 8px; background: rgba(74, 222, 128, 0.1); font-size: 12px; }
+.journey-done strong { color: #4ade80; }
+.journey-actions .journey-share { border-color: transparent; color: var(--text-dim); }
+.journey-actions .journey-share:hover { color: var(--text); }
+.path-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; display: inline-block; }
+
+/* Guided-paths library: every path, searchable and filterable. */
+.paths-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-start; justify-content: center;
+  padding: 72px 16px 16px; background: rgba(5, 7, 12, 0.55); backdrop-filter: blur(2px); }
+.paths-library { display: flex; flex-direction: column; width: min(920px, 100%); max-height: calc(100vh - 88px); max-height: calc(100dvh - 88px);
+  background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  animation: panel-in 220ms cubic-bezier(.2,.7,.2,1); }
+.paths-head { position: relative; padding: 18px 18px 12px; border-bottom: 1px solid var(--panel-border); }
+.paths-head h2 { margin: 0; font-size: 18px; color: #fff; }
+.paths-sub { margin: 4px 0 12px; font-size: 12px; color: var(--text-dim); }
+.paths-sub strong { color: var(--text); }
+.paths-head .outline-close { top: 12px; right: 12px; }
+.paths-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.paths-search { flex: 1 1 260px; min-width: 0; padding: 8px 10px; border: 1px solid var(--panel-border); border-radius: 8px;
+  background: var(--bg); color: var(--text); font: inherit; font-size: 13px; }
+.paths-search:focus-visible, .paths-controls select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.paths-controls select { flex: 0 1 220px; min-width: 0; padding: 7px 8px; border: 1px solid var(--panel-border); border-radius: 8px;
+  background: var(--bg); color: var(--text); font: inherit; font-size: 13px; }
+.paths-seg { display: inline-flex; border: 1px solid var(--panel-border); border-radius: 8px; overflow: hidden; }
+.paths-seg button { padding: 6px 10px; border: 0; background: none; color: var(--text-dim); font: inherit; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.paths-seg button + button { border-left: 1px solid var(--panel-border); }
+.paths-seg button[aria-pressed="true"] { background: rgba(122, 162, 247, 0.18); color: var(--text); font-weight: 600; }
+.paths-seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.paths-body { overflow-y: auto; padding: 4px 18px 18px; }
+.paths-section { display: flex; align-items: baseline; gap: 10px; margin: 14px 0 8px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--text-dim); }
+.paths-clear { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; text-transform: none; letter-spacing: 0; cursor: pointer; }
+.paths-empty { color: var(--text-dim); font-size: 13px; }
+.paths-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.path-card { position: relative; display: flex; flex-direction: column; gap: 4px; width: 100%; height: 100%; padding: 10px 12px 12px;
+  border: 1px solid var(--panel-border); border-radius: 10px; background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; overflow: hidden; }
+.path-card:hover { border-color: var(--accent); background: rgba(122, 162, 247, 0.06); }
+.path-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.path-card.is-featured { background: rgba(122, 162, 247, 0.08); }
+.path-card.is-active { border-color: var(--accent); }
+.path-field { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-dim); }
+.path-title { font-size: 14px; font-weight: 600; color: #fff; }
+.path-steps { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+.path-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: auto; padding-top: 4px; font-size: 11px; color: var(--text-dim); }
+.path-badge { padding: 1px 7px; border-radius: 999px; background: rgba(122, 162, 247, 0.16); color: var(--text); }
+.path-badge.is-done { background: rgba(74, 222, 128, 0.16); color: #4ade80; }
+.path-badge.is-active { background: var(--accent); color: #0b0e14; }
+.path-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--panel-border); }
+.path-progress span { display: block; height: 100%; background: var(--accent); }
+@media (max-width: 640px) {
+  .paths-backdrop { padding: 0; align-items: stretch; }
+  .paths-library { max-height: none; height: 100%; border-radius: 0; border: 0; }
+  .paths-head { padding: 14px 14px 10px; }
+  .paths-body { padding: 4px 14px 14px; }
+  .paths-controls select { flex: 1 1 100%; }
+  .paths-seg { flex: 1 1 100%; }
+  .paths-seg button { flex: 1; padding: 7px 4px; }
+  .paths-grid { grid-template-columns: 1fr; }
+}
+:root[data-theme="light"] .paths-head h2, :root[data-theme="light"] .path-title,
+:root[data-theme="light"] .journey-panel .journey-step { color: #1d3046; }
+:root[data-theme="light"] .paths-backdrop { background: rgba(30, 45, 65, 0.25); }
+:root[data-theme="light"] .path-badge.is-done, :root[data-theme="light"] .journey-done strong { color: #17803d; }
+
+/* Hero: a second line of featured paths (or "continue" for returning visitors). */
+.hero { flex-wrap: wrap; justify-content: center; border-radius: 18px; }
+.hero-paths { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 2px 12px;
+  margin: 0; font-size: 12px; color: var(--text-dim); pointer-events: auto; }
+.hero-paths button { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; }
+.hero-paths button:hover { text-decoration: underline; }
+.hero-paths button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.hero.is-leaving .hero-paths { pointer-events: none; }
 
 .compare-panel { position: absolute; z-index: 8; right: 16px; bottom: 16px; width: min(320px, calc(100% - 32px)); max-height: 48vh; overflow: auto; padding: 16px; background: rgba(17,21,31,.96); border: 1px solid var(--panel-border); border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.3); }
 .compare-panel h2 { margin: 0 0 8px; color: #fff; font-size: 16px; }
@@ -1221,7 +1309,7 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 .atlas-heading { transition: color 160ms ease-out; }
 .relationship-legend-keys { font-size: 11px; }
 @media (prefers-reduced-motion: reduce) {
-  .details, .journey-panel, .compare-panel, .xray-panel, .legend, .filter-panel, .relationship-legend-body, .node-preview { animation: none; }
+  .details, .journey-panel, .compare-panel, .xray-panel, .legend, .filter-panel, .relationship-legend-body, .node-preview, .paths-library { animation: none; }
 }
 .hero { transition: opacity 200ms ease-out, transform 200ms ease-out; }
 .hero.is-leaving { opacity: 0; transform: translate(-50%, -6px); pointer-events: none; }
