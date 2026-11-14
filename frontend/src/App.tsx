@@ -24,6 +24,8 @@ import { LearningPanel } from "./components/LearningPanel";
 import { connectionPath } from "./graph/compare";
 import { StackPanel } from "./components/StackPanel";
 import { readStack, writeStack, type StackParams } from "./recommend/stackLink";
+import { RolePanel } from "./components/RolePanel";
+import { readRole, writeRole } from "./graph/roles";
 
 const PATH_TITLES = JOURNEYS.map((j) => j.title);
 const DONE_PATHS_KEY = "techatlas-paths-done";
@@ -127,6 +129,15 @@ export default function App() {
     const query = writeStack(window.location.search, stackParams);
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   }, [stackParams]);
+  // Role / career lens: ?role=<id> reopens a role's path.
+  const [roleOpen, setRoleOpen] = useState(() => readRole(window.location.search) !== null);
+  const [roleId, setRoleId] = useState<string | null>(() => readRole(window.location.search));
+  const [roleHighlight, setRoleHighlight] = useState<{ nodes: string[]; edges: string[] }>({ nodes: [], edges: [] });
+  const onRoleHighlight = useCallback((nodes: string[], edges: string[]) => setRoleHighlight({ nodes, edges }), []);
+  useEffect(() => {
+    const query = writeRole(window.location.search, roleOpen ? roleId : null);
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  }, [roleOpen, roleId]);
   const [journeyStep, setJourneyStep] = useState(0);
   const [desktopRail, setDesktopRail] = useState<"domains" | "filters" | null>(null);
   const [outlineOpen, setOutlineOpen] = useState(false);
@@ -177,7 +188,7 @@ export default function App() {
       window.removeEventListener("pointerdown", onDown);
     };
   }, [heroVisible]);
-  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null || stackParams.open) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex, stackParams.open]);
+  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null || stackParams.open || roleOpen) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex, stackParams.open, roleOpen]);
   // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
   // Fullscreen: the browser Fullscreen API where available, plus an immersive layout that
   // hides the chrome so the atlas fills the screen (also the fallback on iPhone Safari).
@@ -491,6 +502,7 @@ export default function App() {
     setCompareMode(false);
     setJourneyIndex(null);
     openStack(false);
+    setRoleOpen(false);
     setSheetCollapsed(false);          // reset the mobile sheet state
     setXrayView("universe");           // reset the X-Ray view mode for next time
     setSelected(null);                 // drop scan-specific selection
@@ -610,18 +622,23 @@ export default function App() {
         <nav className="topbar-tools" aria-label="Atlas modes">
           <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
-              setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
+              setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setRoleOpen(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
             }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
           <button type="button" className="tool" aria-label={journeyIndex === null ? "Guided paths" : "Exit path"}
             aria-pressed={journeyIndex !== null} title="Follow a guided path" onClick={() => {
-              if (journeyIndex === null) { setCompareMode(false); openStack(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
+              if (journeyIndex === null) { setCompareMode(false); openStack(false); setRoleOpen(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
               else { setJourneyIndex(null); handleSelect(null); }
             }}><Icon name="paths" /><span>{journeyIndex === null ? "Guided paths" : "Exit path"}</span></button>
           <button type="button" className="tool" aria-label={stackParams.open ? "Close stack recommender" : "Stack recommender"}
             aria-pressed={stackParams.open} title="Get a stack for your project, with reasons" onClick={() => {
-              if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); }
+              if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); setRoleOpen(false); }
               openStack(!stackParams.open);
             }}><Icon name="stack" /><span>Stack</span></button>
+          <button type="button" className="tool" aria-label={roleOpen ? "Close role paths" : "Role paths"}
+            aria-pressed={roleOpen} title="What does a role need to know?" onClick={() => {
+              if (!roleOpen) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); openStack(false); }
+              setRoleOpen(!roleOpen);
+            }}><Icon name="role" /><span>Roles</span></button>
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
@@ -670,8 +687,8 @@ export default function App() {
         {webgl && <GraphCanvas
           data={state.graph}
           theme={theme}
-          journeyNodeIds={journey ? journeyNodeIds : stackParams.open ? stackHighlight.nodes : journeyNodeIds}
-          journeyEdgeIds={journey ? journeyEdgeIds : stackParams.open ? stackHighlight.edges : journeyEdgeIds}
+          journeyNodeIds={journey ? journeyNodeIds : stackParams.open ? stackHighlight.nodes : roleOpen ? roleHighlight.nodes : journeyNodeIds}
+          journeyEdgeIds={journey ? journeyEdgeIds : stackParams.open ? stackHighlight.edges : roleOpen ? roleHighlight.edges : journeyEdgeIds}
           initialCamera={initialCamera}
           onCameraChange={(camera) => {
             if (xrayOpen) return;
@@ -711,7 +728,9 @@ export default function App() {
           onPick={(id) => { navigate(id); if (compact) setOutlineOpen(false); }} onClose={() => setOutlineOpen(false)} />}
         {stackParams.open && !xrayOpen && <StackPanel graph={state.graph} params={stackParams} onParamsChange={setStackParams}
           currentLabel={stackParams.repo} onPick={navigate} onHighlight={onStackHighlight} onClose={() => openStack(false)} />}
-        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
+        {roleOpen && !stackParams.open && !xrayOpen && <RolePanel graph={state.graph} roleId={roleId} onRoleChange={setRoleId}
+          onPick={navigate} onHighlight={onRoleHighlight} onClose={() => setRoleOpen(false)} />}
+        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && !roleOpen && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
           <h2>Compare technologies</h2>
