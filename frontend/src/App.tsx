@@ -160,6 +160,13 @@ export default function App() {
   const [donePaths, setDonePaths] = useState<Set<string>>(readDonePaths);
   const [pathProgress, setPathProgress] = useState<Record<string, number>>(readPathProgress);
   const [pathsOpen, setPathsOpen] = useState(false);
+  // Opening the paths library closes the other atlas modes, so a path never starts under them.
+  const openPaths = useCallback(() => {
+    setCompareMode(false);
+    openStack(false);
+    setRoleOpen(false);
+    setPathsOpen(true);
+  }, [openStack]);
   const [pathCopied, setPathCopied] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   // Tablet/phone breakpoint, tracked so resizing across it re-renders the legend state.
@@ -231,12 +238,12 @@ export default function App() {
       else if (event.key === "?") { event.preventDefault(); setHelpOpen((v) => !v); }
       else if (event.key === "o" || event.key === "O") { event.preventDefault(); setOutlineOpen((v) => !v); }
       else if (event.key === "m" || event.key === "M") { event.preventDefault(); setLearningOpen((v) => !v); }
-      else if (event.key === "p" || event.key === "P") { event.preventDefault(); setPathsOpen((v) => !v); }
+      else if (event.key === "p" || event.key === "P") { event.preventDefault(); if (pathsOpen) setPathsOpen(false); else openPaths(); }
       else if (event.key === "Escape" && immersive && !document.fullscreenElement) setImmersive(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [toggleFullscreen, immersive]);
+  }, [toggleFullscreen, immersive, pathsOpen, openPaths]);
   // The canvas changes size when the chrome hides or shows; re-frame the atlas after it.
   const firstImmersive = useRef(true);
   useEffect(() => {
@@ -560,11 +567,13 @@ export default function App() {
   }, [journeyIndex, journeyStep, donePaths, pathProgress, pathEntries]);
   const startPath = useCallback((index: number, step = 0) => {
     setCompareMode(false);
+    openStack(false);
+    setRoleOpen(false);
     setPathsOpen(false);
     setJourneyIndex(index);
     setJourneyStep(step);
     navigate(JOURNEYS[index].steps[step].id);
-  }, [navigate]);
+  }, [navigate, openStack]);
   const nextPath = useMemo(() => journeyIndex === null || journeyStep !== JOURNEYS[journeyIndex].steps.length - 1
     ? null : suggestNextPath(pathEntries, JOURNEYS, journeyIndex, donePaths), [pathEntries, journeyIndex, journeyStep, donePaths]);
   // A returning visitor with an unfinished path is offered to pick it up from the hero.
@@ -663,11 +672,6 @@ export default function App() {
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
               setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setRoleOpen(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
             }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
-          <button type="button" className="tool" aria-label={journeyIndex === null ? "Guided paths" : "Exit path"}
-            aria-pressed={journeyIndex !== null} title="Follow a guided path" onClick={() => {
-              if (journeyIndex === null) { setCompareMode(false); openStack(false); setRoleOpen(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
-              else { setJourneyIndex(null); handleSelect(null); }
-            }}><Icon name="paths" /><span>{journeyIndex === null ? "Guided paths" : "Exit path"}</span></button>
           <button type="button" className="tool" aria-label={stackParams.open ? "Close stack recommender" : "Stack recommender"}
             aria-pressed={stackParams.open} title="Get a stack for your project, with reasons" onClick={() => {
               if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); setRoleOpen(false); }
@@ -680,7 +684,7 @@ export default function App() {
             }}><Icon name="role" /><span>Roles</span></button>
           <button type="button" className="tool" aria-label="Guided paths" aria-haspopup="dialog"
             aria-pressed={pathsOpen || journeyIndex !== null} title="Browse guided paths (P)"
-            onClick={() => setPathsOpen(true)}><Icon name="paths" /><span>Guided paths</span></button>
+            onClick={openPaths}><Icon name="paths" /><span>Guided paths</span></button>
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
@@ -811,7 +815,7 @@ export default function App() {
               <span className="path-dot" style={{ background: pathEntries[journeyIndex]?.color }} aria-hidden />
               {pathEntries[journeyIndex]?.fieldName}
             </span>
-            <button type="button" className="journey-link" onClick={() => setPathsOpen(true)}>All paths</button>
+            <button type="button" className="journey-link" onClick={openPaths}>All paths</button>
             <button type="button" className="journey-close" aria-label="Exit path" title="Exit path"
               onClick={() => { setJourneyIndex(null); handleSelect(null); }}>×</button>
           </div>
@@ -900,7 +904,7 @@ export default function App() {
               <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
                 Explore the atlas
               </button>
-              <button type="button" className="hero-secondary" onClick={() => setPathsOpen(true)}>
+              <button type="button" className="hero-secondary" onClick={openPaths}>
                 Follow a path
               </button>
               <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
