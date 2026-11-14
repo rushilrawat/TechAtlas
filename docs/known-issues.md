@@ -16,14 +16,6 @@ this file lists what was deliberately deferred.
   mismatch is a latent footgun. A future dataset-version bump could rename the id to
   `technology:tailwind-css` for consistency (would require a coordinated id change).
 
-## summary_service (Phase 1C)
-
-- A stale on-disk summary served after a failed refetch is placed in the in-process LRU,
-  which does not re-check age, so that entry won't be refreshed again for the life of the
-  process. Low impact (bounded by process lifetime; TTL still applies on restart).
-- Failed Wikipedia fetches are not negatively cached, so a node whose title 404s costs a
-  short (~3s-bounded) request on each view until a summary exists. Low impact.
-
 ## Scoring (Phase 1D)
 
 - `score._normalize_metric` assigns 1.0 to every technology when all values for a metric
