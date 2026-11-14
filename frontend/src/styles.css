@@ -1394,3 +1394,37 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
   .stack-why, .stack-detail { margin-left: 100px; }
   .stack-why { width: calc(100% - 100px); }
 }
+
+/* Role / career lens (shares the stack panel shell) */
+.role-list { margin: 8px 0 0; padding: 0; list-style: none; }
+.role-list li + li { margin-top: 6px; }
+.role-list button { display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 8px 10px; border: 1px solid var(--panel-border);
+  border-radius: 8px; background: transparent; color: var(--text-dim); font: inherit; text-align: left; cursor: pointer; line-height: 1.4; }
+.role-list button:hover { border-color: var(--accent); }
+.role-list strong { color: var(--text); font-size: 13px; }
+.role-mini { color: #4ade80; font-size: 11px; }
+.role-switch select { width: 100%; padding: 6px 8px; color: var(--text); background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 7px; font: inherit; font-size: 13px; font-weight: 600; }
+.role-progress { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: var(--text-dim); font-size: 11.5px; }
+.role-bar { display: flex; flex: 1; height: 6px; overflow: hidden; border-radius: 999px; background: var(--panel-border); }
+.role-bar .is-known { background: #4ade80; }
+.role-bar .is-learning { background: var(--accent); opacity: .7; }
+.role-next { width: 100%; height: auto; min-height: 30px; padding: 6px 12px; text-align: left; }
+.role-stages { margin: 6px 0 0; padding: 0; list-style: none; }
+.role-stage h3 { display: flex; justify-content: space-between; }
+.role-count { font-variant-numeric: tabular-nums; }
+.role-stage p { margin: 0 0 6px; font-size: 11.5px; }
+.role-stage ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; }
+.role-node { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.role-check { flex: none; width: 16px; height: 16px; padding: 0; border: 1.5px solid var(--text-dim); border-radius: 4px; background: transparent;
+  color: #0b0e14; font-size: 11px; line-height: 13px; cursor: pointer; }
+.role-node.is-known .role-check { background: #4ade80; border-color: #4ade80; }
+.role-node.is-learning .role-check { border-color: var(--accent); color: var(--accent); }
+.role-node.is-goal .role-check { border-style: dashed; border-color: var(--accent); }
+.role-label { min-width: 0; overflow: hidden; padding: 2px 0; border: 0; background: transparent; color: var(--text); font: inherit;
+  text-align: left; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.role-label:hover { text-decoration: underline; }
+.role-node.is-known .role-label { color: var(--text-dim); }
+.role-status { flex: none; color: var(--accent); font-size: 10px; }
+:root[data-theme="light"] .role-list strong { color: #1d3046; }
+:root[data-theme="light"] .role-node.is-known .role-check { color: #fff; background: #16a34a; border-color: #16a34a; }
