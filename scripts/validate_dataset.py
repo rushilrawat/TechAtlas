@@ -13,6 +13,9 @@ Enforces (spec §16 and docs/relationship-taxonomy.md):
   - reports inferred (is_curated=false) edges so they are never silently trusted
   - reports orphan nodes (no edges) as a warning
   - errors on nodes whose only edge is belongs_to_domain (they float without context)
+  - errors on nodes with fewer than 2 typed relationships; warns (one summary line) below 3
+  - errors when a node's primary_domain has no matching belongs_to_domain edge
+  - warns when a node id's suffix differs from its slug
   - guided paths (data/seed/journeys.json): every step exists, consecutive steps share
     an edge, no step repeats, titles are unique
 
@@ -48,6 +51,12 @@ JOURNEYS = ROOT / "data" / "seed" / "journeys.json"
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
 MAX_CONCEPTS = 800
+
+# Connectivity floor (Nov 2026 review): every node needs at least two typed (non-domain)
+# relationships so its detail panel never reads "Relationships (1)". Three is the target;
+# nodes below it are summarised as one warning.
+MIN_TYPED_RELATIONSHIPS = 2
+TARGET_TYPED_RELATIONSHIPS = 3
 
 SYMMETRIC_TYPES = {"related_to", "integrates_with", "alternative_to", "commonly_used_with"}
 
@@ -226,6 +235,8 @@ def validate(dataset: dict) -> Report:
         degree[src] += 1
         degree[tgt] += 1
 
+    spokes = {(e.get("source"), e.get("target")) for e in edges
+              if e.get("relationship_type") == "belongs_to_domain"}
     typed: dict[str, int] = defaultdict(int)
     for edge in edges:
         if edge.get("relationship_type") != "belongs_to_domain":
@@ -240,6 +251,27 @@ def validate(dataset: dict) -> Report:
             report.warn(f"Orphan node (no edges): {nid}")
         elif typed.get(nid, 0) == 0:
             report.error(f"Node has no typed relationship (only belongs_to_domain): {nid}")
+        elif typed.get(nid, 0) < MIN_TYPED_RELATIONSHIPS:
+            report.error(
+                f"Node has only {typed[nid]} typed relationship(s), need >= "
+                f"{MIN_TYPED_RELATIONSHIPS} (its panel would read 'Relationships (1)'): {nid}"
+            )
+        pd = node.get("primary_domain")
+        if pd and pd in by_id and (nid, pd) not in spokes:
+            report.error(
+                f"Node {nid} has primary_domain {pd} but no belongs_to_domain edge to it "
+                "(it would be missing from the field's network and 'contains' list)"
+            )
+        if nid.split(":", 1)[-1] != node.get("slug"):
+            report.warn(f"Node id suffix differs from its slug: {nid} vs '{node.get('slug')}'")
+
+    thin = [n["id"] for n in nodes if n["node_type"] != "domain"
+            and 0 < typed.get(n["id"], 0) < TARGET_TYPED_RELATIONSHIPS]
+    if thin:
+        report.warn(
+            f"{len(thin)} node(s) have fewer than {TARGET_TYPED_RELATIONSHIPS} typed relationships "
+            f"(target, not enforced), e.g. {', '.join(sorted(thin)[:5])}"
+        )
 
     # summary line counts
     counts = defaultdict(int)

@@ -2,10 +2,24 @@ import { test, expect, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 // Canonical dataset size, read from the data so adding a domain never breaks the suite.
-const graph = JSON.parse(readFileSync(new URL("../../data/graph.json", import.meta.url), "utf8")) as
-  { nodes: { node_type: string }[] };
+const graph = JSON.parse(readFileSync(new URL("../../data/graph.json", import.meta.url), "utf8")) as {
+  nodes: { id: string; node_type: string; primary_domain?: string }[];
+  edges: { source: string; target: string; relationship_type: string }[];
+};
 const CANONICAL_NODES = graph.nodes.length;
-const TOP_LEVEL_DOMAINS = graph.nodes.filter((n) => n.node_type === "domain").length - 3; // minus 3 nested subdomains
+const ROOT_DOMAIN = "domain:software-engineering";
+// Domains nested under another field (e.g. Computer Graphics under Game Development) sit
+// inside their parent's territory and have no heading of their own at overview.
+const NESTED_PARENT: Record<string, string> = Object.fromEntries(
+  graph.edges
+    .filter((e) => e.relationship_type === "has_subdomain" && e.source !== ROOT_DOMAIN)
+    .map((e) => [e.target, e.source]),
+);
+const TOP_LEVEL_DOMAINS = graph.nodes.filter((n) => n.node_type === "domain" && !(n.id in NESTED_PARENT)).length;
+const ROBOTICS_MEMBERS = graph.nodes.filter((n) => n.primary_domain === "domain:robotics" && n.id !== "domain:robotics").length;
+// The overview backbone keeps about half of each territory's members (BACKBONE_FRACTION
+// in scripts/generate_layout.py), so its size scales with the graph.
+const MAX_BACKBONE_EDGES = Math.ceil(0.55 * CANONICAL_NODES);
 
 /**
  * Radial Atlas Visual-Proof harness.
@@ -58,6 +72,8 @@ type Metrics = {
   edgeCrossings: number;
   maxCenteringError: number;
   maxAngularGapDeg: number;
+  worstCentering: string;
+  worstGap: string;
   totalNodes: number;
   sampleRadii: number[];
 };
@@ -90,7 +106,7 @@ async function gotoOverview(page: Page, vp: { width: number; height: number }) {
 
 async function measure(page: Page, vpName: string): Promise<Metrics> {
   return page.evaluate(
-    ({ VISUAL_GAP, vpName }) => {
+    ({ VISUAL_GAP, vpName, nested }) => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
       const g = s.getGraph();
       const cont = s.getContainer() as HTMLElement;
@@ -219,18 +235,24 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
 
       // ---- parent centering + angular coverage per ecosystem (screen space) ----
       let maxCenteringError = 0, maxAngularGapDeg = 0;
+      let worstCentering = "", worstGap = "";
+      // An umbrella field (e.g. Computer Engineering) interleaves its nested fields among
+      // its own members, leaving each one a sector. Each nested field's anchor therefore
+      // counts as one point of the ring, alongside the direct members.
       for (const anchor of visible) {
         if (g.getNodeAttribute(anchor.id, "nodeType") !== "domain") continue;
-        const members = visible.filter((v) => v.cluster === anchor.id && v.id !== anchor.id);
+        const members = visible.filter((v) => v.id !== anchor.id &&
+          (nested[v.id] === anchor.id || (v.cluster === anchor.id && !nested[v.id])));
         if (members.length < 8) continue;
         const extent = Math.max(...members.map((m) => Math.hypot(m.cx - anchor.cx, m.cy - anchor.cy)));
         const mx = members.reduce((acc, m) => acc + m.cx, 0) / members.length - anchor.cx;
         const my = members.reduce((acc, m) => acc + m.cy, 0) / members.length - anchor.cy;
-        maxCenteringError = Math.max(maxCenteringError, Math.hypot(mx, my) / extent);
+        const err = Math.hypot(mx, my) / extent;
+        if (err > maxCenteringError) { maxCenteringError = err; worstCentering = anchor.id; }
         const angles = members.map((m) => Math.atan2(m.cy - anchor.cy, m.cx - anchor.cx)).sort((p, q) => p - q);
         let gap = angles[0] + 2 * Math.PI - angles[angles.length - 1];
         for (let i = 1; i < angles.length; i++) gap = Math.max(gap, angles[i] - angles[i - 1]);
-        maxAngularGapDeg = Math.max(maxAngularGapDeg, (gap * 180) / Math.PI);
+        if ((gap * 180) / Math.PI > maxAngularGapDeg) { maxAngularGapDeg = (gap * 180) / Math.PI; worstGap = anchor.id; }
       }
 
       return {
@@ -251,11 +273,13 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
         edgeCrossings,
         maxCenteringError: Math.round(maxCenteringError * 1000) / 1000,
         maxAngularGapDeg: Math.round(maxAngularGapDeg),
+        worstCentering,
+        worstGap,
         totalNodes: g.order,
         sampleRadii: visible.slice(0, 5).map((v) => Math.round(v.r * 100) / 100),
       };
     },
-    { VISUAL_GAP, vpName },
+    { VISUAL_GAP, vpName, nested: NESTED_PARENT },
   );
 }
 
@@ -283,7 +307,7 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       expect(m.maxAngularGapDeg).toBeLessThan(90);
       // A restrained, genuinely curved backbone of canonical relationships.
       expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(250);
-      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(360);
+      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(MAX_BACKBONE_EDGES);
       expect(m.crossDomainEdgesVisible).toBeLessThanOrEqual(45);
       expect(m.curvedEdges).toBe(m.ordinaryEdgesVisible);
       // Local backbone curves never cross each other and bridges never cross each other;
@@ -295,7 +319,9 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       if (vp.desktop) {
         expect(m.visibleCircleOverlaps, "drawn circles never overlap at desktop fit").toBe(0);
         expect(m.visibleDomainLabels, "every top-level domain heading").toBe(TOP_LEVEL_DOMAINS);
-        expect(m.labelNodeCollisions, "headings clear of node circles").toBeLessThanOrEqual(2);
+        // Re-baselined at 20 top-level headings / 1,194 nodes (was <= 2 at 14 / 607):
+        // a heading may graze at most four node circles at desktop fit.
+        expect(m.labelNodeCollisions, "headings clear of node circles").toBeLessThanOrEqual(4);
       } else {
         // Phones keep minimal overview labels: only headings that fit without covering
         // another ecosystem; the Domains sheet names every one.
@@ -468,7 +494,7 @@ test.describe("Overview interaction regressions", () => {
     expect(p.nodeY).toBeLessThan(p.sheetTop - 10);
   });
 
-  test("selecting Robotics keeps its 29 direct members visible", async ({
+  test("selecting Robotics keeps all its direct members visible", async ({
     page,
   }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
@@ -494,7 +520,7 @@ test.describe("Overview interaction regressions", () => {
     const box = await canvas.boundingBox();
     if (box) await page.mouse.click(box.x + robotics.x, box.y + robotics.y);
     await page.waitForTimeout(600);
-    // Its 29 direct members remain individually represented.
+    // Its direct members remain individually represented.
     const visibleRoboticsMembers = await page.evaluate(() => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
       const g = s.getGraph();
@@ -507,7 +533,7 @@ test.describe("Overview interaction regressions", () => {
       });
       return n;
     });
-    expect(visibleRoboticsMembers).toBe(29);
+    expect(visibleRoboticsMembers).toBe(ROBOTICS_MEMBERS);
     // Selection brightens the ecosystem: members keep their domain color, the rest recede.
     const focus = await page.evaluate(() => {
       const s = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
@@ -520,7 +546,7 @@ test.describe("Overview interaction regressions", () => {
       });
       return { bright, dimmed };
     });
-    expect(focus.bright).toBe(29);
+    expect(focus.bright).toBe(ROBOTICS_MEMBERS);
     expect(focus.dimmed).toBeGreaterThan(400);
     await expect(page.locator(".atlas-heading.is-active", { hasText: "Robotics" })).toBeVisible();
     await page.screenshot({ path: "screenshots/radial-robotics-selected.png" });

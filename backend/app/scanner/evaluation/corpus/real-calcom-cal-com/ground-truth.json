@@ -16,7 +16,7 @@
       "node_id": "technology:prisma"
     },
     {
-      "node_id": "technology:tailwind"
+      "node_id": "technology:tailwind-css"
     },
     {
       "node_id": "technology:playwright"

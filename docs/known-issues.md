@@ -6,15 +6,13 @@ this file lists what was deliberately deferred.
 
 ## Data quality (dataset is valid; these are editorial)
 
-- **Shared Wikipedia title.** `technology:spring-boot` and `technology:spring` both use
-  the "Spring Framework" article, so both show the same summary. Fix: give Spring Boot a
-  distinct curated title or none.
 - **`technology:assembly` official_url** points at a Wikipedia page rather than an
   official site (assembly language has no single vendor). Acceptable but imperfect.
-- **`technology:tailwind` id ≠ slug** (`id technology:tailwind`, slug `tailwind-css`).
-  Harmless now that the frontend resolves detail files by canonical slug, but the id/slug
-  mismatch is a latent footgun. A future dataset-version bump could rename the id to
-  `technology:tailwind-css` for consistency (would require a coordinated id change).
+- **`domain:blockchain` id ≠ slug** (slug `blockchain-web3`). The validator warns about it.
+  Harmless because detail files and deep links resolve by slug; renaming a domain id
+  touches layout, colours and share pages, so it is left as is.
+- **308 nodes have exactly two typed relationships.** The validator requires two and
+  reports the count below the target of three as a single warning.
 
 ## summary_service (Phase 1C)
 

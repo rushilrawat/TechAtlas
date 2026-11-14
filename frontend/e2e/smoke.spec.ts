@@ -35,8 +35,9 @@ test("graph renders, a node can be selected, and the detail panel opens", async 
   await expect(panel.getByRole("heading", { name: "React" })).toBeVisible();
 });
 
-test("the Tailwind node (id != slug) opens without a 404", async ({ page }) => {
-  // Regression for the static id/slug bug: technology:tailwind has slug tailwind-css.
+test("the Tailwind node (slug tailwind-css) opens without a 404", async ({ page }) => {
+  // Regression for the static id/slug bug (the node was technology:tailwind with slug
+  // tailwind-css until dataset 0.7.0; detail files are resolved by slug).
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   await page.goto("/");

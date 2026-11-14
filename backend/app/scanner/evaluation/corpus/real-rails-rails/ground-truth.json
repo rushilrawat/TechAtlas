@@ -48,7 +48,7 @@
       "evidence": "Gemfile: sqlite3 declared in Gemfile"
     },
     {
-      "node_id": "technology:tailwind",
+      "node_id": "technology:tailwind-css",
       "added_in_review": true,
       "evidence": "Gemfile: tailwindcss-rails declared in Gemfile"
     }

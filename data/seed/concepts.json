@@ -8674,5 +8674,56 @@
     "importance": 0.3,
     "wikipedia_title": "Steganography",
     "node_subtype": "technique"
+  },
+  {
+    "id": "concept:mixed-signal-design",
+    "slug": "mixed-signal-design",
+    "name": "Mixed-Signal Design",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Designing chips and boards that combine analog and digital circuits on one die or PCB.",
+    "lifecycle_status": "active",
+    "importance": 0.35,
+    "wikipedia_title": "Mixed-signal integrated circuit"
+  },
+  {
+    "id": "concept:power-electronics",
+    "slug": "power-electronics",
+    "name": "Power Electronics",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Converting and controlling electric power with switching circuits: regulators, inverters, chargers.",
+    "lifecycle_status": "active",
+    "importance": 0.35,
+    "wikipedia_title": "Power electronics"
+  },
+  {
+    "id": "concept:electromagnetic-compatibility",
+    "slug": "electromagnetic-compatibility",
+    "name": "Electromagnetic Compatibility",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Making sure a device neither emits nor suffers from disruptive electromagnetic interference.",
+    "lifecycle_status": "active",
+    "importance": 0.3,
+    "wikipedia_title": "Electromagnetic compatibility",
+    "aliases": [
+      "EMC",
+      "EMI"
+    ]
+  },
+  {
+    "id": "concept:circuit-simulation",
+    "slug": "circuit-simulation",
+    "name": "Circuit Simulation",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Predicting a circuit's behaviour with software models before it is built (SPICE and friends).",
+    "lifecycle_status": "active",
+    "importance": 0.35,
+    "wikipedia_title": "Electronic circuit simulation",
+    "aliases": [
+      "SPICE simulation"
+    ]
   }
 ]

@@ -29,7 +29,7 @@ you move from a broad field to an individual tool without losing the surrounding
 - 🧭 **Explore the graph:** a radial atlas with domain sectors, semantic zoom, search,
   keyboard navigation, filters, and light and dark themes.
 - 🧩 **Understand connections:** inspect a node's neighbors, compare technologies,
-  or follow **135 curated guided paths** through the graph.
+  or follow curated guided paths through the graph.
 - 🔗 **Share a view:** domain, technology, and concept pages have crawlable HTML,
   Open Graph cards, JSON-LD, and links back into the atlas.
 - 🧪 **Inspect a repository:** Repo X-Ray detects a public GitHub repository's stack
@@ -38,24 +38,25 @@ you move from a broad field to an individual tool without losing the surrounding
   Discovery assist can propose additions from Wikidata; richer relationships remain
   subject to human review.
 
-## 📊 The graph (dataset v0.6.1)
+<!-- graph-stats:start (written by scripts/build_dataset.py) -->
+## 📊 The graph (dataset v0.7.0)
 
 | | |
 |---|---:|
-| Total nodes | **1,103** |
-| Domains | **28** |
-| Technologies | **356** |
-| Concepts | **719** |
-| Typed relationships | **2,775** |
+| Total nodes | **1,194** |
+| Domains | **29** |
+| Technologies | **397** |
+| Concepts | **768** |
+| Typed relationships | **3,517** |
 | Relationship types | **14** |
-| Curated guided paths | **135** |
+| Curated guided paths | **145** |
 | Isolated nodes | **0** |
 
-The largest relationship groups are **belongs to domain (943)**, **related to (900)**,
-**supports (222)**, and **implements (176)**. Counts come from the checked-in
+The largest relationship groups are **related to (1,174)**, **belongs to domain (1,165)**, **supports (278)**, **implements (206)**. Counts come from the checked-in
 [`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)
-on `main`; “isolated” means a node with no incident edge. Rebuild and validate the
-graph with `make data` after changing [`data/seed/`](data/seed/).
+and are rewritten by `scripts/build_dataset.py` on every `make data`; “isolated” means
+a node with no incident edge.
+<!-- graph-stats:end -->
 
 ## 🏗️ How it fits together
 
