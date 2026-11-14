@@ -234,3 +234,37 @@ def get_repository_scan(scan_id: str) -> RepoScan:
             "error": "not_found", "message": "Scan not found or expired.",
         })
     return scan
+
+
+# ---- Stack recommender: optional Claude explanation (Phase 2) ----
+from . import stack_explainer  # noqa: E402
+
+_explain_limiter = RateLimiter(capacity=3, refill_per_sec=3 / 60.0)
+
+
+@app.post(f"{API}/stack-explanations")
+def create_stack_explanation(
+    req: stack_explainer.ExplainRequest, request: Request,
+) -> dict[str, str]:
+    if not stack_explainer.enabled():
+        raise HTTPException(status_code=503, detail={
+            "error": "disabled", "message": "Stack explanations are not enabled on this server.",
+        })
+    peer = request.client.host if request.client else None
+    key = client_ip(dict(request.headers), peer, trusted_proxies=_TRUSTED_PROXIES)
+    allowed, retry = _explain_limiter.check(key)
+    if not allowed:
+        raise HTTPException(status_code=429, detail={
+            "error": "rate_limited", "message": "Too many requests.",
+            "retry_after_seconds": retry,
+        })
+    try:
+        return {"explanation": stack_explainer.explain(req)}
+    except stack_explainer.ExplainRefused as e:
+        raise HTTPException(status_code=422, detail={
+            "error": "refused", "message": "No explanation could be written for this stack.",
+        }) from e
+    except Exception as e:  # network / API errors: never leak details
+        raise HTTPException(status_code=502, detail={
+            "error": "upstream", "message": "The explanation service is unavailable.",
+        }) from e
