@@ -22,6 +22,8 @@ import { OutlineView, supportsWebGL } from "./components/OutlineView";
 import { ShortcutsHelp } from "./components/ShortcutsHelp";
 import { LearningPanel } from "./components/LearningPanel";
 import { connectionPath } from "./graph/compare";
+import { StackPanel } from "./components/StackPanel";
+import { readStack, writeStack, type StackParams } from "./recommend/stackLink";
 
 const PATH_TITLES = JOURNEYS.map((j) => j.title);
 const DONE_PATHS_KEY = "techatlas-paths-done";
@@ -116,6 +118,15 @@ export default function App() {
   const [compareSecond, setCompareSecond] = useState<string | null>(null);
   const [compareCopied, setCompareCopied] = useState(false);
   const [journeyIndex, setJourneyIndex] = useState<number | null>(null);
+  // Stack recommender (Phase 2): its inputs live in the URL so a copied link reopens it.
+  const [stackParams, setStackParams] = useState<StackParams>(() => readStack(window.location.search));
+  const [stackHighlight, setStackHighlight] = useState<{ nodes: string[]; edges: string[] }>({ nodes: [], edges: [] });
+  const onStackHighlight = useCallback((nodes: string[], edges: string[]) => setStackHighlight({ nodes, edges }), []);
+  const openStack = useCallback((open: boolean) => setStackParams((p) => ({ ...p, open })), []);
+  useEffect(() => {
+    const query = writeStack(window.location.search, stackParams);
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  }, [stackParams]);
   const [journeyStep, setJourneyStep] = useState(0);
   const [desktopRail, setDesktopRail] = useState<"domains" | "filters" | null>(null);
   const [outlineOpen, setOutlineOpen] = useState(false);
@@ -166,7 +177,7 @@ export default function App() {
       window.removeEventListener("pointerdown", onDown);
     };
   }, [heroVisible]);
-  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex]);
+  useEffect(() => { if (selected || xrayOpen || compareMode || journeyIndex !== null || stackParams.open) setHeroVisible(false); }, [selected, xrayOpen, compareMode, journeyIndex, stackParams.open]);
   // Keep the hero mounted briefly after dismissal so it can fade out instead of vanishing.
   // Fullscreen: the browser Fullscreen API where available, plus an immersive layout that
   // hides the chrome so the atlas fills the screen (also the fallback on iPhone Safari).
@@ -479,6 +490,7 @@ export default function App() {
     setXrayOpen(false);                // close the results panel / X-Ray interface
     setCompareMode(false);
     setJourneyIndex(null);
+    openStack(false);
     setSheetCollapsed(false);          // reset the mobile sheet state
     setXrayView("universe");           // reset the X-Ray view mode for next time
     setSelected(null);                 // drop scan-specific selection
@@ -486,7 +498,7 @@ export default function App() {
     setFocus(null);
     setFilter(emptyFilter());          // clear any active filtering
     setExploreNonce((n) => n + 1);     // re-fit the default atlas camera (clears Stack bbox)
-  }, [resetScan]);
+  }, [resetScan, openStack]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
   const journey = journeyIndex === null ? null : JOURNEYS[journeyIndex];
@@ -598,13 +610,18 @@ export default function App() {
         <nav className="topbar-tools" aria-label="Atlas modes">
           <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
-              setCompareMode((open) => !open); setJourneyIndex(null); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
+              setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
             }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
           <button type="button" className="tool" aria-label={journeyIndex === null ? "Guided paths" : "Exit path"}
             aria-pressed={journeyIndex !== null} title="Follow a guided path" onClick={() => {
-              if (journeyIndex === null) { setCompareMode(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
+              if (journeyIndex === null) { setCompareMode(false); openStack(false); setJourneyIndex(0); setJourneyStep(0); navigate(JOURNEYS[0].steps[0].id); }
               else { setJourneyIndex(null); handleSelect(null); }
             }}><Icon name="paths" /><span>{journeyIndex === null ? "Guided paths" : "Exit path"}</span></button>
+          <button type="button" className="tool" aria-label={stackParams.open ? "Close stack recommender" : "Stack recommender"}
+            aria-pressed={stackParams.open} title="Get a stack for your project, with reasons" onClick={() => {
+              if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); }
+              openStack(!stackParams.open);
+            }}><Icon name="stack" /><span>Stack</span></button>
           <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
             <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
@@ -653,8 +670,8 @@ export default function App() {
         {webgl && <GraphCanvas
           data={state.graph}
           theme={theme}
-          journeyNodeIds={journeyNodeIds}
-          journeyEdgeIds={journeyEdgeIds}
+          journeyNodeIds={journey ? journeyNodeIds : stackParams.open ? stackHighlight.nodes : journeyNodeIds}
+          journeyEdgeIds={journey ? journeyEdgeIds : stackParams.open ? stackHighlight.edges : journeyEdgeIds}
           initialCamera={initialCamera}
           onCameraChange={(camera) => {
             if (xrayOpen) return;
@@ -692,7 +709,9 @@ export default function App() {
         <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
         {webgl && outlineOpen && <OutlineView nodes={state.graph.nodes} domains={state.domains}
           onPick={(id) => { navigate(id); if (compact) setOutlineOpen(false); }} onClose={() => setOutlineOpen(false)} />}
-        {learningOpen && !compareMode && journeyIndex === null && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
+        {stackParams.open && !xrayOpen && <StackPanel graph={state.graph} params={stackParams} onParamsChange={setStackParams}
+          currentLabel={stackParams.repo} onPick={navigate} onHighlight={onStackHighlight} onClose={() => openStack(false)} />}
+        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
           <h2>Compare technologies</h2>
