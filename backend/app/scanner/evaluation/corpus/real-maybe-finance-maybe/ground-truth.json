@@ -25,7 +25,7 @@
       "node_id": "technology:postgresql"
     },
     {
-      "node_id": "technology:tailwind"
+      "node_id": "technology:tailwind-css"
     },
     {
       "node_id": "technology:stripe"

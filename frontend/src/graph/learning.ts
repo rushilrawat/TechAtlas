@@ -9,6 +9,8 @@ export type LearningMap = Record<string, LearningStatus>;
 const KEY = "techatlas-learning-map";
 const EVENT = "techatlas-learning-change";
 const STATUSES = new Set<LearningStatus>(["known", "learning", "goal"]);
+// Node ids renamed in a dataset release; saved maps are migrated on read.
+const RENAMED_IDS: Record<string, string> = { "technology:tailwind": "technology:tailwind-css" };
 
 export function readLearning(): LearningMap {
   try {
@@ -17,7 +19,7 @@ export function readLearning(): LearningMap {
     const out: LearningMap = {};
     if (parsed && typeof parsed === "object") {
       for (const [id, v] of Object.entries(parsed as Record<string, unknown>)) {
-        if (typeof v === "string" && STATUSES.has(v as LearningStatus)) out[id] = v as LearningStatus;
+        if (typeof v === "string" && STATUSES.has(v as LearningStatus)) out[RENAMED_IDS[id] ?? id] = v as LearningStatus;
       }
     }
     return out;

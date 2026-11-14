@@ -49,7 +49,7 @@
       "evidence": "cli/package.json: react declared in package.json (devDependencies)"
     },
     {
-      "node_id": "technology:tailwind",
+      "node_id": "technology:tailwind-css",
       "added_in_review": true,
       "evidence": "cli/package.json: @tailwindcss/postcss declared in package.json (devDependencies)"
     },

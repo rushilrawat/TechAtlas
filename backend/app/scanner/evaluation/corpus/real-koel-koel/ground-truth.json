@@ -19,7 +19,7 @@
       "node_id": "technology:vitest"
     },
     {
-      "node_id": "technology:tailwind"
+      "node_id": "technology:tailwind-css"
     },
     {
       "node_id": "technology:github-actions"

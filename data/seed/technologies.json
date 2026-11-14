@@ -138,7 +138,7 @@
     "lifecycle_status": "mature"
   },
   {
-    "id": "technology:tailwind",
+    "id": "technology:tailwind-css",
     "slug": "tailwind-css",
     "name": "Tailwind CSS",
     "node_type": "technology",
@@ -1411,7 +1411,6 @@
     "lifecycle_status": "active",
     "official_url": "https://spring.io/projects/spring-boot",
     "documentation_url": "https://docs.spring.io/spring-boot/index.html",
-    "wikipedia_title": "Spring Framework",
     "repo": "spring-projects/spring-boot",
     "aliases": [
       "spring-boot-starter",
@@ -5797,5 +5796,17 @@
     "lifecycle_status": "active",
     "wikipedia_title": "HackerOne",
     "official_url": "https://www.hackerone.com"
+  },
+  {
+    "id": "technology:ngspice",
+    "slug": "ngspice",
+    "name": "ngspice",
+    "node_type": "technology",
+    "node_subtype": "developer_tool",
+    "primary_domain": "domain:computer-engineering",
+    "short_description": "Open-source mixed-signal SPICE circuit simulator.",
+    "lifecycle_status": "active",
+    "official_url": "https://ngspice.sourceforge.io",
+    "documentation_url": "https://ngspice.sourceforge.io/docs.html"
   }
 ]

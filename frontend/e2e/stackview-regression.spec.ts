@@ -24,7 +24,7 @@ const CANONICAL_NODES = graph.nodes.length;
 
 // ---- deterministic fixtures (real canonical technology ids, grouped by true domain) ----
 const POOL: Record<string, string[]> = {
-  frontend: ["technology:react","technology:vue","technology:angular","technology:svelte","technology:typescript","technology:nextjs","technology:redux","technology:vite","technology:tailwind"],
+  frontend: ["technology:react","technology:vue","technology:angular","technology:svelte","technology:typescript","technology:nextjs","technology:redux","technology:vite","technology:tailwind-css"],
   backend: ["technology:nodejs","technology:express","technology:fastapi","technology:django","technology:flask","technology:celery","technology:grpc"],
   databases: ["technology:postgresql","technology:mysql","technology:mongodb","technology:redis","technology:duckdb"],
   aiml: ["technology:pytorch","technology:tensorflow","technology:scikit-learn","technology:numpy","technology:pandas","technology:langchain"],

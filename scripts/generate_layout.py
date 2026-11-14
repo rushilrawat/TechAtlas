@@ -403,7 +403,7 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
 
 
 MACRO_COMPOSITION = "continents"
-EXPECTED_NODES, EXPECTED_EDGES = 1189, 3059  # canonical dataset size (sanity warning only)
+EXPECTED_NODES, EXPECTED_EDGES = 1194, 3516  # canonical dataset size (sanity warning only)
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [

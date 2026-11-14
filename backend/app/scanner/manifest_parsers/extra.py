@@ -207,7 +207,7 @@ CONFIG_FILES: dict[str, tuple[str, str]] = {
     "bun.lock": ("technology:bun", "Bun lockfile"),
     "Pulumi.yaml": ("technology:pulumi", "Pulumi project"),
     "ansible.cfg": ("technology:ansible", "Ansible configuration"),
-    "tailwind.config.": ("technology:tailwind", "Tailwind CSS configuration"),
+    "tailwind.config.": ("technology:tailwind-css", "Tailwind CSS configuration"),
     "svelte.config.": ("technology:svelte", "Svelte configuration"),
     "astro.config.": ("technology:astro", "Astro configuration"),
     "nuxt.config.": ("technology:nuxt", "Nuxt configuration"),

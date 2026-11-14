@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { suggestNext } from "./learning";
+import { readLearning, suggestNext } from "./learning";
 
 const graph = {
   nodes: [
@@ -30,5 +30,13 @@ describe("suggestNext", () => {
 
   it("is empty with nothing marked", () => {
     expect(suggestNext({}, graph)).toEqual([]);
+  });
+});
+
+describe("readLearning", () => {
+  it("migrates node ids renamed in a dataset release", () => {
+    window.localStorage.setItem("techatlas-learning-map", JSON.stringify({ "technology:tailwind": "known", "technology:react": "goal" }));
+    expect(readLearning()).toEqual({ "technology:tailwind-css": "known", "technology:react": "goal" });
+    window.localStorage.removeItem("techatlas-learning-map");
   });
 });
