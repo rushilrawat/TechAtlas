@@ -3,7 +3,8 @@
 ## Intent
 
 Make the technology map the first thing a visitor understands and can use. Keep
-the canonical 607-node, 1116-edge graph, its radial families, search, filtering,
+the full canonical graph (607 nodes and 1,116 edges when this was written; 1,194
+nodes and 3,517 edges at dataset v0.7.0), its radial families, search, filtering,
 relationship details, and Repo X-Ray intact. The redesign changes the interface
 around the graph and its visual hierarchy, not the truth of the data.
 
@@ -21,13 +22,16 @@ around the graph and its visual hierarchy, not the truth of the data.
 
 1. A slim header contains the brand, a single search field, Explore and Repo
    X-Ray navigation, and a compact graph count.
-2. The graph fills the remaining viewport. Each of the 14 ecosystems is laid out
+2. The graph fills the remaining viewport. Each top-level ecosystem (14 at the
+   time, 20 at v0.7.0; nested fields such as Computer Graphics sit inside their
+   parent's territory) is laid out
    around its own domain anchor in 360 degrees, and the ecosystems are packed
    like continents beside the domains they share the most relationships with
    (ring and strata compositions remain available in the generator). Domain
-   headings sit just above their ecosystems. A backbone of roughly 250–360
-   genuine curves (a scored spanning forest per ecosystem plus bridges between
-   neighboring ecosystems) is drawn at overview; the remaining relationships
+   headings sit just above their ecosystems. A backbone of genuine curves (a
+   scored spanning forest per ecosystem plus bridges between neighboring
+   ecosystems, about half of each territory's members: 250–360 curves at 607
+   nodes, about 600 at 1,194) is drawn at overview; the remaining relationships
    appear on zoom or selection.
 3. A compact left rail stacks domain browsing and filters. The rail leaves the
    radial atlas visually dominant.
@@ -57,13 +61,15 @@ around the graph and its visual hierarchy, not the truth of the data.
 
 ## Acceptance
 
-- All 607 canonical nodes and 1116 relationships remain addressable; no synthetic
-  edges or aggregate replacements are introduced.
+- Every canonical node and relationship remains addressable; no synthetic edges
+  or aggregate replacements are introduced. The visual-proof suite reads the
+  expected counts from `data/graph.json`.
 - Overview curves are measured on the drawn curves; the generator rejects
   backbone candidates that would cross an accepted curve, and the visual-proof
   harness bounds the remaining crossings.
-- The 1440×900 overview has 0 drawn-circle overlaps, 0 label collisions, all 14
-  domain headings, and 0 panel occlusions. Review at 1920×1080, 768×1024,
+- The 1440×900 overview has 0 drawn-circle overlaps, 0 label collisions, every
+  top-level domain heading, at most 4 heading/node grazes (2 at 14 headings), and
+  0 panel occlusions. Review at 1920×1080, 768×1024,
   390×844, and 390×667 as well.
 - Search, domain navigation, filters, edge details, Repo X-Ray, and Back to
   Explore pass their existing browser regressions. Production static mode still
