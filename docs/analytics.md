@@ -43,13 +43,15 @@ The build reads it as `VITE_ANALYTICS`; set the same variable locally to try it
 | Event | When | Properties |
 |---|---|---|
 | pageview | First load, and when the node or About page in the URL changes | – |
-| `hero_explore` / `hero_scan` | The hero's "Explore the atlas" / "Scan a repo" | – |
+| `hero_explore` / `hero_paths` / `hero_scan` | The hero's "Explore the atlas" / "Follow a path" / "X-ray a repo" | – |
+| `hero_featured_path` | A "Start here" or "Continue" path link on the hero | – |
+| `paths_library_opened` | The "Guided paths" toolbar button | – |
 | `search_used` | A search settles with results | – |
 | `search_no_results` | A search still has no results after 3 s | `query` |
 | `node_opened` | A node is selected (by click, search, path or link) | `type`, `node` |
 | `path_started` / `path_finished` | A guided path is opened / its last step is reached | `path` |
 | `compare_used` | Two technologies are being compared | – |
-| `share_link_copied` | "Copy link" in the node panel or Compare | `from` |
+| `share_link_copied` | "Copy link" in the node panel, Compare or a guided path | `from` |
 | `xray_opened` / `scan_run` | Repo X-Ray is opened / a repository is submitted | – |
 | `about_viewed` | The About page | – |
 

@@ -154,9 +154,12 @@ export function clickEvent(target: Element): [string, Props?] | null {
   if (!button) return null;
   const name = accessibleName(button);
   if (button.classList.contains("hero-primary")) return ["hero_explore"];
-  if (button.classList.contains("hero-secondary")) return ["hero_scan"];
+  if (button.classList.contains("hero-secondary")) return name === "Follow a path" ? ["hero_paths"] : ["hero_scan"];
+  if (button.closest(".hero-paths")) return ["hero_featured_path"];
+  if (name === "Guided paths") return ["paths_library_opened"];
   if (name === "Copy link") {
-    return ["share_link_copied", { from: button.closest(".compare-panel") ? "compare" : "node" }];
+    const from = button.closest(".compare-panel") ? "compare" : button.closest(".journey-panel") ? "path" : "node";
+    return ["share_link_copied", { from }];
   }
   if (/^Repo X-Ray$/.test(name)) return ["xray_opened"];
   return null;
