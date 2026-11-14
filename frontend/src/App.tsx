@@ -21,6 +21,8 @@ import { JOURNEYS } from "./graph/journeys";
 import { readFilter, writeFilter, readCamera, writeCamera, readView, writeView } from "./graph/shareView";
 import { OutlineView, supportsWebGL } from "./components/OutlineView";
 import { ShortcutsHelp } from "./components/ShortcutsHelp";
+import { ReportCard } from "./components/ReportCard";
+import { readCardParam, writeCardParam } from "./report/reportCard";
 import { LearningPanel } from "./components/LearningPanel";
 import { connectionPath } from "./graph/compare";
 import { PathsLibrary } from "./components/PathsLibrary";
@@ -125,6 +127,13 @@ export default function App() {
   const [outlineOpen, setOutlineOpen] = useState(false);
   const [learningOpen, setLearningOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  // A shared report card for any scanned repo: ?card=<owner/name>~<slugs>, rendered from the atlas alone.
+  const [sharedCard, setSharedCard] = useState(() => readCardParam(window.location.search));
+  const closeSharedCard = useCallback(() => {
+    setSharedCard(null);
+    const query = writeCardParam(window.location.search, null);
+    window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+  }, []);
   const [webgl] = useState(supportsWebGL);
   const [donePaths, setDonePaths] = useState<Set<string>>(readDonePaths);
   const [pathProgress, setPathProgress] = useState<Record<string, number>>(readPathProgress);
@@ -721,6 +730,9 @@ export default function App() {
           onPick={(id) => { navigate(id); if (compact) setOutlineOpen(false); }} onClose={() => setOutlineOpen(false)} />}
         {learningOpen && !compareMode && journeyIndex === null && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
+        {sharedCard && <ReportCard repo={sharedCard.repo} nodesById={nodesById} domainsById={domainsById}
+          nodeIds={sharedCard.slugs.map((slug) => state.graph.nodes.find((n) => n.slug === slug)?.id).filter((id): id is string => !!id)}
+          onPick={navigate} onClose={closeSharedCard} />}
         {compareMode && !xrayOpen && <section className="compare-panel" aria-label="Compare technologies">
           <h2>Compare technologies</h2>
           <p className="compare-pair">{compareFirst ? <button type="button" onClick={() => navigate(compareFirst, true)}>{nodesById.get(compareFirst)?.label}</button> : "Select the first technology on the atlas or in search."} <span aria-hidden>↔</span> {compareSecond ? <button type="button" onClick={() => navigate(compareSecond, true)}>{nodesById.get(compareSecond)?.label}</button> : "Select a second technology"}</p>
