@@ -265,8 +265,8 @@ def validate(dataset: dict) -> Report:
         if nid.split(":", 1)[-1] != node.get("slug"):
             report.warn(f"Node id suffix differs from its slug: {nid} vs '{node.get('slug')}'")
 
-    thin = [n["id"] for n in nodes
-            if n["node_type"] != "domain" and 0 < typed.get(n["id"], 0) < TARGET_TYPED_RELATIONSHIPS]
+    thin = [n["id"] for n in nodes if n["node_type"] != "domain"
+            and 0 < typed.get(n["id"], 0) < TARGET_TYPED_RELATIONSHIPS]
     if thin:
         report.warn(
             f"{len(thin)} node(s) have fewer than {TARGET_TYPED_RELATIONSHIPS} typed relationships "

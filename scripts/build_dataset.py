@@ -67,7 +67,8 @@ def stats_markdown(dataset: dict, journeys: int) -> str:
         f"## 📊 The graph (dataset v{dataset['version']})\n\n"
         f"| | |\n|---|---:|\n{table}\n\n"
         f"The largest relationship groups are {top}. Counts come from the checked-in\n"
-        "[`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)\n"
+        "[`data/graph.json`](data/graph.json) and "
+        "[`data/seed/journeys.json`](data/seed/journeys.json)\n"
         "and are rewritten by `scripts/build_dataset.py` on every `make data`; “isolated” means\n"
         "a node with no incident edge."
     )
@@ -78,7 +79,9 @@ def update_readme(dataset: dict) -> bool:
     if not README.exists():
         return False
     journeys_path = SEED_DIR / "journeys.json"
-    journeys = len(json.loads(journeys_path.read_text(encoding="utf-8"))) if journeys_path.exists() else 0
+    journeys = 0
+    if journeys_path.exists():
+        journeys = len(json.loads(journeys_path.read_text(encoding="utf-8")))
     text = README.read_text(encoding="utf-8")
     pattern = re.compile(re.escape(STATS_START) + r".*?" + re.escape(STATS_END), re.S)
     if not pattern.search(text):
