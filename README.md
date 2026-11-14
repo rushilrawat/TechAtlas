@@ -33,7 +33,8 @@ you move from a broad field to an individual tool without losing the surrounding
 - 🔗 **Share a view:** domain, technology, and concept pages have crawlable HTML,
   Open Graph cards, JSON-LD, and links back into the atlas.
 - 🧪 **Inspect a repository:** Repo X-Ray detects a public GitHub repository's stack
-  and highlights it in the atlas when a scanner backend is configured.
+  and highlights it in the atlas. Pre-computed example scans of well-known repositories
+  work everywhere; scanning any repository needs the scanner backend.
 - 📚 **Grow the graph carefully:** curated seed data is validated before publication.
   Discovery assist can propose additions from Wikidata; richer relationships remain
   subject to human review.

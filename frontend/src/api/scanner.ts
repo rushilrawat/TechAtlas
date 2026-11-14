@@ -2,7 +2,7 @@
 //
 // The scanner needs a live FastAPI backend (GitHub calls + token + cache), which the
 // static GitHub Pages build does NOT have. So it is gated behind VITE_SCANNER_API:
-//   - unset  -> scanner disabled; the Repo X-Ray entry point is hidden.
+//   - unset  -> live scanning disabled; Repo X-Ray offers pre-computed examples only.
 //   - set    -> base URL of a reachable scanner backend (e.g. "/api/v1" via the dev
 //               proxy, or "https://scanner.example.com/api/v1" for a hosted backend).
 

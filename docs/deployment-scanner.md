@@ -1,9 +1,24 @@
 # Deploying the Repo X-Ray scanner backend (Render Free)
 
 The TechAtlas frontend stays on **GitHub Pages**. The Repo X-Ray scanner is a separate
-**FastAPI HTTPS service** on **Render Free**. The frontend only shows Repo X-Ray once the
-backend URL is wired in (build-time `VITE_SCANNER_API`); until then it stays hidden and the
-public site is unchanged.
+**FastAPI HTTPS service** on **Render Free**. Repo X-Ray is always visible: without a backend
+it offers pre-computed example scans only. Once the backend URL is wired in (build-time
+`VITE_SCANNER_API`), the URL form for scanning any public repository appears above the
+examples, and the examples still load instantly while the backend wakes up.
+
+### Example scans
+Nine real scans (immich, next.js, react, django, kubernetes, bevy and others) are committed
+under `frontend/public/example-scans/`, with an index in `frontend/src/data/exampleScans.json`.
+They come from the real scanner pipeline with the live endpoint's request budget. Rebuild
+them after a scanner or mapping change:
+
+```bash
+GITHUB_TOKEN=$(gh auth token) python scripts/build_example_scans.py   # all, via the API
+python scripts/build_example_scans.py --source git django/django      # no API needed
+```
+
+Add or remove an example in the `EXAMPLES` list at the top of the script. A shared link
+`?xray=<slug>` opens X-Ray straight onto an example.
 
 Nothing is live until you complete the manual steps below — code/config are prepared and
 tested, but the Render account, the GitHub token, and the one GitHub Actions variable are
@@ -60,12 +75,12 @@ curl https://techatlas-scanner.onrender.com/health
   - Name: `SCANNER_API_URL`
   - Value: `https://techatlas-scanner.onrender.com/api/v1`  (note the `/api/v1` suffix)
 - Re-run the **Deploy to GitHub Pages** workflow (or push any commit to `main`).
-- The next build injects `VITE_SCANNER_API` and the Repo X-Ray button appears on
+- The next build injects `VITE_SCANNER_API` and the Repo X-Ray panel gains the URL form on
   https://rushilrawat.github.io/TechAtlas/.
 
 ### 6. End-to-end verification on the live site (required before calling it done)
 Open https://rushilrawat.github.io/TechAtlas/ and confirm:
-- [ ] "Repo X-Ray" button is visible.
+- [ ] "Repo X-Ray" opens with the URL form above the example scans.
 - [ ] Submitting `https://github.com/pallets/flask` starts a scan (allow up to ~1 min on a
       cold start; the panel says it may be waking up).
 - [ ] The backend completes a REAL scan (not mocked) — detected nodes light up.

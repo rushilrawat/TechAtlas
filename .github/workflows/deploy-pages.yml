@@ -31,7 +31,7 @@ jobs:
       VITE_STATIC_API: "true"
       # Repo X-Ray backend URL, injected at BUILD time from the repo variable
       # SCANNER_API_URL (Settings -> Secrets and variables -> Actions -> Variables).
-      # Empty/unset => the Repo X-Ray entry point stays HIDDEN (the default public state).
+      # Empty/unset => Repo X-Ray offers the pre-computed example scans only (no URL form).
       # Set it to the Render HTTPS base (e.g. https://techatlas-scanner.onrender.com/api/v1)
       # and the next deploy automatically exposes the feature. Not a secret (it is a public
       # URL); the GITHUB_TOKEN lives only in the backend environment, never here.

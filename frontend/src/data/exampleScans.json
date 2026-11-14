@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "immich-app-immich",
+    "repo": "immich-app/immich",
+    "tagline": "Photo app: Flutter, NestJS, Postgres",
+    "language": "TypeScript",
+    "technologies": 36,
+    "concepts": 5,
+    "commit": "e5d6eb7",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "fastapi-full-stack-fastapi-template",
+    "repo": "fastapi/full-stack-fastapi-template",
+    "tagline": "FastAPI + React full-stack starter",
+    "language": "TypeScript",
+    "technologies": 22,
+    "concepts": 2,
+    "commit": "aabb901",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "vercel-next-js",
+    "repo": "vercel/next.js",
+    "tagline": "React framework, Turbopack in Rust",
+    "language": "JavaScript",
+    "technologies": 16,
+    "concepts": 1,
+    "commit": "7d19c34",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "excalidraw-excalidraw",
+    "repo": "excalidraw/excalidraw",
+    "tagline": "Collaborative whiteboard in TypeScript",
+    "language": "TypeScript",
+    "technologies": 18,
+    "concepts": 2,
+    "commit": "82d5847",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "facebook-react",
+    "repo": "facebook/react",
+    "tagline": "The UI library itself",
+    "language": "JavaScript",
+    "technologies": 16,
+    "concepts": 1,
+    "commit": "df6aa4e",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "spring-projects-spring-petclinic",
+    "repo": "spring-projects/spring-petclinic",
+    "tagline": "Classic Spring Boot sample app",
+    "language": "Java",
+    "technologies": 11,
+    "concepts": 3,
+    "commit": "500158f",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "django-django",
+    "repo": "django/django",
+    "tagline": "Batteries-included Python web framework",
+    "language": "Python",
+    "technologies": 9,
+    "concepts": 2,
+    "commit": "f24f38c",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "kubernetes-kubernetes",
+    "repo": "kubernetes/kubernetes",
+    "tagline": "Container orchestration in Go",
+    "language": "Go",
+    "technologies": 7,
+    "concepts": 2,
+    "commit": "b4226ac",
+    "scanned_on": "2026-11-14"
+  },
+  {
+    "slug": "bevyengine-bevy",
+    "repo": "bevyengine/bevy",
+    "tagline": "Data-driven game engine in Rust",
+    "language": "Rust",
+    "technologies": 5,
+    "concepts": 0,
+    "commit": "7ea4827",
+    "scanned_on": "2026-11-14"
+  }
+]

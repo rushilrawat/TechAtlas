@@ -13,6 +13,7 @@ import type {
 import type { ScanPhase } from "../graph/useRepoScan";
 import { safeHttpUrl } from "../util/safeUrl";
 import { CONFIDENCE_ORDER, computeScanStats, pct, scanSummaryMarkdown } from "../graph/scanStats";
+import { EXAMPLE_SCANS, findExample, type ExampleScanMeta } from "../api/exampleScans";
 
 interface Props {
   phase: ScanPhase;
@@ -29,6 +30,11 @@ interface Props {
   /** Mobile bottom-sheet collapse state + toggle (ignored on desktop via CSS). */
   collapsed?: boolean;
   onToggleCollapsed?: () => void;
+  /** Open a pre-computed example scan. */
+  onLoadExample?: (slug: string) => void;
+  /** Whether a live scanner backend is configured. Without one, X-Ray shows examples only. */
+  liveEnabled?: boolean;
+  examples?: ExampleScanMeta[];
 }
 
 const STATUS_LABEL: Record<DetectionStatus, string> = {
@@ -44,6 +50,7 @@ const GH_RE = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/?$/i;
 export function RepoXrayPanel({
   phase, onAnalyze, onExit, onAnalyzeAnother, onFocusStack, onFocusNode, nodesById,
   domainsById, learnNext = [], view, onViewChange, collapsed = false, onToggleCollapsed,
+  onLoadExample, liveEnabled = true, examples = EXAMPLE_SCANS,
 }: Props) {
   const [url, setUrl] = useState("");
   const [touched, setTouched] = useState(false);
@@ -63,7 +70,7 @@ export function RepoXrayPanel({
       aria-label="Repo X-Ray"
     >
       <div className="xray-header">
-        <h2>{phase.kind === "done" && collapsed ? "Repo X-Ray" : "Analyze a GitHub Repository"}</h2>
+        <h2>{(phase.kind === "done" && collapsed) || !liveEnabled ? "Repo X-Ray" : "Analyze a GitHub Repository"}</h2>
         <button
           type="button"
           className="xray-collapse"
@@ -93,42 +100,67 @@ export function RepoXrayPanel({
       {phase.kind !== "done" && (
       <>
       <p className="xray-desc">
-        Discover the technologies powering any public GitHub project.
+        See the technologies behind a GitHub project, mapped onto the atlas.
       </p>
 
-      <form className="xray-form" onSubmit={submit}>
-        <input
-          type="url"
-          className="xray-input"
-          placeholder="https://github.com/owner/repository"
-          aria-label="GitHub repository URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          onBlur={() => setTouched(true)}
-          disabled={analyzing}
-          autoComplete="off"
+      {liveEnabled && (
+        <>
+          <form className="xray-form" onSubmit={submit}>
+            <input
+              type="url"
+              className="xray-input"
+              placeholder="https://github.com/owner/repository"
+              aria-label="GitHub repository URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onBlur={() => setTouched(true)}
+              disabled={analyzing}
+              autoComplete="off"
+            />
+            <button type="submit" className="xray-analyze" disabled={analyzing || !url.trim()}>
+              {analyzing ? "Analyzing…" : "Analyze Repository"}
+            </button>
+          </form>
+          {touched && url.trim() && !valid && (
+            <p className="xray-invalid" role="alert">
+              Enter a valid public GitHub repository URL (https://github.com/owner/repo).
+            </p>
+          )}
+          <p className="xray-note">Public repositories only. No GitHub login required.</p>
+        </>
+      )}
+
+      {onLoadExample && examples.length > 0 && !analyzing && (
+        <ExampleGallery
+          examples={examples}
+          onPick={onLoadExample}
+          heading={liveEnabled ? "Or open an example (instant)" : "Pick a repository to X-ray"}
         />
-        <button type="submit" className="xray-analyze" disabled={analyzing || !url.trim()}>
-          {analyzing ? "Analyzing…" : "Analyze Repository"}
-        </button>
-      </form>
-      {touched && url.trim() && !valid && (
-        <p className="xray-invalid" role="alert">
-          Enter a valid public GitHub repository URL (https://github.com/owner/repo).
+      )}
+
+      {!liveEnabled && !analyzing && (
+        <p className="xray-note xray-live-note">
+          These are real scans, made ahead of time. Scanning your own repository needs the
+          TechAtlas scanner backend, which this site doesn&rsquo;t run.{" "}
+          <a href="https://github.com/rushilrawat/TechAtlas/blob/main/docs/deployment-scanner.md"
+            target="_blank" rel="noreferrer noopener">Run it yourself</a>.
         </p>
       )}
-      <p className="xray-note">Public repositories only. No GitHub login required.</p>
       </>
       )}
 
       {analyzing && (
         <div className="xray-status" role="status" aria-live="polite">
           <span className="xray-spinner" aria-hidden />
-          <span>
-            Connecting to the repository scanner and analyzing{" "}
-            {phase.url.replace(/^https?:\/\/(www\.)?github\.com\//, "")}…
-            <span className="xray-note"> The scanner may take up to a minute to wake up.</span>
-          </span>
+          {liveEnabled ? (
+            <span>
+              Connecting to the repository scanner and analyzing{" "}
+              {phase.url.replace(/^https?:\/\/(www\.)?github\.com\//, "")}…
+              <span className="xray-note"> The scanner may take up to a minute to wake up.</span>
+            </span>
+          ) : (
+            <span>Loading {phase.url.replace(/^https?:\/\/(www\.)?github\.com\//, "")}…</span>
+          )}
         </div>
       )}
 
@@ -145,6 +177,8 @@ export function RepoXrayPanel({
       {phase.kind === "done" && (
         <Results
           scan={phase.scan}
+          example={phase.example}
+          liveEnabled={liveEnabled}
           nodesById={nodesById}
           domainsById={domainsById}
           learnNext={learnNext}
@@ -167,6 +201,7 @@ function errorTitle(code: string): string {
     case "rate_limited": return "GitHub rate limit";
     case "timeout": return "Scanner timed out";
     case "busy": return "Scanner busy";
+    case "example": return "Example unavailable";
     default: return "Scan failed";
   }
 }
@@ -236,11 +271,45 @@ function DetectionGroups({
 
 const UNMAPPED_CAP = 50;
 
+function plural(n: number, one: string, many: string): string {
+  return `${n} ${n === 1 ? one : many}`;
+}
+
+function ExampleGallery({ examples, onPick, heading }: {
+  examples: ExampleScanMeta[];
+  onPick: (slug: string) => void;
+  heading: string;
+}) {
+  return (
+    <section className="xray-examples" aria-label="Example scans">
+      <h3 className="xray-section-title">{heading}</h3>
+      <ul>
+        {examples.map((e) => (
+          <li key={e.slug}>
+            <button type="button" className="xray-example"
+              onClick={() => onPick(e.slug)} aria-label={`X-ray ${e.repo}: ${e.tagline}`}>
+              <span className="xray-example-repo">{e.repo}</span>
+              <span className="xray-example-tag">{e.tagline}</span>
+              <span className="xray-example-n">
+                <span>{plural(e.technologies, "technology", "technologies")}</span>
+                <span>{plural(e.concepts, "concept", "concepts")}</span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Results({
-  scan, nodesById, domainsById, learnNext, onFocusStack, onFocusNode, onAnalyzeAnother, onExit,
-  view, onViewChange,
+  scan, example, liveEnabled, nodesById, domainsById, learnNext, onFocusStack, onFocusNode,
+  onAnalyzeAnother, onExit, view, onViewChange,
 }: {
   scan: RepoScan;
+  /** Slug of the pre-computed example this result came from, if any. */
+  example?: string;
+  liveEnabled: boolean;
   nodesById: Map<string, GraphNode>;
   domainsById: Map<string, DomainSummary>;
   learnNext: { id: string; label: string; connections: number }[];
@@ -278,6 +347,14 @@ function Results({
           commit {repo.commit_sha.slice(0, 7)} on {repo.default_branch}
         </p>
       </div>
+
+      {example && (
+        <p className="xray-example-badge" role="note">
+          <strong>Example scan</strong> of commit {scan.repository.commit_sha.slice(0, 7)}
+          {findExample(example)?.scanned_on ? `, made ${findExample(example)?.scanned_on}` : ""}.
+          The repository may have changed since.
+        </p>
+      )}
 
       {/* Section G (surfaced high): always-visible partial-scan warning */}
       {partial && (
@@ -321,7 +398,7 @@ function Results({
                target="_blank" rel="noreferrer noopener">Open GitHub</a>
           )}
           <button type="button" className="xray-action-btn" onClick={onAnalyzeAnother}>
-            Analyze Another
+            {liveEnabled ? "Analyze Another" : "More examples"}
           </button>
           <button type="button" className="xray-action-btn" onClick={onExit}>
             Back to Universe

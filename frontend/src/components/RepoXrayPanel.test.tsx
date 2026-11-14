@@ -34,6 +34,8 @@ function scan(partial = false): RepoScan {
 }
 
 const noop = () => {};
+const EXAMPLE = { slug: "acme-app", repo: "acme/app", tagline: "demo app", language: "TypeScript",
+  technologies: 1, concepts: 0, commit: "abcdef1", scanned_on: "2026-11-14" };
 function base(overrides = {}) {
   return {
     phase: { kind: "idle" } as const, onAnalyze: noop, onExit: noop,
@@ -85,5 +87,30 @@ describe("RepoXrayPanel", () => {
       message: "slow down", retryAfter: 30 } })} />);
     expect(screen.getByText(/GitHub rate limit/)).toBeTruthy();
     expect(screen.getByText(/about 30s/)).toBeTruthy();
+  });
+
+  it("offers instant example scans next to the live form", () => {
+    const onLoadExample = vi.fn();
+    render(<RepoXrayPanel {...base({ onLoadExample, examples: [EXAMPLE] })} />);
+    expect(screen.getByLabelText("GitHub repository URL")).toBeTruthy();
+    expect(screen.getByText(/Or open an example/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /X-ray acme\/app/ }));
+    expect(onLoadExample).toHaveBeenCalledWith("acme-app");
+  });
+
+  it("without a scanner backend, shows examples only and says why", () => {
+    render(<RepoXrayPanel {...base({ onLoadExample: noop, examples: [EXAMPLE], liveEnabled: false })} />);
+    expect(screen.queryByLabelText("GitHub repository URL")).toBeNull();
+    expect(screen.getByText("Pick a repository to X-ray")).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Run it yourself" })).toBeTruthy();
+  });
+
+  it("labels an example result and offers more examples", () => {
+    const onAnalyzeAnother = vi.fn();
+    render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan(), example: "django-django" },
+      liveEnabled: false, onAnalyzeAnother })} />);
+    expect(screen.getByRole("note").textContent).toMatch(/Example scan of commit abcdef1/);
+    fireEvent.click(screen.getByRole("button", { name: "More examples" }));
+    expect(onAnalyzeAnother).toHaveBeenCalled();
   });
 });
