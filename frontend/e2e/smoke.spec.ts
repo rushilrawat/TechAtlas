@@ -144,3 +144,20 @@ test("Guided paths library: search, start a path, step through, share", async ({
   await panel.getByRole("button", { name: "All paths" }).click();
   await expect(library.getByText(/Step 2 of/).first()).toBeVisible();
 });
+
+test("Guided paths closes an open Stack or Roles panel", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  const guided = page.getByRole("button", { name: "Guided paths" });
+  await expect(guided).toHaveCount(1);
+  for (const [button, region] of [["Stack recommender", "Stack recommender"], ["Role paths", "Role paths"]]) {
+    await page.getByRole("button", { name: button, exact: true }).click();
+    await expect(page.getByRole("region", { name: region })).toBeVisible();
+    await guided.click();
+    const library = page.getByRole("dialog", { name: "Guided paths" });
+    await expect(library).toBeVisible();
+    await expect(page.getByRole("region", { name: region })).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await expect(library).toHaveCount(0);
+  }
+});
