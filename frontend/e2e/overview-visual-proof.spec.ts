@@ -19,7 +19,6 @@ const TOP_LEVEL_DOMAINS = graph.nodes.filter((n) => n.node_type === "domain" && 
 const ROBOTICS_MEMBERS = graph.nodes.filter((n) => n.primary_domain === "domain:robotics" && n.id !== "domain:robotics").length;
 // The overview backbone keeps about half of each territory's members (BACKBONE_FRACTION
 // in scripts/generate_layout.py), so its size scales with the graph.
-const MAX_BACKBONE_EDGES = Math.ceil(0.55 * CANONICAL_NODES);
 
 /**
  * Radial Atlas Visual-Proof harness.
@@ -305,14 +304,8 @@ test.describe("Default Explore overview — visual proof (screen space)", () => 
       // Parents are centered and every populated ecosystem surrounds its anchor.
       expect(m.maxCenteringError).toBeLessThanOrEqual(0.25);
       expect(m.maxAngularGapDeg).toBeLessThan(90);
-      // A restrained, genuinely curved backbone of canonical relationships.
-      expect(m.ordinaryEdgesVisible).toBeGreaterThanOrEqual(250);
-      expect(m.ordinaryEdgesVisible).toBeLessThanOrEqual(MAX_BACKBONE_EDGES);
-      expect(m.crossDomainEdgesVisible).toBeLessThanOrEqual(45);
-      expect(m.curvedEdges).toBe(m.ordinaryEdgesVisible);
-      // Local backbone curves never cross each other and bridges never cross each other;
-      // bridges may pass over local curves now that the overview shows more connections.
-      expect(m.edgeCrossings, "overview curve crossings").toBeLessThanOrEqual(80);
+      // Clean atlas: no lines at rest; connections appear only on hover or tap.
+      expect(m.ordinaryEdgesVisible).toBe(0);
       expect(m.importantContentBehindPanels).toBe(0);
       expect(m.priorityLabelCollisions).toBe(0);
 
@@ -360,7 +353,12 @@ test.describe("Overview interaction regressions", () => {
   test("connection legend and a selected curve explain the canonical relationship", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     await page.getByRole("button", { name: /Connections/ }).click();
-    await expect(page.getByText("Within an ecosystem")).toBeVisible();
+    await expect(page.getByText("Within a field, in that field's colour")).toBeVisible();
+    // Lines are hidden at rest: select a node so its own connections are drawn.
+    await page.getByLabel("Search the technology graph").click();
+    await page.getByLabel("Search the technology graph").fill("Django");
+    await page.getByRole("option", { name: /^Django/ }).first().click();
+    await page.waitForTimeout(900);
     const hit = await page.evaluate(() => {
       const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
       const graph = sigma.getGraph();
@@ -552,7 +550,7 @@ test.describe("Overview interaction regressions", () => {
     await page.screenshot({ path: "screenshots/radial-robotics-selected.png" });
   });
 
-  test("zooming into detail reveals additional canonical edges", async ({
+  test("zooming in keeps the map clean; a tap reveals connections", async ({
     page,
   }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
@@ -566,10 +564,11 @@ test.describe("Overview interaction regressions", () => {
     });
     await page.waitForTimeout(400);
     const after = await countVisible(page);
-    // Nodes remain present while detail edges become available.
+    // Nodes remain present; zoom alone never draws lines.
     expect(after.individuals).toBe(CANONICAL_NODES);
     expect(after.markers).toBe(0);
-    expect(after.edges).toBeGreaterThan(before.edges);
+    expect(after.edges).toBe(0);
+    expect(before.edges).toBe(0);
   });
 
   test("selecting a technology reveals exactly its canonical relationships", async ({ page }) => {

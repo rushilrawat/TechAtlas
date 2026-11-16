@@ -2,7 +2,7 @@ import type Graph from "graphology";
 import type { Attributes } from "graphology-types";
 import type { EdgeDisplayData, NodeDisplayData } from "sigma/types";
 import { bandOf, labelVisibleAtRatio } from "../../graph/semanticZoom";
-import { ACTIVE_CROSS_EDGE, CROSS_EDGE, DIM_NODE, RING_ALPHA, SCAN_CONTEXT_EDGE, SCAN_DIM_EDGE, SCAN_DIM_NODE,
+import { crossLinkColor, DIM_NODE, RING_ALPHA, SCAN_CONTEXT_EDGE, SCAN_DIM_EDGE, SCAN_DIM_NODE,
   SCAN_HILITE_EDGE, STATUS_RING, fadeNode, withAlpha } from "./colors";
 import type { CanvasRefs } from "./refs";
 
@@ -138,7 +138,7 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
 
 /** Edge styling for every mode; see createNodeReducer. */
 export function createEdgeReducer(graph: Graph, refs: CanvasRefs, scanClearEdges: Set<string>): (edge: string, dataIn: Attributes) => Partial<EdgeDisplayData> {
-  const { activeRef, focusFadeRef, hoverDomainSetRef, hoveredRef, journeyEdgesRef, neighborSetRef, previewEdgeRef, ratioRef, scanContextRef, scanEdgesRef, scanStatusRef, selectedEdgeRef, selectedRef, stackActiveRef, visibleEdgesRef } = refs;
+  const { activeRef, hoverDomainSetRef, hoveredRef, journeyEdgesRef, neighborSetRef, previewEdgeRef, scanContextRef, scanEdgesRef, scanStatusRef, selectedEdgeRef, selectedRef, stackActiveRef, visibleEdgesRef } = refs;
   return (edge, dataIn) => {
     // Phase 1B filter: hide edges whose endpoints aren't both visible.
     const vedges = visibleEdgesRef.current;
@@ -186,29 +186,17 @@ export function createEdgeReducer(graph: Graph, refs: CanvasRefs, scanClearEdges
     const [source, target] = graph.extremities(edge);
     const tint = graph.getNodeAttribute(source, "color");
     const active = activeRef.current;
-    const overview = bandOf(ratioRef.current) <= 1;
     const backbone = tier === "TierA" || tier === "TierB" || tier === "TierC";
-    // Explore zoom disclosure: the sparse backbone at overview, plus the remaining
-    // local (Tier D) relationships once zoomed into detail. Cross-domain Tier D edges
-    // and plain membership spokes (already conveyed by radial position) appear only
-    // for a selection that touches them.
-    const spoke = dataIn.relationshipType === "belongs_to_domain";
-    const zoomVisible = backbone || (!overview && !cross && !spoke);
-    const quiet = cross ? CROSS_EDGE
-      : withAlpha(tint, tier === "TierA" ? 0.65 : tier === "TierB" ? 0.58 : 0.22);
-    const quietSize = tier === "TierA" ? 1.1 : tier === "TierD" ? 0.6 : cross ? 0.8 : 1;
-    if (!active) {
-      // Long cross-domain arcs only appear for a hovered or tapped node; at rest the
-      // map shows each field's own structure without lines slicing across it.
-      return zoomVisible && !cross ? { ...dataIn, color: quiet, size: quietSize, zIndex: 1 }
-        : { ...dataIn, hidden: true };
-    }
+    const CROSS_LINK = crossLinkColor();
+    // Clean atlas: no lines at rest, at any zoom. A node's or field's connections
+    // appear only while it is hovered or tapped.
+    if (!active) return { ...dataIn, hidden: true };
     // With something selected, hovering another node still previews all of its links.
     const hovered = hoveredRef.current;
     const hoverSet = hoverDomainSetRef.current;
     if (hovered && hovered !== active && (source === hovered || target === hovered
       || (!!hoverSet && hoverSet.has(source) && hoverSet.has(target)))) {
-      return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.75), size: 1.1, zIndex: 2 };
+      return { ...dataIn, color: cross ? CROSS_LINK : withAlpha(tint, 0.75), size: cross ? 1.3 : 1.1, zIndex: 2 };
     }
     const set = neighborSetRef.current;
     const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
@@ -219,11 +207,12 @@ export function createEdgeReducer(graph: Graph, refs: CanvasRefs, scanClearEdges
         || (cross && backbone && (set.has(source) || set.has(target))))
       : source === active || target === active;
     if (related) {
-      return { ...dataIn, color: cross ? ACTIVE_CROSS_EDGE : withAlpha(tint, 0.85),
-        size: domainFocus ? 0.9 : 1.3, zIndex: 3 };
+      // Within a field: the field's own colour. Between fields: one distinct link colour,
+      // drawn a touch heavier, so a bridge never reads as part of either cluster.
+      return { ...dataIn, color: cross ? CROSS_LINK : withAlpha(tint, 0.85),
+        size: cross ? (domainFocus ? 1.1 : 1.6) : (domainFocus ? 0.9 : 1.3), zIndex: cross ? 4 : 3 };
     }
-    // Unrelated relationships stay as the faintest context while something is focused.
-    return zoomVisible && !cross ? { ...dataIn, color: withAlpha(tint, 0.07 + 0.4 * (1 - focusFadeRef.current)), size: 0.45, zIndex: 0 }
-      : { ...dataIn, hidden: true };
+    // Everything unrelated stays hidden, so a selection shows only its own connections.
+    return { ...dataIn, hidden: true };
   };
 }
