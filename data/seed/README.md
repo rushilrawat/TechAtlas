@@ -21,6 +21,9 @@ single validated `graph.json` by `scripts/build_dataset.py`.
 - `edges.json`        — typed relationships between all of the above
 - `journeys.json`     — guided learning paths; the validator checks that every step exists
   and that consecutive steps share an edge
+- `apps.json`         — famous apps and the stacks behind them, each technology with a note,
+  each app citing its engineering blog; anything the atlas lacks goes in `not_in_atlas`
+  instead of becoming a new node (the validator checks every slug)
 
 Run `python scripts/build_dataset.py` to compile and `python scripts/validate_dataset.py`
 to verify. The validator prints the exact live counts — trust those numbers, not this doc.
