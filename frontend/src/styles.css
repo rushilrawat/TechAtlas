@@ -424,7 +424,8 @@ body {
 .relationship-legend-body > div { display: flex; align-items: center; gap: 8px; margin: 7px 0; }
 .edge-swatch { width: 26px; border-top: 2px solid; display: inline-block; flex: none; }
 .edge-swatch-local { border-image: linear-gradient(90deg, #49c96d, #8732ff, #38c6f0) 1; opacity: .8; }
-.edge-swatch-cross { border-color: rgba(214,200,170,.55); }
+.edge-swatch-cross { border-color: rgba(244,247,255,.92); border-top-width: 3px; }
+:root[data-theme="light"] .edge-swatch-cross { border-color: rgba(23,36,56,.9); }
 .edge-statement { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 20px 0; }
 .edge-statement button { background: none; border: 0; color: var(--accent); padding: 5px 0; min-height: 32px; text-align: left; font: inherit; cursor: pointer; }
 .edge-statement span { color: var(--text-dim); text-transform: capitalize; }
@@ -1590,3 +1591,7 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
   font: inherit; font-size: 12px; cursor: pointer; }
 .used-by-chip:hover:not(:disabled), .used-by-chip:focus-visible { border-color: var(--accent); color: var(--accent); }
 .used-by-chip:disabled { cursor: default; }
+
+/* Clean circular atlas: faint orbits under every ecosystem. */
+.atlas-orbit { fill: none; stroke-width: 0.75; stroke-opacity: 0.16; }
+:root[data-theme="light"] .atlas-orbit { stroke-opacity: 0.28; }

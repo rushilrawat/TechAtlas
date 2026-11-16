@@ -133,6 +133,12 @@ export function GraphCanvas({
           {backdrop.sectors.map((s) => (
             <circle key={s.id} cx={s.cx} cy={s.cy} r={s.r} fill={`url(#sect-${s.id})`} />
           ))}
+          {/* Concentric orbits: every node sits on one, so each field reads as clean circles. */}
+          {backdrop.orbits.map((o) => o.rs.map((r, i) => (
+            <circle key={`${o.id}-${i}`} className="atlas-orbit" cx={o.cx} cy={o.cy} r={r}
+              stroke={o.color} />
+          )))}
+
         </svg>
       )}
       <div

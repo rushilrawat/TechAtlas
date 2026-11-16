@@ -6,6 +6,13 @@ export const DIM_NODE = "rgba(120,130,150,0.12)";
 // Cross-domain bridges are a quiet neutral, the faintest overview layer.
 export const CROSS_EDGE = "rgba(222,208,178,0.42)";
 export const ACTIVE_CROSS_EDGE = "rgba(240,214,160,0.85)";
+/**
+ * Links between two different fields. Same-field links wear their field's colour, so a
+ * bridge gets a colour no field uses: near-white on the dark map, deep ink on light.
+ */
+export function crossLinkColor(): string {
+  return document.documentElement.dataset.theme === "light" ? "rgba(23,36,56,0.82)" : "rgba(244,247,255,0.8)";
+}
 export const RING_ALPHA = [1, 0.95, 0.86, 0.74];
 
 /**

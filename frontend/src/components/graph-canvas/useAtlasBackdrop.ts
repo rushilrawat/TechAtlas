@@ -6,8 +6,40 @@ import type { CanvasRefs } from "./refs";
 
 export type Backdrop = {
   sectors: { id: string; color: string; cx: number; cy: number; r: number }[];
+  /** Concentric orbit radii (screen px) around every domain anchor, subdomains included. */
+  orbits: { id: string; color: string; cx: number; cy: number; rs: number[] }[];
   headings: Heading[];
 };
+const EMPTY: Backdrop = { sectors: [], orbits: [], headings: [] };
+
+/**
+ * Orbit radii (graph units) for each domain anchor: the distinct distances at which its own
+ * members sit. Nodes are laid out exactly on these circles, so drawing them faintly turns
+ * each ecosystem into a clean set of concentric rings.
+ */
+function orbitRadii(graph: import("graphology").default): Map<string, { gx: number; gy: number; rs: number[] }> {
+  const out = new Map<string, { gx: number; gy: number; rs: number[] }>();
+  graph.forEachNode((id, a) => {
+    if (a.nodeType !== "domain") return;
+    const gx = a.x as number, gy = a.y as number;
+    const counts = new Map<number, number>();
+    graph.forEachNode((m, b) => {
+      if (m === id || b.cluster !== id || b.nodeType === "domain") return;
+      const d = Math.round(Math.hypot((b.x as number) - gx, (b.y as number) - gy));
+      counts.set(d, (counts.get(d) ?? 0) + 1);
+    });
+    // Merge radii within 1 unit (rounding) and keep orbits that carry at least 3 nodes.
+    const rs: number[] = [];
+    for (const [d, n] of [...counts].sort((x, y) => x[0] - y[0])) {
+      const last = rs.length ? rs[rs.length - 1] : -10;
+      if (d - last <= 1) continue;
+      const near = (counts.get(d - 1) ?? 0) + n + (counts.get(d + 1) ?? 0);
+      if (near >= 3) rs.push(d);
+    }
+    out.set(id, { gx, gy, rs });
+  });
+  return out;
+}
 
 export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains: unknown, exploreNonce: number,
   stackPositions: unknown, scanStatusByNode: unknown, visibleNodes: unknown) {
@@ -15,7 +47,7 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
   // Explore atlas overlay: soft domain-sector backplates, projected
   // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
   // none); never touches graph data. Each sector is centered on its domain anchor.
-  const [backdrop, setBackdrop] = useState<Backdrop>({ sectors: [], headings: [] });
+  const [backdrop, setBackdrop] = useState<Backdrop>(EMPTY);
 
   // ---- Explore atlas backdrop: domain-sector backplates + centre identity ----
   // Decorative overlay only (pointer-events:none). Projects each domain's member-cluster
@@ -29,7 +61,7 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
     // Graph-space territory per TOP-LEVEL domain, computed once: the anchor is the center
     // and the radius covers every member, nested subdomain constellations included.
     const doms = domainsRef.current;
-    if (!doms || doms.length === 0) { setBackdrop({ sectors: [], headings: [] }); return; }
+    if (!doms || doms.length === 0) { setBackdrop(EMPTY); return; }
     const topLevel = doms.filter((d) => graph.hasNode(d.id) && graph.getNodeAttribute(d.id, "ring") === 0);
     if (!domainGeomRef.current) {
       const geom = new Map<string, { gx: number; gy: number; gr: number; hr: number }>();
@@ -63,9 +95,11 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
       domainGeomRef.current = geom;
     }
 
+    const orbitGeom = orbitRadii(graph);
+    const colorOf = new Map(doms.map((d) => [d.id, d.color]));
     const project = () => {
       // Suppress the atlas backdrop entirely during Repo X-Ray (Stack View owns the canvas).
-      if (stackActiveRef.current || scanStatusRef.current) { setBackdrop({ sectors: [], headings: [] }); return; }
+      if (stackActiveRef.current || scanStatusRef.current) { setBackdrop(EMPTY); return; }
       const geom = domainGeomRef.current!;
       let ax = 0, ay = 0;
       for (const g of geom.values()) { ax += g.gx / geom.size; ay += g.gy / geom.size; }
@@ -106,7 +140,15 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
           obstacles.add(v.x, v.y, 1, false, attrs.crossDomain ? `${owner}|${other}` : owner);
         }
       });
-      setBackdrop({ sectors, headings: placeHeadings(headings, renderer.getContainer(), topLevel,
+      const orbits: Backdrop["orbits"] = [];
+      for (const [id, o] of orbitGeom) {
+        if (vis && !vis.has(id)) continue;
+        const c = renderer.graphToViewport({ x: o.gx, y: o.gy });
+        const u = renderer.graphToViewport({ x: o.gx + 1, y: o.gy });
+        const k = Math.hypot(u.x - c.x, u.y - c.y);
+        orbits.push({ id, color: colorOf.get(id) ?? "#8a93ab", cx: c.x, cy: c.y, rs: o.rs.map((r) => r * k) });
+      }
+      setBackdrop({ sectors, orbits, headings: placeHeadings(headings, renderer.getContainer(), topLevel,
         selectedRef.current, obstacles, ringLike) });
     };
     // Re-project after every render: Sigma renders with the camera's final state, while

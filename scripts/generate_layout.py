@@ -283,13 +283,13 @@ def _place_ring(
     u, k = 0.0, 0
     for n, share in zip(items, shares, strict=True):
         step = share + slack
-        # Bounded organic rhythm: a little angular and radial play, never a collision.
-        mid = real(u + step / 2 + (_seeded_unit(f"{key}:{n}:a") - 0.5) * 0.35 * slack)
+        # Nodes sit exactly on their orbit (dense bands alternate between two lanes), so
+        # each ecosystem reads as clean concentric circles.
+        mid = real(u + step / 2)
         if n in sats:
             rad = base + sats[n]
         else:
             rad = ring_r + ((lane if k % 2 else -lane) if lanes else 0.0)
-            rad += (_seeded_unit(f"{key}:{n}:r") - 0.5) * 2.4
             k += 1
         pos[n] = [rad * math.cos(mid), rad * math.sin(mid)]
         u += step
