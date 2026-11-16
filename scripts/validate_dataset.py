@@ -348,7 +348,8 @@ def validate_apps(dataset: dict, apps: list[dict], report: Report) -> None:
             if not str(s.get("note", "")).strip():
                 report.error(f"Famous app '{aid}' entry {s.get('tech')} has no note")
         sources = app.get("sources", [])
-        if not sources or any(not str(src.get("url", "")).startswith("https://") for src in sources):
+        insecure = any(not str(src.get("url", "")).startswith("https://") for src in sources)
+        if not sources or insecure:
             report.error(f"Famous app '{aid}' needs at least one https source")
     print(f"  famous apps: {len(apps)}")
 
