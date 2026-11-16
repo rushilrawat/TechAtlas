@@ -1,0 +1,429 @@
+[
+  {
+    "id": "netflix",
+    "name": "Netflix",
+    "category": "Streaming",
+    "url": "https://www.netflix.com",
+    "summary": "Java microservices on AWS behind a Node.js and React UI layer, with Kafka and Flink moving events and Cassandra holding state.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web UI (\"Netflix Likes React\", 2015)"},
+      {"tech": "nodejs", "layer": "web", "note": "Server-side UI layer for the website"},
+      {"tech": "java", "layer": "backend", "note": "Most backend microservices"},
+      {"tech": "spring-boot", "layer": "backend", "note": "Standard Java service framework since 2018"},
+      {"tech": "python", "layer": "backend", "note": "Tooling, automation, data science (\"Python at Netflix\")"},
+      {"tech": "cassandra", "layer": "data", "note": "Primary distributed datastore"},
+      {"tech": "elasticsearch", "layer": "data", "note": "Search and operational indexing"},
+      {"tech": "kafka", "layer": "data", "note": "Keystone event pipeline"},
+      {"tech": "flink", "layer": "data", "note": "Stream processing in Keystone"},
+      {"tech": "spark", "layer": "data", "note": "Batch analytics"},
+      {"tech": "aws", "layer": "infra", "note": "Runs almost entirely on AWS"}
+    ],
+    "not_in_atlas": ["Zuul", "Eureka", "EVCache (memcached)", "Titus", "GraphQL DGS"],
+    "sources": [{"title": "Netflix TechBlog", "url": "https://netflixtechblog.com"}]
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "category": "Streaming",
+    "url": "https://www.spotify.com",
+    "summary": "Java and Python services on Google Cloud, with Kubernetes, BigQuery and Backstage, the developer portal Spotify built and open-sourced.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web player and desktop client UI"},
+      {"tech": "typescript", "layer": "web", "note": "Desktop and web client code"},
+      {"tech": "java", "layer": "backend", "note": "Most backend services"},
+      {"tech": "python", "layer": "backend", "note": "Data and ML work, early backend"},
+      {"tech": "scala", "layer": "data", "note": "Data pipelines (Scio, Spotify's Scala API for Beam)"},
+      {"tech": "cassandra", "layer": "data", "note": "Long-time user-data store"},
+      {"tech": "bigquery", "layer": "data", "note": "Analytics warehouse after the 2016 move to Google Cloud"},
+      {"tech": "gcp", "layer": "infra", "note": "Migrated from own data centres to Google Cloud in 2016"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Services run on GKE"},
+      {"tech": "backstage", "layer": "infra", "note": "Developer portal, built at Spotify and open-sourced"}
+    ],
+    "not_in_atlas": ["Google Cloud Pub/Sub", "Dataflow / Apache Beam", "Luigi"],
+    "sources": [{"title": "Spotify Engineering", "url": "https://engineering.atspotify.com"}]
+  },
+  {
+    "id": "airbnb",
+    "name": "Airbnb",
+    "category": "Marketplace",
+    "url": "https://www.airbnb.com",
+    "summary": "A Rails monolith split into Java services, a React and GraphQL front end, and the data team that created Airflow.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web front end"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end codebase migrated to TypeScript"},
+      {"tech": "graphql-apollo", "layer": "web", "note": "GraphQL with Apollo for the front end"},
+      {"tech": "ruby", "layer": "backend", "note": "Original monolith"},
+      {"tech": "rails", "layer": "backend", "note": "\"Monorail\", the original Rails app"},
+      {"tech": "java", "layer": "backend", "note": "Services in the move to SOA"},
+      {"tech": "mysql", "layer": "data", "note": "Primary relational store"},
+      {"tech": "airflow", "layer": "data", "note": "Created at Airbnb in 2014"},
+      {"tech": "spark", "layer": "data", "note": "Batch data processing"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Hive", "Superset"],
+    "sources": [{"title": "The Airbnb Tech Blog", "url": "https://medium.com/airbnb-engineering"}]
+  },
+  {
+    "id": "uber",
+    "name": "Uber",
+    "category": "Mobility",
+    "url": "https://www.uber.com",
+    "summary": "One of the largest Go codebases anywhere, plus Java, Kafka and Flink for real-time data, and Jaeger, the tracer Uber created.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web apps (Base Web design system)"},
+      {"tech": "go", "layer": "backend", "note": "Large share of backend microservices"},
+      {"tech": "java", "layer": "backend", "note": "Backend services"},
+      {"tech": "python", "layer": "backend", "note": "Early dispatch services, ML and tooling"},
+      {"tech": "nodejs", "layer": "backend", "note": "Early dispatch system"},
+      {"tech": "grpc", "layer": "backend", "note": "Service-to-service RPC"},
+      {"tech": "mysql", "layer": "data", "note": "Storage engine under Schemaless and Docstore"},
+      {"tech": "cassandra", "layer": "data", "note": "Wide-column storage"},
+      {"tech": "redis", "layer": "data", "note": "Caching"},
+      {"tech": "kafka", "layer": "data", "note": "Real-time event backbone"},
+      {"tech": "flink", "layer": "data", "note": "Stream processing"},
+      {"tech": "spark", "layer": "data", "note": "Batch processing"},
+      {"tech": "jaeger", "layer": "infra", "note": "Distributed tracing, created at Uber"}
+    ],
+    "not_in_atlas": ["Cadence", "Hadoop/HDFS", "Presto", "Apache Pinot", "Ringpop"],
+    "sources": [{"title": "Uber Engineering Blog", "url": "https://www.uber.com/blog/engineering/"}]
+  },
+  {
+    "id": "instagram",
+    "name": "Instagram",
+    "category": "Social",
+    "url": "https://www.instagram.com",
+    "summary": "The best-known Django deployment in the world, on Python, PostgreSQL and Cassandra, with React and React Native clients.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web client"},
+      {"tech": "react-native", "layer": "mobile", "note": "Parts of the iOS and Android apps since 2016"},
+      {"tech": "python", "layer": "backend", "note": "Web servers"},
+      {"tech": "django", "layer": "backend", "note": "Web framework since launch"},
+      {"tech": "postgresql", "layer": "data", "note": "Sharded relational store for users and media"},
+      {"tech": "cassandra", "layer": "data", "note": "Feeds, activity and other high-write data"},
+      {"tech": "redis", "layer": "data", "note": "Early feed and session storage"}
+    ],
+    "not_in_atlas": ["memcached", "Cinder (CPython fork)"],
+    "sources": [{"title": "Instagram Engineering", "url": "https://instagram-engineering.com"}]
+  },
+  {
+    "id": "stripe",
+    "name": "Stripe",
+    "category": "Fintech",
+    "url": "https://stripe.com",
+    "summary": "A large Ruby codebase on MongoDB-based storage, with Go services and a React and TypeScript dashboard.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Dashboard and Stripe Elements"},
+      {"tech": "typescript", "layer": "web", "note": "Front end (migrated from Flow in 2022)"},
+      {"tech": "ruby", "layer": "backend", "note": "Core API, type-checked with Sorbet"},
+      {"tech": "go", "layer": "backend", "note": "Infrastructure services such as Veneur"},
+      {"tech": "mongodb", "layer": "data", "note": "Base of DocDB, Stripe's main database"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Sorbet"],
+    "sources": [{"title": "Stripe Engineering Blog", "url": "https://stripe.com/blog/engineering"}]
+  },
+  {
+    "id": "discord",
+    "name": "Discord",
+    "category": "Communication",
+    "url": "https://discord.com",
+    "summary": "Elixir for real-time chat, Rust where latency matters, Python for the API, and React clients on web, desktop and mobile.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web and desktop client"},
+      {"tech": "typescript", "layer": "web", "note": "Client codebase"},
+      {"tech": "electron", "layer": "web", "note": "Desktop app"},
+      {"tech": "react-native", "layer": "mobile", "note": "iOS and Android apps"},
+      {"tech": "elixir", "layer": "backend", "note": "Real-time gateway and chat services"},
+      {"tech": "rust", "layer": "backend", "note": "Read States and other hot paths (2020 rewrite from Go)"},
+      {"tech": "python", "layer": "backend", "note": "HTTP API"},
+      {"tech": "cassandra", "layer": "data", "note": "Message storage until the move to ScyllaDB"},
+      {"tech": "gcp", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["ScyllaDB"],
+    "sources": [{"title": "Discord Engineering Blog", "url": "https://discord.com/category/engineering"}]
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "category": "Developer tools",
+    "url": "https://github.com",
+    "summary": "One of the largest Rails monoliths, on MySQL, with Go services, Kubernetes, and a code search engine written in Rust.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Newer interactive pages"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end code"},
+      {"tech": "ruby", "layer": "backend", "note": "Main application"},
+      {"tech": "rails", "layer": "backend", "note": "The github/github monolith"},
+      {"tech": "go", "layer": "backend", "note": "Supporting services"},
+      {"tech": "rust", "layer": "backend", "note": "Blackbird, the code search engine (2023)"},
+      {"tech": "mysql", "layer": "data", "note": "Primary database"},
+      {"tech": "redis", "layer": "data", "note": "Caching and queues"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Runs github.com since 2017"}
+    ],
+    "not_in_atlas": ["Vitess", "memcached"],
+    "sources": [{"title": "The GitHub Blog: Engineering", "url": "https://github.blog/engineering/"}]
+  },
+  {
+    "id": "shopify",
+    "name": "Shopify",
+    "category": "E-commerce",
+    "url": "https://www.shopify.com",
+    "summary": "A huge modular Rails monolith on MySQL and Google Cloud, with React web apps and React Native mobile apps.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Admin and Polaris design system"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end code"},
+      {"tech": "react-native", "layer": "mobile", "note": "Mobile apps (all-in since 2020)"},
+      {"tech": "ruby", "layer": "backend", "note": "Core platform"},
+      {"tech": "rails", "layer": "backend", "note": "Modular monolith"},
+      {"tech": "go", "layer": "backend", "note": "Supporting services"},
+      {"tech": "mysql", "layer": "data", "note": "Sharded primary store"},
+      {"tech": "redis", "layer": "data", "note": "Caching and jobs"},
+      {"tech": "kafka", "layer": "data", "note": "Event streaming"},
+      {"tech": "gcp", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Container platform"}
+    ],
+    "not_in_atlas": ["memcached"],
+    "sources": [{"title": "Shopify Engineering", "url": "https://shopify.engineering"}]
+  },
+  {
+    "id": "slack",
+    "name": "Slack",
+    "category": "Communication",
+    "url": "https://slack.com",
+    "summary": "A PHP app that moved to Hack, on MySQL, with Java and Go services and an Electron desktop client built in React.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Client UI (rewritten in React in 2019)"},
+      {"tech": "typescript", "layer": "web", "note": "Client code"},
+      {"tech": "electron", "layer": "web", "note": "Desktop app"},
+      {"tech": "php", "layer": "backend", "note": "Original web app, now Hack on HHVM"},
+      {"tech": "java", "layer": "backend", "note": "Services"},
+      {"tech": "go", "layer": "backend", "note": "Services"},
+      {"tech": "mysql", "layer": "data", "note": "Primary store"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Hack (the language)", "Vitess"],
+    "sources": [{"title": "Slack Engineering", "url": "https://slack.engineering"}]
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "category": "Design tools",
+    "url": "https://www.figma.com",
+    "summary": "A C++ editor compiled to WebAssembly and drawn with WebGL, a React UI, and Rust multiplayer servers over PostgreSQL.",
+    "stack": [
+      {"tech": "cpp", "layer": "web", "note": "Canvas editor core"},
+      {"tech": "webassembly", "layer": "web", "note": "C++ editor compiled to Wasm"},
+      {"tech": "webgl", "layer": "web", "note": "Canvas rendering"},
+      {"tech": "react", "layer": "web", "note": "UI around the canvas"},
+      {"tech": "typescript", "layer": "web", "note": "UI and plugin API"},
+      {"tech": "rust", "layer": "backend", "note": "Multiplayer server"},
+      {"tech": "postgresql", "layer": "data", "note": "Primary database, horizontally sharded"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "Figma Blog: Engineering", "url": "https://www.figma.com/blog/engineering/"}]
+  },
+  {
+    "id": "pinterest",
+    "name": "Pinterest",
+    "category": "Social",
+    "url": "https://www.pinterest.com",
+    "summary": "Started on Python and Django, now mostly Java services, with MySQL, Kafka and Spark on AWS.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web app"},
+      {"tech": "python", "layer": "backend", "note": "Original API"},
+      {"tech": "django", "layer": "backend", "note": "Original web framework"},
+      {"tech": "java", "layer": "backend", "note": "Most current services"},
+      {"tech": "mysql", "layer": "data", "note": "Sharded primary store"},
+      {"tech": "kafka", "layer": "data", "note": "Event logging"},
+      {"tech": "spark", "layer": "data", "note": "Batch processing"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["HBase", "memcached"],
+    "sources": [{"title": "Pinterest Engineering Blog", "url": "https://medium.com/pinterest-engineering"}]
+  },
+  {
+    "id": "linkedin",
+    "name": "LinkedIn",
+    "category": "Social",
+    "url": "https://www.linkedin.com",
+    "summary": "The company that created Kafka, running Java and Scala services at scale.",
+    "stack": [
+      {"tech": "java", "layer": "backend", "note": "Most backend services (Rest.li)"},
+      {"tech": "scala", "layer": "backend", "note": "Kafka and other data systems"},
+      {"tech": "python", "layer": "backend", "note": "Tooling and data science"},
+      {"tech": "kafka", "layer": "data", "note": "Created at LinkedIn in 2011"},
+      {"tech": "spark", "layer": "data", "note": "Batch processing"}
+    ],
+    "not_in_atlas": ["Ember.js", "Samza", "Apache Pinot", "Espresso", "Hadoop"],
+    "sources": [{"title": "LinkedIn Engineering Blog", "url": "https://www.linkedin.com/blog/engineering"}]
+  },
+  {
+    "id": "dropbox",
+    "name": "Dropbox",
+    "category": "Productivity",
+    "url": "https://www.dropbox.com",
+    "summary": "One of the largest Python codebases, which drove mypy, with Go backends and a sync engine rewritten in Rust.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web app"},
+      {"tech": "typescript", "layer": "web", "note": "Web code (migrated from CoffeeScript)"},
+      {"tech": "python", "layer": "backend", "note": "Desktop client and server, millions of lines"},
+      {"tech": "mypy", "layer": "backend", "note": "Type-checking the Python codebase"},
+      {"tech": "go", "layer": "backend", "note": "Most performance-sensitive backends"},
+      {"tech": "rust", "layer": "backend", "note": "Nucleus sync engine and Magic Pocket storage"},
+      {"tech": "mysql", "layer": "data", "note": "Metadata storage"}
+    ],
+    "not_in_atlas": ["Magic Pocket (own storage)"],
+    "sources": [{"title": "Dropbox Tech Blog", "url": "https://dropbox.tech"}]
+  },
+  {
+    "id": "reddit",
+    "name": "Reddit",
+    "category": "Social",
+    "url": "https://www.reddit.com",
+    "summary": "A Python codebase moving to Go services, on PostgreSQL and Cassandra, with Kafka in between.",
+    "stack": [
+      {"tech": "python", "layer": "backend", "note": "Original monolith (r2)"},
+      {"tech": "go", "layer": "backend", "note": "Newer services"},
+      {"tech": "postgresql", "layer": "data", "note": "Core things data"},
+      {"tech": "cassandra", "layer": "data", "note": "Votes, comments and other high-volume data"},
+      {"tech": "kafka", "layer": "data", "note": "Event pipeline"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["memcached"],
+    "sources": [{"title": "Reddit Engineering (r/RedditEng)", "url": "https://www.reddit.com/r/RedditEng/"}]
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "category": "Productivity",
+    "url": "https://www.notion.so",
+    "summary": "A TypeScript and React app on Node.js, with sharded PostgreSQL and SQLite in the browser through WebAssembly.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Editor and app UI"},
+      {"tech": "typescript", "layer": "web", "note": "Client and server code"},
+      {"tech": "electron", "layer": "web", "note": "Desktop app"},
+      {"tech": "sqlite", "layer": "web", "note": "Local cache, in the browser via WebAssembly"},
+      {"tech": "webassembly", "layer": "web", "note": "Runs SQLite in the browser"},
+      {"tech": "nodejs", "layer": "backend", "note": "API servers"},
+      {"tech": "postgresql", "layer": "data", "note": "Primary store, sharded in 2021"},
+      {"tech": "kafka", "layer": "data", "note": "Change data feed into the data lake"},
+      {"tech": "spark", "layer": "data", "note": "Data lake processing"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Debezium", "Apache Hudi"],
+    "sources": [{"title": "Notion Blog: Engineering", "url": "https://www.notion.com/blog/topic/tech"}]
+  },
+  {
+    "id": "cloudflare",
+    "name": "Cloudflare",
+    "category": "Infrastructure",
+    "url": "https://www.cloudflare.com",
+    "summary": "Rust and Go at the network edge, eBPF in the kernel, ClickHouse for analytics, and Workers running V8 and WebAssembly.",
+    "stack": [
+      {"tech": "rust", "layer": "backend", "note": "Pingora proxy, replacing NGINX"},
+      {"tech": "go", "layer": "backend", "note": "Many internal services"},
+      {"tech": "lua", "layer": "backend", "note": "Edge logic on NGINX/OpenResty"},
+      {"tech": "nginx", "layer": "backend", "note": "Original edge proxy"},
+      {"tech": "cloudflare-workers", "layer": "backend", "note": "Serverless platform Cloudflare built"},
+      {"tech": "webassembly", "layer": "backend", "note": "Supported in Workers"},
+      {"tech": "clickhouse", "layer": "data", "note": "HTTP and DNS analytics"},
+      {"tech": "kafka", "layer": "data", "note": "Log pipeline"},
+      {"tech": "postgresql", "layer": "data", "note": "Configuration data"},
+      {"tech": "ebpf", "layer": "infra", "note": "DDoS mitigation and load balancing"},
+      {"tech": "linux", "layer": "infra", "note": "Edge servers"}
+    ],
+    "not_in_atlas": ["Pingora", "OpenResty", "V8"],
+    "sources": [{"title": "The Cloudflare Blog", "url": "https://blog.cloudflare.com"}]
+  },
+  {
+    "id": "khan-academy",
+    "name": "Khan Academy",
+    "category": "Education",
+    "url": "https://www.khanacademy.org",
+    "summary": "Moved from a Python 2 monolith to Go services behind GraphQL, on Google Cloud, with a React front end.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Front end"},
+      {"tech": "typescript", "layer": "web", "note": "Front end (migrated from Flow)"},
+      {"tech": "python", "layer": "backend", "note": "Original monolith"},
+      {"tech": "go", "layer": "backend", "note": "Services after the \"Goliath\" rewrite"},
+      {"tech": "gcp", "layer": "infra", "note": "App Engine and Google Cloud"}
+    ],
+    "not_in_atlas": ["GraphQL federation", "Google Datastore"],
+    "sources": [{"title": "Khan Academy Engineering", "url": "https://blog.khanacademy.org/engineering/"}]
+  },
+  {
+    "id": "wikipedia",
+    "name": "Wikipedia",
+    "category": "Knowledge",
+    "url": "https://www.wikipedia.org",
+    "summary": "MediaWiki in PHP on MariaDB, with Elasticsearch for search, Vue.js for newer UI and Lua for templates.",
+    "stack": [
+      {"tech": "javascript", "layer": "web", "note": "Front-end code"},
+      {"tech": "vue", "layer": "web", "note": "Standard for new UI since 2020"},
+      {"tech": "php", "layer": "backend", "note": "MediaWiki"},
+      {"tech": "lua", "layer": "backend", "note": "Template modules (Scribunto)"},
+      {"tech": "mariadb", "layer": "data", "note": "Primary database"},
+      {"tech": "elasticsearch", "layer": "data", "note": "On-wiki search (CirrusSearch)"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Hosting services in Wikimedia's own data centres"}
+    ],
+    "not_in_atlas": ["MediaWiki", "Varnish", "memcached"],
+    "sources": [{"title": "Wikimedia Tech Blog", "url": "https://techblog.wikimedia.org"}]
+  },
+  {
+    "id": "lyft",
+    "name": "Lyft",
+    "category": "Mobility",
+    "url": "https://www.lyft.com",
+    "summary": "Python and Go services on AWS and Kubernetes, connected by Envoy, the proxy Lyft built and open-sourced.",
+    "stack": [
+      {"tech": "python", "layer": "backend", "note": "Many backend services"},
+      {"tech": "go", "layer": "backend", "note": "Performance-sensitive services"},
+      {"tech": "envoy", "layer": "infra", "note": "Service proxy, created at Lyft"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "flink", "layer": "data", "note": "Streaming"},
+      {"tech": "kafka", "layer": "data", "note": "Event streaming"}
+    ],
+    "not_in_atlas": ["Amundsen", "Flyte"],
+    "sources": [{"title": "Lyft Engineering", "url": "https://eng.lyft.com"}]
+  },
+  {
+    "id": "doordash",
+    "name": "DoorDash",
+    "category": "Marketplace",
+    "url": "https://www.doordash.com",
+    "summary": "Moved from a Python and Django monolith to Kotlin microservices, with Kafka, CockroachDB and Kubernetes on AWS.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web front end"},
+      {"tech": "python", "layer": "backend", "note": "Original monolith"},
+      {"tech": "django", "layer": "backend", "note": "Original monolith"},
+      {"tech": "kotlin", "layer": "backend", "note": "Standard language for new microservices"},
+      {"tech": "grpc", "layer": "backend", "note": "Service-to-service RPC"},
+      {"tech": "postgresql", "layer": "data", "note": "Relational storage"},
+      {"tech": "cockroachdb", "layer": "data", "note": "Distributed SQL storage"},
+      {"tech": "kafka", "layer": "data", "note": "Event streaming"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "DoorDash Engineering Blog", "url": "https://careersatdoordash.com/engineering-blog/"}]
+  },
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "category": "AI",
+    "url": "https://chatgpt.com",
+    "summary": "OpenAI trains with PyTorch and serves on Azure, with very large Kubernetes clusters and PostgreSQL behind the product.",
+    "stack": [
+      {"tech": "python", "layer": "backend", "note": "Research and serving code"},
+      {"tech": "pytorch", "layer": "ml", "note": "OpenAI standardised on PyTorch in 2020"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Research and serving clusters (scaled to 7,500 nodes)"},
+      {"tech": "azure", "layer": "infra", "note": "Primary cloud and supercomputers"},
+      {"tech": "postgresql", "layer": "data", "note": "Core product database"}
+    ],
+    "not_in_atlas": ["Triton (OpenAI)"],
+    "sources": [{"title": "OpenAI Engineering", "url": "https://openai.com/news/engineering/"}]
+  }
+]

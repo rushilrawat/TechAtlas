@@ -145,12 +145,12 @@ test("Guided paths library: search, start a path, step through, share", async ({
   await expect(library.getByText(/Step 2 of/).first()).toBeVisible();
 });
 
-test("Guided paths closes an open Stack or Roles panel", async ({ page }) => {
+test("Guided paths closes an open Stack, Roles or Apps panel", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
   const guided = page.getByRole("button", { name: "Guided paths" });
   await expect(guided).toHaveCount(1);
-  for (const [button, region] of [["Stack recommender", "Stack recommender"], ["Role paths", "Role paths"]]) {
+  for (const [button, region] of [["Stack recommender", "Stack recommender"], ["Role paths", "Role paths"], ["Famous apps", "Famous apps"]]) {
     await page.getByRole("button", { name: button, exact: true }).click();
     await expect(page.getByRole("region", { name: region })).toBeVisible();
     await guided.click();
@@ -160,4 +160,24 @@ test("Guided paths closes an open Stack or Roles panel", async ({ page }) => {
     await page.keyboard.press("Escape");
     await expect(library).toHaveCount(0);
   }
+});
+
+test("Famous apps: pick an app, its stack lists atlas nodes, and a technology links back", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "Famous apps", exact: true }).click();
+  const panel = page.getByRole("region", { name: "Famous apps" });
+  await panel.getByLabel("Filter apps").fill("elixir");
+  await panel.getByRole("button", { name: /Discord/ }).click();
+  await expect(panel.getByRole("heading", { name: "Discord" })).toBeVisible();
+  await expect(page).toHaveURL(/[?&]app=discord/);
+  await panel.getByRole("button", { name: "Elixir", exact: true }).click();
+  const details = page.locator(".details");
+  await expect(details.getByRole("heading", { name: "Elixir" })).toBeVisible();
+  await expect(details.getByRole("region", { name: "Used by" }).getByRole("button", { name: /^Discord:/ })).toBeVisible();
+});
+
+test("An ?app= link opens straight onto that app's stack", async ({ page }) => {
+  await page.goto("/?app=netflix");
+  await expect(page.getByRole("region", { name: "Famous apps" }).getByRole("heading", { name: "Netflix" })).toBeVisible({ timeout: 20_000 });
 });

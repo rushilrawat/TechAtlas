@@ -4,6 +4,7 @@ import type { DetectionStatus, NeighborEdge, NodeDetail, NodeSummary, RepoScan }
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
 import { safeHttpUrl } from "../util/safeUrl";
 import { useLearningMap, type LearningStatus } from "../graph/learning";
+import { appsUsing } from "../graph/apps";
 
 interface Props {
   slugOrId: string;
@@ -19,12 +20,14 @@ interface Props {
   onPreviewRelationship?: (neighbor: NeighborEdge | null) => void;
   /** Open Compare with this node and another technology. */
   onCompare?: (otherId: string) => void;
+  /** Open the famous-apps panel on one app (from the "Used by" list). */
+  onOpenApp?: (appId: string) => void;
 }
 
 const LEARNING_OPTIONS: [LearningStatus, string][] = [["known", "Know it"], ["learning", "Learning"], ["goal", "Goal"]];
 
 /** Detail sidebar for a selected node. Loads rich data on demand (spec §6, §10). */
-export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null, onPreviewRelationship, onCompare }: Props) {
+export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null, scan = null, memberCount = null, onPreviewRelationship, onCompare, onOpenApp }: Props) {
   const [detail, setDetail] = useState<NodeDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -82,6 +85,7 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const summary = detail?.summary ?? wikiSummary;
   const alternatives = (detail?.neighbors ?? []).filter((n) => n.relationship_type === "alternative_to");
   const status = detail ? learning[detail.id] : undefined;
+  const usedBy = detail?.node_type === "technology" ? appsUsing(detail.slug) : [];
 
   function copyLink() {
     const done = () => { setCopied(true); window.setTimeout(() => setCopied(false), 1600); };
@@ -150,6 +154,21 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                       <button type="button" className="alt-compare" onClick={() => onCompare(a.node.id)}
                         aria-label={`Compare ${detail.name} with ${a.node.label}`}>Compare</button>
                     )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {usedBy.length > 0 && (
+            <section className="details-used-by" aria-label="Used by">
+              <h3>Used by</h3>
+              <ul>
+                {usedBy.map(({ app, note }) => (
+                  <li key={app.id}>
+                    <button type="button" className="used-by-chip" title={note}
+                      aria-label={`${app.name}: ${note}. Show ${app.name}'s stack`}
+                      onClick={() => onOpenApp?.(app.id)} disabled={!onOpenApp}>{app.name}</button>
                   </li>
                 ))}
               </ul>

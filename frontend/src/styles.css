@@ -1281,6 +1281,8 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
   .atlas-rail .icon { width: 18px; height: 18px; }
 }
 @media (max-width: 1279px) { .topbar-meta, .brand-sub { display: none; } }
+/* With six atlas modes the toolbar needs the room: drop the tagline first so search stays usable. */
+@media (min-width: 1024px) and (max-width: 1599px) { .brand-sub { display: none; } .search { min-width: 180px; } }
 @media (max-width: 1100px) { .topbar-tools .tool span { display: none; } .topbar-tools .tool { padding: 0 8px; } }
 @media (max-width: 640px) {
   .topbar { display: grid; grid-template-columns: 1fr auto auto; row-gap: 8px; column-gap: 8px; padding: 10px 12px; }
@@ -1566,3 +1568,25 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 .report-link:hover { text-decoration: underline; }
 :root[data-theme="light"] .report-card h2 { color: #1d3046; }
 @media (max-width: 560px) { .report-link { margin-left: 0; } }
+
+/* Famous apps panel (reuses .stack-panel / .role-* styles) */
+.apps-search input { box-sizing: border-box; width: 100%; padding: 6px 9px; color: var(--text); background: var(--panel);
+  border: 1px solid var(--panel-border); border-radius: 7px; font: inherit; }
+.apps-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.apps-grid button { display: flex; flex-direction: column; gap: 2px; width: 100%; height: 100%; padding: 8px 10px; text-align: left;
+  color: var(--text-dim); background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; font: inherit; font-size: 11px; cursor: pointer; }
+.apps-grid button:hover, .apps-grid button:focus-visible { border-color: var(--accent); }
+.apps-grid strong { color: var(--text); font-size: 13px; }
+.apps-layer ul { margin: 0; padding: 0; list-style: none; }
+.apps-layer li { display: grid; grid-template-columns: minmax(84px, 34%) 1fr; gap: 8px; align-items: baseline; padding: 2px 0; }
+.apps-layer li .muted { font-size: 11.5px; line-height: 1.35; }
+.apps-missing, .apps-sources { margin: 12px 0 0; font-size: 11.5px; line-height: 1.45; }
+.apps-sources a { color: var(--accent); }
+:root[data-theme="light"] .apps-grid strong { color: #1d3046; }
+.details-used-by { margin-bottom: 14px; }
+.details-used-by ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.used-by-chip { padding: 3px 9px; color: var(--text); background: transparent; border: 1px solid var(--panel-border); border-radius: 999px;
+  font: inherit; font-size: 12px; cursor: pointer; }
+.used-by-chip:hover:not(:disabled), .used-by-chip:focus-visible { border-color: var(--accent); color: var(--accent); }
+.used-by-chip:disabled { cursor: default; }

@@ -18,6 +18,8 @@ Enforces (spec §16 and docs/relationship-taxonomy.md):
   - warns when a node id's suffix differs from its slug
   - guided paths (data/seed/journeys.json): every step exists, consecutive steps share
     an edge, no step repeats, titles are unique
+  - famous apps (data/seed/apps.json): every stack entry is an existing technology,
+    layers are known, ids are unique, each app cites an https source
 
 With --require-targets, ALSO enforces the Phase 1B milestone counts (>= 250
 technologies and 150..170 concepts). Off by default so intermediate commits during
@@ -36,6 +38,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "data" / "graph.json"
 JOURNEYS = ROOT / "data" / "seed" / "journeys.json"
+APPS = ROOT / "data" / "seed" / "apps.json"
+APP_LAYERS = {"web", "mobile", "backend", "data", "ml", "infra"}
 
 # Dataset milestone targets. Checked only when --require-targets is passed, so
 # intermediate commits are not blocked.
@@ -319,6 +323,37 @@ def validate_journeys(dataset: dict, journeys: list[dict], report: Report) -> No
     print(f"  guided paths: {len(journeys)}")
 
 
+def validate_apps(dataset: dict, apps: list[dict], report: Report) -> None:
+    """Famous apps map onto technologies only; anything the atlas lacks goes in not_in_atlas."""
+    tech = {n["slug"] for n in dataset.get("nodes", []) if n.get("node_type") == "technology"}
+    seen: set[str] = set()
+    for app in apps:
+        aid = app.get("id", "")
+        if not aid:
+            report.error(f"Famous app without an id: {app!r}")
+        elif aid in seen:
+            report.error(f"Duplicate famous app id: {aid}")
+        seen.add(aid)
+        stack = app.get("stack", [])
+        if len(stack) < 3:
+            report.error(f"Famous app '{aid}' needs at least three stack entries")
+        slugs = [s.get("tech") for s in stack]
+        if len(set(slugs)) != len(slugs):
+            report.error(f"Famous app '{aid}' lists a technology twice")
+        for s in stack:
+            if s.get("tech") not in tech:
+                report.error(f"Famous app '{aid}' references unknown technology: {s.get('tech')}")
+            if s.get("layer") not in APP_LAYERS:
+                report.error(f"Famous app '{aid}' has unknown layer: {s.get('layer')}")
+            if not str(s.get("note", "")).strip():
+                report.error(f"Famous app '{aid}' entry {s.get('tech')} has no note")
+        sources = app.get("sources", [])
+        insecure = any(not str(src.get("url", "")).startswith("https://") for src in sources)
+        if not sources or insecure:
+            report.error(f"Famous app '{aid}' needs at least one https source")
+    print(f"  famous apps: {len(apps)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate the TechAtlas dataset.")
     parser.add_argument(
@@ -340,6 +375,8 @@ def main() -> None:
     report = validate(dataset)
     if JOURNEYS.exists():
         validate_journeys(dataset, json.loads(JOURNEYS.read_text(encoding="utf-8")), report)
+    if APPS.exists():
+        validate_apps(dataset, json.loads(APPS.read_text(encoding="utf-8")), report)
 
     if args.require_targets:
         counts: dict[str, int] = defaultdict(int)
