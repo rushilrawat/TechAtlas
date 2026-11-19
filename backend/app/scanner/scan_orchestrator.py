@@ -40,7 +40,8 @@ def _blob_url(owner: str, name: str, sha: str, path: str) -> str:
 
 def _parse_file(path: str, kind: str, text: str,
                 gradle_catalog: dict | None = None,
-                go_own_module: str | None = None) -> list[RawDetection]:
+                go_own_module: str | None = None,
+                gradle_plugins: dict | None = None) -> list[RawDetection]:
     base = path.rsplit("/", 1)[-1]
     out: list[RawDetection] = []
     if kind == "workflow":
@@ -56,6 +57,8 @@ def _parse_file(path: str, kind: str, text: str,
             out += js.parse_config(path, text)
         elif base == "pyproject.toml":
             out += pyparser.parse_pyproject(path, text)
+        elif base == "setup.py":
+            out += pyparser.parse_setup_py(path, text)
         elif base == "poetry.lock":
             out += pyparser.parse_poetry_lock(path, text)
         elif base == "uv.lock":
@@ -78,7 +81,10 @@ def _parse_file(path: str, kind: str, text: str,
             out += extra.build_tool_detections(path)
         elif base in ("build.gradle", "build.gradle.kts"):
             out += java.parse_gradle(path, text, gradle_catalog)
+            out += java.parse_gradle_plugins(path, text, gradle_plugins)
             out += extra.build_tool_detections(path)
+        elif base == "libs.versions.toml":
+            out += java.parse_version_catalog(path, text)
         elif base in ("settings.gradle", "settings.gradle.kts"):
             out += extra.build_tool_detections(path)
         elif base == "go.mod":
@@ -131,11 +137,13 @@ def build_scan(
     manifests = sources = 0
     # Merge any gradle/libs.versions.toml catalogs so Gradle alias refs resolve (Req 2.3).
     gradle_catalog: dict[str, str] = {}
+    gradle_plugins: dict[str, str] = {}
     go_own_module: str | None = None
     for gpath, gtext in file_texts.items():
         base = gpath.rsplit("/", 1)[-1]
         if base == "libs.versions.toml" and "gradle/" in gpath:
             gradle_catalog.update(java.resolve_version_catalog(gtext))
+            gradle_plugins.update(java.resolve_plugin_catalog(gtext))
         elif base == "go.mod" and go_own_module is None:
             go_own_module = goparser.own_module(gtext)
     for f in selection.files:
@@ -146,7 +154,8 @@ def build_scan(
             manifests += 1
         elif f.kind == "source":
             sources += 1
-        raw += _parse_file(f.path, f.kind, text, gradle_catalog, go_own_module)
+        raw += _parse_file(f.path, f.kind, text, gradle_catalog, go_own_module,
+                           gradle_plugins)
     # Languages by file extension over the whole tree (names only, no extra fetches).
     raw += extra.language_detections(getattr(selection, "all_paths", []) or [])
 

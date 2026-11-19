@@ -48,12 +48,12 @@ you move from a broad field to an individual tool without losing the surrounding
 | Domains | **29** |
 | Technologies | **397** |
 | Concepts | **768** |
-| Typed relationships | **3,517** |
+| Typed relationships | **3,515** |
 | Relationship types | **14** |
 | Curated guided paths | **145** |
 | Isolated nodes | **0** |
 
-The largest relationship groups are **related to (1,174)**, **belongs to domain (1,165)**, **supports (278)**, **implements (206)**. Counts come from the checked-in
+The largest relationship groups are **related to (1,176)**, **belongs to domain (1,165)**, **supports (276)**, **implements (206)**. Counts come from the checked-in
 [`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)
 and are rewritten by `scripts/build_dataset.py` on every `make data`; “isolated” means
 a node with no incident edge.

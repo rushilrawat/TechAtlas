@@ -1,0 +1,16 @@
+{
+  "repository": "example/py-setup-py-lib",
+  "ecosystems": ["pypi"],
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {"node_id": "technology:numpy"},
+    {"node_id": "technology:pytorch"},
+    {"node_id": "technology:pytest"},
+    {"node_id": "technology:python"}
+  ],
+  "expected_unmapped": [
+    {"name": "requests", "ecosystem": "pypi"}
+  ]
+}

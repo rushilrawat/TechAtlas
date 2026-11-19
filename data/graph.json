@@ -1129,13 +1129,14 @@
     {
       "id": "concept:database-sharding",
       "slug": "database-sharding",
-      "name": "Shard",
+      "name": "Database Sharding",
       "node_type": "concept",
       "primary_domain": "domain:databases",
       "short_description": "Horizontal partitioning of data across multiple database instances.",
       "lifecycle_status": "active",
       "aliases": [
-        "sharding"
+        "sharding",
+        "shard"
       ],
       "wikipedia_title": "Shard (database architecture)"
     },
@@ -3927,7 +3928,7 @@
       "primary_domain": "domain:ai-ml",
       "short_description": "AI agents that learn and act through a physical or simulated body in an environment.",
       "importance": 0.6,
-      "wikipedia_title": "Embodied cognition"
+      "wikipedia_title": "Embodied agent"
     },
     {
       "id": "concept:ai-planning",
@@ -5146,7 +5147,7 @@
       "name": "Sampling Theorem",
       "node_type": "concept",
       "primary_domain": "domain:signal-processing",
-      "short_description": "Sampling above twice the highest frequency captures a signal exactly.",
+      "short_description": "Sampling a band-limited signal above twice its highest frequency captures it exactly.",
       "importance": 0.5,
       "wikipedia_title": "Nyquist–Shannon sampling theorem",
       "aliases": [
@@ -6058,7 +6059,7 @@
       "primary_domain": "domain:fintech",
       "short_description": "Spotting fraudulent transactions with rules and machine learning.",
       "importance": 0.45,
-      "wikipedia_title": "Fraud"
+      "wikipedia_title": "Data analysis techniques for fraud detection"
     },
     {
       "id": "concept:credit-scoring",
@@ -6831,7 +6832,7 @@
       "name": "Supercomputer",
       "node_type": "concept",
       "primary_domain": "domain:systems",
-      "short_description": "Machines with tens of thousands of nodes for the largest simulations.",
+      "short_description": "Machines with thousands of nodes and fast interconnects for the largest simulations.",
       "importance": 0.45,
       "wikipedia_title": "Supercomputer"
     },
@@ -7778,7 +7779,7 @@
       "name": "React Server Components",
       "node_type": "concept",
       "primary_domain": "domain:frontend",
-      "short_description": "Components that render on the server and stream to the client with zero JS.",
+      "short_description": "Components that render on the server and send no component code to the client.",
       "importance": 0.45,
       "wikipedia_title": "React (software)",
       "aliases": [
@@ -8031,7 +8032,7 @@
       "name": "Gate-All-Around Transistors",
       "node_type": "concept",
       "primary_domain": "domain:digital-design",
-      "short_description": "Transistors whose gate wraps the channel, succeeding FinFETs at 2 nm.",
+      "short_description": "Transistors whose gate wraps the channel, succeeding FinFETs from the 3 nm and 2 nm nodes.",
       "importance": 0.35,
       "wikipedia_title": "Multigate device",
       "aliases": [
@@ -10146,7 +10147,7 @@
       "node_type": "technology",
       "node_subtype": "framework",
       "primary_domain": "domain:frontend",
-      "short_description": "A full-stack React framework focused on web standards and data loading.",
+      "short_description": "A full-stack React framework built on web standards; Remix v2 merged into React Router v7 in 2024.",
       "lifecycle_status": "active",
       "official_url": "https://remix.run",
       "documentation_url": "https://remix.run/docs",
@@ -10195,7 +10196,7 @@
       "slug": "sass",
       "name": "Sass",
       "node_type": "technology",
-      "node_subtype": "standard",
+      "node_subtype": "developer_tool",
       "primary_domain": "domain:frontend",
       "short_description": "A mature CSS extension language with variables, nesting, and mixins.",
       "lifecycle_status": "active",
@@ -11873,8 +11874,8 @@
       "node_type": "technology",
       "node_subtype": "standard",
       "primary_domain": "domain:computer-graphics",
-      "short_description": "A cross-language, cross-platform API for rendering 2D and 3D graphics.",
-      "lifecycle_status": "active",
+      "short_description": "A cross-platform API for 2D and 3D graphics, frozen at 4.6 since 2017 as Vulkan took over.",
+      "lifecycle_status": "mature",
       "official_url": "https://www.opengl.org",
       "documentation_url": "https://www.khronos.org/opengl/wiki/",
       "wikipedia_title": "OpenGL",
@@ -13114,7 +13115,7 @@
       "slug": "esp32",
       "name": "ESP32",
       "node_type": "technology",
-      "node_subtype": "developer_tool",
+      "node_subtype": "platform",
       "primary_domain": "domain:embedded",
       "short_description": "A low-cost microcontroller family with integrated Wi-Fi and Bluetooth.",
       "official_url": "https://www.espressif.com",
@@ -13168,15 +13169,17 @@
     {
       "id": "technology:coq",
       "slug": "coq",
-      "name": "Coq",
+      "name": "Rocq (Coq)",
       "node_type": "technology",
       "node_subtype": "developer_tool",
       "primary_domain": "domain:theory",
-      "short_description": "An interactive theorem prover for formal proofs.",
+      "short_description": "An interactive theorem prover for formal proofs, renamed from Coq to Rocq in 2025.",
       "aliases": [
-        "Rocq"
+        "Coq",
+        "Rocq",
+        "Rocq Prover"
       ],
-      "official_url": "https://coq.inria.fr",
+      "official_url": "https://rocq-prover.org",
       "wikipedia_title": "Coq",
       "lifecycle_status": "active"
     },
@@ -14719,8 +14722,8 @@
       "node_type": "technology",
       "node_subtype": "developer_tool",
       "primary_domain": "domain:offensive-security",
-      "short_description": "Runs suspicious files in an isolated VM and reports what they do.",
-      "lifecycle_status": "active",
+      "short_description": "Ran suspicious files in an isolated VM and reported what they did; unmaintained since 2019, continued by CAPE and Cuckoo3.",
+      "lifecycle_status": "deprecated",
       "official_url": "https://cuckoosandbox.org"
     },
     {
@@ -15187,7 +15190,7 @@
     },
     {
       "source": "technology:vue",
-      "target": "technology:javascript",
+      "target": "technology:typescript",
       "relationship_type": "written_in"
     },
     {
@@ -15252,7 +15255,7 @@
     },
     {
       "source": "technology:vite",
-      "target": "technology:javascript",
+      "target": "technology:typescript",
       "relationship_type": "written_in"
     },
     {
@@ -15327,7 +15330,7 @@
     },
     {
       "source": "technology:sigmajs",
-      "target": "technology:webgpu",
+      "target": "technology:webgl",
       "relationship_type": "related_to"
     },
     {
@@ -15581,13 +15584,8 @@
       "relationship_type": "belongs_to_domain"
     },
     {
-      "source": "technology:pytorch",
-      "target": "technology:cuda",
-      "relationship_type": "depends_on"
-    },
-    {
       "source": "technology:tensorflow",
-      "target": "technology:python",
+      "target": "technology:cpp",
       "relationship_type": "written_in"
     },
     {
@@ -15613,7 +15611,7 @@
     {
       "source": "technology:tensorflow",
       "target": "technology:cuda",
-      "relationship_type": "depends_on"
+      "relationship_type": "integrates_with"
     },
     {
       "source": "technology:scikit-learn",
@@ -17493,7 +17491,7 @@
     {
       "source": "technology:kubernetes",
       "target": "technology:containerd",
-      "relationship_type": "depends_on"
+      "relationship_type": "integrates_with"
     },
     {
       "source": "technology:grafana",
@@ -17757,7 +17755,7 @@
     },
     {
       "source": "technology:nmap",
-      "target": "technology:c",
+      "target": "technology:cpp",
       "relationship_type": "written_in"
     },
     {
@@ -17817,7 +17815,7 @@
     },
     {
       "source": "technology:snort",
-      "target": "concept:threat-modeling",
+      "target": "concept:packet-sniffing",
       "relationship_type": "related_to"
     },
     {
@@ -18551,9 +18549,9 @@
       "relationship_type": "used_for"
     },
     {
-      "source": "technology:protobuf",
-      "target": "technology:grpc",
-      "relationship_type": "part_of_ecosystem"
+      "source": "technology:grpc",
+      "target": "technology:protobuf",
+      "relationship_type": "integrates_with"
     },
     {
       "source": "concept:data-structures",
@@ -19077,12 +19075,12 @@
     },
     {
       "source": "technology:falco",
-      "target": "concept:threat-modeling",
-      "relationship_type": "supports"
+      "target": "technology:kubernetes",
+      "relationship_type": "integrates_with"
     },
     {
       "source": "technology:trivy",
-      "target": "concept:threat-modeling",
+      "target": "concept:vulnerability-assessment",
       "relationship_type": "used_for"
     },
     {
@@ -19104,11 +19102,6 @@
       "source": "technology:testcontainers",
       "target": "concept:integration-testing",
       "relationship_type": "supports"
-    },
-    {
-      "source": "technology:k6",
-      "target": "concept:integration-testing",
-      "relationship_type": "used_for"
     },
     {
       "source": "technology:firebase",
@@ -26348,7 +26341,7 @@
     {
       "source": "technology:cloudflare",
       "target": "concept:ddos-attack",
-      "relationship_type": "supports"
+      "relationship_type": "related_to"
     },
     {
       "source": "concept:phishing",
@@ -28368,7 +28361,7 @@
     {
       "source": "technology:lerobot",
       "target": "technology:huggingface-transformers",
-      "relationship_type": "part_of_ecosystem"
+      "relationship_type": "related_to"
     },
     {
       "source": "concept:logical-qubits",

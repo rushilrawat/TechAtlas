@@ -1,0 +1,11 @@
+{
+  "repository": "example/neg-gradle-plugin-lookalikes",
+  "ecosystems": ["gradle-plugin"],
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {"node_id": "technology:gradle"},
+    {"node_id": "technology:kotlin"}
+  ]
+}

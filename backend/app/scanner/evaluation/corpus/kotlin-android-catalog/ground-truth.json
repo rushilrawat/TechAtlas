@@ -1,0 +1,18 @@
+{
+  "repository": "example/kotlin-android-catalog",
+  "ecosystems": ["maven", "gradle-plugin"],
+  "scoring": {
+    "technologies_only": true
+  },
+  "expected_detections": [
+    {"node_id": "technology:gradle"},
+    {"node_id": "technology:android-sdk"},
+    {"node_id": "technology:kotlin"},
+    {"node_id": "technology:jetpack-compose"},
+    {"node_id": "technology:firebase"},
+    {"node_id": "technology:junit"}
+  ],
+  "expected_unmapped": [
+    {"name": "com.squareup.okhttp3:okhttp", "ecosystem": "maven"}
+  ]
+}

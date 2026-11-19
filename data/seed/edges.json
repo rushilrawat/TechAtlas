@@ -356,7 +356,7 @@
   },
   {
     "source": "technology:vue",
-    "target": "technology:javascript",
+    "target": "technology:typescript",
     "relationship_type": "written_in"
   },
   {
@@ -421,7 +421,7 @@
   },
   {
     "source": "technology:vite",
-    "target": "technology:javascript",
+    "target": "technology:typescript",
     "relationship_type": "written_in"
   },
   {
@@ -496,7 +496,7 @@
   },
   {
     "source": "technology:sigmajs",
-    "target": "technology:webgpu",
+    "target": "technology:webgl",
     "relationship_type": "related_to"
   },
   {
@@ -750,13 +750,8 @@
     "relationship_type": "belongs_to_domain"
   },
   {
-    "source": "technology:pytorch",
-    "target": "technology:cuda",
-    "relationship_type": "depends_on"
-  },
-  {
     "source": "technology:tensorflow",
-    "target": "technology:python",
+    "target": "technology:cpp",
     "relationship_type": "written_in"
   },
   {
@@ -782,7 +777,7 @@
   {
     "source": "technology:tensorflow",
     "target": "technology:cuda",
-    "relationship_type": "depends_on"
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:scikit-learn",
@@ -2662,7 +2657,7 @@
   {
     "source": "technology:kubernetes",
     "target": "technology:containerd",
-    "relationship_type": "depends_on"
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:grafana",
@@ -2926,7 +2921,7 @@
   },
   {
     "source": "technology:nmap",
-    "target": "technology:c",
+    "target": "technology:cpp",
     "relationship_type": "written_in"
   },
   {
@@ -2986,7 +2981,7 @@
   },
   {
     "source": "technology:snort",
-    "target": "concept:threat-modeling",
+    "target": "concept:packet-sniffing",
     "relationship_type": "related_to"
   },
   {
@@ -3720,9 +3715,9 @@
     "relationship_type": "used_for"
   },
   {
-    "source": "technology:protobuf",
-    "target": "technology:grpc",
-    "relationship_type": "part_of_ecosystem"
+    "source": "technology:grpc",
+    "target": "technology:protobuf",
+    "relationship_type": "integrates_with"
   },
   {
     "source": "concept:data-structures",
@@ -4246,12 +4241,12 @@
   },
   {
     "source": "technology:falco",
-    "target": "concept:threat-modeling",
-    "relationship_type": "supports"
+    "target": "technology:kubernetes",
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:trivy",
-    "target": "concept:threat-modeling",
+    "target": "concept:vulnerability-assessment",
     "relationship_type": "used_for"
   },
   {
@@ -4273,11 +4268,6 @@
     "source": "technology:testcontainers",
     "target": "concept:integration-testing",
     "relationship_type": "supports"
-  },
-  {
-    "source": "technology:k6",
-    "target": "concept:integration-testing",
-    "relationship_type": "used_for"
   },
   {
     "source": "technology:firebase",
@@ -11517,7 +11507,7 @@
   {
     "source": "technology:cloudflare",
     "target": "concept:ddos-attack",
-    "relationship_type": "supports"
+    "relationship_type": "related_to"
   },
   {
     "source": "concept:phishing",
@@ -13537,7 +13527,7 @@
   {
     "source": "technology:lerobot",
     "target": "technology:huggingface-transformers",
-    "relationship_type": "part_of_ecosystem"
+    "relationship_type": "related_to"
   },
   {
     "source": "concept:logical-qubits",

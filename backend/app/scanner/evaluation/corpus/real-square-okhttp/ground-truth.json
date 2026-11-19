@@ -31,6 +31,12 @@
     },
     {
       "node_id": "technology:yaml"
+    },
+    {
+      "node_id": "technology:android-sdk"
+    },
+    {
+      "node_id": "technology:kotlin-multiplatform"
     }
   ]
 }

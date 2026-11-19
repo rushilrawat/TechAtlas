@@ -158,7 +158,8 @@
   "eslint-config-*": "technology:eslint",
   "jest-cli": "technology:jest",
   "@swc/jest": "technology:jest",
-  "babel-jest": "technology:jest"
+  "babel-jest": "technology:jest",
+  "@types/jest": "technology:jest"
  },
  "pypi": {
   "torch": "technology:pytorch",
@@ -233,7 +234,7 @@
   "sqlmodel": "technology:sqlalchemy",
   "django": "technology:django",
   "djangorestframework": "technology:django",
-  "huggingface-hub": "technology:huggingface-transformers",
+  "huggingface-hub": null,
   "sentence-transformers": null,
   "llama-cpp-python": "technology:llama-cpp",
   "ollama": "technology:ollama",
@@ -389,7 +390,9 @@
   "androidx.compose.ui:*": "technology:jetpack-compose",
   "com.android.tools.build:*": "technology:android-sdk",
   "com.auth0:java-jwt": null,
-  "com.auth0:jwks-rsa": null
+  "com.auth0:jwks-rsa": null,
+  "com.google.firebase:*": "technology:firebase",
+  "org.jetbrains.compose.*": "technology:jetpack-compose"
  },
  "rubygems": {
   "rails": "technology:rails",
@@ -486,5 +489,20 @@
   "sentry_flutter": "technology:sentry",
   "sentry": "technology:sentry",
   "html": null
+ },
+ "gradle-plugin": {
+  "com.android.application": "technology:android-sdk",
+  "com.android.library": "technology:android-sdk",
+  "com.android.test": "technology:android-sdk",
+  "com.android.kotlin.multiplatform.library": "technology:android-sdk",
+  "org.jetbrains.kotlin.multiplatform": "technology:kotlin-multiplatform",
+  "org.jetbrains.kotlin.android": "technology:kotlin",
+  "org.jetbrains.kotlin.jvm": "technology:kotlin",
+  "org.jetbrains.kotlin.plugin.compose": "technology:jetpack-compose",
+  "org.jetbrains.compose": "technology:jetpack-compose",
+  "com.google.gms.google-services": "technology:firebase",
+  "com.google.firebase.*": "technology:firebase",
+  "org.springframework.boot": "technology:spring-boot",
+  "com.google.protobuf": "technology:protobuf"
  }
 }

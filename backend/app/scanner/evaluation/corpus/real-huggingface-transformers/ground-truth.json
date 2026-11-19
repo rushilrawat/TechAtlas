@@ -37,6 +37,24 @@
     },
     {
       "node_id": "technology:yaml"
+    },
+    {
+      "node_id": "technology:fastapi"
+    },
+    {
+      "node_id": "technology:openai-api"
+    },
+    {
+      "node_id": "technology:opencv"
+    },
+    {
+      "node_id": "technology:protobuf"
+    },
+    {
+      "node_id": "technology:ray"
+    },
+    {
+      "node_id": "technology:scikit-learn"
     }
   ]
 }

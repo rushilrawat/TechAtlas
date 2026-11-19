@@ -20,6 +20,9 @@
     },
     {
       "node_id": "technology:firebase"
+    },
+    {
+      "node_id": "technology:protobuf"
     }
   ],
   "optional_detections": [

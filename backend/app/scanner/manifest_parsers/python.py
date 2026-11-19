@@ -116,6 +116,61 @@ _TOOL_TABLES = {"pytest": "technology:pytest", "mypy": "technology:mypy", "ruff"
                 "uv": "technology:uv"}
 
 
+_SETUP_NAME_RE = re.compile(
+    r"^_?(install_requires?|tests?_requires?|setup_requires?|extras_requires?|"
+    r"requirements|deps|dependencies)$", re.IGNORECASE)
+
+
+def parse_setup_py(path: str, text: str) -> list[RawDetection]:
+    """setup.py: requirement strings in install_requires / extras_require / *_deps lists.
+
+    Parsed with `ast`, never executed. Only string literals inside lists, tuples, sets or
+    dict values bound to a requirements-like name (or setup(...) keyword) are read, and each
+    must parse as a requirement specifier, so arbitrary strings are ignored.
+    """
+    import ast
+
+    out: list[RawDetection] = []
+    try:
+        tree = ast.parse(text)
+    except (SyntaxError, ValueError):
+        return out
+    seen: set[str] = set()
+
+    def collect(node) -> None:
+        if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+            for elt in node.elts:
+                collect(elt)
+        elif isinstance(node, ast.Dict):
+            for v in node.values:
+                collect(v)
+        elif isinstance(node, ast.Constant) and isinstance(node.value, str):
+            val = node.value.strip()
+            if not val or " " in val.split(";")[0].strip().split("[")[0]:
+                return
+            nm = _req_name(val)
+            if nm and nm != "python":  # python_requires-style pins are not packages
+                n = _norm(nm)
+                if n and n not in seen:
+                    seen.add(n)
+                    out.append(RawDetection(
+                        ecosystem=ECO, package=n, node_id=None,
+                        evidence_type="dependency_manifest", file_path=path,
+                        description=f"{n} declared in setup.py",
+                        detection_status="declared", rule="python.setup_py",
+                        line=getattr(node, "lineno", None),
+                    ))
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for tgt in node.targets:
+                if isinstance(tgt, ast.Name) and _SETUP_NAME_RE.match(tgt.id):
+                    collect(node.value)
+        elif isinstance(node, ast.keyword) and node.arg and _SETUP_NAME_RE.match(node.arg):
+            collect(node.value)
+    return out
+
+
 def parse_poetry_lock(path: str, text: str) -> list[RawDetection]:
     out: list[RawDetection] = []
     try:
