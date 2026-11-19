@@ -79,10 +79,8 @@ EDGE_FIXES = {
     # Vite and Vue 3 are written in TypeScript.
     (T + "vite", T + "javascript", "written_in"): (T + "vite", T + "typescript", "written_in"),
     (T + "vue", T + "javascript", "written_in"): (T + "vue", T + "typescript", "written_in"),
-    # TensorFlow's core is C++; Python is its main API.
-    (T + "tensorflow", T + "python", "written_in"): (T + "tensorflow", T + "cpp", "written_in"),
     # PyTorch and TensorFlow run on CPUs too; CUDA is optional acceleration.
-    (T + "pytorch", T + "cuda", "depends_on"): None,  # commonly_used_with already links them
+    (T + "pytorch", T + "cuda", "depends_on"): (T + "pytorch", T + "cuda", "integrates_with"),
     (T + "tensorflow", T + "cuda", "depends_on"): (T + "tensorflow", T + "cuda", "integrates_with"),
     # Kubernetes talks to any CRI runtime (containerd, CRI-O); it does not require containerd.
     (T + "kubernetes", T + "containerd", "depends_on"): (T + "kubernetes", T + "containerd", "integrates_with"),
@@ -92,16 +90,12 @@ EDGE_FIXES = {
     (T + "lerobot", T + "huggingface-transformers", "part_of_ecosystem"): (T + "lerobot", T + "huggingface-transformers", "related_to"),
     # Cloudflare mitigates DDoS attacks; "supports" read as if it enabled them.
     (T + "cloudflare", C + "ddos-attack", "supports"): (T + "cloudflare", C + "ddos-attack", "related_to"),
-    # Falco is runtime threat detection, not threat modeling; it watches Kubernetes workloads.
-    (T + "falco", C + "threat-modeling", "supports"): (T + "falco", T + "kubernetes", "integrates_with"),
+    # Falco is runtime threat detection on hosts and containers, not threat modeling.
+    (T + "falco", C + "threat-modeling", "supports"): (T + "falco", C + "endpoint-detection-and-response", "related_to"),
     # Trivy scans for known vulnerabilities; that is not threat modeling.
     (T + "trivy", C + "threat-modeling", "used_for"): (T + "trivy", C + "vulnerability-assessment", "used_for"),
     # Snort is an IDS that sniffs packets; threat modeling is a design activity.
     (T + "snort", C + "threat-modeling", "related_to"): (T + "snort", C + "packet-sniffing", "related_to"),
-    # k6 is a load-testing tool, not an integration-testing one.
-    (T + "k6", C + "integration-testing", "used_for"): None,
-    # Sigma.js renders with WebGL; it has no WebGPU renderer.
-    (T + "sigmajs", T + "webgpu", "related_to"): (T + "sigmajs", T + "webgl", "related_to"),
 }
 
 # --- guided path captions: (journey title, step id) -> caption ------------------------

@@ -496,7 +496,7 @@
   },
   {
     "source": "technology:sigmajs",
-    "target": "technology:webgl",
+    "target": "technology:webgpu",
     "relationship_type": "related_to"
   },
   {
@@ -750,8 +750,13 @@
     "relationship_type": "belongs_to_domain"
   },
   {
+    "source": "technology:pytorch",
+    "target": "technology:cuda",
+    "relationship_type": "integrates_with"
+  },
+  {
     "source": "technology:tensorflow",
-    "target": "technology:cpp",
+    "target": "technology:python",
     "relationship_type": "written_in"
   },
   {
@@ -4241,8 +4246,8 @@
   },
   {
     "source": "technology:falco",
-    "target": "technology:kubernetes",
-    "relationship_type": "integrates_with"
+    "target": "concept:endpoint-detection-and-response",
+    "relationship_type": "related_to"
   },
   {
     "source": "technology:trivy",
@@ -4268,6 +4273,11 @@
     "source": "technology:testcontainers",
     "target": "concept:integration-testing",
     "relationship_type": "supports"
+  },
+  {
+    "source": "technology:k6",
+    "target": "concept:integration-testing",
+    "relationship_type": "used_for"
   },
   {
     "source": "technology:firebase",

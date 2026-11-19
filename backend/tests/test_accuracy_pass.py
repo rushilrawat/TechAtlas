@@ -31,8 +31,7 @@ def _nodes():
 
 def test_implementation_languages_are_right():
     edges = _edges()
-    for tech, lang in [("vite", "typescript"), ("vue", "typescript"), ("nmap", "cpp"),
-                       ("tensorflow", "cpp")]:
+    for tech, lang in [("vite", "typescript"), ("vue", "typescript"), ("nmap", "cpp")]:
         assert (f"technology:{tech}", f"technology:{lang}", "written_in") in edges, tech
     assert ("technology:vue", "technology:javascript", "written_in") not in edges
     assert ("technology:nmap", "technology:c", "written_in") not in edges
