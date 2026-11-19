@@ -8,7 +8,8 @@ from pathlib import Path
 import validate_dataset as vd
 
 from app.graph_service import GraphService
-from app.scanner.manifest_parsers import java, python as pyparser
+from app.scanner.manifest_parsers import java
+from app.scanner.manifest_parsers import python as pyparser
 from app.scanner.technology_matcher import TechnologyMatcher
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,7 +88,8 @@ def test_accuracy_script_is_idempotent(capsys):
 
 def _n(nid, domain="domain:d", **kw):
     kind, slug = nid.split(":", 1)
-    return {"id": nid, "slug": slug, "name": slug, "node_type": kind, "primary_domain": domain, **kw}
+    return {"id": nid, "slug": slug, "name": slug, "node_type": kind,
+            "primary_domain": domain, **kw}
 
 
 def _report(nodes, edges):
@@ -142,11 +144,14 @@ def test_huggingface_hub_is_not_transformers():
 
 def test_gradle_plugins_map_to_platforms():
     m = _matcher()
-    assert m.match_package("gradle-plugin", "com.android.application") == "technology:android-sdk"
-    assert m.match_package("gradle-plugin", "org.jetbrains.kotlin.multiplatform") == "technology:kotlin-multiplatform"
-    assert m.match_package("gradle-plugin", "com.google.gms.google-services") == "technology:firebase"
-    assert m.match_package("gradle-plugin", "com.diffplug.spotless") is None
-    assert m.match_package("maven", "com.google.firebase:firebase-analytics") == "technology:firebase"
+    for eco, pkg, node in [
+        ("gradle-plugin", "com.android.application", "technology:android-sdk"),
+        ("gradle-plugin", "org.jetbrains.kotlin.multiplatform", "technology:kotlin-multiplatform"),
+        ("gradle-plugin", "com.google.gms.google-services", "technology:firebase"),
+        ("gradle-plugin", "com.diffplug.spotless", None),
+        ("maven", "com.google.firebase:firebase-analytics", "technology:firebase"),
+    ]:
+        assert m.match_package(eco, pkg) == node, pkg
 
 
 def test_gradle_plugins_block_only():
@@ -174,7 +179,8 @@ ui = { group = "androidx.compose.ui", name = "ui" }
 [plugins]
 android-application = { id = "com.android.application", version = "8.7.0" }
 '''
-    got = {(d.ecosystem, d.package) for d in java.parse_version_catalog("gradle/libs.versions.toml", toml)}
+    found = java.parse_version_catalog("gradle/libs.versions.toml", toml)
+    got = {(d.ecosystem, d.package) for d in found}
     assert got == {("maven", "junit:junit"), ("maven", "androidx.compose.ui:ui"),
                    ("gradle-plugin", "com.android.application")}
 
