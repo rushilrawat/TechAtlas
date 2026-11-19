@@ -53,7 +53,7 @@ you move from a broad field to an individual tool without losing the surrounding
 | Curated guided paths | **145** |
 | Isolated nodes | **0** |
 
-The largest relationship groups are **related to (1,174)**, **belongs to domain (1,165)**, **supports (278)**, **implements (206)**. Counts come from the checked-in
+The largest relationship groups are **related to (1,177)**, **belongs to domain (1,165)**, **supports (276)**, **implements (206)**. Counts come from the checked-in
 [`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)
 and are rewritten by `scripts/build_dataset.py` on every `make data`; “isolated” means
 a node with no incident edge.

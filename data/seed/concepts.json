@@ -837,13 +837,14 @@
   {
     "id": "concept:database-sharding",
     "slug": "database-sharding",
-    "name": "Shard",
+    "name": "Database Sharding",
     "node_type": "concept",
     "primary_domain": "domain:databases",
     "short_description": "Horizontal partitioning of data across multiple database instances.",
     "lifecycle_status": "active",
     "aliases": [
-      "sharding"
+      "sharding",
+      "shard"
     ],
     "wikipedia_title": "Shard (database architecture)"
   },
@@ -3635,7 +3636,7 @@
     "primary_domain": "domain:ai-ml",
     "short_description": "AI agents that learn and act through a physical or simulated body in an environment.",
     "importance": 0.6,
-    "wikipedia_title": "Embodied cognition"
+    "wikipedia_title": "Embodied agent"
   },
   {
     "id": "concept:ai-planning",
@@ -4854,7 +4855,7 @@
     "name": "Sampling Theorem",
     "node_type": "concept",
     "primary_domain": "domain:signal-processing",
-    "short_description": "Sampling above twice the highest frequency captures a signal exactly.",
+    "short_description": "Sampling a band-limited signal above twice its highest frequency captures it exactly.",
     "importance": 0.5,
     "wikipedia_title": "Nyquist–Shannon sampling theorem",
     "aliases": [
@@ -5766,7 +5767,7 @@
     "primary_domain": "domain:fintech",
     "short_description": "Spotting fraudulent transactions with rules and machine learning.",
     "importance": 0.45,
-    "wikipedia_title": "Fraud"
+    "wikipedia_title": "Data analysis techniques for fraud detection"
   },
   {
     "id": "concept:credit-scoring",
@@ -6539,7 +6540,7 @@
     "name": "Supercomputer",
     "node_type": "concept",
     "primary_domain": "domain:systems",
-    "short_description": "Machines with tens of thousands of nodes for the largest simulations.",
+    "short_description": "Machines with thousands of nodes and fast interconnects for the largest simulations.",
     "importance": 0.45,
     "wikipedia_title": "Supercomputer"
   },
@@ -7486,7 +7487,7 @@
     "name": "React Server Components",
     "node_type": "concept",
     "primary_domain": "domain:frontend",
-    "short_description": "Components that render on the server and stream to the client with zero JS.",
+    "short_description": "Components that render on the server and send no component code to the client.",
     "importance": 0.45,
     "wikipedia_title": "React (software)",
     "aliases": [
@@ -7739,7 +7740,7 @@
     "name": "Gate-All-Around Transistors",
     "node_type": "concept",
     "primary_domain": "domain:digital-design",
-    "short_description": "Transistors whose gate wraps the channel, succeeding FinFETs at 2 nm.",
+    "short_description": "Transistors whose gate wraps the channel, succeeding FinFETs from the 3 nm and 2 nm nodes.",
     "importance": 0.35,
     "wikipedia_title": "Multigate device",
     "aliases": [

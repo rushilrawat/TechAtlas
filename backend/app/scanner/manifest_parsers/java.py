@@ -100,6 +100,92 @@ _CATALOG_RE = re.compile(
 _TEST_CONFIGS = {"testImplementation", "testRuntimeOnly", "testCompileOnly"}
 
 
+PLUGIN_ECO = "gradle-plugin"
+
+
+def resolve_plugin_catalog(text: str) -> dict[str, str]:
+    """[plugins] alias = { id = "..." } -> {alias (dotted or dashed): plugin id}."""
+    try:
+        data = tomllib.loads(text)
+    except (tomllib.TOMLDecodeError, ValueError):
+        return {}
+    out: dict[str, str] = {}
+    for alias, spec in (data.get("plugins", {}) or {}).items():
+        pid = spec.get("id") if isinstance(spec, dict) else (
+            spec.split(":")[0] if isinstance(spec, str) else None)
+        if not isinstance(pid, str) or not pid:
+            continue
+        out[alias] = pid
+        out[alias.replace("-", ".")] = pid
+    return out
+
+
+def parse_version_catalog(path: str, text: str) -> list[RawDetection]:
+    """gradle/libs.versions.toml: every [libraries] coordinate and [plugins] id is declared.
+
+    Large builds apply catalog entries from convention plugins (build-logic/) that a
+    manifest-only scan never sees, so the catalog itself is the declaration of record.
+    Test-only libraries cannot be told apart here, so scope is left unknown.
+    """
+    out: list[RawDetection] = []
+    seen: set[tuple[str, str]] = set()
+    for eco, mapping, what in (
+        (ECO, resolve_version_catalog(text), "library"),
+        (PLUGIN_ECO, resolve_plugin_catalog(text), "plugin"),
+    ):
+        for coord in mapping.values():
+            if (eco, coord) in seen:
+                continue
+            seen.add((eco, coord))
+            out.append(RawDetection(
+                ecosystem=eco, package=coord, node_id=None,
+                evidence_type="dependency_manifest", file_path=path,
+                description=f"{coord} {what} declared in the Gradle version catalog",
+                detection_status="declared", rule="java.gradle_catalog", direct=True,
+            ))
+    return out
+
+
+# plugins { id("x") / id 'x' / kotlin("multiplatform") / alias(libs.plugins.x) }
+_PLUGIN_ID_RE = re.compile(r"""\bid\s*\(?\s*['"]([A-Za-z0-9_.\-]+)['"]""")
+_PLUGIN_KOTLIN_RE = re.compile(r"""\bkotlin\s*\(\s*['"]([A-Za-z0-9_.\-]+)['"]\s*\)""")
+_PLUGIN_ALIAS_RE = re.compile(r"\balias\s*\(\s*libs\.plugins\.([A-Za-z0-9_.]+)\s*\)")
+
+
+def _plugins_block(text: str) -> str:
+    """Text of every top-level `plugins { ... }` block (brace-matched)."""
+    chunks = []
+    for m in re.finditer(r"(?m)^\s*plugins\s*\{", text):
+        depth, i = 1, m.end()
+        while i < len(text) and depth:
+            depth += {"{": 1, "}": -1}.get(text[i], 0)
+            i += 1
+        chunks.append(text[m.end():i - 1])
+    return "\n".join(chunks)
+
+
+def parse_gradle_plugins(path: str, text: str,
+                         plugin_catalog: dict[str, str] | None = None) -> list[RawDetection]:
+    plugin_catalog = plugin_catalog or {}
+    block = _plugins_block(text)
+    ids: list[str] = [m.group(1) for m in _PLUGIN_ID_RE.finditer(block)]
+    ids += [f"org.jetbrains.kotlin.{m.group(1)}" for m in _PLUGIN_KOTLIN_RE.finditer(block)]
+    for m in _PLUGIN_ALIAS_RE.finditer(block):
+        alias = m.group(1)
+        pid = plugin_catalog.get(alias) or plugin_catalog.get(alias.replace(".", "-"))
+        if pid:
+            ids.append(pid)  # unresolved alias -> nothing fabricated
+    out: list[RawDetection] = []
+    for pid in dict.fromkeys(ids):
+        out.append(RawDetection(
+            ecosystem=PLUGIN_ECO, package=pid, node_id=None,
+            evidence_type="dependency_manifest", file_path=path,
+            description=f"Gradle plugin {pid} applied in {path.rsplit('/', 1)[-1]}",
+            detection_status="declared", rule="java.gradle_plugin", direct=True,
+        ))
+    return out
+
+
 def parse_gradle(path: str, text: str, catalog: dict[str, str] | None = None) -> list[RawDetection]:
     out: list[RawDetection] = []
     catalog = catalog or {}

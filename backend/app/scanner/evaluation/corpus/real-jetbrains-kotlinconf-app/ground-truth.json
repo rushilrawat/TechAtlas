@@ -17,6 +17,15 @@
     },
     {
       "node_id": "technology:firebase"
+    },
+    {
+      "node_id": "technology:android-sdk"
+    },
+    {
+      "node_id": "technology:junit"
+    },
+    {
+      "node_id": "technology:postgresql"
     }
   ],
   "optional_detections": [

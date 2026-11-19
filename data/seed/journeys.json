@@ -191,7 +191,7 @@
       },
       {
         "id": "technology:let-s-encrypt",
-        "caption": "Let's Encrypt issues the free certificates TLS relies on."
+        "caption": "Let's Encrypt issues free certificates, so any site can serve HTTPS."
       }
     ]
   },
@@ -793,7 +793,7 @@
       },
       {
         "id": "technology:bitcoin",
-        "caption": "Bitcoin was the first blockchain, created for digital money."
+        "caption": "Bitcoin was the first cryptocurrency and the first blockchain in wide use."
       },
       {
         "id": "concept:proof-of-work",
@@ -1186,7 +1186,7 @@
       },
       {
         "id": "technology:esp32",
-        "caption": "An ESP32 can run it on a coin-cell budget."
+        "caption": "An ESP32 can run small models on a battery budget."
       }
     ]
   },
@@ -2838,11 +2838,11 @@
       },
       {
         "id": "technology:matter",
-        "caption": "Matter runs on top of it."
+        "caption": "Matter runs over Thread, as well as Wi-Fi and Ethernet."
       },
       {
         "id": "concept:home-automation",
-        "caption": "Every brand works together."
+        "caption": "Devices from different brands work together."
       }
     ]
   },
@@ -3047,7 +3047,7 @@
       },
       {
         "id": "concept:mitre-attack",
-        "caption": "ATT&CK names every technique they use."
+        "caption": "ATT&CK catalogues the techniques real attackers use."
       },
       {
         "id": "concept:purple-teaming",

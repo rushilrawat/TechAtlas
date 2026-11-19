@@ -356,7 +356,7 @@
   },
   {
     "source": "technology:vue",
-    "target": "technology:javascript",
+    "target": "technology:typescript",
     "relationship_type": "written_in"
   },
   {
@@ -421,7 +421,7 @@
   },
   {
     "source": "technology:vite",
-    "target": "technology:javascript",
+    "target": "technology:typescript",
     "relationship_type": "written_in"
   },
   {
@@ -752,7 +752,7 @@
   {
     "source": "technology:pytorch",
     "target": "technology:cuda",
-    "relationship_type": "depends_on"
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:tensorflow",
@@ -782,7 +782,7 @@
   {
     "source": "technology:tensorflow",
     "target": "technology:cuda",
-    "relationship_type": "depends_on"
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:scikit-learn",
@@ -2662,7 +2662,7 @@
   {
     "source": "technology:kubernetes",
     "target": "technology:containerd",
-    "relationship_type": "depends_on"
+    "relationship_type": "integrates_with"
   },
   {
     "source": "technology:grafana",
@@ -2926,7 +2926,7 @@
   },
   {
     "source": "technology:nmap",
-    "target": "technology:c",
+    "target": "technology:cpp",
     "relationship_type": "written_in"
   },
   {
@@ -2986,7 +2986,7 @@
   },
   {
     "source": "technology:snort",
-    "target": "concept:threat-modeling",
+    "target": "concept:packet-sniffing",
     "relationship_type": "related_to"
   },
   {
@@ -3720,9 +3720,9 @@
     "relationship_type": "used_for"
   },
   {
-    "source": "technology:protobuf",
-    "target": "technology:grpc",
-    "relationship_type": "part_of_ecosystem"
+    "source": "technology:grpc",
+    "target": "technology:protobuf",
+    "relationship_type": "integrates_with"
   },
   {
     "source": "concept:data-structures",
@@ -4246,12 +4246,12 @@
   },
   {
     "source": "technology:falco",
-    "target": "concept:threat-modeling",
-    "relationship_type": "supports"
+    "target": "concept:endpoint-detection-and-response",
+    "relationship_type": "related_to"
   },
   {
     "source": "technology:trivy",
-    "target": "concept:threat-modeling",
+    "target": "concept:vulnerability-assessment",
     "relationship_type": "used_for"
   },
   {
@@ -11517,7 +11517,7 @@
   {
     "source": "technology:cloudflare",
     "target": "concept:ddos-attack",
-    "relationship_type": "supports"
+    "relationship_type": "related_to"
   },
   {
     "source": "concept:phishing",
@@ -13537,7 +13537,7 @@
   {
     "source": "technology:lerobot",
     "target": "technology:huggingface-transformers",
-    "relationship_type": "part_of_ecosystem"
+    "relationship_type": "related_to"
   },
   {
     "source": "concept:logical-qubits",

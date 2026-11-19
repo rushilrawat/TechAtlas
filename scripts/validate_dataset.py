@@ -295,6 +295,54 @@ def validate(dataset: dict) -> Report:
     return report
 
 
+# Directional relationships: A -t-> B and B -t-> A cannot both be true.
+ASYMMETRIC_TYPES = {"built_on", "written_in", "depends_on", "part_of_ecosystem", "has_subdomain"}
+# Pairs of relationship types that contradict each other on the same two nodes.
+CONTRADICTORY_TYPES = [
+    ("alternative_to", "built_on"), ("alternative_to", "depends_on"),
+    ("alternative_to", "part_of_ecosystem"), ("alternative_to", "written_in"),
+]
+# Edges that say a technology helps carry out or provides something. Pointing one at an
+# attack concept from a non-offensive tool reads as "Cloudflare supports DDoS attacks".
+ENABLING_TYPES = {"supports", "implements", "enables", "used_for"}
+ATTACK_CONCEPTS = {"concept:phishing", "concept:xss", "concept:sql-injection", "concept:csrf",
+                   "concept:ssrf", "concept:buffer-overflow", "concept:prompt-injection",
+                   "concept:idor", "concept:side-channel-attack"}
+OFFENSIVE_DOMAIN = "domain:offensive-security"
+
+
+def is_attack_concept(nid: str) -> bool:
+    return nid in ATTACK_CONCEPTS or (nid.startswith("concept:") and nid.endswith("-attack"))
+
+
+def validate_semantics(dataset: dict, report: Report) -> None:
+    """Accuracy rules beyond schema: relationships that cannot all be true at once."""
+    by_id = {n["id"]: n for n in dataset.get("nodes", [])}
+    edges = dataset.get("edges", [])
+    by_pair: dict[frozenset, set[str]] = defaultdict(set)
+    directed = {(e["source"], e["target"], e["relationship_type"]) for e in edges}
+    for e in edges:
+        src, tgt, rtype = e["source"], e["target"], e["relationship_type"]
+        if src not in by_id or tgt not in by_id:
+            continue
+        by_pair[frozenset((src, tgt))].add(rtype)
+        if rtype in ASYMMETRIC_TYPES and (tgt, src, rtype) in directed and src < tgt:
+            report.error(f"{rtype} runs both ways between {src} and {tgt}")
+        if rtype == "alternative_to" and by_id[src]["node_type"] != by_id[tgt]["node_type"]:
+            report.error(f"alternative_to joins a {by_id[src]['node_type']} and a "
+                         f"{by_id[tgt]['node_type']}: {src} / {tgt}")
+        if (rtype in ENABLING_TYPES and is_attack_concept(tgt)
+                and by_id[src].get("node_type") == "technology"
+                and by_id[src].get("primary_domain") != OFFENSIVE_DOMAIN):
+            report.error(f"{src} -{rtype}-> {tgt} says a non-offensive tool carries out an "
+                         "attack; use related_to for defences")
+    for pair, types in by_pair.items():
+        for a, b in CONTRADICTORY_TYPES:
+            if a in types and b in types:
+                x, y = sorted(pair)
+                report.error(f"{x} and {y} are both {a} and {b}")
+
+
 def validate_journeys(dataset: dict, journeys: list[dict], report: Report) -> None:
     ids = {n["id"] for n in dataset.get("nodes", [])}
     pairs = {frozenset((e["source"], e["target"])) for e in dataset.get("edges", [])}
@@ -373,6 +421,7 @@ def main() -> None:
 
     dataset = json.loads(DATASET.read_text(encoding="utf-8"))
     report = validate(dataset)
+    validate_semantics(dataset, report)
     if JOURNEYS.exists():
         validate_journeys(dataset, json.loads(JOURNEYS.read_text(encoding="utf-8")), report)
     if APPS.exists():

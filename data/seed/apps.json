@@ -213,7 +213,8 @@
     "stack": [
       {"tech": "cpp", "layer": "web", "note": "Canvas editor core"},
       {"tech": "webassembly", "layer": "web", "note": "C++ editor compiled to Wasm"},
-      {"tech": "webgl", "layer": "web", "note": "Canvas rendering"},
+      {"tech": "webgl", "layer": "web", "note": "Canvas rendering (original renderer)"},
+      {"tech": "webgpu", "layer": "web", "note": "Renderer moved to WebGPU in 2025, WebGL as fallback"},
       {"tech": "react", "layer": "web", "note": "UI around the canvas"},
       {"tech": "typescript", "layer": "web", "note": "UI and plugin API"},
       {"tech": "rust", "layer": "backend", "note": "Multiplayer server"},
@@ -252,7 +253,7 @@
       {"tech": "java", "layer": "backend", "note": "Most backend services (Rest.li)"},
       {"tech": "scala", "layer": "backend", "note": "Kafka and other data systems"},
       {"tech": "python", "layer": "backend", "note": "Tooling and data science"},
-      {"tech": "kafka", "layer": "data", "note": "Created at LinkedIn in 2011"},
+      {"tech": "kafka", "layer": "data", "note": "Created at LinkedIn; open-sourced in 2011"},
       {"tech": "spark", "layer": "data", "note": "Batch processing"}
     ],
     "not_in_atlas": ["Ember.js", "Samza", "Apache Pinot", "Espresso", "Hadoop"],
@@ -365,10 +366,10 @@
       {"tech": "php", "layer": "backend", "note": "MediaWiki"},
       {"tech": "lua", "layer": "backend", "note": "Template modules (Scribunto)"},
       {"tech": "mariadb", "layer": "data", "note": "Primary database"},
-      {"tech": "elasticsearch", "layer": "data", "note": "On-wiki search (CirrusSearch)"},
+      {"tech": "elasticsearch", "layer": "data", "note": "On-wiki search (CirrusSearch), now moving to the OpenSearch fork"},
       {"tech": "kubernetes", "layer": "infra", "note": "Hosting services in Wikimedia's own data centres"}
     ],
-    "not_in_atlas": ["MediaWiki", "Varnish", "memcached"],
+    "not_in_atlas": ["MediaWiki", "Varnish", "memcached", "OpenSearch"],
     "sources": [{"title": "Wikimedia Tech Blog", "url": "https://techblog.wikimedia.org"}]
   },
   {
@@ -420,7 +421,7 @@
       {"tech": "python", "layer": "backend", "note": "Research and serving code"},
       {"tech": "pytorch", "layer": "ml", "note": "OpenAI standardised on PyTorch in 2020"},
       {"tech": "kubernetes", "layer": "infra", "note": "Research and serving clusters (scaled to 7,500 nodes)"},
-      {"tech": "azure", "layer": "infra", "note": "Primary cloud and supercomputers"},
+      {"tech": "azure", "layer": "infra", "note": "Primary cloud and supercomputers; capacity also from Oracle, CoreWeave and Google Cloud since 2025"},
       {"tech": "postgresql", "layer": "data", "note": "Core product database"}
     ],
     "not_in_atlas": ["Triton (OpenAI)"],
