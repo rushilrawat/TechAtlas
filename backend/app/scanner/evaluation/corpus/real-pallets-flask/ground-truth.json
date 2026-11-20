@@ -29,6 +29,11 @@
       "node_id": "technology:pre-commit",
       "added_in_review": true,
       "evidence": "pyproject.toml: pre-commit declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pyright",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pyright declared in pyproject.toml"
     }
   ],
   "optional_detections": [

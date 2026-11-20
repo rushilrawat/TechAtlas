@@ -97,6 +97,11 @@
       "node_id": "technology:elevenlabs",
       "added_in_review": true,
       "evidence": "requirements_all.txt: elevenlabs declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:statsd",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: statsd declared in requirements_all.txt"
     }
   ],
   "optional_detections": [
@@ -119,6 +124,11 @@
       "node_id": "technology:tailscale",
       "added_in_review": true,
       "evidence": "requirements_all.txt: tailscale declared in requirements_all.txt"
+    },
+    {
+      "node_id": "technology:netdata",
+      "added_in_review": true,
+      "evidence": "requirements_all.txt: netdata declared in requirements_all.txt"
     }
   ]
 }

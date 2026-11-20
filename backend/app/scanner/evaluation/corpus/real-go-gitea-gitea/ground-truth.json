@@ -84,6 +84,11 @@
       "node_id": "technology:postcss",
       "added_in_review": true,
       "evidence": "package.json: postcss declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mermaid-js",
+      "added_in_review": true,
+      "evidence": "package.json: mermaid declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

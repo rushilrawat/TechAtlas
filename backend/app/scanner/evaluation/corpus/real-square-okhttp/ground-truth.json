@@ -14,6 +14,26 @@
     },
     {
       "node_id": "technology:junit"
+    },
+    {
+      "node_id": "technology:brotli",
+      "added_in_review": true,
+      "evidence": "gradle/libs.versions.toml: org.brotli:dec library declared in the Gradle version catalog"
+    },
+    {
+      "node_id": "technology:checkstyle",
+      "added_in_review": true,
+      "evidence": "gradle/libs.versions.toml: com.puppycrawl.tools:checkstyle library declared in the Gradle version"
+    },
+    {
+      "node_id": "technology:guava",
+      "added_in_review": true,
+      "evidence": "gradle/libs.versions.toml: com.google.guava:guava library declared in the Gradle version catalog"
+    },
+    {
+      "node_id": "technology:zstd",
+      "added_in_review": true,
+      "evidence": "gradle/libs.versions.toml: com.squareup.zstd:zstd-kmp-okio library declared in the Gradle version"
     }
   ],
   "optional_detections": [

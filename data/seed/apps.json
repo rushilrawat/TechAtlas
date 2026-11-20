@@ -131,9 +131,10 @@
       {"tech": "ruby", "layer": "backend", "note": "Core API, type-checked with Sorbet"},
       {"tech": "go", "layer": "backend", "note": "Infrastructure services such as Veneur"},
       {"tech": "mongodb", "layer": "data", "note": "Base of DocDB, Stripe's main database"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "sorbet", "layer": "backend", "note": "Type checker for its Ruby codebase (built at Stripe)"}
     ],
-    "not_in_atlas": ["Sorbet"],
+    "not_in_atlas": [],
     "sources": [{"title": "Stripe Engineering Blog", "url": "https://stripe.com/blog/engineering"}]
   },
   {
@@ -420,9 +421,10 @@
       {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
       {"tech": "flink", "layer": "data", "note": "Streaming"},
       {"tech": "kafka", "layer": "data", "note": "Event streaming"},
-      {"tech": "flyte", "layer": "data", "note": "Workflow orchestration (built at Lyft)"}
+      {"tech": "flyte", "layer": "data", "note": "Workflow orchestration (built at Lyft)"},
+      {"tech": "amundsen", "layer": "data", "note": "Data discovery (built at Lyft)"}
     ],
-    "not_in_atlas": ["Amundsen"],
+    "not_in_atlas": [],
     "sources": [{"title": "Lyft Engineering", "url": "https://eng.lyft.com"}]
   },
   {

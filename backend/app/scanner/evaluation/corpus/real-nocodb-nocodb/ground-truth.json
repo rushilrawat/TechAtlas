@@ -153,6 +153,31 @@
       "node_id": "technology:mocha",
       "added_in_review": true,
       "evidence": "packages/nocodb/package.json: mocha declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lerna",
+      "added_in_review": true,
+      "evidence": "package.json: lerna declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:monaco-editor",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: monaco-editor declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chai",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: chai declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:nock",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: nock declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

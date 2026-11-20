@@ -137,6 +137,26 @@
       "node_id": "technology:nx",
       "added_in_review": true,
       "evidence": "package.json: nx declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:mermaid-js",
+      "added_in_review": true,
+      "evidence": "package.json: mermaid declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:monaco-editor",
+      "added_in_review": true,
+      "evidence": "package.json: monaco-editor declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:msw",
+      "added_in_review": true,
+      "evidence": "package.json: msw declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rolldown",
+      "added_in_review": true,
+      "evidence": "package.json: rolldown declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

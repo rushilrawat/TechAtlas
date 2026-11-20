@@ -22,6 +22,21 @@
       "node_id": "technology:scipy",
       "added_in_review": true,
       "evidence": "pyproject.toml: scipy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:black-formatter",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: black declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:flake8",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: flake8 declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:isort",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: isort declared in pyproject.toml"
     }
   ],
   "optional_detections": [

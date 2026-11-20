@@ -26,6 +26,11 @@
       "node_id": "technology:tokio",
       "added_in_review": true,
       "evidence": "cli/Cargo.toml: tokio declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:zstd",
+      "added_in_review": true,
+      "evidence": "cli/Cargo.toml: zstd declared in Cargo.toml [dependencies]"
     }
   ],
   "optional_detections": [

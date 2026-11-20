@@ -81,6 +81,16 @@
       "node_id": "technology:postcss",
       "added_in_review": true,
       "evidence": "apps/web/package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

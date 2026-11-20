@@ -96,6 +96,11 @@
       "node_id": "technology:rollup",
       "added_in_review": true,
       "evidence": "package.json: rollup declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:msw",
+      "added_in_review": true,
+      "evidence": "package.json: msw declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

@@ -15773,5 +15773,1474 @@
     "short_description": "Finding and reviewing electronic documents for legal cases.",
     "importance": 0.25,
     "wikipedia_title": "Electronic discovery"
+  },
+  {
+    "id": "concept:memoization",
+    "slug": "memoization",
+    "name": "Memoization",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Caching a function's results so repeated calls with the same input are free.",
+    "importance": 0.4,
+    "wikipedia_title": "Memoization"
+  },
+  {
+    "id": "concept:referential-transparency",
+    "slug": "referential-transparency",
+    "name": "Referential Transparency",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "An expression can be replaced by its value without changing the program.",
+    "importance": 0.3,
+    "wikipedia_title": "Referential Transparency"
+  },
+  {
+    "id": "concept:side-effect",
+    "slug": "side-effect",
+    "name": "Side Effects",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Changes a function makes outside its return value, such as I/O or mutating state.",
+    "importance": 0.35,
+    "wikipedia_title": "Side effect (computer science)"
+  },
+  {
+    "id": "concept:callback",
+    "slug": "callback",
+    "name": "Callbacks",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Functions passed to other code to be called later, common in event-driven programming.",
+    "importance": 0.35,
+    "wikipedia_title": "Callback (computer programming)"
+  },
+  {
+    "id": "concept:monkey-patching",
+    "slug": "monkey-patching",
+    "name": "Monkey Patching",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Changing a class or module at runtime, common in dynamic languages.",
+    "importance": 0.25,
+    "wikipedia_title": "Monkey patch"
+  },
+  {
+    "id": "concept:mixin",
+    "slug": "mixin",
+    "name": "Mixins",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Classes that add methods to other classes without being their parent.",
+    "importance": 0.3,
+    "wikipedia_title": "Mixin"
+  },
+  {
+    "id": "concept:trait",
+    "slug": "trait",
+    "name": "Traits",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Sets of methods a type can implement, used in Rust, Scala and PHP.",
+    "importance": 0.35,
+    "wikipedia_title": "Trait (computer programming)"
+  },
+  {
+    "id": "concept:inversion-of-control",
+    "slug": "inversion-of-control",
+    "name": "Inversion of Control",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A framework calls your code instead of your code calling the library.",
+    "importance": 0.35,
+    "wikipedia_title": "Inversion of Control"
+  },
+  {
+    "id": "concept:singleton-pattern",
+    "slug": "singleton-pattern",
+    "name": "Singleton Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Restricting a class to a single shared instance.",
+    "importance": 0.3,
+    "wikipedia_title": "Singleton pattern"
+  },
+  {
+    "id": "concept:observer-pattern",
+    "slug": "observer-pattern",
+    "name": "Observer Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Objects subscribe to another object and are notified when it changes.",
+    "importance": 0.35,
+    "wikipedia_title": "Observer pattern"
+  },
+  {
+    "id": "concept:factory-pattern",
+    "slug": "factory-pattern",
+    "name": "Factory Method Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Creating objects through a method so subclasses decide the concrete type.",
+    "importance": 0.3,
+    "wikipedia_title": "Factory method pattern"
+  },
+  {
+    "id": "concept:strategy-pattern",
+    "slug": "strategy-pattern",
+    "name": "Strategy Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Swapping interchangeable algorithms behind one interface at runtime.",
+    "importance": 0.3,
+    "wikipedia_title": "Strategy pattern"
+  },
+  {
+    "id": "concept:decorator-pattern",
+    "slug": "decorator-pattern",
+    "name": "Decorator Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Wrapping an object to add behaviour without changing its class.",
+    "importance": 0.3,
+    "wikipedia_title": "Decorator pattern"
+  },
+  {
+    "id": "concept:adapter-pattern",
+    "slug": "adapter-pattern",
+    "name": "Adapter Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Converting one interface into another that clients expect.",
+    "importance": 0.3,
+    "wikipedia_title": "Adapter pattern"
+  },
+  {
+    "id": "concept:facade-pattern",
+    "slug": "facade-pattern",
+    "name": "Facade Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A simple interface in front of a complex subsystem.",
+    "importance": 0.25,
+    "wikipedia_title": "Facade pattern"
+  },
+  {
+    "id": "concept:proxy-pattern",
+    "slug": "proxy-pattern",
+    "name": "Proxy Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A stand-in object that controls access to another object.",
+    "importance": 0.25,
+    "wikipedia_title": "Proxy pattern"
+  },
+  {
+    "id": "concept:builder-pattern",
+    "slug": "builder-pattern",
+    "name": "Builder Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Constructing a complex object step by step.",
+    "importance": 0.3,
+    "wikipedia_title": "Builder pattern"
+  },
+  {
+    "id": "concept:command-pattern",
+    "slug": "command-pattern",
+    "name": "Command Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Wrapping a request as an object so it can be queued, logged or undone.",
+    "importance": 0.25,
+    "wikipedia_title": "Command pattern"
+  },
+  {
+    "id": "concept:iterator-pattern",
+    "slug": "iterator-pattern",
+    "name": "Iterator Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Walking through a collection without exposing how it is stored.",
+    "importance": 0.25,
+    "wikipedia_title": "Iterator pattern"
+  },
+  {
+    "id": "concept:visitor-pattern",
+    "slug": "visitor-pattern",
+    "name": "Visitor Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Adding operations to a set of classes without changing them, common in compilers.",
+    "importance": 0.25,
+    "wikipedia_title": "Visitor pattern"
+  },
+  {
+    "id": "concept:mvvm",
+    "slug": "mvvm",
+    "name": "Model-View-ViewModel",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "A UI pattern where a view model exposes state that the view binds to.",
+    "importance": 0.35,
+    "wikipedia_title": "Model–view–viewmodel",
+    "aliases": [
+      "MVVM"
+    ]
+  },
+  {
+    "id": "concept:flux-architecture",
+    "slug": "flux-architecture",
+    "name": "Flux Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Meta's one-way data flow pattern for UIs that inspired Redux.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:bulkhead-pattern",
+    "slug": "bulkhead-pattern",
+    "name": "Bulkhead Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Isolating resources per component so one failure cannot sink the whole system.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:backpressure",
+    "slug": "backpressure",
+    "name": "Backpressure",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Slowing producers when consumers cannot keep up.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:exponential-backoff",
+    "slug": "exponential-backoff",
+    "name": "Exponential Backoff",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Retrying with waits that grow exponentially, often with jitter.",
+    "importance": 0.35,
+    "wikipedia_title": "Exponential Backoff"
+  },
+  {
+    "id": "concept:lamport-clock",
+    "slug": "lamport-clock",
+    "name": "Lamport Timestamps",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A single counter per process that orders events by happened-before.",
+    "importance": 0.3,
+    "wikipedia_title": "Lamport timestamp"
+  },
+  {
+    "id": "concept:gossip-protocol",
+    "slug": "gossip-protocol",
+    "name": "Gossip Protocols",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Spreading state by having nodes exchange information with random peers.",
+    "importance": 0.35,
+    "wikipedia_title": "Gossip protocol"
+  },
+  {
+    "id": "concept:skip-list",
+    "slug": "skip-list",
+    "name": "Skip List",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A layered linked list with expected logarithmic search, used in Redis sorted sets.",
+    "importance": 0.3,
+    "wikipedia_title": "Skip List"
+  },
+  {
+    "id": "concept:pacelc",
+    "slug": "pacelc",
+    "name": "PACELC Theorem",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Extends CAP: under a partition choose availability or consistency, else latency or consistency.",
+    "importance": 0.3,
+    "wikipedia_title": "PACELC theorem"
+  },
+  {
+    "id": "concept:linearizability",
+    "slug": "linearizability",
+    "name": "Linearizability",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The strongest single-object consistency: every operation appears to take effect at one instant.",
+    "importance": 0.35,
+    "wikipedia_title": "Linearizability"
+  },
+  {
+    "id": "concept:quorum",
+    "slug": "quorum",
+    "name": "Quorum",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "The minimum number of replicas that must agree for a read or write to succeed.",
+    "importance": 0.35,
+    "wikipedia_title": "Quorum (distributed computing)"
+  },
+  {
+    "id": "concept:leader-election",
+    "slug": "leader-election",
+    "name": "Leader Election",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Choosing one node to coordinate a distributed group.",
+    "importance": 0.35,
+    "wikipedia_title": "Leader Election"
+  },
+  {
+    "id": "concept:n-plus-one",
+    "slug": "n-plus-one",
+    "name": "N+1 Query Problem",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Running one query for a list and one more per item, a common ORM performance trap.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:denormalization",
+    "slug": "denormalization",
+    "name": "Denormalization",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Adding redundant data to speed up reads at the cost of writes.",
+    "importance": 0.35,
+    "wikipedia_title": "Denormalization"
+  },
+  {
+    "id": "concept:snowflake-schema",
+    "slug": "snowflake-schema",
+    "name": "Snowflake Schema",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A star schema whose dimension tables are further normalized.",
+    "importance": 0.3,
+    "wikipedia_title": "Snowflake Schema"
+  },
+  {
+    "id": "concept:olap-cube",
+    "slug": "olap-cube",
+    "name": "OLAP Cube",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A multi-dimensional array of pre-aggregated data for fast analytical queries.",
+    "importance": 0.3,
+    "wikipedia_title": "OLAP Cube"
+  },
+  {
+    "id": "concept:data-contract",
+    "slug": "data-contract",
+    "name": "Data Contracts",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Agreements between data producers and consumers on schema, meaning and quality.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:schema-registry",
+    "slug": "schema-registry",
+    "name": "Schema Registry",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A central store of message schemas that checks producers and consumers stay compatible.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:exactly-once",
+    "slug": "exactly-once",
+    "name": "Exactly-Once Semantics",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Delivery guarantees that each message affects state once, despite retries.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:dead-letter-queue",
+    "slug": "dead-letter-queue",
+    "name": "Dead Letter Queue",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A queue for messages that could not be processed, kept for inspection or retry.",
+    "importance": 0.3,
+    "wikipedia_title": "Dead Letter Queue"
+  },
+  {
+    "id": "concept:dark-launch",
+    "slug": "dark-launch",
+    "name": "Dark Launch",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Releasing code to production hidden from users to test it under real load.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:gitflow",
+    "slug": "gitflow",
+    "name": "Gitflow",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A Git branching model with long-lived develop and release branches.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:mob-programming",
+    "slug": "mob-programming",
+    "name": "Mob Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A whole team working on the same code at one computer.",
+    "importance": 0.25,
+    "wikipedia_title": "Mob Programming"
+  },
+  {
+    "id": "concept:dry",
+    "slug": "dry",
+    "name": "Don't Repeat Yourself",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Every piece of knowledge should have a single representation in a system.",
+    "importance": 0.35,
+    "wikipedia_title": "Don't repeat yourself",
+    "aliases": [
+      "DRY"
+    ]
+  },
+  {
+    "id": "concept:kiss",
+    "slug": "kiss",
+    "name": "KISS Principle",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Keep designs as simple as the problem allows.",
+    "importance": 0.3,
+    "wikipedia_title": "KISS principle"
+  },
+  {
+    "id": "concept:yagni",
+    "slug": "yagni",
+    "name": "YAGNI",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "You aren't gonna need it: don't build features until they are needed.",
+    "importance": 0.3,
+    "wikipedia_title": "You aren't gonna need it"
+  },
+  {
+    "id": "concept:conways-law",
+    "slug": "conways-law",
+    "name": "Conway's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Systems tend to mirror the communication structure of the organisations that build them.",
+    "importance": 0.35,
+    "wikipedia_title": "Conway's law"
+  },
+  {
+    "id": "concept:brooks-law",
+    "slug": "brooks-law",
+    "name": "Brooks's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Adding people to a late software project makes it later.",
+    "importance": 0.3,
+    "wikipedia_title": "Brooks's law"
+  },
+  {
+    "id": "concept:hyrums-law",
+    "slug": "hyrums-law",
+    "name": "Hyrum's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "With enough users, every observable behaviour of an API will be depended on by somebody.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:postels-law",
+    "slug": "postels-law",
+    "name": "Robustness Principle",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Be conservative in what you send and liberal in what you accept.",
+    "importance": 0.25,
+    "wikipedia_title": "Robustness principle",
+    "aliases": [
+      "Postel's Law"
+    ]
+  },
+  {
+    "id": "concept:littles-law",
+    "slug": "littles-law",
+    "name": "Little's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Items in a system equal arrival rate times average time spent: L = λW.",
+    "importance": 0.3,
+    "wikipedia_title": "Little's law"
+  },
+  {
+    "id": "concept:moores-law",
+    "slug": "moores-law",
+    "name": "Moore's Law",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The observation that transistor counts on chips double about every two years.",
+    "importance": 0.45,
+    "wikipedia_title": "Moore's law"
+  },
+  {
+    "id": "concept:ipsec",
+    "slug": "ipsec",
+    "name": "IPsec",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "A suite of protocols that authenticates and encrypts IP packets, often used for VPNs.",
+    "importance": 0.45,
+    "node_subtype": "protocol",
+    "wikipedia_title": "IPsec"
+  },
+  {
+    "id": "concept:gherkin",
+    "slug": "gherkin",
+    "name": "Gherkin",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "The plain-language Given/When/Then syntax used to write BDD scenarios.",
+    "importance": 0.3,
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:conventional-commits",
+    "slug": "conventional-commits",
+    "name": "Conventional Commits",
+    "node_type": "concept",
+    "primary_domain": "domain:testing-tooling",
+    "short_description": "A specification for structured commit messages such as feat: and fix:.",
+    "importance": 0.3,
+    "node_subtype": "standard"
+  },
+  {
+    "id": "concept:c4-model",
+    "slug": "c4-model",
+    "name": "C4 Model",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Simon Brown's way of drawing software architecture at four zoom levels: context, containers, components and code.",
+    "importance": 0.35,
+    "wikipedia_title": "C4 model"
+  },
+  {
+    "id": "concept:archimate",
+    "slug": "archimate",
+    "name": "ArchiMate",
+    "node_type": "concept",
+    "primary_domain": "domain:enterprise-software",
+    "short_description": "The Open Group's modelling language for enterprise architecture.",
+    "importance": 0.25,
+    "node_subtype": "standard",
+    "wikipedia_title": "ArchiMate"
+  },
+  {
+    "id": "concept:onion-architecture",
+    "slug": "onion-architecture",
+    "name": "Onion Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Layers arranged in rings with the domain model at the centre and dependencies pointing inward.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:cell-based-architecture",
+    "slug": "cell-based-architecture",
+    "name": "Cell-Based Architecture",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Splitting a service into independent cells, each serving a slice of users, to limit failures.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:thundering-herd",
+    "slug": "thundering-herd",
+    "name": "Thundering Herd",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Many waiting processes or clients waking at once and overwhelming a resource.",
+    "importance": 0.25,
+    "wikipedia_title": "Thundering herd problem"
+  },
+  {
+    "id": "concept:cache-stampede",
+    "slug": "cache-stampede",
+    "name": "Cache Stampede",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Many requests rebuilding the same expired cache entry at the same moment.",
+    "importance": 0.25,
+    "wikipedia_title": "Cache Stampede"
+  },
+  {
+    "id": "concept:cache-aside",
+    "slug": "cache-aside",
+    "name": "Cache-Aside Pattern",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "The application reads from the cache and loads from the database on a miss.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:write-through-cache",
+    "slug": "write-through-cache",
+    "name": "Write-Through Cache",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Writes go to the cache and the backing store together, keeping them in sync.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:head-of-line-blocking",
+    "slug": "head-of-line-blocking",
+    "name": "Head-of-Line Blocking",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "One stalled packet or request holding up everything queued behind it.",
+    "importance": 0.3,
+    "wikipedia_title": "Head-of-Line Blocking"
+  },
+  {
+    "id": "concept:nagles-algorithm",
+    "slug": "nagles-algorithm",
+    "name": "Nagle's Algorithm",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "A TCP technique that batches small packets to reduce overhead.",
+    "importance": 0.25,
+    "wikipedia_title": "Nagle's algorithm"
+  },
+  {
+    "id": "concept:hateoas",
+    "slug": "hateoas",
+    "name": "HATEOAS",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "A REST constraint where responses include links that tell clients what they can do next.",
+    "importance": 0.25,
+    "wikipedia_title": "HATEOAS"
+  },
+  {
+    "id": "concept:optimistic-locking",
+    "slug": "optimistic-locking",
+    "name": "Optimistic Locking",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Allowing concurrent edits and rejecting a write if the data changed since it was read.",
+    "importance": 0.3,
+    "wikipedia_title": "Optimistic concurrency control"
+  },
+  {
+    "id": "concept:pessimistic-locking",
+    "slug": "pessimistic-locking",
+    "name": "Pessimistic Locking",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Locking data when it is read so nobody else can change it until the transaction ends.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:tail-latency",
+    "slug": "tail-latency",
+    "name": "Tail Latency",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "The slowest responses, such as the 99th percentile, which dominate user-perceived speed at scale.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:cold-start",
+    "slug": "cold-start",
+    "name": "Cold Start",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "The extra delay when a serverless function or container starts from nothing.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:horizontal-scaling",
+    "slug": "horizontal-scaling",
+    "name": "Horizontal Scaling",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Adding more machines rather than making one machine bigger.",
+    "importance": 0.4,
+    "aliases": [
+      "scale out"
+    ]
+  },
+  {
+    "id": "concept:vertical-scaling",
+    "slug": "vertical-scaling",
+    "name": "Vertical Scaling",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Adding CPU, memory or disk to a single machine.",
+    "importance": 0.3,
+    "aliases": [
+      "scale up"
+    ]
+  },
+  {
+    "id": "concept:noisy-neighbor",
+    "slug": "noisy-neighbor",
+    "name": "Noisy Neighbor",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "A tenant hogging shared resources and slowing others on the same host.",
+    "importance": 0.2
+  },
+  {
+    "id": "concept:blast-radius",
+    "slug": "blast-radius",
+    "name": "Blast Radius",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "How much of a system a single failure or bad change can affect.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:graceful-degradation",
+    "slug": "graceful-degradation",
+    "name": "Graceful Degradation",
+    "node_type": "concept",
+    "primary_domain": "domain:backend",
+    "short_description": "Keeping core features working when parts of a system fail.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:sticky-sessions",
+    "slug": "sticky-sessions",
+    "name": "Sticky Sessions",
+    "node_type": "concept",
+    "primary_domain": "domain:networks",
+    "short_description": "Sending a user's requests to the same server for the length of a session.",
+    "importance": 0.25,
+    "aliases": [
+      "session affinity"
+    ]
+  },
+  {
+    "id": "concept:causal-consistency",
+    "slug": "causal-consistency",
+    "name": "Causal Consistency",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Operations that are causally related are seen in the same order by every node.",
+    "importance": 0.25,
+    "wikipedia_title": "Causal Consistency"
+  },
+  {
+    "id": "concept:read-your-writes",
+    "slug": "read-your-writes",
+    "name": "Read-Your-Writes Consistency",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A guarantee that a client always sees its own earlier writes.",
+    "importance": 0.2
+  },
+  {
+    "id": "concept:hinted-handoff",
+    "slug": "hinted-handoff",
+    "name": "Hinted Handoff",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A replica stores writes meant for a down node and hands them over when it returns.",
+    "importance": 0.2
+  },
+  {
+    "id": "concept:tombstone-marker",
+    "slug": "tombstone-marker",
+    "name": "Tombstones",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Markers that record a deletion so replicas and compaction can propagate it.",
+    "importance": 0.2,
+    "wikipedia_title": "Tombstone (data store)"
+  },
+  {
+    "id": "concept:write-amplification",
+    "slug": "write-amplification",
+    "name": "Write Amplification",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "Data written to storage being several times larger than the data the application wrote.",
+    "importance": 0.25,
+    "wikipedia_title": "Write Amplification"
+  },
+  {
+    "id": "concept:race-condition",
+    "slug": "race-condition",
+    "name": "Race Condition",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A bug where the result depends on the timing of concurrent operations.",
+    "importance": 0.45,
+    "wikipedia_title": "Race Condition"
+  },
+  {
+    "id": "concept:mutex",
+    "slug": "mutex",
+    "name": "Mutex",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A lock that lets only one thread at a time enter a critical section.",
+    "importance": 0.4,
+    "wikipedia_title": "Lock (computer science)"
+  },
+  {
+    "id": "concept:semaphore",
+    "slug": "semaphore",
+    "name": "Semaphore",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A counter that controls how many threads may use a resource at once.",
+    "importance": 0.35,
+    "wikipedia_title": "Semaphore (programming)"
+  },
+  {
+    "id": "concept:spinlock",
+    "slug": "spinlock",
+    "name": "Spinlock",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A lock that busy-waits instead of sleeping, used for very short critical sections.",
+    "importance": 0.25,
+    "wikipedia_title": "Spinlock"
+  },
+  {
+    "id": "concept:thread-pool",
+    "slug": "thread-pool",
+    "name": "Thread Pool",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "A set of reusable worker threads that run queued tasks.",
+    "importance": 0.35,
+    "wikipedia_title": "Thread Pool"
+  },
+  {
+    "id": "concept:zero-copy",
+    "slug": "zero-copy",
+    "name": "Zero-Copy",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Moving data between devices or processes without copying it through the CPU.",
+    "importance": 0.25,
+    "wikipedia_title": "Zero-Copy"
+  },
+  {
+    "id": "concept:memory-leak",
+    "slug": "memory-leak",
+    "name": "Memory Leak",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Memory that a program allocates and never frees.",
+    "importance": 0.4,
+    "wikipedia_title": "Memory Leak"
+  },
+  {
+    "id": "concept:memory-pool",
+    "slug": "memory-pool",
+    "name": "Memory Pool",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Pre-allocating fixed-size blocks to make allocation fast and predictable.",
+    "importance": 0.25,
+    "wikipedia_title": "Memory Pool"
+  },
+  {
+    "id": "concept:arena-allocation",
+    "slug": "arena-allocation",
+    "name": "Arena Allocation",
+    "node_type": "concept",
+    "primary_domain": "domain:systems",
+    "short_description": "Allocating many objects in one region and freeing them all at once.",
+    "importance": 0.25,
+    "wikipedia_title": "Region-based memory management"
+  },
+  {
+    "id": "concept:escape-analysis",
+    "slug": "escape-analysis",
+    "name": "Escape Analysis",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "A compiler analysis that finds objects which never leave a function, so they can live on the stack.",
+    "importance": 0.25,
+    "wikipedia_title": "Escape Analysis"
+  },
+  {
+    "id": "concept:inline-caching",
+    "slug": "inline-caching",
+    "name": "Inline Caching",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Caching the result of a method lookup at the call site to speed up dynamic languages.",
+    "importance": 0.25,
+    "wikipedia_title": "Inline Caching"
+  },
+  {
+    "id": "concept:off-by-one",
+    "slug": "off-by-one",
+    "name": "Off-by-One Error",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A loop or index that runs one step too many or too few.",
+    "importance": 0.3,
+    "wikipedia_title": "Off-by-one error"
+  },
+  {
+    "id": "concept:heisenbug",
+    "slug": "heisenbug",
+    "name": "Heisenbug",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A bug that changes or disappears when you try to observe it.",
+    "importance": 0.2,
+    "wikipedia_title": "Heisenbug"
+  },
+  {
+    "id": "concept:rubber-duck-debugging",
+    "slug": "rubber-duck-debugging",
+    "name": "Rubber Duck Debugging",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Finding a bug by explaining your code line by line, even to an object.",
+    "importance": 0.25,
+    "wikipedia_title": "Rubber Duck Debugging"
+  },
+  {
+    "id": "concept:yak-shaving",
+    "slug": "yak-shaving",
+    "name": "Yak Shaving",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A chain of small side tasks you must finish before you can do the real work.",
+    "importance": 0.15,
+    "wikipedia_title": "Yak Shaving"
+  },
+  {
+    "id": "concept:bikeshedding",
+    "slug": "bikeshedding",
+    "name": "Bikeshedding",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Spending disproportionate time on trivial decisions, also called the law of triviality.",
+    "importance": 0.2,
+    "wikipedia_title": "Law of triviality"
+  },
+  {
+    "id": "concept:dogfooding",
+    "slug": "dogfooding",
+    "name": "Dogfooding",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A company using its own product internally before customers do.",
+    "importance": 0.25,
+    "wikipedia_title": "Eating your own dog food"
+  },
+  {
+    "id": "concept:definition-of-done",
+    "slug": "definition-of-done",
+    "name": "Definition of Done",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "The shared checklist a piece of work must meet before a team calls it finished.",
+    "importance": 0.2
+  },
+  {
+    "id": "concept:story-points",
+    "slug": "story-points",
+    "name": "Story Points",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Relative units teams use to estimate the effort of user stories.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:user-story",
+    "slug": "user-story",
+    "name": "User Stories",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Short descriptions of a feature from the user's point of view.",
+    "importance": 0.35,
+    "wikipedia_title": "User story"
+  },
+  {
+    "id": "concept:sprint-scrum",
+    "slug": "sprint-scrum",
+    "name": "Sprints",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Fixed-length iterations, usually one to four weeks, in which a Scrum team delivers work.",
+    "importance": 0.35
+  },
+  {
+    "id": "concept:sprint-retrospective",
+    "slug": "sprint-retrospective",
+    "name": "Retrospectives",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Regular team meetings to reflect on what went well and what to change.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:hotfix",
+    "slug": "hotfix",
+    "name": "Hotfix",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "An urgent patch released outside the normal schedule to fix a live problem.",
+    "importance": 0.3,
+    "wikipedia_title": "Hotfix"
+  },
+  {
+    "id": "concept:rollback",
+    "slug": "rollback",
+    "name": "Rollback",
+    "node_type": "concept",
+    "primary_domain": "domain:cloud-devops",
+    "short_description": "Returning a system to an earlier known-good version after a bad release.",
+    "importance": 0.3
+  },
+  {
+    "id": "concept:bus-factor",
+    "slug": "bus-factor",
+    "name": "Bus Factor",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "How many people a project could lose before nobody knows how it works.",
+    "importance": 0.25,
+    "wikipedia_title": "Bus Factor"
+  },
+  {
+    "id": "concept:cargo-cult-programming",
+    "slug": "cargo-cult-programming",
+    "name": "Cargo Cult Programming",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Copying code or rituals without understanding why they work.",
+    "importance": 0.2,
+    "wikipedia_title": "Cargo Cult Programming"
+  },
+  {
+    "id": "concept:spaghetti-code",
+    "slug": "spaghetti-code",
+    "name": "Spaghetti Code",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Tangled code with no clear structure or flow.",
+    "importance": 0.3,
+    "wikipedia_title": "Spaghetti Code"
+  },
+  {
+    "id": "concept:god-object",
+    "slug": "god-object",
+    "name": "God Object",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "A class that knows or does far too much.",
+    "importance": 0.25,
+    "wikipedia_title": "God Object"
+  },
+  {
+    "id": "concept:magic-number",
+    "slug": "magic-number",
+    "name": "Magic Numbers",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Unexplained literal values in code that should be named constants.",
+    "importance": 0.2,
+    "wikipedia_title": "Magic number (programming)"
+  },
+  {
+    "id": "concept:dead-code",
+    "slug": "dead-code",
+    "name": "Dead Code",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Code that runs but whose result is never used, or that can never run.",
+    "importance": 0.25,
+    "wikipedia_title": "Dead Code"
+  },
+  {
+    "id": "concept:boilerplate-code",
+    "slug": "boilerplate-code",
+    "name": "Boilerplate Code",
+    "node_type": "concept",
+    "primary_domain": "domain:software-engineering",
+    "short_description": "Repetitive code that must be written with little change in many places.",
+    "importance": 0.25,
+    "wikipedia_title": "Boilerplate Code"
+  },
+  {
+    "id": "concept:syntactic-sugar",
+    "slug": "syntactic-sugar",
+    "name": "Syntactic Sugar",
+    "node_type": "concept",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "Syntax that makes code easier to write without adding new capability.",
+    "importance": 0.3,
+    "wikipedia_title": "Syntactic Sugar"
+  },
+  {
+    "id": "concept:polyfill",
+    "slug": "polyfill",
+    "name": "Polyfill",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Code that adds a modern browser feature to older browsers.",
+    "importance": 0.3,
+    "wikipedia_title": "Polyfill (programming)"
+  },
+  {
+    "id": "concept:minification",
+    "slug": "minification",
+    "name": "Minification",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Removing whitespace and shortening names to make code smaller to download.",
+    "importance": 0.3,
+    "wikipedia_title": "Minification (programming)"
+  },
+  {
+    "id": "concept:source-maps",
+    "slug": "source-maps",
+    "name": "Source Maps",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Files that map minified or compiled code back to the original source for debugging.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:hot-module-replacement",
+    "slug": "hot-module-replacement",
+    "name": "Hot Module Replacement",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Swapping changed modules into a running app without a full reload.",
+    "importance": 0.3,
+    "aliases": [
+      "HMR"
+    ]
+  },
+  {
+    "id": "concept:debouncing",
+    "slug": "debouncing",
+    "name": "Debouncing",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Waiting until events stop firing before running a handler.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:throttling",
+    "slug": "throttling",
+    "name": "Throttling",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Running a handler at most once per time window.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:isomorphic-javascript",
+    "slug": "isomorphic-javascript",
+    "name": "Isomorphic JavaScript",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "JavaScript that runs on both server and client, as in server rendering with hydration.",
+    "importance": 0.25,
+    "wikipedia_title": "Isomorphic JavaScript",
+    "aliases": [
+      "Universal JavaScript"
+    ]
+  },
+  {
+    "id": "concept:event-bubbling",
+    "slug": "event-bubbling",
+    "name": "Event Bubbling",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "DOM events travelling from the target element up through its ancestors.",
+    "importance": 0.25,
+    "wikipedia_title": "Event Bubbling"
+  },
+  {
+    "id": "concept:optimistic-ui",
+    "slug": "optimistic-ui",
+    "name": "Optimistic UI",
+    "node_type": "concept",
+    "primary_domain": "domain:frontend",
+    "short_description": "Showing the result of an action before the server confirms it.",
+    "importance": 0.25
+  },
+  {
+    "id": "concept:infinite-scroll",
+    "slug": "infinite-scroll",
+    "name": "Infinite Scroll",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Loading more content automatically as the user scrolls down.",
+    "importance": 0.25,
+    "wikipedia_title": "Infinite scrolling"
+  },
+  {
+    "id": "concept:skeleton-screen",
+    "slug": "skeleton-screen",
+    "name": "Skeleton Screens",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "Grey placeholder shapes shown while content loads.",
+    "importance": 0.2
+  },
+  {
+    "id": "concept:dark-mode",
+    "slug": "dark-mode",
+    "name": "Dark Mode",
+    "node_type": "concept",
+    "primary_domain": "domain:hci",
+    "short_description": "A colour scheme with light text on a dark background.",
+    "importance": 0.3,
+    "wikipedia_title": "Light-on-dark color scheme"
+  },
+  {
+    "id": "concept:floating-point",
+    "slug": "floating-point",
+    "name": "Floating-Point Arithmetic",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Representing real numbers approximately with a significand and exponent, as in IEEE 754.",
+    "importance": 0.45,
+    "wikipedia_title": "Floating-point arithmetic"
+  },
+  {
+    "id": "concept:twos-complement",
+    "slug": "twos-complement",
+    "name": "Two's Complement",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-architecture",
+    "short_description": "The standard way computers represent signed integers in binary.",
+    "importance": 0.3,
+    "wikipedia_title": "Two's complement"
+  },
+  {
+    "id": "concept:bit-manipulation",
+    "slug": "bit-manipulation",
+    "name": "Bit Manipulation",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Working directly with the bits of a value using AND, OR, XOR and shifts.",
+    "importance": 0.3,
+    "wikipedia_title": "Bit Manipulation"
+  },
+  {
+    "id": "concept:topological-sort",
+    "slug": "topological-sort",
+    "name": "Topological Sorting",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Ordering a directed acyclic graph so every edge points forward.",
+    "importance": 0.35,
+    "wikipedia_title": "Topological Sorting"
+  },
+  {
+    "id": "concept:union-find",
+    "slug": "union-find",
+    "name": "Union-Find",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A data structure that tracks which elements belong to the same set.",
+    "importance": 0.3,
+    "wikipedia_title": "Disjoint-set data structure",
+    "aliases": [
+      "Disjoint Set"
+    ]
+  },
+  {
+    "id": "concept:segment-tree",
+    "slug": "segment-tree",
+    "name": "Segment Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A tree for fast range queries and updates over an array.",
+    "importance": 0.25,
+    "wikipedia_title": "Segment Tree"
+  },
+  {
+    "id": "concept:fenwick-tree",
+    "slug": "fenwick-tree",
+    "name": "Fenwick Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A compact tree for prefix sums with logarithmic updates.",
+    "importance": 0.2,
+    "wikipedia_title": "Fenwick Tree",
+    "aliases": [
+      "Binary Indexed Tree"
+    ]
+  },
+  {
+    "id": "concept:avl-tree",
+    "slug": "avl-tree",
+    "name": "AVL Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "The first self-balancing binary search tree, kept balanced by rotations.",
+    "importance": 0.3,
+    "wikipedia_title": "AVL Tree"
+  },
+  {
+    "id": "concept:bitmap-index",
+    "slug": "bitmap-index",
+    "name": "Bitmap Index",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "An index that stores one bit array per value, efficient for low-cardinality columns.",
+    "importance": 0.25,
+    "wikipedia_title": "Bitmap Index"
+  },
+  {
+    "id": "concept:rope-data-structure",
+    "slug": "rope-data-structure",
+    "name": "Rope",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A tree of string pieces that makes edits to long text cheap, used in text editors.",
+    "importance": 0.2,
+    "wikipedia_title": "Rope (data structure)"
+  },
+  {
+    "id": "concept:ring-buffer",
+    "slug": "ring-buffer",
+    "name": "Ring Buffer",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A fixed-size buffer that wraps around, common in streaming and I/O.",
+    "importance": 0.3,
+    "wikipedia_title": "Circular buffer",
+    "aliases": [
+      "Circular Buffer"
+    ]
+  },
+  {
+    "id": "concept:cuckoo-filter",
+    "slug": "cuckoo-filter",
+    "name": "Cuckoo Filter",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A probabilistic set membership structure like a Bloom filter that also supports deletion.",
+    "importance": 0.2,
+    "wikipedia_title": "Cuckoo Filter"
+  },
+  {
+    "id": "concept:hyperloglog",
+    "slug": "hyperloglog",
+    "name": "HyperLogLog",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A probabilistic algorithm that estimates how many distinct items a stream has using little memory.",
+    "importance": 0.3,
+    "wikipedia_title": "HyperLogLog"
+  },
+  {
+    "id": "concept:count-min-sketch",
+    "slug": "count-min-sketch",
+    "name": "Count-Min Sketch",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A probabilistic table that estimates how often items appear in a stream.",
+    "importance": 0.2,
+    "wikipedia_title": "Count-Min Sketch"
+  },
+  {
+    "id": "concept:reservoir-sampling",
+    "slug": "reservoir-sampling",
+    "name": "Reservoir Sampling",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Picking a uniform random sample from a stream of unknown length.",
+    "importance": 0.2,
+    "wikipedia_title": "Reservoir Sampling"
+  },
+  {
+    "id": "concept:minhash",
+    "slug": "minhash",
+    "name": "MinHash",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A technique for quickly estimating how similar two sets are.",
+    "importance": 0.2,
+    "wikipedia_title": "MinHash"
+  },
+  {
+    "id": "concept:locality-sensitive-hashing",
+    "slug": "locality-sensitive-hashing",
+    "name": "Locality-Sensitive Hashing",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "Hashing similar items into the same buckets to find near neighbours quickly.",
+    "importance": 0.3,
+    "wikipedia_title": "Locality-Sensitive Hashing"
+  },
+  {
+    "id": "concept:geohash",
+    "slug": "geohash",
+    "name": "Geohash",
+    "node_type": "concept",
+    "primary_domain": "domain:geospatial",
+    "short_description": "Encoding latitude and longitude as a short string whose prefixes are nearby areas.",
+    "importance": 0.25,
+    "wikipedia_title": "Geohash"
+  },
+  {
+    "id": "concept:quadtree",
+    "slug": "quadtree",
+    "name": "Quadtree",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A tree that recursively splits 2D space into four quadrants.",
+    "importance": 0.3,
+    "wikipedia_title": "Quadtree"
+  },
+  {
+    "id": "concept:r-tree",
+    "slug": "r-tree",
+    "name": "R-tree",
+    "node_type": "concept",
+    "primary_domain": "domain:databases",
+    "short_description": "A tree index for spatial data that groups nearby rectangles.",
+    "importance": 0.25,
+    "wikipedia_title": "R-tree"
+  },
+  {
+    "id": "concept:k-d-tree",
+    "slug": "k-d-tree",
+    "name": "k-d Tree",
+    "node_type": "concept",
+    "primary_domain": "domain:theory",
+    "short_description": "A binary tree that partitions points in k-dimensional space for nearest-neighbour search.",
+    "importance": 0.25,
+    "wikipedia_title": "K-d tree"
+  },
+  {
+    "id": "concept:octree",
+    "slug": "octree",
+    "name": "Octree",
+    "node_type": "concept",
+    "primary_domain": "domain:computer-graphics",
+    "short_description": "A tree that recursively splits 3D space into eight octants, used in graphics and games.",
+    "importance": 0.2,
+    "wikipedia_title": "Octree"
   }
 ]

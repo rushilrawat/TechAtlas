@@ -50,6 +50,11 @@
       "node_id": "technology:sass",
       "added_in_review": true,
       "evidence": "packages/astro/package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rolldown",
+      "added_in_review": true,
+      "evidence": "package.json: rolldown declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

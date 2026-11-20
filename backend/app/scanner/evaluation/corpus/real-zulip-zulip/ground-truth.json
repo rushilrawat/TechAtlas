@@ -130,6 +130,16 @@
       "node_id": "technology:semgrep",
       "added_in_review": true,
       "evidence": "pyproject.toml: semgrep declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:zstd",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: zstd declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:black-formatter",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: black declared in pyproject.toml"
     }
   ],
   "optional_detections": [

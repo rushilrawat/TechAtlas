@@ -314,7 +314,8 @@
   "esp-idf-*": "technology:esp32",
   "esp-hal": "technology:esp32",
   "nix": null,
-  "grep": null
+  "grep": null,
+  "wiremock": null
  },
  "go": {
   "github.com/redis/go-redis*": "technology:redis",
@@ -429,7 +430,8 @@
   "vite_rails": "technology:vite",
   "opentelemetry-*": "technology:opentelemetry",
   "capybara-playwright-driver": "technology:playwright",
-  "mocha": null
+  "mocha": null,
+  "stoplight": null
  },
  "packagist": {
   "laravel/framework": "technology:laravel",

@@ -96,6 +96,11 @@
       "node_id": "technology:rocksdb",
       "added_in_review": true,
       "evidence": "application/pom.xml: org.rocksdb:rocksdbjni declared in pom.xml"
+    },
+    {
+      "node_id": "technology:guava",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.google.guava:guava declared in pom.xml"
     }
   ],
   "optional_detections": [

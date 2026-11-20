@@ -404,7 +404,7 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
 
 
 MACRO_COMPOSITION = "continents"
-EXPECTED_NODES, EXPECTED_EDGES = 2681, 8293  # canonical dataset size (sanity warning only)
+EXPECTED_NODES, EXPECTED_EDGES = 3122, 9834  # canonical dataset size (sanity warning only)
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [
@@ -416,7 +416,9 @@ STRATA = [
     ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev",
      "domain:iot", "domain:hci", "domain:interdisciplinary"],
 ]
-LANDSCAPE = 1.6  # target width:height of the packed composition (desktop canvas)
+# Target width:height of the packed composition. 1.5 (was 1.6) since dataset 0.9.0, so every
+# field heading still finds a spot at 1440x900.
+LANDSCAPE = 1.5
 
 
 def _ring_centers(order: list[str], ext: dict[str, float], _aff: dict) -> dict:

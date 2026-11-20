@@ -78,6 +78,26 @@
       "node_id": "technology:vitest",
       "added_in_review": true,
       "evidence": "package.json: @vitest/coverage-istanbul declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:coveralls",
+      "added_in_review": true,
+      "evidence": "package.json: coveralls declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lerna",
+      "added_in_review": true,
+      "evidence": "package.json: lerna declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

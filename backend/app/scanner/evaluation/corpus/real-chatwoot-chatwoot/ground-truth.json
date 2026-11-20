@@ -84,6 +84,26 @@
       "node_id": "technology:postcss",
       "added_in_review": true,
       "evidence": "package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:liquid-template",
+      "added_in_review": true,
+      "evidence": "Gemfile: liquid declared in Gemfile"
+    },
+    {
+      "node_id": "technology:elastic-apm",
+      "added_in_review": true,
+      "evidence": "Gemfile: elastic-apm declared in Gemfile"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

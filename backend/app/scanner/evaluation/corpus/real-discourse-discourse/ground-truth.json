@@ -56,6 +56,16 @@
       "node_id": "technology:rspec",
       "added_in_review": true,
       "evidence": "Gemfile: rspec declared in Gemfile"
+    },
+    {
+      "node_id": "technology:liquid-template",
+      "added_in_review": true,
+      "evidence": "Gemfile: liquid declared in Gemfile"
+    },
+    {
+      "node_id": "technology:jsdoc",
+      "added_in_review": true,
+      "evidence": "package.json: jsdoc declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

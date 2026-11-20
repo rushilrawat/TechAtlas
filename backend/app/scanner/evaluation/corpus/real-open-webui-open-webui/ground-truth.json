@@ -213,6 +213,26 @@
       "node_id": "technology:pydantic",
       "added_in_review": true,
       "evidence": "backend/requirements.txt: pydantic declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:mermaid-js",
+      "added_in_review": true,
+      "evidence": "package.json: mermaid declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vega",
+      "added_in_review": true,
+      "evidence": "package.json: vega declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:brotli",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: brotli declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:black-formatter",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: black declared in requirements.txt"
     }
   ],
   "optional_detections": [
