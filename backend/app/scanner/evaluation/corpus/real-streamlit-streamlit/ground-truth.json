@@ -68,6 +68,31 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pre-commit",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pre-commit declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:hypothesis-py",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: hypothesis declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:scipy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: scipy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pydantic declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sympy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sympy declared in pyproject.toml"
     }
   ],
   "optional_detections": [
@@ -85,6 +110,11 @@
     },
     {
       "node_id": "technology:yaml"
+    },
+    {
+      "node_id": "technology:streamlit",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: streamlit declared in pyproject.toml"
     }
   ]
 }

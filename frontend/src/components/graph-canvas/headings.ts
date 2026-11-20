@@ -16,6 +16,12 @@ export const SHORT_NAMES: Record<string, string> = {
   "domain:computer-engineering": "Comp. Eng.", "domain:hci": "HCI", "domain:interdisciplinary": "Interdisciplinary",
   "domain:offensive-security": "Ethical Hacking",
   "domain:computer-graphics": "Graphics",
+  "domain:programming-languages": "Languages", "domain:data-science": "Data Science",
+  "domain:enterprise-software": "Enterprise", "domain:generative-ai": "GenAI",
+  "domain:cryptography": "Cryptography", "domain:observability": "Observability",
+  "domain:legacy-mainframe": "Mainframes", "domain:audio-music": "Audio & Music",
+  "domain:automotive-aerospace": "Auto & Aero", "domain:geospatial": "Geospatial",
+  "domain:cms-ecommerce": "CMS & Commerce",
 };
 let headingCtx: CanvasRenderingContext2D | null = null;
 

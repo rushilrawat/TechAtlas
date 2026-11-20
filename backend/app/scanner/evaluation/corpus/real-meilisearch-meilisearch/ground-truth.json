@@ -16,6 +16,31 @@
       "node_id": "technology:prometheus",
       "added_in_review": true,
       "evidence": "crates/meilisearch/Cargo.toml: prometheus declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:actix-web",
+      "added_in_review": true,
+      "evidence": "crates/meilisearch/Cargo.toml: actix-web declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:rustls",
+      "added_in_review": true,
+      "evidence": "crates/meilisearch/Cargo.toml: rustls declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:tokio",
+      "added_in_review": true,
+      "evidence": "crates/meilisearch/Cargo.toml: tokio declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:liquid-template",
+      "added_in_review": true,
+      "evidence": "crates/meilisearch/Cargo.toml: liquid declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:brotli",
+      "added_in_review": true,
+      "evidence": "crates/meilisearch/Cargo.toml: brotli declared in Cargo.toml [dev]"
     }
   ],
   "optional_detections": [

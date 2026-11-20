@@ -49,6 +49,31 @@
       "node_id": "technology:urql",
       "added_in_review": true,
       "evidence": "packages/hoppscotch-common/package.json: @urql/core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:rollup",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: rollup declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:monaco-editor",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: monaco-editor declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

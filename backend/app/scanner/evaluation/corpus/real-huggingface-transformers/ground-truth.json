@@ -20,6 +20,51 @@
     },
     {
       "node_id": "technology:pytorch"
+    },
+    {
+      "node_id": "technology:deepspeed",
+      "added_in_review": true,
+      "evidence": "setup.py: deepspeed declared in setup.py"
+    },
+    {
+      "node_id": "technology:diffusers",
+      "added_in_review": true,
+      "evidence": "setup.py: diffusers declared in setup.py"
+    },
+    {
+      "node_id": "technology:nltk",
+      "added_in_review": true,
+      "evidence": "setup.py: nltk declared in setup.py"
+    },
+    {
+      "node_id": "technology:optuna",
+      "added_in_review": true,
+      "evidence": "setup.py: optuna declared in setup.py"
+    },
+    {
+      "node_id": "technology:peft",
+      "added_in_review": true,
+      "evidence": "setup.py: peft declared in setup.py"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "setup.py: pydantic declared in setup.py"
+    },
+    {
+      "node_id": "technology:scipy",
+      "added_in_review": true,
+      "evidence": "setup.py: scipy declared in setup.py"
+    },
+    {
+      "node_id": "technology:starlette",
+      "added_in_review": true,
+      "evidence": "setup.py: starlette declared in setup.py"
+    },
+    {
+      "node_id": "technology:uvicorn",
+      "added_in_review": true,
+      "evidence": "setup.py: uvicorn declared in setup.py"
     }
   ],
   "optional_detections": [

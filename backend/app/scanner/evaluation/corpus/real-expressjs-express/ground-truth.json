@@ -11,6 +11,11 @@
     },
     {
       "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:mocha",
+      "added_in_review": true,
+      "evidence": "package.json: mocha declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

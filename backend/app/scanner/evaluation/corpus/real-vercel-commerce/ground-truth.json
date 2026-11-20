@@ -20,6 +20,11 @@
     },
     {
       "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

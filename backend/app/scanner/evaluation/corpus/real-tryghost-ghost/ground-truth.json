@@ -17,6 +17,21 @@
     },
     {
       "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:nx",
+      "added_in_review": true,
+      "evidence": "package.json: nx declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

@@ -178,6 +178,61 @@
       "node_id": "technology:ruff",
       "added_in_review": true,
       "evidence": "pyproject.toml: ruff declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:alpine-js",
+      "added_in_review": true,
+      "evidence": "package.json: alpinejs declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chart-js",
+      "added_in_review": true,
+      "evidence": "package.json: chart.js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:leaflet",
+      "added_in_review": true,
+      "evidence": "package.json: leaflet declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vega-lite",
+      "added_in_review": true,
+      "evidence": "package.json: vega-lite declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:uvicorn",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: uvicorn declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: pydantic declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:mermaid-js",
+      "added_in_review": true,
+      "evidence": "package.json: mermaid declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:vega",
+      "added_in_review": true,
+      "evidence": "package.json: vega declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:brotli",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: brotli declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:black-formatter",
+      "added_in_review": true,
+      "evidence": "backend/requirements.txt: black declared in requirements.txt"
     }
   ],
   "optional_detections": [

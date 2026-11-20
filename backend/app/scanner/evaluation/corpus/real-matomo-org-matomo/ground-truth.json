@@ -35,6 +35,21 @@
       "node_id": "technology:jquery",
       "added_in_review": true,
       "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:less-css",
+      "added_in_review": true,
+      "evidence": "package.json: less declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:nock",
+      "added_in_review": true,
+      "evidence": "package.json: nock declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

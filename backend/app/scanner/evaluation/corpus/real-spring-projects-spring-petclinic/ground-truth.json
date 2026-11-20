@@ -29,6 +29,21 @@
     },
     {
       "node_id": "technology:testcontainers"
+    },
+    {
+      "node_id": "technology:bootstrap",
+      "added_in_review": true,
+      "evidence": "build.gradle: org.webjars.npm:bootstrap declared in build.gradle"
+    },
+    {
+      "node_id": "technology:h2-database",
+      "added_in_review": true,
+      "evidence": "build.gradle: com.h2database:h2 declared in build.gradle"
+    },
+    {
+      "node_id": "technology:checkstyle",
+      "added_in_review": true,
+      "evidence": "build.gradle: Gradle plugin checkstyle applied in build.gradle"
     }
   ],
   "optional_detections": [

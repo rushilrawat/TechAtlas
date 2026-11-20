@@ -77,6 +77,16 @@
       "node_id": "technology:testcontainers",
       "added_in_review": true,
       "evidence": "server/package.json: testcontainers declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:bullmq",
+      "added_in_review": true,
+      "evidence": "server/package.json: bullmq declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:geojson",
+      "added_in_review": true,
+      "evidence": "web/package.json: geojson declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

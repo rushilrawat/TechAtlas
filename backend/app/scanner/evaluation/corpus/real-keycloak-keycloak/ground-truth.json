@@ -24,6 +24,16 @@
       "node_id": "technology:mysql",
       "added_in_review": true,
       "evidence": "pom.xml: com.mysql:mysql-connector-j declared in pom.xml"
+    },
+    {
+      "node_id": "technology:antlr",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.antlr:antlr4-runtime declared in pom.xml"
+    },
+    {
+      "node_id": "technology:h2-database",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.h2database:h2 declared in pom.xml"
     }
   ],
   "optional_detections": [

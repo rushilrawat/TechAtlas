@@ -11,6 +11,26 @@
     },
     {
       "node_id": "technology:opentelemetry"
+    },
+    {
+      "node_id": "technology:v8",
+      "added_in_review": true,
+      "evidence": "cli/Cargo.toml: v8 declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:rustls",
+      "added_in_review": true,
+      "evidence": "cli/Cargo.toml: rustls declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:tokio",
+      "added_in_review": true,
+      "evidence": "cli/Cargo.toml: tokio declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:zstd",
+      "added_in_review": true,
+      "evidence": "cli/Cargo.toml: zstd declared in Cargo.toml [dependencies]"
     }
   ],
   "optional_detections": [

@@ -68,6 +68,11 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:computer-engineering": "#e3c78a",  # warm sand
     "domain:hci": "#ff8a5c",                   # salmon
     "domain:interdisciplinary": "#b9a6ff",     # soft lavender
+    # Added with the 2,000-node expansion (dataset 0.8.0). With 23 top-level fields the
+    # palette can no longer keep every hue far apart; these sit in the gaps that remained.
+    "domain:programming-languages": "#9aa83a",  # olive
+    "domain:data-science": "#c2185b",           # raspberry
+    "domain:enterprise-software": "#6f8fa6",    # steel blue-grey
     # Subdomains — tints within the PARENT family (hierarchy honest, §12).
     "domain:computer-architecture": "#d6b46a", # deeper sand (within Computer Engineering)
     "domain:embedded": "#c9a35c",              # ochre sand (within Computer Engineering)
@@ -78,6 +83,14 @@ DOMAIN_COLORS: dict[str, str] = {
     "domain:health-informatics": "#ddd3ff",    # pale lavender (within Interdisciplinary)
     "domain:computer-graphics": "#ffb0c2",     # light coral (within Game Dev)
     "domain:offensive-security": "#ff8fa3",       # light crimson (within Security)
+    "domain:cryptography": "#f7a1b3",          # pale crimson (within Security)
+    "domain:generative-ai": "#a466ff",         # light violet (within AI & ML)
+    "domain:observability": "#86a9f3",         # light indigo (within Cloud & DevOps)
+    "domain:legacy-mainframe": "#cf8a5a",      # light copper (within Systems)
+    "domain:audio-music": "#dcc48f",           # light khaki sand (within Signal Processing)
+    "domain:automotive-aerospace": "#b8924f",  # deep ochre (within Embedded)
+    "domain:geospatial": "#c4b5fd",            # periwinkle lavender (within Interdisciplinary)
+    "domain:cms-ecommerce": "#7fdc98",         # light green (within Backend)
 }
 FALLBACK_COLOR = "#9aa5ce"
 

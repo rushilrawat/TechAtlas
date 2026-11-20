@@ -42,6 +42,16 @@
       "node_id": "technology:selenium",
       "added_in_review": true,
       "evidence": "Gemfile: selenium-webdriver declared in Gemfile"
+    },
+    {
+      "node_id": "technology:sidekiq",
+      "added_in_review": true,
+      "evidence": "Gemfile: sidekiq declared in Gemfile"
+    },
+    {
+      "node_id": "technology:plaid",
+      "added_in_review": true,
+      "evidence": "Gemfile: plaid declared in Gemfile"
     }
   ],
   "optional_detections": [

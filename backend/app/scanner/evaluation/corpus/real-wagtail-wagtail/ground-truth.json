@@ -67,6 +67,41 @@
       "node_id": "technology:sass",
       "added_in_review": true,
       "evidence": "package.json: sass declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:axe-core",
+      "added_in_review": true,
+      "evidence": "package.json: axe-core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pydantic declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:semgrep",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: semgrep declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sphinx-docs",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sphinx declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:enzyme",
+      "added_in_review": true,
+      "evidence": "package.json: enzyme declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:typedoc",
+      "added_in_review": true,
+      "evidence": "package.json: typedoc declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

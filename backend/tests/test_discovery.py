@@ -329,12 +329,13 @@ def _wikidata_client_for(class_qid: str, rows: list[dict]):
 def test_auto_ingest_places_node_with_deterministic_domain_and_single_edge():
     from discover import auto_ingest
 
+    # A made-up framework name, so the candidate is never already in the atlas.
     rows = [
         {
             "item": {"value": "http://www.wikidata.org/entity/Q111"},
-            "itemLabel": {"value": "Elysia"},
+            "itemLabel": {"value": "Quillframe"},
             "itemDescription": {"value": "edge web framework"},
-            "article": {"value": "https://en.wikipedia.org/wiki/Elysia_(web_framework)"},
+            "article": {"value": "https://en.wikipedia.org/wiki/Quillframe_(web_framework)"},
         }
     ]
     client = _wikidata_client_for("Q1330354", rows)
@@ -351,7 +352,7 @@ def test_auto_ingest_places_node_with_deterministic_domain_and_single_edge():
     # exactly ONE edge, and it's the definitionally-true belongs_to_domain
     assert len(edges) == 1
     assert edges[0] == {
-        "source": "technology:elysia",
+        "source": "technology:quillframe",
         "target": "domain:frontend",
         "relationship_type": "belongs_to_domain",
     }

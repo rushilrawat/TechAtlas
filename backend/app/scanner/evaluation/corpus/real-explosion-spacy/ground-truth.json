@@ -23,6 +23,26 @@
     },
     {
       "node_id": "technology:numpy"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "requirements.txt: pydantic declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:pre-commit",
+      "added_in_review": true,
+      "evidence": "requirements.txt: pre-commit declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:cython",
+      "added_in_review": true,
+      "evidence": "requirements.txt: cython declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:hypothesis-py",
+      "added_in_review": true,
+      "evidence": "requirements.txt: hypothesis declared in requirements.txt"
     }
   ],
   "optional_detections": [

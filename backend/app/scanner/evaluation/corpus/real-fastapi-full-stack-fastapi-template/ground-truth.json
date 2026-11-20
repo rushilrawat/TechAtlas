@@ -57,6 +57,16 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "frontend/package.json: react-hook-form declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "backend/pyproject.toml: pydantic declared in pyproject.toml"
     }
   ],
   "optional_detections": [

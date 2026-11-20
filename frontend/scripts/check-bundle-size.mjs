@@ -7,8 +7,10 @@ import { gzipSync } from "node:zlib";
 
 // graph: the payload every visitor downloads before the atlas draws. The static API
 // snapshot is checked when it has been rendered, otherwise the compiled dataset (which
-// is about the same size gzipped). ~113 KB at dataset 0.7.0 / 1,194 nodes.
-const BUDGETS = { js: 170_000, css: 15_000, woff2: 60_000, graph: 140_000 };
+// is about the same size gzipped). ~113 KB at dataset 0.7.0 / 1,194 nodes; ~258 KB (snapshot)
+// and ~271 KB (data/graph.json) at 0.9.0 / 3,122 nodes. Past this, load a light index first.
+// js: the entry chunk embeds data/seed/apps.json, which grew with the 0.8.0 app stacks.
+const BUDGETS = { js: 172_000, css: 15_000, woff2: 60_000, graph: 280_000 };
 const dir = join(process.cwd(), "dist", "assets");
 let failed = false;
 const totals = { js: 0, css: 0, woff2: 0 };

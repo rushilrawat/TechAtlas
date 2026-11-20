@@ -24,6 +24,21 @@
       "node_id": "technology:testcontainers",
       "added_in_review": true,
       "evidence": "pom.xml: org.testcontainers:testcontainers-junit-jupiter declared in pom.xml"
+    },
+    {
+      "node_id": "technology:mockito",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.mockito:mockito-core declared in pom.xml"
+    },
+    {
+      "node_id": "technology:spotbugs",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.github.hazendaz.spotbugs:spotbugs-maven-plugin declared in pom.xml"
+    },
+    {
+      "node_id": "technology:checkstyle",
+      "added_in_review": true,
+      "evidence": "pom.xml: com.puppycrawl.tools:checkstyle declared in pom.xml"
     }
   ],
   "optional_detections": [

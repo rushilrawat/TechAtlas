@@ -35,6 +35,11 @@
       "node_id": "technology:tanstack-query",
       "added_in_review": true,
       "evidence": "assets/package.json: @tanstack/react-query declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:alpine-js",
+      "added_in_review": true,
+      "evidence": "assets/package.json: alpinejs declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

@@ -83,6 +83,41 @@
       "node_id": "technology:vitest",
       "added_in_review": true,
       "evidence": "apps/studio/package.json: @vitest/coverage-v8 declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:framer-motion",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: motion declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:radix-ui",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: radix-ui declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: react-hook-form declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:monaco-editor",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: monaco-editor declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:recharts",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: recharts declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:msw",
+      "added_in_review": true,
+      "evidence": "apps/studio/package.json: msw declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

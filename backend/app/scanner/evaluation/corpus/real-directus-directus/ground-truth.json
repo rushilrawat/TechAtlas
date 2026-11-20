@@ -78,6 +78,16 @@
       "node_id": "technology:vuex-pinia",
       "added_in_review": true,
       "evidence": "app/package.json: pinia declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rollup",
+      "added_in_review": true,
+      "evidence": "api/package.json: rollup declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:rolldown",
+      "added_in_review": true,
+      "evidence": "api/package.json: rolldown declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [
@@ -95,6 +105,16 @@
     },
     {
       "node_id": "technology:yaml"
+    },
+    {
+      "node_id": "technology:geojson",
+      "added_in_review": true,
+      "evidence": "app/package.json: geojson declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:directus",
+      "added_in_review": true,
+      "evidence": "api/package.json: directus declared in package.json (dependencies)"
     }
   ]
 }

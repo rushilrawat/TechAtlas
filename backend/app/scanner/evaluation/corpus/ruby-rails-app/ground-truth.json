@@ -21,6 +21,11 @@
     },
     {
       "node_id": "concept:containerization"
+    },
+    {
+      "node_id": "technology:sidekiq",
+      "added_in_review": true,
+      "evidence": "Gemfile: sidekiq declared in Gemfile"
     }
   ]
 }

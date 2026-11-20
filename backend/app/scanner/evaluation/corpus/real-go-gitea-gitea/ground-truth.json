@@ -74,6 +74,21 @@
       "node_id": "technology:sqlite",
       "added_in_review": true,
       "evidence": "go.mod: github.com/mattn/go-sqlite3 required in go.mod"
+    },
+    {
+      "node_id": "technology:chart-js",
+      "added_in_review": true,
+      "evidence": "package.json: chart.js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mermaid-js",
+      "added_in_review": true,
+      "evidence": "package.json: mermaid declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

@@ -16,9 +16,12 @@
       {"tech": "kafka", "layer": "data", "note": "Keystone event pipeline"},
       {"tech": "flink", "layer": "data", "note": "Stream processing in Keystone"},
       {"tech": "spark", "layer": "data", "note": "Batch analytics"},
-      {"tech": "aws", "layer": "infra", "note": "Runs almost entirely on AWS"}
+      {"tech": "aws", "layer": "infra", "note": "Runs almost entirely on AWS"},
+      {"tech": "memcached", "layer": "data", "note": "EVCache, the distributed cache, is built on memcached"},
+      {"tech": "netflix-zuul", "layer": "backend", "note": "Edge gateway (Netflix OSS)"},
+      {"tech": "netflix-eureka", "layer": "backend", "note": "Service discovery (Netflix OSS)"}
     ],
-    "not_in_atlas": ["Zuul", "Eureka", "EVCache (memcached)", "Titus", "GraphQL DGS"],
+    "not_in_atlas": ["Titus", "GraphQL DGS"],
     "sources": [{"title": "Netflix TechBlog", "url": "https://netflixtechblog.com"}]
   },
   {
@@ -37,9 +40,12 @@
       {"tech": "bigquery", "layer": "data", "note": "Analytics warehouse after the 2016 move to Google Cloud"},
       {"tech": "gcp", "layer": "infra", "note": "Migrated from own data centres to Google Cloud in 2016"},
       {"tech": "kubernetes", "layer": "infra", "note": "Services run on GKE"},
-      {"tech": "backstage", "layer": "infra", "note": "Developer portal, built at Spotify and open-sourced"}
+      {"tech": "backstage", "layer": "infra", "note": "Developer portal, built at Spotify and open-sourced"},
+      {"tech": "google-pubsub", "layer": "data", "note": "Event delivery"},
+      {"tech": "apache-beam", "layer": "data", "note": "Batch and streaming pipelines, run on Dataflow"},
+      {"tech": "luigi", "layer": "data", "note": "Batch job pipelines (built at Spotify)"}
     ],
-    "not_in_atlas": ["Google Cloud Pub/Sub", "Dataflow / Apache Beam", "Luigi"],
+    "not_in_atlas": [],
     "sources": [{"title": "Spotify Engineering", "url": "https://engineering.atspotify.com"}]
   },
   {
@@ -59,9 +65,11 @@
       {"tech": "airflow", "layer": "data", "note": "Created at Airbnb in 2014"},
       {"tech": "spark", "layer": "data", "note": "Batch data processing"},
       {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "apache-hive", "layer": "data", "note": "Data warehouse on Hadoop"},
+      {"tech": "apache-superset", "layer": "data", "note": "Dashboards (created at Airbnb)"}
     ],
-    "not_in_atlas": ["Hive", "Superset"],
+    "not_in_atlas": [],
     "sources": [{"title": "The Airbnb Tech Blog", "url": "https://medium.com/airbnb-engineering"}]
   },
   {
@@ -83,9 +91,13 @@
       {"tech": "kafka", "layer": "data", "note": "Real-time event backbone"},
       {"tech": "flink", "layer": "data", "note": "Stream processing"},
       {"tech": "spark", "layer": "data", "note": "Batch processing"},
-      {"tech": "jaeger", "layer": "infra", "note": "Distributed tracing, created at Uber"}
+      {"tech": "jaeger", "layer": "infra", "note": "Distributed tracing, created at Uber"},
+      {"tech": "cadence-workflow", "layer": "backend", "note": "Workflow orchestration (built at Uber)"},
+      {"tech": "hadoop", "layer": "data", "note": "Data lake storage"},
+      {"tech": "presto", "layer": "data", "note": "Interactive SQL analytics"},
+      {"tech": "apache-pinot", "layer": "data", "note": "Real-time analytics"}
     ],
-    "not_in_atlas": ["Cadence", "Hadoop/HDFS", "Presto", "Apache Pinot", "Ringpop"],
+    "not_in_atlas": ["Ringpop"],
     "sources": [{"title": "Uber Engineering Blog", "url": "https://www.uber.com/blog/engineering/"}]
   },
   {
@@ -101,9 +113,10 @@
       {"tech": "django", "layer": "backend", "note": "Web framework since launch"},
       {"tech": "postgresql", "layer": "data", "note": "Sharded relational store for users and media"},
       {"tech": "cassandra", "layer": "data", "note": "Feeds, activity and other high-write data"},
-      {"tech": "redis", "layer": "data", "note": "Early feed and session storage"}
+      {"tech": "redis", "layer": "data", "note": "Early feed and session storage"},
+      {"tech": "memcached", "layer": "data", "note": "Caching layer"}
     ],
-    "not_in_atlas": ["memcached", "Cinder (CPython fork)"],
+    "not_in_atlas": ["Cinder (CPython fork)"],
     "sources": [{"title": "Instagram Engineering", "url": "https://instagram-engineering.com"}]
   },
   {
@@ -118,9 +131,10 @@
       {"tech": "ruby", "layer": "backend", "note": "Core API, type-checked with Sorbet"},
       {"tech": "go", "layer": "backend", "note": "Infrastructure services such as Veneur"},
       {"tech": "mongodb", "layer": "data", "note": "Base of DocDB, Stripe's main database"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "sorbet", "layer": "backend", "note": "Type checker for its Ruby codebase (built at Stripe)"}
     ],
-    "not_in_atlas": ["Sorbet"],
+    "not_in_atlas": [],
     "sources": [{"title": "Stripe Engineering Blog", "url": "https://stripe.com/blog/engineering"}]
   },
   {
@@ -138,9 +152,10 @@
       {"tech": "rust", "layer": "backend", "note": "Read States and other hot paths (2020 rewrite from Go)"},
       {"tech": "python", "layer": "backend", "note": "HTTP API"},
       {"tech": "cassandra", "layer": "data", "note": "Message storage until the move to ScyllaDB"},
-      {"tech": "gcp", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "gcp", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "scylladb", "layer": "data", "note": "Message storage after the move from Cassandra"}
     ],
-    "not_in_atlas": ["ScyllaDB"],
+    "not_in_atlas": [],
     "sources": [{"title": "Discord Engineering Blog", "url": "https://discord.com/category/engineering"}]
   },
   {
@@ -158,9 +173,11 @@
       {"tech": "rust", "layer": "backend", "note": "Blackbird, the code search engine (2023)"},
       {"tech": "mysql", "layer": "data", "note": "Primary database"},
       {"tech": "redis", "layer": "data", "note": "Caching and queues"},
-      {"tech": "kubernetes", "layer": "infra", "note": "Runs github.com since 2017"}
+      {"tech": "kubernetes", "layer": "infra", "note": "Runs github.com since 2017"},
+      {"tech": "vitess", "layer": "data", "note": "MySQL sharding"},
+      {"tech": "memcached", "layer": "data", "note": "Caching"}
     ],
-    "not_in_atlas": ["Vitess", "memcached"],
+    "not_in_atlas": [],
     "sources": [{"title": "The GitHub Blog: Engineering", "url": "https://github.blog/engineering/"}]
   },
   {
@@ -180,9 +197,10 @@
       {"tech": "redis", "layer": "data", "note": "Caching and jobs"},
       {"tech": "kafka", "layer": "data", "note": "Event streaming"},
       {"tech": "gcp", "layer": "infra", "note": "Cloud provider"},
-      {"tech": "kubernetes", "layer": "infra", "note": "Container platform"}
+      {"tech": "kubernetes", "layer": "infra", "note": "Container platform"},
+      {"tech": "memcached", "layer": "data", "note": "Caching"}
     ],
-    "not_in_atlas": ["memcached"],
+    "not_in_atlas": [],
     "sources": [{"title": "Shopify Engineering", "url": "https://shopify.engineering"}]
   },
   {
@@ -199,9 +217,11 @@
       {"tech": "java", "layer": "backend", "note": "Services"},
       {"tech": "go", "layer": "backend", "note": "Services"},
       {"tech": "mysql", "layer": "data", "note": "Primary store"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "hack", "layer": "backend", "note": "Web application code on HHVM"},
+      {"tech": "vitess", "layer": "data", "note": "MySQL sharding"}
     ],
-    "not_in_atlas": ["Hack (the language)", "Vitess"],
+    "not_in_atlas": [],
     "sources": [{"title": "Slack Engineering", "url": "https://slack.engineering"}]
   },
   {
@@ -238,9 +258,11 @@
       {"tech": "mysql", "layer": "data", "note": "Sharded primary store"},
       {"tech": "kafka", "layer": "data", "note": "Event logging"},
       {"tech": "spark", "layer": "data", "note": "Batch processing"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "hbase", "layer": "data", "note": "Wide-column storage"},
+      {"tech": "memcached", "layer": "data", "note": "Caching"}
     ],
-    "not_in_atlas": ["HBase", "memcached"],
+    "not_in_atlas": [],
     "sources": [{"title": "Pinterest Engineering Blog", "url": "https://medium.com/pinterest-engineering"}]
   },
   {
@@ -254,9 +276,13 @@
       {"tech": "scala", "layer": "backend", "note": "Kafka and other data systems"},
       {"tech": "python", "layer": "backend", "note": "Tooling and data science"},
       {"tech": "kafka", "layer": "data", "note": "Created at LinkedIn; open-sourced in 2011"},
-      {"tech": "spark", "layer": "data", "note": "Batch processing"}
+      {"tech": "spark", "layer": "data", "note": "Batch processing"},
+      {"tech": "ember-js", "layer": "web", "note": "Web front end"},
+      {"tech": "apache-samza", "layer": "data", "note": "Stream processing (built at LinkedIn)"},
+      {"tech": "apache-pinot", "layer": "data", "note": "Real-time analytics (built at LinkedIn)"},
+      {"tech": "hadoop", "layer": "data", "note": "Offline data processing"}
     ],
-    "not_in_atlas": ["Ember.js", "Samza", "Apache Pinot", "Espresso", "Hadoop"],
+    "not_in_atlas": ["Espresso"],
     "sources": [{"title": "LinkedIn Engineering Blog", "url": "https://www.linkedin.com/blog/engineering"}]
   },
   {
@@ -290,9 +316,10 @@
       {"tech": "cassandra", "layer": "data", "note": "Votes, comments and other high-volume data"},
       {"tech": "kafka", "layer": "data", "note": "Event pipeline"},
       {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "memcached", "layer": "data", "note": "Caching"}
     ],
-    "not_in_atlas": ["memcached"],
+    "not_in_atlas": [],
     "sources": [{"title": "Reddit Engineering (r/RedditEng)", "url": "https://www.reddit.com/r/RedditEng/"}]
   },
   {
@@ -311,9 +338,11 @@
       {"tech": "postgresql", "layer": "data", "note": "Primary store, sharded in 2021"},
       {"tech": "kafka", "layer": "data", "note": "Change data feed into the data lake"},
       {"tech": "spark", "layer": "data", "note": "Data lake processing"},
-      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
+      {"tech": "debezium", "layer": "data", "note": "Change data capture into the data lake"},
+      {"tech": "apache-hudi", "layer": "data", "note": "Data lake table format"}
     ],
-    "not_in_atlas": ["Debezium", "Apache Hudi"],
+    "not_in_atlas": [],
     "sources": [{"title": "Notion Blog: Engineering", "url": "https://www.notion.com/blog/topic/tech"}]
   },
   {
@@ -333,9 +362,12 @@
       {"tech": "kafka", "layer": "data", "note": "Log pipeline"},
       {"tech": "postgresql", "layer": "data", "note": "Configuration data"},
       {"tech": "ebpf", "layer": "infra", "note": "DDoS mitigation and load balancing"},
-      {"tech": "linux", "layer": "infra", "note": "Edge servers"}
+      {"tech": "linux", "layer": "infra", "note": "Edge servers"},
+      {"tech": "pingora", "layer": "backend", "note": "Rust proxy framework that replaced NGINX"},
+      {"tech": "openresty", "layer": "backend", "note": "NGINX + Lua edge logic"},
+      {"tech": "v8", "layer": "infra", "note": "JavaScript engine whose isolates run Workers"}
     ],
-    "not_in_atlas": ["Pingora", "OpenResty", "V8"],
+    "not_in_atlas": [],
     "sources": [{"title": "The Cloudflare Blog", "url": "https://blog.cloudflare.com"}]
   },
   {
@@ -367,9 +399,12 @@
       {"tech": "lua", "layer": "backend", "note": "Template modules (Scribunto)"},
       {"tech": "mariadb", "layer": "data", "note": "Primary database"},
       {"tech": "elasticsearch", "layer": "data", "note": "On-wiki search (CirrusSearch), now moving to the OpenSearch fork"},
-      {"tech": "kubernetes", "layer": "infra", "note": "Hosting services in Wikimedia's own data centres"}
+      {"tech": "kubernetes", "layer": "infra", "note": "Hosting services in Wikimedia's own data centres"},
+      {"tech": "mediawiki", "layer": "backend", "note": "The wiki software Wikipedia runs on"},
+      {"tech": "varnish", "layer": "infra", "note": "HTTP caching"},
+      {"tech": "memcached", "layer": "data", "note": "Caching"}
     ],
-    "not_in_atlas": ["MediaWiki", "Varnish", "memcached", "OpenSearch"],
+    "not_in_atlas": [],
     "sources": [{"title": "Wikimedia Tech Blog", "url": "https://techblog.wikimedia.org"}]
   },
   {
@@ -385,9 +420,11 @@
       {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
       {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
       {"tech": "flink", "layer": "data", "note": "Streaming"},
-      {"tech": "kafka", "layer": "data", "note": "Event streaming"}
+      {"tech": "kafka", "layer": "data", "note": "Event streaming"},
+      {"tech": "flyte", "layer": "data", "note": "Workflow orchestration (built at Lyft)"},
+      {"tech": "amundsen", "layer": "data", "note": "Data discovery (built at Lyft)"}
     ],
-    "not_in_atlas": ["Amundsen", "Flyte"],
+    "not_in_atlas": [],
     "sources": [{"title": "Lyft Engineering", "url": "https://eng.lyft.com"}]
   },
   {
@@ -422,9 +459,10 @@
       {"tech": "pytorch", "layer": "ml", "note": "OpenAI standardised on PyTorch in 2020"},
       {"tech": "kubernetes", "layer": "infra", "note": "Research and serving clusters (scaled to 7,500 nodes)"},
       {"tech": "azure", "layer": "infra", "note": "Primary cloud and supercomputers; capacity also from Oracle, CoreWeave and Google Cloud since 2025"},
-      {"tech": "postgresql", "layer": "data", "note": "Core product database"}
+      {"tech": "postgresql", "layer": "data", "note": "Core product database"},
+      {"tech": "triton-lang", "layer": "ml", "note": "GPU kernel language"}
     ],
-    "not_in_atlas": ["Triton (OpenAI)"],
+    "not_in_atlas": [],
     "sources": [{"title": "OpenAI Engineering", "url": "https://openai.com/news/engineering/"}]
   }
 ]

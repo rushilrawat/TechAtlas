@@ -66,6 +66,31 @@
       "node_id": "technology:vercel",
       "added_in_review": true,
       "evidence": "apps/web/package.json: @vercel/edge-config declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:jotai",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: jotai declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: react-hook-form declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "apps/web/package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

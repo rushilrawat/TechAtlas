@@ -55,6 +55,26 @@
       "node_id": "technology:jest",
       "added_in_review": true,
       "evidence": "package.json: jest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lit",
+      "added_in_review": true,
+      "evidence": "package.json: lit declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:typedoc",
+      "added_in_review": true,
+      "evidence": "packages/mermaid/package.json: typedoc declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

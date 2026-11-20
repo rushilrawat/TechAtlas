@@ -40,20 +40,20 @@ you move from a broad field to an individual tool without losing the surrounding
   subject to human review.
 
 <!-- graph-stats:start (written by scripts/build_dataset.py) -->
-## 📊 The graph (dataset v0.7.0)
+## 📊 The graph (dataset v0.9.0)
 
 | | |
 |---|---:|
-| Total nodes | **1,194** |
-| Domains | **29** |
-| Technologies | **397** |
-| Concepts | **768** |
-| Typed relationships | **3,517** |
+| Total nodes | **3,122** |
+| Domains | **40** |
+| Technologies | **1,502** |
+| Concepts | **1,580** |
+| Typed relationships | **9,834** |
 | Relationship types | **14** |
 | Curated guided paths | **145** |
 | Isolated nodes | **0** |
 
-The largest relationship groups are **related to (1,177)**, **belongs to domain (1,165)**, **supports (276)**, **implements (206)**. Counts come from the checked-in
+The largest relationship groups are **related to (3,241)**, **belongs to domain (3,082)**, **implements (778)**, **used for (640)**. Counts come from the checked-in
 [`data/graph.json`](data/graph.json) and [`data/seed/journeys.json`](data/seed/journeys.json)
 and are rewritten by `scripts/build_dataset.py` on every `make data`; “isolated” means
 a node with no incident edge.

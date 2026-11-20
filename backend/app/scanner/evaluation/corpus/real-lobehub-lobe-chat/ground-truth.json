@@ -127,6 +127,46 @@
       "node_id": "technology:zustand",
       "added_in_review": true,
       "evidence": "package.json: zustand declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:langfuse",
+      "added_in_review": true,
+      "evidence": "package.json: langfuse declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:framer-motion",
+      "added_in_review": true,
+      "evidence": "package.json: motion declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-router",
+      "added_in_review": true,
+      "evidence": "package.json: react-router declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:swr",
+      "added_in_review": true,
+      "evidence": "package.json: swr declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:commitlint",
+      "added_in_review": true,
+      "evidence": "package.json: commitlint declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:semantic-release",
+      "added_in_review": true,
+      "evidence": "package.json: semantic-release declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

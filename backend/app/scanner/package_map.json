@@ -280,7 +280,8 @@
   "tensorflow-lite": "technology:tensorflow-lite",
   "tflite-runtime": "technology:tensorflow-lite",
   "celery": "technology:celery",
-  "babel": null
+  "babel": null,
+  "markdown": null
  },
  "crates": {
   "bevy": "technology:bevy",
@@ -312,7 +313,9 @@
   "solana-*": "technology:solana",
   "esp-idf-*": "technology:esp32",
   "esp-hal": "technology:esp32",
-  "nix": null
+  "nix": null,
+  "grep": null,
+  "wiremock": null
  },
  "go": {
   "github.com/redis/go-redis*": "technology:redis",
@@ -392,7 +395,13 @@
   "com.auth0:java-jwt": null,
   "com.auth0:jwks-rsa": null,
   "com.google.firebase:*": "technology:firebase",
-  "org.jetbrains.compose.*": "technology:jetpack-compose"
+  "org.jetbrains.compose.*": "technology:jetpack-compose",
+  "jakarta.xml.bind:*": null,
+  "javax.xml.bind:*": null,
+  "org.jboss.spec.javax.xml.bind:*": null,
+  "com.sun.xml.bind:*": null,
+  "org.codehaus.mojo:*": null,
+  "com.google.dagger:*": null
  },
  "rubygems": {
   "rails": "technology:rails",
@@ -420,7 +429,9 @@
   "tailwindcss-rails": "technology:tailwind-css",
   "vite_rails": "technology:vite",
   "opentelemetry-*": "technology:opentelemetry",
-  "capybara-playwright-driver": "technology:playwright"
+  "capybara-playwright-driver": "technology:playwright",
+  "mocha": null,
+  "stoplight": null
  },
  "packagist": {
   "laravel/framework": "technology:laravel",
@@ -488,7 +499,9 @@
   "protobuf": "technology:protobuf",
   "sentry_flutter": "technology:sentry",
   "sentry": "technology:sentry",
-  "html": null
+  "html": null,
+  "markdown": null,
+  "mockito": null
  },
  "gradle-plugin": {
   "com.android.application": "technology:android-sdk",

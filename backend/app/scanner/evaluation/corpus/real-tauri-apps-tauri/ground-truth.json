@@ -14,6 +14,21 @@
     },
     {
       "node_id": "technology:prettier"
+    },
+    {
+      "node_id": "technology:tokio",
+      "added_in_review": true,
+      "evidence": "crates/tauri/Cargo.toml: tokio declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:gtk",
+      "added_in_review": true,
+      "evidence": "crates/tauri/Cargo.toml: gtk declared in Cargo.toml [dependencies]"
+    },
+    {
+      "node_id": "technology:rustls",
+      "added_in_review": true,
+      "evidence": "crates/tauri/Cargo.toml: rustls declared in Cargo.toml [dependencies]"
     }
   ],
   "optional_detections": [

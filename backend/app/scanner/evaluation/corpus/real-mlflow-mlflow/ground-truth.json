@@ -128,6 +128,56 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:gunicorn",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: gunicorn declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pydantic declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:scipy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: scipy declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:starlette",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: starlette declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:uvicorn",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: uvicorn declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pre-commit",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pre-commit declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sphinx-docs",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sphinx declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:plotly",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: plotly declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:deepeval",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: deepeval declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:instructor-lib",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: instructor declared in pyproject.toml"
     }
   ],
   "optional_detections": [

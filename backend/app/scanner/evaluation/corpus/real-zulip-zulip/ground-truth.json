@@ -95,6 +95,51 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:koa",
+      "added_in_review": true,
+      "evidence": "package.json: koa declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:puppeteer",
+      "added_in_review": true,
+      "evidence": "package.json: puppeteer declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:tornado",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: tornado declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:pydantic",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pydantic declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:sphinx-docs",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: sphinx declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:semgrep",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: semgrep declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:zstd",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: zstd declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:black-formatter",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: black declared in pyproject.toml"
     }
   ],
   "optional_detections": [

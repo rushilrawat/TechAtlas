@@ -49,6 +49,26 @@
       "node_id": "technology:babel",
       "added_in_review": true,
       "evidence": "package.json: @babel/preset-env declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:jotai",
+      "added_in_review": true,
+      "evidence": "excalidraw-app/package.json: jotai declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chai",
+      "added_in_review": true,
+      "evidence": "package.json: chai declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:husky",
+      "added_in_review": true,
+      "evidence": "package.json: husky declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lint-staged",
+      "added_in_review": true,
+      "evidence": "package.json: lint-staged declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [
