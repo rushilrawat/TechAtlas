@@ -74,6 +74,16 @@
       "node_id": "technology:vuex-pinia",
       "added_in_review": true,
       "evidence": "package.json: pinia declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:sidekiq",
+      "added_in_review": true,
+      "evidence": "Gemfile: sidekiq declared in Gemfile"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

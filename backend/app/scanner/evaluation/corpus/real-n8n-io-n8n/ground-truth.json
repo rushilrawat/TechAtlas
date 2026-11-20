@@ -101,6 +101,11 @@
       "node_id": "technology:supabase",
       "added_in_review": true,
       "evidence": "packages/cli/package.json: @supabase/supabase-js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:langsmith",
+      "added_in_review": true,
+      "evidence": "packages/cli/package.json: langsmith declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

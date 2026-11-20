@@ -38,6 +38,16 @@
       "node_id": "technology:threejs",
       "added_in_review": true,
       "evidence": "package.json: three declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chart-js",
+      "added_in_review": true,
+      "evidence": "package.json: chart.js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

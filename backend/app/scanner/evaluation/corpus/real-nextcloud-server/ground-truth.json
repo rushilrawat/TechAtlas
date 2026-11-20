@@ -33,6 +33,11 @@
       "node_id": "technology:vuex-pinia",
       "added_in_review": true,
       "evidence": "package.json: pinia declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:axe-core",
+      "added_in_review": true,
+      "evidence": "package.json: axe-core declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

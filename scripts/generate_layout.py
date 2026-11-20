@@ -210,6 +210,7 @@ CURATED = [
     "domain:networks", "domain:systems", "domain:theory", "domain:security",
     "domain:quantum", "domain:blockchain", "domain:iot",
     "domain:computer-engineering", "domain:hci", "domain:interdisciplinary",
+    "domain:programming-languages", "domain:data-science", "domain:enterprise-software",
 ]
 
 
@@ -403,14 +404,15 @@ def _curves_cross(p: tuple, q: tuple) -> bool:
 
 
 MACRO_COMPOSITION = "continents"
-EXPECTED_NODES, EXPECTED_EDGES = 1194, 3517  # canonical dataset size (sanity warning only)
+EXPECTED_NODES, EXPECTED_EDGES = 2681, 8293  # canonical dataset size (sanity warning only)
 NEIGHBOR_GAP_PX = 3 * MACRO_GAP_PX  # territories this close may show an overview bridge
 # Editorial strata for the "strata" composition: foundations, platforms, applications.
 STRATA = [
     ["domain:theory", "domain:quantum", "domain:systems", "domain:networks", "domain:security",
-     "domain:computer-engineering"],
+     "domain:computer-engineering", "domain:programming-languages"],
     ["domain:testing-tooling", "domain:backend", "domain:cloud-devops",
-     "domain:databases", "domain:software-engineering", "domain:blockchain"],
+     "domain:databases", "domain:software-engineering", "domain:blockchain",
+     "domain:data-science", "domain:enterprise-software"],
     ["domain:ai-ml", "domain:frontend", "domain:robotics", "domain:mobile", "domain:gamedev",
      "domain:iot", "domain:hci", "domain:interdisciplinary"],
 ]

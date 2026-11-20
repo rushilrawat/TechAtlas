@@ -24,6 +24,11 @@
       "node_id": "technology:testcontainers",
       "added_in_review": true,
       "evidence": "pom.xml: org.testcontainers:testcontainers-junit-jupiter declared in pom.xml"
+    },
+    {
+      "node_id": "technology:mockito",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.mockito:mockito-core declared in pom.xml"
     }
   ],
   "optional_detections": [

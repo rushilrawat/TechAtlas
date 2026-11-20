@@ -76,6 +76,26 @@
       "node_id": "technology:zustand",
       "added_in_review": true,
       "evidence": "package.json: zustand declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chart-js",
+      "added_in_review": true,
+      "evidence": "package.json: chart.js declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:framer-motion",
+      "added_in_review": true,
+      "evidence": "package.json: motion declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rollup",
+      "added_in_review": true,
+      "evidence": "package.json: rollup declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

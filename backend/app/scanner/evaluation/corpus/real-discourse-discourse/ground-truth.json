@@ -46,6 +46,16 @@
       "node_id": "technology:stripe",
       "added_in_review": true,
       "evidence": "Gemfile: stripe declared in Gemfile"
+    },
+    {
+      "node_id": "technology:sidekiq",
+      "added_in_review": true,
+      "evidence": "Gemfile: sidekiq declared in Gemfile"
+    },
+    {
+      "node_id": "technology:rspec",
+      "added_in_review": true,
+      "evidence": "Gemfile: rspec declared in Gemfile"
     }
   ],
   "optional_detections": [

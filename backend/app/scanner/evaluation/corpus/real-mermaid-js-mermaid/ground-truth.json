@@ -55,6 +55,11 @@
       "node_id": "technology:jest",
       "added_in_review": true,
       "evidence": "package.json: jest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:lit",
+      "added_in_review": true,
+      "evidence": "package.json: lit declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

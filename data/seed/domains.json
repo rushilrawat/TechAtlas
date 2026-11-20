@@ -288,5 +288,115 @@
     "node_type": "domain",
     "primary_domain": "domain:offensive-security",
     "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:programming-languages",
+    "slug": "programming-languages",
+    "name": "Programming Languages",
+    "node_type": "domain",
+    "primary_domain": "domain:programming-languages",
+    "short_description": "The languages we program in, the ideas behind them, and the compilers and runtimes that run them.",
+    "importance": 0.85,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:data-science",
+    "slug": "data-science-analytics",
+    "name": "Data Science & Analytics",
+    "node_type": "domain",
+    "primary_domain": "domain:data-science",
+    "short_description": "Statistics, analysis, visualisation and business intelligence: turning data into decisions.",
+    "importance": 0.8,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:enterprise-software",
+    "slug": "enterprise-software",
+    "name": "Enterprise & Business Software",
+    "node_type": "domain",
+    "primary_domain": "domain:enterprise-software",
+    "short_description": "The systems companies run on: ERP, CRM, workflow automation, low-code and collaboration platforms.",
+    "importance": 0.65,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:generative-ai",
+    "slug": "generative-ai-llms",
+    "name": "Generative AI & LLMs",
+    "node_type": "domain",
+    "primary_domain": "domain:generative-ai",
+    "short_description": "Large language models, diffusion models and the tooling for building with them.",
+    "importance": 0.75,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:cryptography",
+    "slug": "applied-cryptography",
+    "name": "Applied Cryptography",
+    "node_type": "domain",
+    "primary_domain": "domain:cryptography",
+    "short_description": "The mathematics of secrecy and trust: ciphers, hashes, signatures and protocols.",
+    "importance": 0.65,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:observability",
+    "slug": "observability-sre",
+    "name": "Observability & SRE",
+    "node_type": "domain",
+    "primary_domain": "domain:observability",
+    "short_description": "Metrics, logs, traces and the practices that keep production systems reliable.",
+    "importance": 0.6,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:legacy-mainframe",
+    "slug": "legacy-mainframe",
+    "name": "Mainframes & Legacy Systems",
+    "node_type": "domain",
+    "primary_domain": "domain:legacy-mainframe",
+    "short_description": "Mainframes, COBOL and the decades-old systems that still run banks, airlines and governments.",
+    "importance": 0.5,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:audio-music",
+    "slug": "audio-music",
+    "name": "Audio & Music Technology",
+    "node_type": "domain",
+    "primary_domain": "domain:audio-music",
+    "short_description": "Digital audio, synthesis, music software and the standards that connect instruments.",
+    "importance": 0.5,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:automotive-aerospace",
+    "slug": "automotive-aerospace",
+    "name": "Automotive & Aerospace Software",
+    "node_type": "domain",
+    "primary_domain": "domain:automotive-aerospace",
+    "short_description": "Safety-critical software for cars, aircraft and spacecraft, and the standards that certify it.",
+    "importance": 0.5,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:geospatial",
+    "slug": "geospatial",
+    "name": "Geospatial & Mapping",
+    "node_type": "domain",
+    "primary_domain": "domain:geospatial",
+    "short_description": "Maps, coordinates and location data: GIS, satellite imagery and navigation.",
+    "importance": 0.5,
+    "lifecycle_status": "active"
+  },
+  {
+    "id": "domain:cms-ecommerce",
+    "slug": "cms-ecommerce",
+    "name": "CMS & E-commerce",
+    "node_type": "domain",
+    "primary_domain": "domain:cms-ecommerce",
+    "short_description": "Content management systems, headless CMSs and online-store platforms.",
+    "importance": 0.5,
+    "lifecycle_status": "active"
   }
 ]

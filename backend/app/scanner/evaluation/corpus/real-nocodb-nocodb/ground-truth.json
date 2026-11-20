@@ -133,6 +133,26 @@
       "node_id": "technology:vuex-pinia",
       "added_in_review": true,
       "evidence": "packages/nc-gui/package.json: pinia declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:leaflet",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: leaflet declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:typesense",
+      "added_in_review": true,
+      "evidence": "packages/nc-gui/package.json: typesense declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:airtable",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: airtable declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:mocha",
+      "added_in_review": true,
+      "evidence": "packages/nocodb/package.json: mocha declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

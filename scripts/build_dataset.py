@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SEED_DIR = ROOT / "data" / "seed"
 OUTPUT = ROOT / "data" / "graph.json"
 README = ROOT / "README.md"
-DATASET_VERSION = "0.7.0"
+DATASET_VERSION = "0.8.0"
 STATS_START = "<!-- graph-stats:start (written by scripts/build_dataset.py) -->"
 STATS_END = "<!-- graph-stats:end -->"
 

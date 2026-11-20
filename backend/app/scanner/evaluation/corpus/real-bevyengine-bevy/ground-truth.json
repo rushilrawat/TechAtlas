@@ -21,6 +21,11 @@
       "node_id": "technology:webassembly",
       "added_in_review": true,
       "evidence": "Cargo.toml: wasm-bindgen declared in Cargo.toml [dev]"
+    },
+    {
+      "node_id": "technology:gltf",
+      "added_in_review": true,
+      "evidence": "Cargo.toml: gltf declared in Cargo.toml [dev]"
     }
   ],
   "optional_detections": [

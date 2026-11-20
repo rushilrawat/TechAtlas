@@ -49,6 +49,16 @@
       "node_id": "technology:urql",
       "added_in_review": true,
       "evidence": "packages/hoppscotch-common/package.json: @urql/core declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:rollup",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: rollup declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "packages/hoppscotch-common/package.json: postcss declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

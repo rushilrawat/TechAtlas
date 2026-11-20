@@ -81,6 +81,21 @@
       "node_id": "technology:testcontainers",
       "added_in_review": true,
       "evidence": "pom.xml: org.testcontainers:testcontainers declared in pom.xml"
+    },
+    {
+      "node_id": "technology:antlr",
+      "added_in_review": true,
+      "evidence": "pom.xml: antlr:antlr declared in pom.xml"
+    },
+    {
+      "node_id": "technology:testng",
+      "added_in_review": true,
+      "evidence": "pom.xml: org.testng:testng declared in pom.xml"
+    },
+    {
+      "node_id": "technology:rocksdb",
+      "added_in_review": true,
+      "evidence": "application/pom.xml: org.rocksdb:rocksdbjni declared in pom.xml"
     }
   ],
   "optional_detections": [
@@ -98,6 +113,16 @@
     },
     {
       "node_id": "technology:yaml"
+    },
+    {
+      "node_id": "technology:thingsboard",
+      "added_in_review": true,
+      "evidence": "application/pom.xml: org.thingsboard:ui-ngx declared in pom.xml"
+    },
+    {
+      "node_id": "technology:apache-pulsar",
+      "added_in_review": true,
+      "evidence": "application/pom.xml: org.thingsboard.common.integration:apache-pulsar declared in pom.xml"
     }
   ]
 }

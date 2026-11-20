@@ -29,14 +29,16 @@ The overview thresholds in `e2e/overview-visual-proof.spec.ts` were re-baselined
 
 | Asset | Raw | Gzip | Budget (gzip) |
 |---|---:|---:|---:|
-| Entry JS (`index-*.js`, mostly Sigma + graphology) | 474 KB | 137 KB | 166 KB |
-| CSS | 45 KB | 9 KB | 15 KB |
+| Entry JS (`index-*.js`, mostly Sigma + graphology) | 565 KB | 167 KB | 168 KB |
+| CSS | 62 KB | 12 KB | 15 KB |
 | Inter Latin subset (woff2) | 31 KB | n/a | 59 KB |
-| Graph snapshot (`api/v1/graph.json`) | 965 KB | 99 KB | 137 KB |
-| Search index (`api/v1/search-index.json`, loaded on first search) | 340 KB | 61 KB | none |
+| Graph snapshot (`api/v1/graph.json`) | 2.2 MB | 219 KB | 239 KB |
+| Search index (`api/v1/search-index.json`, loaded on first search) | 730 KB | 128 KB | none |
 | Repo X-Ray chunk (lazy) | 16 KB | 5 KB | none |
 
-`npm run size` enforces the budgets in CI. The graph budget checks the static API snapshot when it has been rendered and falls back to `data/graph.json` (about 113 KB gzipped) in the plain CI build. At roughly 85 bytes gzipped per node, the budget leaves room for about 400 more nodes before the graph should load a light index first and fetch node details on demand.
+`npm run size` enforces the budgets in CI. The graph budget checks the static API snapshot when it has been rendered and falls back to `data/graph.json` (about 234 KB gzipped) in the plain CI build. Measured at dataset 0.8.0 (2,681 nodes, 8,293 edges).
+
+Dataset 0.8.0 more than doubled the node count, so the graph snapshot went from about 99 KB to about 219 KB gzipped, past the point (about 400 more nodes than 0.7.0) where this page said the graph should load a light index first. The budget was raised to fit 0.8.0 with a little headroom, not to invite more growth. The next step is to serve a light index (id, label, type, domain, position, importance) up front and fetch descriptions, links and edges per node on demand. The search index grew the same way and is still loaded on first search.
 
 ## Real-device procedure
 

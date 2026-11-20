@@ -129,7 +129,8 @@ APP_STACK_ADD = {
     # Figma moved its renderer to WebGPU in 2025, with WebGL as the fallback.
     "figma": [("webgl", {"tech": "webgpu", "layer": "web", "note": "Renderer moved to WebGPU in 2025, WebGL as fallback"})],
 }
-APP_MISSING_ADD = {"wikipedia": ["OpenSearch"]}
+# OpenSearch became an atlas node in dataset 0.8.0, so it no longer belongs in not_in_atlas.
+APP_MISSING_ADD: dict[str, list[str]] = {}
 
 
 def main() -> None:

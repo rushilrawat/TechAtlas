@@ -25,6 +25,11 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:mkdocs",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: mkdocs declared in pyproject.toml"
     }
   ],
   "optional_detections": [

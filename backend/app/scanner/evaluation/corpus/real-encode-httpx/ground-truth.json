@@ -14,6 +14,16 @@
     },
     {
       "node_id": "technology:ruff"
+    },
+    {
+      "node_id": "technology:mkdocs",
+      "added_in_review": true,
+      "evidence": "requirements.txt: mkdocs declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:uvicorn",
+      "added_in_review": true,
+      "evidence": "requirements.txt: uvicorn declared in requirements.txt"
     }
   ],
   "optional_detections": [

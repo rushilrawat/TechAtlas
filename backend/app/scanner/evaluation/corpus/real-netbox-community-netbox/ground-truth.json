@@ -37,6 +37,21 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: uv declared in pyproject.toml"
+    },
+    {
+      "node_id": "technology:gunicorn",
+      "added_in_review": true,
+      "evidence": "requirements.txt: gunicorn declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:mkdocs",
+      "added_in_review": true,
+      "evidence": "requirements.txt: mkdocs declared in requirements.txt"
+    },
+    {
+      "node_id": "technology:pre-commit",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: pre-commit declared in pyproject.toml"
     }
   ],
   "optional_detections": [

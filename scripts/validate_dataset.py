@@ -54,7 +54,7 @@ APP_LAYERS = {"web", "mobile", "backend", "data", "ml", "infra"}
 #  - Phase 1I (trending topics, late 2026) raises it to 800.
 MIN_TECHNOLOGIES = 250
 MIN_CONCEPTS = 150
-MAX_CONCEPTS = 800
+MAX_CONCEPTS = 2000
 
 # Connectivity floor (Nov 2026 review): every node needs at least two typed (non-domain)
 # relationships so its detail panel never reads "Relationships (1)". Three is the target;

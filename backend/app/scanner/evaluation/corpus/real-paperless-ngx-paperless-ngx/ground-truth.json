@@ -87,6 +87,11 @@
       "node_id": "technology:uv",
       "added_in_review": true,
       "evidence": "pyproject.toml: [tool.uv] configured in pyproject.toml"
+    },
+    {
+      "node_id": "technology:bootstrap",
+      "added_in_review": true,
+      "evidence": "src-ui/package.json: bootstrap declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

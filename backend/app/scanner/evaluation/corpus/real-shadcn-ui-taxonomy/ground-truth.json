@@ -41,6 +41,16 @@
       "node_id": "technology:vercel",
       "added_in_review": true,
       "evidence": "package.json: @vercel/analytics declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "package.json: react-hook-form declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:postcss",
+      "added_in_review": true,
+      "evidence": "package.json: postcss declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

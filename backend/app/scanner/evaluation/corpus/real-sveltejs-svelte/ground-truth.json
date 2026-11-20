@@ -34,6 +34,11 @@
       "node_id": "technology:esbuild",
       "added_in_review": true,
       "evidence": "packages/svelte/package.json: esbuild declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:rollup",
+      "added_in_review": true,
+      "evidence": "packages/svelte/package.json: rollup declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

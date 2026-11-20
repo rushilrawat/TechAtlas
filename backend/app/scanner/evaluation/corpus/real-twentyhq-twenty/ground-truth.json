@@ -118,6 +118,31 @@
       "node_id": "technology:eslint",
       "added_in_review": true,
       "evidence": "package.json: eslint-plugin-lingui declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:nx",
+      "added_in_review": true,
+      "evidence": "package.json: nx declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:bullmq",
+      "added_in_review": true,
+      "evidence": "packages/twenty-server/package.json: bullmq declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:framer-motion",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: framer-motion declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:jotai",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: jotai declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "packages/twenty-front/package.json: react-hook-form declared in package.json (dependencies)"
     }
   ],
   "optional_detections": [

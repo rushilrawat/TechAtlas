@@ -63,6 +63,21 @@
       "node_id": "technology:storybook",
       "added_in_review": true,
       "evidence": "package.json: @storybook/addon-a11y declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:sidekiq",
+      "added_in_review": true,
+      "evidence": "Gemfile: sidekiq declared in Gemfile"
+    },
+    {
+      "node_id": "technology:react-router",
+      "added_in_review": true,
+      "evidence": "package.json: react-router declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:chromatic",
+      "added_in_review": true,
+      "evidence": "package.json: chromatic declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

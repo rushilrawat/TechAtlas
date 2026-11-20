@@ -28,13 +28,13 @@ def test_canonical_nodes_and_ids_preserved():
     by_domain = Counter(n["primary_domain"] for n in DATASET["nodes"] if n["node_type"] != "domain")
     for domain, count in by_domain.items():
         assert len(_members(coords, domain)) == count
-    assert len(_members(coords, "domain:robotics")) == 39
+    assert len(_members(coords, "domain:robotics")) == 49
 
 
 def test_fourteen_whole_ecosystems_never_overlap():
     coords, ext = LAYOUT["coordinates"], LAYOUT["domain_extents"]
     order = LAYOUT["domain_ring_order"]
-    assert len(order) == 20
+    assert len(order) == 23  # 20 fields + 3 from the 0.8.0 expansion
     assert LAYOUT["macro_composition"] == gl.MACRO_COMPOSITION == "continents"
     for d in order:
         assert coords[d]["ring"] == 0

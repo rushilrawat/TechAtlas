@@ -26,6 +26,11 @@
     },
     {
       "node_id": "technology:postgresql"
+    },
+    {
+      "node_id": "technology:ktor",
+      "added_in_review": true,
+      "evidence": "gradle/libs.versions.toml: io.ktor:ktor-client-cio library declared in the Gradle version catalog"
     }
   ],
   "optional_detections": [

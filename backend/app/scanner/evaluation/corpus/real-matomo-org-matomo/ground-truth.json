@@ -35,6 +35,11 @@
       "node_id": "technology:jquery",
       "added_in_review": true,
       "evidence": "package.json: jquery declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:less-css",
+      "added_in_review": true,
+      "evidence": "package.json: less declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

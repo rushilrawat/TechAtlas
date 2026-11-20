@@ -17,6 +17,11 @@
     },
     {
       "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:nx",
+      "added_in_review": true,
+      "evidence": "package.json: nx declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

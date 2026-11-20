@@ -8,6 +8,16 @@
   "expected_detections": [
     {
       "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:cucumber",
+      "added_in_review": true,
+      "evidence": "Gemfile: cucumber declared in Gemfile"
+    },
+    {
+      "node_id": "technology:rspec",
+      "added_in_review": true,
+      "evidence": "Gemfile: rspec declared in Gemfile"
     }
   ],
   "optional_detections": [

@@ -117,6 +117,26 @@
       "node_id": "technology:redis",
       "added_in_review": true,
       "evidence": "go.mod: github.com/redis/go-redis/extra/redisotel/v9 required in go.mod"
+    },
+    {
+      "node_id": "technology:react-hook-form",
+      "added_in_review": true,
+      "evidence": "package.json: react-hook-form declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:react-router",
+      "added_in_review": true,
+      "evidence": "package.json: react-router declared in package.json (dependencies)"
+    },
+    {
+      "node_id": "technology:axe-core",
+      "added_in_review": true,
+      "evidence": "package.json: axe-core declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:nx",
+      "added_in_review": true,
+      "evidence": "package.json: nx declared in package.json (devDependencies)"
     }
   ],
   "optional_detections": [

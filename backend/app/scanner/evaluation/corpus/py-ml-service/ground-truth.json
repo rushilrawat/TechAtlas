@@ -48,6 +48,11 @@
     },
     {
       "node_id": "concept:containerization"
+    },
+    {
+      "node_id": "technology:uvicorn",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: uvicorn declared in pyproject.toml"
     }
   ]
 }

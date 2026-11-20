@@ -17,6 +17,11 @@
     },
     {
       "node_id": "technology:github-actions"
+    },
+    {
+      "node_id": "technology:scipy",
+      "added_in_review": true,
+      "evidence": "pyproject.toml: scipy declared in pyproject.toml"
     }
   ],
   "optional_detections": [

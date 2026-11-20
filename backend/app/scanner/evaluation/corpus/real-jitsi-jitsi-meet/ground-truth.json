@@ -51,6 +51,16 @@
       "node_id": "technology:vitest",
       "added_in_review": true,
       "evidence": "package.json: vitest declared in package.json (devDependencies)"
+    },
+    {
+      "node_id": "technology:cocoapods",
+      "added_in_review": true,
+      "evidence": "Gemfile: cocoapods declared in Gemfile"
+    },
+    {
+      "node_id": "technology:fastlane",
+      "added_in_review": true,
+      "evidence": "Gemfile: fastlane declared in Gemfile"
     }
   ],
   "optional_detections": [
