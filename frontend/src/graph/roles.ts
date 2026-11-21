@@ -1,14 +1,18 @@
 // Role / career lens: "what does a backend engineer need to know?" Roles live in
 // data/seed/roles.json as ordered stages of node slugs, so they can be edited without
 // touching React code. roles.test.ts checks every slug exists in data/graph.json.
-import data from "../../../data/seed/roles.json";
+import { content, contentLoaded } from "../content/content";
 import type { LearningMap, LearningStatus } from "./learning";
 
 export interface RoleStage { title: string; caption: string; nodes: string[] }
 export interface Role { id: string; title: string; summary: string; stages: RoleStage[] }
 
-export const ROLES: Role[] = data;
-export const ROLES_BY_ID = new Map(ROLES.map((r) => [r.id, r]));
+export function roles(): Role[] {
+  return content().roles;
+}
+export function roleById(id: string): Role | null {
+  return roles().find((r) => r.id === id) ?? null;
+}
 
 interface MinimalGraph {
   nodes: { id: string; slug: string; label: string }[];
@@ -53,7 +57,8 @@ export function cycleStatus(current: LearningStatus | undefined): LearningStatus
 const ROLE = /^[a-z0-9-]+$/;
 export function readRole(search: string): string | null {
   const v = new URLSearchParams(search).get("role");
-  return v && ROLE.test(v) && ROLES_BY_ID.has(v) ? v : null;
+  // Before the content chunk arrives, keep any well-formed id; RolePanel shows the list for an unknown one.
+  return v && ROLE.test(v) && (!contentLoaded() || roleById(v)) ? v : null;
 }
 export function writeRole(search: string, id: string | null): string {
   const p = new URLSearchParams(search);

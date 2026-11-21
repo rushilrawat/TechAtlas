@@ -3075,5 +3075,2893 @@
         "caption": "Aircrack-ng captures and cracks handshakes."
       }
     ]
+  },
+  {
+    "title": "Type systems, from dynamic to dependent",
+    "steps": [
+      {
+        "id": "technology:python",
+        "caption": "Python checks types while the program runs."
+      },
+      {
+        "id": "concept:dynamic-typing",
+        "caption": "Dynamic typing: values carry types, variables don't."
+      },
+      {
+        "id": "concept:gradual-typing",
+        "caption": "Gradual typing lets you add type hints one file at a time."
+      },
+      {
+        "id": "technology:typescript",
+        "caption": "TypeScript is gradual typing on top of JavaScript."
+      },
+      {
+        "id": "concept:static-typing",
+        "caption": "Static typing catches mismatches before the code runs."
+      },
+      {
+        "id": "concept:type-system",
+        "caption": "A type system is the set of rules a compiler enforces."
+      },
+      {
+        "id": "concept:type-theory",
+        "caption": "Type theory is the mathematics behind those rules."
+      },
+      {
+        "id": "concept:dependent-types",
+        "caption": "Dependent types let a type mention a value, such as a list's length."
+      },
+      {
+        "id": "technology:idris",
+        "caption": "Idris is a language built around dependent types."
+      }
+    ]
+  },
+  {
+    "title": "Functional programming ideas",
+    "steps": [
+      {
+        "id": "concept:lambda-calculus",
+        "caption": "Lambda calculus models computation as functions alone."
+      },
+      {
+        "id": "concept:currying",
+        "caption": "Currying turns a many-argument function into a chain of one-argument ones."
+      },
+      {
+        "id": "concept:higher-order-functions",
+        "caption": "Higher-order functions take or return other functions."
+      },
+      {
+        "id": "concept:functional-programming",
+        "caption": "Functional programming builds programs from such functions."
+      },
+      {
+        "id": "concept:lazy-evaluation",
+        "caption": "Lazy evaluation computes a value only when it is needed."
+      },
+      {
+        "id": "technology:haskell",
+        "caption": "Haskell is lazy and pure by default."
+      },
+      {
+        "id": "concept:monads",
+        "caption": "Monads are how Haskell sequences effects like I/O."
+      }
+    ]
+  },
+  {
+    "title": "How runtimes run your code",
+    "steps": [
+      {
+        "id": "technology:python",
+        "caption": "You write Python source code."
+      },
+      {
+        "id": "technology:cpython",
+        "caption": "CPython, the reference interpreter, reads it."
+      },
+      {
+        "id": "concept:bytecode",
+        "caption": "It compiles the source to bytecode, a compact instruction set."
+      },
+      {
+        "id": "technology:jvm",
+        "caption": "The JVM runs Java bytecode the same way."
+      },
+      {
+        "id": "concept:just-in-time-compilation",
+        "caption": "A JIT compiler turns hot bytecode into machine code while it runs."
+      },
+      {
+        "id": "technology:v8",
+        "caption": "V8 does this for JavaScript in Chrome and Node.js."
+      },
+      {
+        "id": "concept:inline-caching",
+        "caption": "Inline caches remember object shapes so property lookups stay fast."
+      }
+    ]
+  },
+  {
+    "title": "Lisp and the power of macros",
+    "steps": [
+      {
+        "id": "technology:lisp",
+        "caption": "Lisp, from 1958, writes code as nested lists."
+      },
+      {
+        "id": "technology:scheme",
+        "caption": "Scheme is a small, clean dialect of Lisp."
+      },
+      {
+        "id": "technology:racket",
+        "caption": "Racket grew out of Scheme as a language for making languages."
+      },
+      {
+        "id": "concept:macros",
+        "caption": "Macros transform code before it runs."
+      },
+      {
+        "id": "concept:homoiconicity",
+        "caption": "They are easy in Lisp because code and data share one shape."
+      },
+      {
+        "id": "concept:metaprogramming",
+        "caption": "Metaprogramming is code that writes or changes code."
+      }
+    ]
+  },
+  {
+    "title": "From ALGOL to Swift",
+    "steps": [
+      {
+        "id": "technology:algol",
+        "caption": "ALGOL introduced block structure in 1958."
+      },
+      {
+        "id": "technology:simula",
+        "caption": "Simula added classes and objects."
+      },
+      {
+        "id": "technology:smalltalk",
+        "caption": "Smalltalk made everything an object, sent messages."
+      },
+      {
+        "id": "technology:objective-c",
+        "caption": "Objective-C put Smalltalk's messaging on top of C."
+      },
+      {
+        "id": "technology:swift",
+        "caption": "Swift replaced Objective-C on Apple platforms in 2014."
+      }
+    ]
+  },
+  {
+    "title": "Concurrency built into languages",
+    "steps": [
+      {
+        "id": "concept:concurrency",
+        "caption": "Concurrency is many tasks making progress at once."
+      },
+      {
+        "id": "concept:concurrent-programming-languages",
+        "caption": "Communicating Sequential Processes connects tasks with channels."
+      },
+      {
+        "id": "technology:go",
+        "caption": "Go's goroutines and channels come from that idea."
+      },
+      {
+        "id": "concept:green-threads",
+        "caption": "Green threads are scheduled by the runtime, not the OS."
+      },
+      {
+        "id": "technology:erlang",
+        "caption": "Erlang runs millions of lightweight processes."
+      },
+      {
+        "id": "technology:beam-vm",
+        "caption": "The BEAM virtual machine schedules them and restarts the ones that fail."
+      },
+      {
+        "id": "concept:actor-model",
+        "caption": "Each process is an actor that only talks by messages."
+      }
+    ]
+  },
+  {
+    "title": "Languages that compile to JavaScript",
+    "steps": [
+      {
+        "id": "technology:javascript",
+        "caption": "Browsers run one language: JavaScript."
+      },
+      {
+        "id": "technology:coffeescript",
+        "caption": "CoffeeScript offered a shorter syntax in 2009."
+      },
+      {
+        "id": "concept:transpiler",
+        "caption": "A transpiler turns one high-level language into another."
+      },
+      {
+        "id": "technology:typescript",
+        "caption": "TypeScript adds static types and compiles them away."
+      },
+      {
+        "id": "technology:flow-type",
+        "caption": "Flow, from Meta, tried the same with a type checker."
+      },
+      {
+        "id": "technology:ocaml",
+        "caption": "Flow itself is written in OCaml."
+      },
+      {
+        "id": "technology:rescript",
+        "caption": "ReScript brings OCaml-style types to JavaScript output."
+      }
+    ]
+  },
+  {
+    "title": "How parsers are built",
+    "steps": [
+      {
+        "id": "concept:regular-languages",
+        "caption": "Regular expressions describe tokens like numbers and names."
+      },
+      {
+        "id": "concept:lexical-analysis",
+        "caption": "A lexer splits source text into those tokens."
+      },
+      {
+        "id": "concept:parsing",
+        "caption": "A parser checks the tokens against a grammar."
+      },
+      {
+        "id": "concept:parser-generator",
+        "caption": "Parser generators write that parser for you from the grammar."
+      },
+      {
+        "id": "technology:tree-sitter",
+        "caption": "Tree-sitter parses incrementally, fast enough for an editor."
+      },
+      {
+        "id": "concept:abstract-syntax-tree",
+        "caption": "The result is a syntax tree of the program."
+      },
+      {
+        "id": "concept:static-analysis",
+        "caption": "Linters and analysers walk that tree to find bugs."
+      }
+    ]
+  },
+  {
+    "title": "Inside an optimizing compiler",
+    "steps": [
+      {
+        "id": "concept:abstract-syntax-tree",
+        "caption": "The compiler starts from the syntax tree."
+      },
+      {
+        "id": "concept:compiler-theory",
+        "caption": "Compiler theory splits the work into a front end and a back end."
+      },
+      {
+        "id": "concept:intermediate-representation",
+        "caption": "The front end lowers the tree to an intermediate representation."
+      },
+      {
+        "id": "concept:static-single-assignment",
+        "caption": "SSA form gives every variable exactly one assignment."
+      },
+      {
+        "id": "concept:compiler-optimization",
+        "caption": "That makes optimizations like dead-code removal simple."
+      },
+      {
+        "id": "concept:register-allocation",
+        "caption": "Finally, variables are mapped onto the CPU's few registers."
+      }
+    ]
+  },
+  {
+    "title": "LLVM, the compiler toolkit",
+    "steps": [
+      {
+        "id": "technology:clang",
+        "caption": "Clang is the C and C++ front end."
+      },
+      {
+        "id": "technology:llvm",
+        "caption": "LLVM is the shared optimizer and code generator behind it."
+      },
+      {
+        "id": "concept:intermediate-representation",
+        "caption": "Every LLVM language meets in one IR."
+      },
+      {
+        "id": "technology:mlir",
+        "caption": "MLIR generalizes that IR for machine learning and hardware."
+      },
+      {
+        "id": "technology:mojo",
+        "caption": "Mojo is built on MLIR."
+      }
+    ]
+  },
+  {
+    "title": "Life on the JVM",
+    "steps": [
+      {
+        "id": "technology:java",
+        "caption": "Java compiles to bytecode, not machine code."
+      },
+      {
+        "id": "technology:jvm",
+        "caption": "The Java Virtual Machine runs it anywhere."
+      },
+      {
+        "id": "technology:openjdk",
+        "caption": "OpenJDK is the open-source reference implementation."
+      },
+      {
+        "id": "technology:graalvm",
+        "caption": "GraalVM adds a new JIT and native images."
+      },
+      {
+        "id": "technology:quarkus",
+        "caption": "Quarkus uses native images for fast-starting Java services."
+      }
+    ]
+  },
+  {
+    "title": "Memory management across languages",
+    "steps": [
+      {
+        "id": "concept:garbage-collection",
+        "caption": "Garbage collectors find unreachable objects for you."
+      },
+      {
+        "id": "concept:reference-counting",
+        "caption": "Reference counting frees an object when its last reference goes, as in Swift."
+      },
+      {
+        "id": "concept:memory-management",
+        "caption": "Both answer the same question: when can memory be given back?"
+      },
+      {
+        "id": "technology:rust",
+        "caption": "Rust answers it at compile time."
+      },
+      {
+        "id": "concept:ownership-and-borrowing",
+        "caption": "Ownership and borrowing free memory with no collector at all."
+      }
+    ]
+  },
+  {
+    "title": "Your first data analysis",
+    "steps": [
+      {
+        "id": "concept:data-science",
+        "caption": "Data science turns raw data into answers."
+      },
+      {
+        "id": "concept:statistics",
+        "caption": "Statistics is its foundation."
+      },
+      {
+        "id": "concept:descriptive-statistics",
+        "caption": "Start with descriptive statistics: means, spreads, counts."
+      },
+      {
+        "id": "concept:exploratory-data-analysis",
+        "caption": "Exploratory analysis looks for patterns before testing anything."
+      },
+      {
+        "id": "technology:seaborn",
+        "caption": "Seaborn draws statistical plots in a line of Python."
+      },
+      {
+        "id": "technology:matplotlib",
+        "caption": "It is built on Matplotlib, Python's plotting workhorse."
+      }
+    ]
+  },
+  {
+    "title": "Statistics behind A/B tests",
+    "steps": [
+      {
+        "id": "concept:causal-inference",
+        "caption": "Causal inference asks whether a change caused an effect."
+      },
+      {
+        "id": "concept:experiment-design",
+        "caption": "A designed experiment randomizes who gets the change."
+      },
+      {
+        "id": "concept:ab-testing",
+        "caption": "An A/B test is the product version of that experiment."
+      },
+      {
+        "id": "concept:hypothesis-testing",
+        "caption": "A hypothesis test asks whether the difference could be chance."
+      },
+      {
+        "id": "concept:p-value",
+        "caption": "The p-value is how surprising the result would be if nothing changed."
+      },
+      {
+        "id": "concept:statistical-inference",
+        "caption": "Statistical inference turns a sample into a claim about everyone."
+      },
+      {
+        "id": "concept:bootstrapping-statistics",
+        "caption": "Bootstrapping estimates uncertainty by resampling your own data."
+      }
+    ]
+  },
+  {
+    "title": "Evaluate a model honestly",
+    "steps": [
+      {
+        "id": "concept:overfitting",
+        "caption": "A model that memorizes its training data fails on new data."
+      },
+      {
+        "id": "concept:cross-validation",
+        "caption": "Cross-validation tests on data the model never trained on."
+      },
+      {
+        "id": "concept:hyperparameter-tuning",
+        "caption": "Hyperparameters are tuned against those held-out scores."
+      },
+      {
+        "id": "technology:optuna",
+        "caption": "Optuna searches the settings automatically."
+      }
+    ]
+  },
+  {
+    "title": "From warehouse to dashboard",
+    "steps": [
+      {
+        "id": "concept:data-warehouse",
+        "caption": "The warehouse holds the company's cleaned data."
+      },
+      {
+        "id": "concept:semantic-layer",
+        "caption": "A semantic layer defines metrics like revenue once."
+      },
+      {
+        "id": "concept:business-intelligence",
+        "caption": "Business intelligence tools query those metrics."
+      },
+      {
+        "id": "technology:tableau",
+        "caption": "Tableau is a drag-and-drop analytics tool."
+      },
+      {
+        "id": "technology:power-bi",
+        "caption": "Power BI is Microsoft's equivalent."
+      },
+      {
+        "id": "concept:dashboard-design",
+        "caption": "A good dashboard answers one question at a glance."
+      },
+      {
+        "id": "concept:data-storytelling",
+        "caption": "Data storytelling explains what the numbers mean."
+      }
+    ]
+  },
+  {
+    "title": "Open-source dashboards",
+    "steps": [
+      {
+        "id": "concept:business-intelligence",
+        "caption": "BI does not have to be a paid product."
+      },
+      {
+        "id": "technology:metabase",
+        "caption": "Metabase lets anyone ask questions of a database."
+      },
+      {
+        "id": "technology:apache-superset",
+        "caption": "Apache Superset, started at Airbnb, handles larger teams and datasets."
+      },
+      {
+        "id": "concept:dashboard-design",
+        "caption": "Both turn queries into dashboards."
+      },
+      {
+        "id": "concept:kpi",
+        "caption": "Pick a few key performance indicators to put on them."
+      }
+    ]
+  },
+  {
+    "title": "Data science in R",
+    "steps": [
+      {
+        "id": "technology:rstudio",
+        "caption": "RStudio is the IDE most R users start in."
+      },
+      {
+        "id": "technology:r-lang",
+        "caption": "R is a language made for statistics."
+      },
+      {
+        "id": "technology:tidyverse",
+        "caption": "The tidyverse is a family of packages for tidy data."
+      },
+      {
+        "id": "technology:ggplot2",
+        "caption": "ggplot2 builds charts from a grammar of graphics."
+      },
+      {
+        "id": "concept:data-visualization",
+        "caption": "Good charts show the shape of the data."
+      }
+    ]
+  },
+  {
+    "title": "Product analytics",
+    "steps": [
+      {
+        "id": "technology:google-analytics",
+        "caption": "Google Analytics counts visits to a website."
+      },
+      {
+        "id": "concept:web-analytics",
+        "caption": "Web analytics measures traffic and sources."
+      },
+      {
+        "id": "concept:product-analytics",
+        "caption": "Product analytics follows what people do inside the product."
+      },
+      {
+        "id": "concept:cohort-analysis",
+        "caption": "Cohorts compare groups of users who started at the same time."
+      },
+      {
+        "id": "technology:amplitude",
+        "caption": "Amplitude is built around events and cohorts."
+      },
+      {
+        "id": "technology:mixpanel",
+        "caption": "Mixpanel is its long-time competitor."
+      }
+    ]
+  },
+  {
+    "title": "Data you can trust",
+    "steps": [
+      {
+        "id": "technology:great-expectations",
+        "caption": "Great Expectations tests data the way unit tests check code."
+      },
+      {
+        "id": "concept:data-quality",
+        "caption": "Data quality: complete, correct and on time."
+      },
+      {
+        "id": "concept:data-governance",
+        "caption": "Governance decides who owns and may use each dataset."
+      },
+      {
+        "id": "concept:data-lineage",
+        "caption": "Lineage traces where every column came from."
+      },
+      {
+        "id": "concept:data-catalog",
+        "caption": "A catalog makes datasets searchable."
+      },
+      {
+        "id": "technology:datahub",
+        "caption": "DataHub is an open-source catalog started at LinkedIn."
+      }
+    ]
+  },
+  {
+    "title": "Responsible data science",
+    "steps": [
+      {
+        "id": "concept:data-privacy",
+        "caption": "Personal data comes with obligations."
+      },
+      {
+        "id": "concept:data-ethics",
+        "caption": "Data ethics asks what should be done, not only what can be."
+      },
+      {
+        "id": "concept:algorithmic-bias",
+        "caption": "Models can learn the biases in their training data."
+      },
+      {
+        "id": "concept:explainable-ai",
+        "caption": "Explainable AI shows why a model decided what it did."
+      }
+    ]
+  },
+  {
+    "title": "Share a model as a web app",
+    "steps": [
+      {
+        "id": "technology:plotly",
+        "caption": "Plotly draws interactive charts."
+      },
+      {
+        "id": "technology:dash-plotly",
+        "caption": "Dash turns Plotly charts into a web app in Python."
+      },
+      {
+        "id": "technology:streamlit",
+        "caption": "Streamlit makes a data app from a plain script."
+      },
+      {
+        "id": "technology:gradio",
+        "caption": "Gradio wraps a model in a demo UI."
+      },
+      {
+        "id": "technology:hugging-face-hub",
+        "caption": "Hugging Face Spaces hosts those demos for free."
+      }
+    ]
+  },
+  {
+    "title": "Forecast a time series",
+    "steps": [
+      {
+        "id": "concept:statistics",
+        "caption": "Forecasting is statistics over time."
+      },
+      {
+        "id": "concept:time-series-analysis",
+        "caption": "Time series analysis finds trend and seasonality."
+      },
+      {
+        "id": "concept:time-series-forecasting",
+        "caption": "Forecasting projects them forward."
+      },
+      {
+        "id": "technology:prophet",
+        "caption": "Prophet, from Meta, fits trend and holidays with little tuning."
+      },
+      {
+        "id": "technology:pandas",
+        "caption": "It takes a pandas DataFrame of dates and values."
+      }
+    ]
+  },
+  {
+    "title": "Charts on the web",
+    "steps": [
+      {
+        "id": "technology:chart-js",
+        "caption": "Chart.js draws common charts on a canvas."
+      },
+      {
+        "id": "technology:apache-echarts",
+        "caption": "Apache ECharts handles large and fancy charts."
+      },
+      {
+        "id": "concept:data-visualization",
+        "caption": "Both are ready-made; sometimes you need more control."
+      },
+      {
+        "id": "technology:vega-lite",
+        "caption": "Vega-Lite describes a chart in a few lines of JSON."
+      },
+      {
+        "id": "technology:vega",
+        "caption": "Vega is the fuller grammar underneath."
+      },
+      {
+        "id": "technology:d3",
+        "caption": "D3 binds data to the page for fully custom graphics."
+      },
+      {
+        "id": "technology:observable",
+        "caption": "Observable notebooks are where many D3 charts are made."
+      }
+    ]
+  },
+  {
+    "title": "How a company runs on ERP",
+    "steps": [
+      {
+        "id": "concept:double-entry-bookkeeping",
+        "caption": "Every business keeps its books in double entry."
+      },
+      {
+        "id": "concept:erp",
+        "caption": "ERP systems put finance, stock and HR in one database."
+      },
+      {
+        "id": "technology:sap-erp",
+        "caption": "SAP S/4HANA is the best-known ERP."
+      },
+      {
+        "id": "technology:sap-hana",
+        "caption": "It runs on SAP HANA, SAP's own database."
+      },
+      {
+        "id": "concept:in-memory-database",
+        "caption": "HANA keeps data in memory for fast analytics."
+      }
+    ]
+  },
+  {
+    "title": "CRM and the sales stack",
+    "steps": [
+      {
+        "id": "concept:marketing-automation",
+        "caption": "Marketing automation nurtures leads with emails and scoring."
+      },
+      {
+        "id": "technology:hubspot",
+        "caption": "HubSpot started there."
+      },
+      {
+        "id": "concept:crm",
+        "caption": "A CRM tracks every customer and deal."
+      },
+      {
+        "id": "technology:salesforce",
+        "caption": "Salesforce is the largest CRM platform."
+      },
+      {
+        "id": "technology:apex-lang",
+        "caption": "Developers customize it in Apex, a Java-like language."
+      }
+    ]
+  },
+  {
+    "title": "Connect enterprise systems",
+    "steps": [
+      {
+        "id": "concept:service-oriented-architecture",
+        "caption": "SOA splits a company's software into services."
+      },
+      {
+        "id": "concept:enterprise-service-bus",
+        "caption": "An enterprise service bus routes messages between them."
+      },
+      {
+        "id": "concept:message-broker",
+        "caption": "Underneath is a message broker."
+      },
+      {
+        "id": "concept:enterprise-integration",
+        "caption": "Integration patterns describe how systems exchange data."
+      },
+      {
+        "id": "technology:mulesoft",
+        "caption": "MuleSoft sells an integration platform."
+      },
+      {
+        "id": "technology:salesforce",
+        "caption": "Salesforce bought it in 2018."
+      }
+    ]
+  },
+  {
+    "title": "Automate business workflows",
+    "steps": [
+      {
+        "id": "concept:bpmn",
+        "caption": "BPMN is a standard notation for business processes."
+      },
+      {
+        "id": "technology:camunda",
+        "caption": "Camunda executes BPMN diagrams as code."
+      },
+      {
+        "id": "concept:business-process-management",
+        "caption": "Business process management improves those processes."
+      },
+      {
+        "id": "concept:workflow-automation",
+        "caption": "Workflow automation removes the manual steps."
+      },
+      {
+        "id": "technology:zapier",
+        "caption": "Zapier connects SaaS apps with no code."
+      },
+      {
+        "id": "technology:n8n",
+        "caption": "n8n is an open, self-hostable alternative."
+      }
+    ]
+  },
+  {
+    "title": "Build internal tools without much code",
+    "steps": [
+      {
+        "id": "concept:spreadsheets",
+        "caption": "Most internal tools start as a spreadsheet."
+      },
+      {
+        "id": "technology:google-sheets",
+        "caption": "Google Sheets makes it shared."
+      },
+      {
+        "id": "technology:airtable",
+        "caption": "Airtable turns it into a database."
+      },
+      {
+        "id": "concept:low-code",
+        "caption": "Low-code platforms add forms, logic and permissions."
+      },
+      {
+        "id": "technology:retool",
+        "caption": "Retool builds admin panels on top of your own APIs."
+      },
+      {
+        "id": "technology:appsmith",
+        "caption": "Appsmith is an open-source alternative."
+      }
+    ]
+  },
+  {
+    "title": "IT service management",
+    "steps": [
+      {
+        "id": "concept:incident-management",
+        "caption": "Something broke; someone has to own it."
+      },
+      {
+        "id": "concept:itil",
+        "caption": "ITIL is the classic playbook for IT services."
+      },
+      {
+        "id": "concept:itsm",
+        "caption": "IT service management handles incidents, changes and requests."
+      },
+      {
+        "id": "technology:servicenow",
+        "caption": "ServiceNow is the dominant ITSM platform."
+      },
+      {
+        "id": "concept:workflow-automation",
+        "caption": "It automates the approvals and hand-offs."
+      }
+    ]
+  },
+  {
+    "title": "Enterprise architecture",
+    "steps": [
+      {
+        "id": "concept:software-architecture",
+        "caption": "Software architecture shapes one system."
+      },
+      {
+        "id": "concept:enterprise-architecture",
+        "caption": "Enterprise architecture maps all of them together."
+      },
+      {
+        "id": "concept:archimate",
+        "caption": "ArchiMate is a modelling language for that map."
+      },
+      {
+        "id": "concept:uml",
+        "caption": "It borrows from UML, the software modelling standard."
+      },
+      {
+        "id": "concept:bpmn",
+        "caption": "BPMN models the business processes."
+      },
+      {
+        "id": "concept:business-process-management",
+        "caption": "Together they guide how processes change."
+      }
+    ]
+  },
+  {
+    "title": "The digital workplace",
+    "steps": [
+      {
+        "id": "concept:team-collaboration",
+        "caption": "Teams work in shared tools."
+      },
+      {
+        "id": "technology:slack",
+        "caption": "Slack organizes chat into channels."
+      },
+      {
+        "id": "technology:microsoft-teams",
+        "caption": "Microsoft Teams bundles chat with meetings."
+      },
+      {
+        "id": "technology:microsoft-365",
+        "caption": "It comes with Microsoft 365."
+      },
+      {
+        "id": "technology:sharepoint",
+        "caption": "SharePoint stores the documents."
+      },
+      {
+        "id": "concept:document-management",
+        "caption": "Document management handles versions and access."
+      },
+      {
+        "id": "concept:e-signature",
+        "caption": "Contracts get signed electronically."
+      },
+      {
+        "id": "technology:docusign",
+        "caption": "DocuSign is the best-known e-signature service."
+      }
+    ]
+  },
+  {
+    "title": "How a mainframe works",
+    "steps": [
+      {
+        "id": "technology:ibm-system-360",
+        "caption": "IBM System/360, 1964, started the compatible mainframe line."
+      },
+      {
+        "id": "concept:mainframe",
+        "caption": "Mainframes still run banks, airlines and governments."
+      },
+      {
+        "id": "technology:ibm-z",
+        "caption": "IBM Z is today's mainframe hardware."
+      },
+      {
+        "id": "technology:z-os",
+        "caption": "z/OS is its operating system."
+      },
+      {
+        "id": "technology:jcl",
+        "caption": "JCL scripts tell z/OS which programs to run on which data."
+      },
+      {
+        "id": "concept:batch-processing",
+        "caption": "Most of that work is overnight batch processing."
+      }
+    ]
+  },
+  {
+    "title": "COBOL and the banking core",
+    "steps": [
+      {
+        "id": "concept:core-banking",
+        "caption": "Core banking keeps every account balance."
+      },
+      {
+        "id": "technology:cobol",
+        "caption": "Much of it is still written in COBOL."
+      },
+      {
+        "id": "technology:cics",
+        "caption": "CICS runs COBOL programs as online transactions."
+      },
+      {
+        "id": "concept:transaction-processing",
+        "caption": "Transaction processing keeps each transfer all-or-nothing."
+      },
+      {
+        "id": "technology:ims",
+        "caption": "IBM IMS is a hierarchical database from the Apollo era."
+      },
+      {
+        "id": "technology:ibm-db2",
+        "caption": "Db2 is IBM's relational database."
+      }
+    ]
+  },
+  {
+    "title": "Modernize a legacy system",
+    "steps": [
+      {
+        "id": "concept:y2k-problem",
+        "caption": "Y2K showed how long old code lives."
+      },
+      {
+        "id": "concept:technical-debt",
+        "caption": "Old shortcuts become technical debt."
+      },
+      {
+        "id": "concept:legacy-modernization",
+        "caption": "Modernization replaces old systems without stopping them."
+      },
+      {
+        "id": "concept:strangler-fig-pattern",
+        "caption": "The strangler fig pattern moves one feature at a time."
+      },
+      {
+        "id": "concept:microservices",
+        "caption": "Often each moved feature becomes a service."
+      }
+    ]
+  },
+  {
+    "title": "From punched cards to Unicode",
+    "steps": [
+      {
+        "id": "concept:punched-card",
+        "caption": "Punched cards stored data as holes."
+      },
+      {
+        "id": "concept:mainframe",
+        "caption": "Mainframes read them by the million."
+      },
+      {
+        "id": "concept:ebcdic",
+        "caption": "IBM mainframes encode text in EBCDIC."
+      },
+      {
+        "id": "concept:character-encoding",
+        "caption": "Character encodings map bytes to letters."
+      },
+      {
+        "id": "concept:unicode",
+        "caption": "Unicode covers every script in one standard."
+      },
+      {
+        "id": "concept:internationalization",
+        "caption": "It is what makes software work in any language."
+      }
+    ]
+  },
+  {
+    "title": "From minicomputers to Unix",
+    "steps": [
+      {
+        "id": "concept:mainframe",
+        "caption": "Mainframes filled rooms."
+      },
+      {
+        "id": "concept:minicomputer",
+        "caption": "Minicomputers brought computing to departments."
+      },
+      {
+        "id": "technology:pdp-11",
+        "caption": "The PDP-11 was the most famous one."
+      },
+      {
+        "id": "concept:unix",
+        "caption": "Unix was rewritten in C on the PDP-11."
+      },
+      {
+        "id": "concept:year-2038-problem",
+        "caption": "Unix time overflows a 32-bit counter in 2038."
+      }
+    ]
+  },
+  {
+    "title": "From sound wave to stream",
+    "steps": [
+      {
+        "id": "concept:sampling-theorem",
+        "caption": "Sample a wave fast enough and you can rebuild it exactly."
+      },
+      {
+        "id": "concept:digital-audio",
+        "caption": "Digital audio is a stream of those samples."
+      },
+      {
+        "id": "concept:audio-codecs",
+        "caption": "Codecs like AAC and Opus shrink it."
+      },
+      {
+        "id": "technology:ffmpeg",
+        "caption": "FFmpeg converts between almost every codec."
+      },
+      {
+        "id": "concept:video-codecs",
+        "caption": "It handles video codecs too."
+      },
+      {
+        "id": "concept:video-streaming",
+        "caption": "Streaming services deliver the encoded media in chunks."
+      }
+    ]
+  },
+  {
+    "title": "Build an audio plugin",
+    "steps": [
+      {
+        "id": "concept:midi",
+        "caption": "MIDI sends notes, not sound."
+      },
+      {
+        "id": "technology:ableton-live",
+        "caption": "Ableton Live is a popular digital audio workstation."
+      },
+      {
+        "id": "concept:digital-audio-workstation",
+        "caption": "A DAW records, edits and mixes tracks."
+      },
+      {
+        "id": "concept:audio-plugins",
+        "caption": "Plugins add instruments and effects to any DAW."
+      },
+      {
+        "id": "technology:juce",
+        "caption": "JUCE is the C++ framework most plugins are built with."
+      },
+      {
+        "id": "technology:cpp",
+        "caption": "Audio code is C++ because it must never miss a deadline."
+      }
+    ]
+  },
+  {
+    "title": "Synthesis and live coding",
+    "steps": [
+      {
+        "id": "concept:digital-filter",
+        "caption": "Filters shape the tone of a sound."
+      },
+      {
+        "id": "concept:sound-synthesis",
+        "caption": "Synthesis builds sounds from oscillators and filters."
+      },
+      {
+        "id": "technology:supercollider",
+        "caption": "SuperCollider is a language and server for synthesis."
+      },
+      {
+        "id": "technology:sonic-pi",
+        "caption": "Sonic Pi uses it to teach music through code."
+      },
+      {
+        "id": "concept:live-coding-music",
+        "caption": "Live coders perform by editing code on stage."
+      },
+      {
+        "id": "concept:repl",
+        "caption": "It works because a REPL runs each change at once."
+      }
+    ]
+  },
+  {
+    "title": "Patch it visually",
+    "steps": [
+      {
+        "id": "concept:visual-programming-language",
+        "caption": "Some programs are drawn, not typed."
+      },
+      {
+        "id": "technology:max-msp",
+        "caption": "Max/MSP wires boxes together to make music and video."
+      },
+      {
+        "id": "technology:pure-data",
+        "caption": "Pure Data is its open-source sibling."
+      },
+      {
+        "id": "concept:dataflow-programming",
+        "caption": "Both are dataflow programs: values flow along wires."
+      },
+      {
+        "id": "concept:stream-processing",
+        "caption": "Stream processors apply the same idea to data."
+      }
+    ]
+  },
+  {
+    "title": "Sound in games",
+    "steps": [
+      {
+        "id": "technology:unreal-engine",
+        "caption": "Game engines play sound, but big games want more."
+      },
+      {
+        "id": "technology:wwise",
+        "caption": "Wwise is audio middleware used across the industry."
+      },
+      {
+        "id": "technology:fmod",
+        "caption": "FMOD is the other common choice."
+      },
+      {
+        "id": "concept:game-audio",
+        "caption": "Game audio reacts to what the player does."
+      },
+      {
+        "id": "concept:spatial-audio",
+        "caption": "Spatial audio places each sound in 3D."
+      },
+      {
+        "id": "concept:virtual-reality",
+        "caption": "In VR it is essential for presence."
+      }
+    ]
+  },
+  {
+    "title": "Music meets machine learning",
+    "steps": [
+      {
+        "id": "concept:fast-fourier-transform",
+        "caption": "The FFT turns sound into frequencies."
+      },
+      {
+        "id": "concept:audio-fingerprinting",
+        "caption": "Fingerprints of those frequencies identify a song."
+      },
+      {
+        "id": "concept:music-information-retrieval",
+        "caption": "Music information retrieval studies tempo, key and genre."
+      },
+      {
+        "id": "concept:music-generation",
+        "caption": "Generative models now compose music."
+      },
+      {
+        "id": "concept:generative-ai",
+        "caption": "They are part of the wider generative AI wave."
+      }
+    ]
+  },
+  {
+    "title": "Safety-critical software",
+    "steps": [
+      {
+        "id": "concept:fault-tolerance",
+        "caption": "Some failures are not allowed to happen."
+      },
+      {
+        "id": "concept:functional-safety",
+        "caption": "Functional safety proves the risk is acceptably low."
+      },
+      {
+        "id": "concept:iso-26262",
+        "caption": "ISO 26262 is the standard for cars."
+      },
+      {
+        "id": "concept:misra-c",
+        "caption": "MISRA C restricts C to its safer parts."
+      },
+      {
+        "id": "concept:static-analysis",
+        "caption": "Static analysers enforce those rules."
+      }
+    ]
+  },
+  {
+    "title": "Software that flies",
+    "steps": [
+      {
+        "id": "concept:functional-safety",
+        "caption": "Aircraft software is certified before it flies."
+      },
+      {
+        "id": "concept:do-178c",
+        "caption": "DO-178C sets the evidence required at each risk level."
+      },
+      {
+        "id": "concept:avionics",
+        "caption": "Avionics are the aircraft's electronic systems."
+      },
+      {
+        "id": "concept:arinc-653",
+        "caption": "ARINC 653 partitions one computer between many functions."
+      },
+      {
+        "id": "concept:rtos",
+        "caption": "Each partition runs on a real-time OS."
+      },
+      {
+        "id": "technology:vxworks",
+        "caption": "VxWorks is a common one, also on Mars rovers."
+      }
+    ]
+  },
+  {
+    "title": "Inside a modern car",
+    "steps": [
+      {
+        "id": "concept:microcontroller",
+        "caption": "A car has dozens of microcontrollers."
+      },
+      {
+        "id": "concept:electronic-control-unit",
+        "caption": "Each sits in an electronic control unit."
+      },
+      {
+        "id": "concept:can-bus",
+        "caption": "ECUs talk over the CAN bus."
+      },
+      {
+        "id": "concept:autosar",
+        "caption": "AUTOSAR standardizes their software."
+      },
+      {
+        "id": "concept:software-defined-vehicle",
+        "caption": "Newer cars centralize it into a software-defined vehicle."
+      },
+      {
+        "id": "technology:android-automotive",
+        "caption": "Android Automotive runs the infotainment."
+      }
+    ]
+  },
+  {
+    "title": "Space flight software",
+    "steps": [
+      {
+        "id": "concept:leo-satellite-internet",
+        "caption": "Low Earth orbit is crowded with satellites."
+      },
+      {
+        "id": "concept:cubesat",
+        "caption": "Many are CubeSats built from 10 cm units."
+      },
+      {
+        "id": "concept:flight-software",
+        "caption": "Flight software runs them with no one to reboot."
+      },
+      {
+        "id": "technology:nasa-cfs",
+        "caption": "NASA's core Flight System is reusable flight software in C."
+      },
+      {
+        "id": "technology:nasa-fprime",
+        "caption": "F Prime, from JPL, flew on the Mars helicopter."
+      }
+    ]
+  },
+  {
+    "title": "Autonomy on the road and in the air",
+    "steps": [
+      {
+        "id": "technology:openpilot",
+        "caption": "openpilot adds driver assistance to ordinary cars."
+      },
+      {
+        "id": "concept:adas",
+        "caption": "Driver assistance keeps lanes and distances."
+      },
+      {
+        "id": "concept:autonomous-vehicles",
+        "caption": "Full autonomy removes the driver."
+      },
+      {
+        "id": "technology:apollo-auto",
+        "caption": "Autoware is an open-source self-driving stack."
+      },
+      {
+        "id": "technology:ros2",
+        "caption": "It is built on ROS 2."
+      },
+      {
+        "id": "technology:px4",
+        "caption": "PX4 flies drones on ROS 2 too."
+      },
+      {
+        "id": "technology:ardupilot",
+        "caption": "ArduPilot is the other major open autopilot."
+      }
+    ]
+  },
+  {
+    "title": "Model-based design",
+    "steps": [
+      {
+        "id": "concept:control-theory",
+        "caption": "Control theory describes how systems respond."
+      },
+      {
+        "id": "concept:model-based-design",
+        "caption": "Model-based design simulates the controller before building it."
+      },
+      {
+        "id": "concept:hardware-in-the-loop",
+        "caption": "Hardware-in-the-loop tests the real controller against a simulation."
+      },
+      {
+        "id": "concept:cyber-physical-systems",
+        "caption": "That is how cyber-physical systems are verified."
+      }
+    ]
+  },
+  {
+    "title": "How web maps work",
+    "steps": [
+      {
+        "id": "concept:coordinate-reference-systems",
+        "caption": "Every location needs a coordinate system."
+      },
+      {
+        "id": "concept:map-projections",
+        "caption": "Projections flatten the globe onto a screen."
+      },
+      {
+        "id": "concept:web-mapping",
+        "caption": "Web maps load the world in small squares."
+      },
+      {
+        "id": "concept:vector-tiles",
+        "caption": "Vector tiles send geometry, styled in the browser."
+      },
+      {
+        "id": "technology:maplibre",
+        "caption": "MapLibre renders them with WebGL."
+      },
+      {
+        "id": "technology:mapbox",
+        "caption": "It began as a fork of Mapbox GL."
+      }
+    ]
+  },
+  {
+    "title": "How route planning works",
+    "steps": [
+      {
+        "id": "technology:openstreetmap",
+        "caption": "OpenStreetMap is a free, editable map of the world."
+      },
+      {
+        "id": "technology:osrm",
+        "caption": "OSRM computes routes on its road network."
+      },
+      {
+        "id": "concept:routing-navigation",
+        "caption": "Routing finds the best path between two places."
+      },
+      {
+        "id": "concept:a-star-search",
+        "caption": "A* search heads towards the goal first."
+      }
+    ]
+  },
+  {
+    "title": "GIS analysis in Python",
+    "steps": [
+      {
+        "id": "concept:geographic-information-systems",
+        "caption": "GIS stores and analyses data about places."
+      },
+      {
+        "id": "concept:raster-vector-data",
+        "caption": "It comes as rasters (grids) or vectors (shapes)."
+      },
+      {
+        "id": "technology:geojson",
+        "caption": "GeoJSON is the common vector format on the web."
+      },
+      {
+        "id": "technology:turf-js",
+        "caption": "Turf.js analyses GeoJSON in the browser."
+      },
+      {
+        "id": "concept:spatial-analysis",
+        "caption": "Spatial analysis asks what is near, inside or overlapping."
+      },
+      {
+        "id": "technology:geopandas",
+        "caption": "GeoPandas does it in Python."
+      },
+      {
+        "id": "technology:pandas",
+        "caption": "It extends pandas DataFrames with geometry."
+      }
+    ]
+  },
+  {
+    "title": "Index the planet",
+    "steps": [
+      {
+        "id": "concept:geohash",
+        "caption": "A geohash turns a location into a short string."
+      },
+      {
+        "id": "concept:spatial-index-h3",
+        "caption": "Discrete global grids tile the Earth into cells."
+      },
+      {
+        "id": "technology:uber-h3",
+        "caption": "H3, from Uber, uses hexagons."
+      },
+      {
+        "id": "concept:spatial-analysis",
+        "caption": "Cells make it cheap to group and compare locations."
+      },
+      {
+        "id": "technology:kepler-gl",
+        "caption": "kepler.gl, also from Uber, maps millions of points."
+      },
+      {
+        "id": "technology:deck-gl",
+        "caption": "It is built on deck.gl's WebGL layers."
+      }
+    ]
+  },
+  {
+    "title": "Earth from above",
+    "steps": [
+      {
+        "id": "technology:google-earth-engine",
+        "caption": "Google Earth Engine holds decades of satellite images."
+      },
+      {
+        "id": "concept:remote-sensing",
+        "caption": "Remote sensing measures the Earth from a distance."
+      },
+      {
+        "id": "concept:image-processing",
+        "caption": "The images need processing before analysis."
+      },
+      {
+        "id": "concept:raster-vector-data",
+        "caption": "They arrive as rasters."
+      },
+      {
+        "id": "concept:digital-elevation-model",
+        "caption": "Elevation models store height for every cell."
+      },
+      {
+        "id": "concept:lidar",
+        "caption": "Lidar measures that height with laser pulses."
+      }
+    ]
+  },
+  {
+    "title": "Turn a WordPress site into a shop",
+    "steps": [
+      {
+        "id": "concept:content-management-system",
+        "caption": "A CMS lets non-developers publish pages."
+      },
+      {
+        "id": "technology:wordpress",
+        "caption": "WordPress runs a large share of the web."
+      },
+      {
+        "id": "technology:woocommerce",
+        "caption": "WooCommerce adds a store to it."
+      },
+      {
+        "id": "concept:e-commerce",
+        "caption": "E-commerce means catalogue, cart and checkout."
+      },
+      {
+        "id": "concept:shopping-cart",
+        "caption": "The cart collects items and totals the order."
+      },
+      {
+        "id": "concept:payment-systems",
+        "caption": "Payment systems move the money."
+      },
+      {
+        "id": "technology:stripe",
+        "caption": "Stripe is a developer-friendly way to take payments."
+      }
+    ]
+  },
+  {
+    "title": "Go headless",
+    "steps": [
+      {
+        "id": "concept:content-management-system",
+        "caption": "A classic CMS renders its own pages."
+      },
+      {
+        "id": "concept:headless-cms",
+        "caption": "A headless CMS only stores content and serves an API."
+      },
+      {
+        "id": "technology:sanity-cms",
+        "caption": "Sanity stores content as structured data."
+      },
+      {
+        "id": "technology:contentful",
+        "caption": "Contentful is a hosted headless CMS."
+      },
+      {
+        "id": "technology:strapi",
+        "caption": "Strapi is an open-source one you host yourself."
+      },
+      {
+        "id": "technology:nodejs",
+        "caption": "It runs on Node.js."
+      }
+    ]
+  },
+  {
+    "title": "Shopify from theme to code",
+    "steps": [
+      {
+        "id": "technology:liquid-template",
+        "caption": "Shopify themes are written in Liquid."
+      },
+      {
+        "id": "technology:shopify",
+        "caption": "Shopify hosts the store and checkout."
+      },
+      {
+        "id": "technology:hydrogen",
+        "caption": "Hydrogen builds custom storefronts in React."
+      },
+      {
+        "id": "technology:remix",
+        "caption": "It is built on Remix."
+      },
+      {
+        "id": "technology:react",
+        "caption": "And Remix is built on React."
+      }
+    ]
+  },
+  {
+    "title": "Open-source shops",
+    "steps": [
+      {
+        "id": "technology:woocommerce",
+        "caption": "WooCommerce is open source, on WordPress."
+      },
+      {
+        "id": "technology:prestashop",
+        "caption": "PrestaShop is a standalone PHP store."
+      },
+      {
+        "id": "concept:e-commerce",
+        "caption": "Many open stores compete with hosted ones."
+      },
+      {
+        "id": "technology:saleor",
+        "caption": "Saleor is a headless store in Python."
+      },
+      {
+        "id": "concept:graphql",
+        "caption": "It exposes everything through GraphQL."
+      }
+    ]
+  },
+  {
+    "title": "Wikis and knowledge bases",
+    "steps": [
+      {
+        "id": "technology:mediawiki",
+        "caption": "MediaWiki runs Wikipedia."
+      },
+      {
+        "id": "concept:wiki",
+        "caption": "A wiki is a site anyone can edit."
+      },
+      {
+        "id": "technology:confluence",
+        "caption": "Confluence is the company wiki."
+      },
+      {
+        "id": "technology:notion-app",
+        "caption": "Notion mixes wiki pages with databases."
+      },
+      {
+        "id": "technology:obsidian-app",
+        "caption": "Obsidian keeps notes as local Markdown files."
+      }
+    ]
+  },
+  {
+    "title": "Website builders",
+    "steps": [
+      {
+        "id": "concept:low-code",
+        "caption": "Not every site needs code."
+      },
+      {
+        "id": "technology:webflow",
+        "caption": "Webflow is visual design that outputs real HTML and CSS."
+      },
+      {
+        "id": "technology:wix",
+        "caption": "Wix is drag-and-drop."
+      },
+      {
+        "id": "technology:squarespace",
+        "caption": "Squarespace sells polished templates."
+      },
+      {
+        "id": "concept:e-commerce",
+        "caption": "All three can run a small store."
+      },
+      {
+        "id": "technology:shopify",
+        "caption": "Shopify is the step up when the store is the business."
+      }
+    ]
+  },
+  {
+    "title": "Netflix's resilience tools",
+    "steps": [
+      {
+        "id": "concept:circuit-breaker",
+        "caption": "A circuit breaker stops calling a service that keeps failing."
+      },
+      {
+        "id": "technology:hystrix",
+        "caption": "Netflix's Hystrix library made the pattern famous."
+      },
+      {
+        "id": "concept:fault-tolerance",
+        "caption": "The goal is a system that degrades instead of falling over."
+      },
+      {
+        "id": "technology:chaos-monkey",
+        "caption": "Chaos Monkey tests that by killing servers on purpose."
+      },
+      {
+        "id": "technology:spinnaker",
+        "caption": "It runs inside Spinnaker, Netflix's delivery platform."
+      },
+      {
+        "id": "concept:canary-deployment",
+        "caption": "Spinnaker rolls changes out to a small canary first."
+      }
+    ]
+  },
+  {
+    "title": "Meta's PHP journey",
+    "steps": [
+      {
+        "id": "technology:php",
+        "caption": "Facebook started as a PHP site."
+      },
+      {
+        "id": "technology:hack",
+        "caption": "Hack added gradual static types to PHP."
+      },
+      {
+        "id": "technology:hhvm",
+        "caption": "HHVM runs Hack."
+      },
+      {
+        "id": "concept:just-in-time-compilation",
+        "caption": "Its JIT compiler made PHP-style code fast enough for Facebook's scale."
+      }
+    ]
+  },
+  {
+    "title": "Meta's C++ infrastructure",
+    "steps": [
+      {
+        "id": "technology:memcached",
+        "caption": "Facebook's cache tier runs on memcached."
+      },
+      {
+        "id": "technology:mcrouter",
+        "caption": "mcrouter routes and replicates requests across thousands of memcached servers."
+      },
+      {
+        "id": "technology:cpp",
+        "caption": "Meta's infrastructure is mostly C++."
+      },
+      {
+        "id": "technology:rocksdb",
+        "caption": "RocksDB, Meta's embedded key-value store, powers many databases."
+      },
+      {
+        "id": "concept:lsm-tree",
+        "caption": "It is a log-structured merge tree, fast for writes."
+      }
+    ]
+  },
+  {
+    "title": "Meta's React ecosystem",
+    "steps": [
+      {
+        "id": "concept:graphql",
+        "caption": "GraphQL lets the client ask for exactly the data it needs."
+      },
+      {
+        "id": "technology:relay-graphql",
+        "caption": "Relay connects GraphQL queries to React components."
+      },
+      {
+        "id": "technology:react",
+        "caption": "React itself came out of Meta in 2013."
+      },
+      {
+        "id": "technology:react-native",
+        "caption": "React Native brought it to iOS and Android."
+      },
+      {
+        "id": "technology:hermes-engine",
+        "caption": "Hermes is the JavaScript engine Meta built for React Native."
+      }
+    ]
+  },
+  {
+    "title": "LinkedIn's streaming stack",
+    "steps": [
+      {
+        "id": "concept:stream-processing",
+        "caption": "LinkedIn processes activity as it happens."
+      },
+      {
+        "id": "technology:apache-samza",
+        "caption": "Samza was its stream processor."
+      },
+      {
+        "id": "technology:kafka",
+        "caption": "Kafka, also from LinkedIn, carries the events."
+      },
+      {
+        "id": "technology:apache-pinot",
+        "caption": "Pinot answers analytics queries on those events in milliseconds."
+      },
+      {
+        "id": "concept:olap",
+        "caption": "That is online analytical processing on fresh data."
+      }
+    ]
+  },
+  {
+    "title": "Durable workflows, from Uber to Temporal",
+    "steps": [
+      {
+        "id": "technology:cadence-workflow",
+        "caption": "Cadence runs long-lived workflows at Uber."
+      },
+      {
+        "id": "concept:durable-execution",
+        "caption": "Durable execution survives crashes by replaying a workflow's history."
+      },
+      {
+        "id": "technology:temporal",
+        "caption": "Cadence's creators forked it into Temporal."
+      },
+      {
+        "id": "technology:netflix-conductor",
+        "caption": "Netflix built Conductor for the same problem."
+      },
+      {
+        "id": "concept:workflow-automation",
+        "caption": "Both orchestrate many services into one business process."
+      }
+    ]
+  },
+  {
+    "title": "RPC frameworks from big tech",
+    "steps": [
+      {
+        "id": "technology:finagle",
+        "caption": "Finagle is Twitter's RPC library for the JVM."
+      },
+      {
+        "id": "concept:rpc",
+        "caption": "An RPC makes a network call look like a function call."
+      },
+      {
+        "id": "technology:apache-thrift",
+        "caption": "Thrift, from Facebook, defines services in an IDL."
+      },
+      {
+        "id": "technology:grpc",
+        "caption": "gRPC, from Google, does the same over HTTP/2."
+      }
+    ]
+  },
+  {
+    "title": "Cloudflare at the edge",
+    "steps": [
+      {
+        "id": "concept:edge-computing",
+        "caption": "Edge computing runs code close to users."
+      },
+      {
+        "id": "technology:cloudflare-workers",
+        "caption": "Workers run your code in every Cloudflare data center."
+      },
+      {
+        "id": "technology:cloudflare",
+        "caption": "Cloudflare sits in front of a large share of websites."
+      },
+      {
+        "id": "technology:cloudflare-tunnel",
+        "caption": "Tunnels publish a private service without opening ports."
+      },
+      {
+        "id": "concept:zero-trust",
+        "caption": "Zero trust checks every request, inside or outside the network."
+      },
+      {
+        "id": "technology:cloudflare-zero-trust",
+        "caption": "Cloudflare sells that as a service too."
+      }
+    ]
+  },
+  {
+    "title": "Cloudflare's Rust networking",
+    "steps": [
+      {
+        "id": "technology:nginx",
+        "caption": "Cloudflare used to run NGINX."
+      },
+      {
+        "id": "technology:pingora",
+        "caption": "Pingora, its own Rust proxy, replaced it."
+      },
+      {
+        "id": "technology:rust",
+        "caption": "Rust gives network code memory safety with no garbage collector."
+      },
+      {
+        "id": "technology:quiche",
+        "caption": "quiche is Cloudflare's Rust QUIC library."
+      },
+      {
+        "id": "concept:quic",
+        "caption": "QUIC is transport over UDP with encryption built in."
+      },
+      {
+        "id": "concept:http3",
+        "caption": "HTTP/3 runs on QUIC."
+      }
+    ]
+  },
+  {
+    "title": "Data orchestrators from big tech",
+    "steps": [
+      {
+        "id": "technology:airflow",
+        "caption": "Airflow was created at Airbnb to schedule data pipelines."
+      },
+      {
+        "id": "technology:luigi",
+        "caption": "Luigi did the same at Spotify."
+      },
+      {
+        "id": "concept:data-orchestration",
+        "caption": "Orchestrators run steps in order and retry failures."
+      },
+      {
+        "id": "technology:flyte",
+        "caption": "Flyte, from Lyft, orchestrates ML pipelines on Kubernetes."
+      },
+      {
+        "id": "concept:mlops",
+        "caption": "MLOps puts model training on that kind of footing."
+      },
+      {
+        "id": "technology:metaflow",
+        "caption": "Metaflow is Netflix's take on it."
+      }
+    ]
+  },
+  {
+    "title": "Nearest neighbours, from Spotify to vector search",
+    "steps": [
+      {
+        "id": "concept:recommender-systems",
+        "caption": "Recommenders find items similar to what you liked."
+      },
+      {
+        "id": "technology:annoy",
+        "caption": "Spotify's Annoy finds similar songs fast, approximately."
+      },
+      {
+        "id": "technology:faiss",
+        "caption": "Meta's FAISS does it on billions of vectors."
+      },
+      {
+        "id": "concept:vector-databases",
+        "caption": "Vector databases wrap that search in a service."
+      }
+    ]
+  },
+  {
+    "title": "From load balancer to service mesh",
+    "steps": [
+      {
+        "id": "technology:ebpf",
+        "caption": "eBPF runs small programs inside the Linux kernel."
+      },
+      {
+        "id": "technology:katran",
+        "caption": "Katran, Meta's load balancer, uses it to forward packets."
+      },
+      {
+        "id": "concept:load-balancing",
+        "caption": "Load balancing spreads traffic across servers."
+      },
+      {
+        "id": "technology:envoy",
+        "caption": "Envoy, built at Lyft, balances traffic between services."
+      },
+      {
+        "id": "technology:istio",
+        "caption": "Istio puts an Envoy next to every service."
+      },
+      {
+        "id": "concept:service-mesh",
+        "caption": "That is a service mesh."
+      }
+    ]
+  },
+  {
+    "title": "Alibaba's microservice stack",
+    "steps": [
+      {
+        "id": "concept:rpc",
+        "caption": "Microservices call each other over RPC."
+      },
+      {
+        "id": "technology:apache-dubbo",
+        "caption": "Dubbo is Alibaba's RPC framework for Java."
+      },
+      {
+        "id": "concept:service-discovery",
+        "caption": "Services need to find each other."
+      },
+      {
+        "id": "technology:nacos",
+        "caption": "Nacos, also from Alibaba, does discovery and configuration."
+      }
+    ]
+  },
+  {
+    "title": "Monorepos at Google and Meta",
+    "steps": [
+      {
+        "id": "technology:bazel",
+        "caption": "Bazel builds Google's monorepo."
+      },
+      {
+        "id": "technology:buck2",
+        "caption": "Buck2 does the same at Meta, rewritten in Rust."
+      },
+      {
+        "id": "concept:monorepo",
+        "caption": "A monorepo keeps every project in one repository."
+      },
+      {
+        "id": "technology:sapling-scm",
+        "caption": "Sapling is Meta's source control for huge repos."
+      },
+      {
+        "id": "technology:git",
+        "caption": "It speaks to Git servers."
+      }
+    ]
+  },
+  {
+    "title": "Build a native iOS app",
+    "steps": [
+      {
+        "id": "technology:swift",
+        "caption": "iOS apps are written in Swift."
+      },
+      {
+        "id": "technology:xcode",
+        "caption": "Xcode builds, signs and debugs them."
+      },
+      {
+        "id": "technology:swiftui",
+        "caption": "SwiftUI describes screens declaratively."
+      },
+      {
+        "id": "technology:uikit",
+        "caption": "UIKit is the older framework underneath."
+      },
+      {
+        "id": "technology:objective-c",
+        "caption": "UIKit was written for Objective-C."
+      }
+    ]
+  },
+  {
+    "title": "Build a native Android app",
+    "steps": [
+      {
+        "id": "technology:kotlin",
+        "caption": "Android apps are written in Kotlin."
+      },
+      {
+        "id": "technology:android-studio",
+        "caption": "Android Studio is the official IDE."
+      },
+      {
+        "id": "technology:android-sdk",
+        "caption": "The Android SDK gives access to the phone."
+      },
+      {
+        "id": "technology:android",
+        "caption": "Android runs on most of the world's phones."
+      },
+      {
+        "id": "technology:espresso-android",
+        "caption": "Espresso tests the UI on a device."
+      }
+    ]
+  },
+  {
+    "title": "Kotlin beyond Android",
+    "steps": [
+      {
+        "id": "technology:jetpack-compose",
+        "caption": "Jetpack Compose is Android's declarative UI."
+      },
+      {
+        "id": "technology:compose-multiplatform",
+        "caption": "Compose Multiplatform runs it on desktop and iOS."
+      },
+      {
+        "id": "technology:kotlin-multiplatform",
+        "caption": "Kotlin Multiplatform shares the logic underneath."
+      },
+      {
+        "id": "concept:cross-platform-development",
+        "caption": "It is a cross-platform approach that keeps native UI where you want it."
+      }
+    ]
+  },
+  {
+    "title": "Ship and grow a mobile app",
+    "steps": [
+      {
+        "id": "concept:mobile-app-lifecycle",
+        "caption": "A mobile app is built, shipped and updated in cycles."
+      },
+      {
+        "id": "concept:app-store-distribution",
+        "caption": "Releases go through Apple's and Google's stores."
+      },
+      {
+        "id": "technology:fastlane",
+        "caption": "fastlane automates screenshots, signing and uploads."
+      },
+      {
+        "id": "concept:ci-cd",
+        "caption": "It runs inside the CI/CD pipeline."
+      }
+    ]
+  },
+  {
+    "title": "Engage users on mobile",
+    "steps": [
+      {
+        "id": "concept:push-notifications",
+        "caption": "Push notifications bring users back."
+      },
+      {
+        "id": "concept:deep-linking",
+        "caption": "Deep links open the right screen from a link."
+      },
+      {
+        "id": "concept:mobile-app-lifecycle",
+        "caption": "Both are part of the app's lifecycle."
+      },
+      {
+        "id": "concept:mobile-performance",
+        "caption": "Slow apps get uninstalled."
+      },
+      {
+        "id": "technology:firebase-crashlytics",
+        "caption": "Crashlytics reports crashes from real devices."
+      }
+    ]
+  },
+  {
+    "title": "Desktop apps with web tech",
+    "steps": [
+      {
+        "id": "concept:desktop-gui",
+        "caption": "Desktop apps used to mean native toolkits."
+      },
+      {
+        "id": "technology:electron",
+        "caption": "Electron ships Chromium and Node.js with your app."
+      },
+      {
+        "id": "technology:tauri",
+        "caption": "Tauri uses the system web view and Rust instead."
+      },
+      {
+        "id": "technology:wails",
+        "caption": "Wails does the same with Go."
+      }
+    ]
+  },
+  {
+    "title": "How a game engine works",
+    "steps": [
+      {
+        "id": "concept:game-loop",
+        "caption": "Every game runs a loop: input, update, draw."
+      },
+      {
+        "id": "concept:game-engines",
+        "caption": "Engines provide that loop and everything around it."
+      },
+      {
+        "id": "concept:entity-component-system",
+        "caption": "Many organize game objects as entities and components."
+      },
+      {
+        "id": "concept:data-oriented-design",
+        "caption": "That keeps data in tight arrays for the CPU cache."
+      },
+      {
+        "id": "concept:cache-hierarchy",
+        "caption": "Cache misses are what make naive game code slow."
+      }
+    ]
+  },
+  {
+    "title": "Make a game in Godot",
+    "steps": [
+      {
+        "id": "technology:godot",
+        "caption": "Godot is a free, open-source engine."
+      },
+      {
+        "id": "concept:game-engines",
+        "caption": "It handles scenes, physics and rendering."
+      },
+      {
+        "id": "concept:procedural-generation",
+        "caption": "Procedural generation builds levels from rules."
+      },
+      {
+        "id": "concept:level-design",
+        "caption": "Level design shapes how a level plays."
+      },
+      {
+        "id": "concept:game-design",
+        "caption": "Game design decides what makes it fun."
+      }
+    ]
+  },
+  {
+    "title": "Physics in games",
+    "steps": [
+      {
+        "id": "concept:physics-engine",
+        "caption": "A physics engine moves bodies under forces."
+      },
+      {
+        "id": "concept:collision-detection",
+        "caption": "Collision detection finds what touches what."
+      },
+      {
+        "id": "concept:quadtree",
+        "caption": "Quadtrees skip pairs that are far apart."
+      }
+    ]
+  },
+  {
+    "title": "Game AI",
+    "steps": [
+      {
+        "id": "concept:game-ai",
+        "caption": "Game AI makes enemies and companions act."
+      },
+      {
+        "id": "concept:finite-state-machine",
+        "caption": "Simple characters switch between states."
+      },
+      {
+        "id": "concept:behavior-trees",
+        "caption": "Behavior trees compose larger behaviours."
+      }
+    ]
+  },
+  {
+    "title": "Games in Rust",
+    "steps": [
+      {
+        "id": "technology:rust",
+        "caption": "Rust is fast and memory-safe."
+      },
+      {
+        "id": "technology:bevy",
+        "caption": "Bevy is a Rust game engine."
+      },
+      {
+        "id": "concept:entity-component-system",
+        "caption": "It is built around an entity component system."
+      },
+      {
+        "id": "concept:game-engines",
+        "caption": "Bevy is one of many engines; Unity and Godot are others."
+      },
+      {
+        "id": "technology:unity",
+        "caption": "Unity is the most widely used."
+      }
+    ]
+  },
+  {
+    "title": "Build for VR and AR",
+    "steps": [
+      {
+        "id": "concept:virtual-reality",
+        "caption": "VR replaces what you see."
+      },
+      {
+        "id": "concept:augmented-reality",
+        "caption": "AR adds to it."
+      },
+      {
+        "id": "technology:openxr",
+        "caption": "OpenXR is the common API for headsets."
+      },
+      {
+        "id": "technology:meta-quest",
+        "caption": "Meta Quest is the best-selling headset."
+      }
+    ]
+  },
+  {
+    "title": "The three pillars of observability",
+    "steps": [
+      {
+        "id": "concept:observability",
+        "caption": "Observability is asking new questions of a running system."
+      },
+      {
+        "id": "concept:logging",
+        "caption": "Logs record events."
+      },
+      {
+        "id": "concept:centralized-logging",
+        "caption": "Aggregation puts every service's logs in one place."
+      },
+      {
+        "id": "technology:elastic-stack",
+        "caption": "The Elastic Stack is a common log store."
+      },
+      {
+        "id": "technology:kibana",
+        "caption": "Kibana searches and charts it."
+      }
+    ]
+  },
+  {
+    "title": "Metrics with Prometheus",
+    "steps": [
+      {
+        "id": "concept:metrics-monitoring",
+        "caption": "Metrics are numbers over time."
+      },
+      {
+        "id": "concept:time-series-database",
+        "caption": "They live in a time series database."
+      },
+      {
+        "id": "technology:victoriametrics",
+        "caption": "VictoriaMetrics is one built for scale."
+      },
+      {
+        "id": "technology:prometheus",
+        "caption": "Prometheus is the standard metrics system in Kubernetes."
+      },
+      {
+        "id": "technology:alertmanager",
+        "caption": "Alertmanager routes its alerts."
+      },
+      {
+        "id": "technology:pagerduty",
+        "caption": "PagerDuty wakes the right person."
+      }
+    ]
+  },
+  {
+    "title": "Trace a request across services",
+    "steps": [
+      {
+        "id": "concept:distributed-tracing",
+        "caption": "A trace follows one request through every service."
+      },
+      {
+        "id": "technology:opentelemetry",
+        "caption": "OpenTelemetry instruments your code once, for any backend."
+      },
+      {
+        "id": "technology:jaeger",
+        "caption": "Jaeger stores and shows traces."
+      },
+      {
+        "id": "technology:zipkin",
+        "caption": "Zipkin, from Twitter, was the first popular open tracer."
+      }
+    ]
+  },
+  {
+    "title": "Handle an incident",
+    "steps": [
+      {
+        "id": "concept:alerting",
+        "caption": "An alert fires."
+      },
+      {
+        "id": "concept:on-call",
+        "caption": "The on-call engineer picks it up."
+      },
+      {
+        "id": "concept:runbook",
+        "caption": "A runbook lists the first steps."
+      },
+      {
+        "id": "concept:incident-management",
+        "caption": "Incident management coordinates the response."
+      },
+      {
+        "id": "technology:statuspage",
+        "caption": "A status page keeps customers informed."
+      }
+    ]
+  },
+  {
+    "title": "Learn from failure",
+    "steps": [
+      {
+        "id": "concept:incident-management",
+        "caption": "After an incident comes the review."
+      },
+      {
+        "id": "concept:blameless-postmortem",
+        "caption": "Blameless postmortems look at systems, not people."
+      },
+      {
+        "id": "concept:site-reliability-engineering",
+        "caption": "They are a core SRE practice."
+      },
+      {
+        "id": "concept:chaos-engineering",
+        "caption": "Chaos engineering finds failures before customers do."
+      },
+      {
+        "id": "technology:chaos-mesh",
+        "caption": "Chaos Mesh injects faults into Kubernetes."
+      }
+    ]
+  },
+  {
+    "title": "Profile production",
+    "steps": [
+      {
+        "id": "concept:apm",
+        "caption": "APM tools watch latency and errors per endpoint."
+      },
+      {
+        "id": "concept:continuous-profiling",
+        "caption": "Continuous profiling shows which code burns the CPU."
+      },
+      {
+        "id": "technology:ebpf",
+        "caption": "eBPF can profile with almost no overhead."
+      },
+      {
+        "id": "technology:parca",
+        "caption": "Parca is an open-source eBPF profiler."
+      }
+    ]
+  },
+  {
+    "title": "Go serverless on AWS",
+    "steps": [
+      {
+        "id": "concept:serverless",
+        "caption": "Serverless means no servers to manage or pay for when idle."
+      },
+      {
+        "id": "technology:aws-lambda",
+        "caption": "AWS Lambda runs a function per request."
+      },
+      {
+        "id": "technology:amazon-api-gateway",
+        "caption": "API Gateway turns HTTP requests into Lambda calls."
+      },
+      {
+        "id": "concept:api-gateway",
+        "caption": "An API gateway handles routing, auth and rate limits."
+      }
+    ]
+  },
+  {
+    "title": "Keep secrets out of code",
+    "steps": [
+      {
+        "id": "technology:vault",
+        "caption": "HashiCorp Vault stores secrets and hands out short-lived credentials."
+      },
+      {
+        "id": "concept:secrets-management",
+        "caption": "Secrets management keeps passwords and keys out of Git."
+      },
+      {
+        "id": "concept:key-management",
+        "caption": "Key management rotates and audits the keys themselves."
+      },
+      {
+        "id": "concept:hardware-security-module",
+        "caption": "The most sensitive keys live in a hardware security module."
+      }
+    ]
+  },
+  {
+    "title": "Cache everything",
+    "steps": [
+      {
+        "id": "concept:caching",
+        "caption": "A cache keeps a copy of slow-to-get data close by."
+      },
+      {
+        "id": "technology:redis",
+        "caption": "Redis is the go-to in-memory cache and data store."
+      },
+      {
+        "id": "technology:memcached",
+        "caption": "Memcached is a simpler, older cache."
+      },
+      {
+        "id": "technology:evcache",
+        "caption": "Netflix's EVCache spreads memcached across AWS regions."
+      }
+    ]
+  },
+  {
+    "title": "Distributed SQL",
+    "steps": [
+      {
+        "id": "concept:distributed-systems",
+        "caption": "Some databases span many machines."
+      },
+      {
+        "id": "concept:replication",
+        "caption": "Every write is copied to several of them."
+      },
+      {
+        "id": "concept:raft",
+        "caption": "Raft lets the copies agree on the order of writes."
+      },
+      {
+        "id": "technology:cockroachdb",
+        "caption": "CockroachDB is SQL on top of Raft."
+      },
+      {
+        "id": "technology:postgresql",
+        "caption": "It speaks the PostgreSQL protocol."
+      }
+    ]
+  },
+  {
+    "title": "Graph databases",
+    "steps": [
+      {
+        "id": "concept:graph-theory",
+        "caption": "Some data is mostly relationships."
+      },
+      {
+        "id": "concept:graph-database",
+        "caption": "Graph databases store nodes and edges directly."
+      },
+      {
+        "id": "technology:neo4j",
+        "caption": "Neo4j is the best-known one."
+      },
+      {
+        "id": "concept:knowledge-graph",
+        "caption": "Knowledge graphs connect facts about the world."
+      }
+    ]
+  },
+  {
+    "title": "Data for time series",
+    "steps": [
+      {
+        "id": "concept:time-series-database",
+        "caption": "Sensor and metrics data arrive with a timestamp."
+      },
+      {
+        "id": "technology:influxdb",
+        "caption": "InfluxDB is built for that."
+      },
+      {
+        "id": "technology:timescaledb",
+        "caption": "TimescaleDB adds time series to PostgreSQL."
+      },
+      {
+        "id": "technology:postgresql",
+        "caption": "So you keep SQL and its ecosystem."
+      }
+    ]
+  },
+  {
+    "title": "Master the command line",
+    "steps": [
+      {
+        "id": "technology:bash",
+        "caption": "Bash is the default shell on most Linux machines."
+      },
+      {
+        "id": "concept:shell-scripting",
+        "caption": "Shell scripts glue programs together."
+      },
+      {
+        "id": "technology:jq",
+        "caption": "jq slices JSON in a pipeline."
+      },
+      {
+        "id": "technology:yq",
+        "caption": "yq does the same for YAML."
+      }
+    ]
+  },
+  {
+    "title": "Load test before launch",
+    "steps": [
+      {
+        "id": "concept:load-testing",
+        "caption": "Load testing finds the breaking point before users do."
+      },
+      {
+        "id": "technology:k6",
+        "caption": "k6 scripts load tests in JavaScript."
+      },
+      {
+        "id": "technology:grafana",
+        "caption": "Results go to Grafana, which owns k6."
+      }
+    ]
+  },
+  {
+    "title": "Test a mobile app",
+    "steps": [
+      {
+        "id": "technology:ios",
+        "caption": "iOS and Android each have their own test tools."
+      },
+      {
+        "id": "technology:xcuitest",
+        "caption": "XCUITest drives iOS apps."
+      },
+      {
+        "id": "technology:xcode",
+        "caption": "It runs from Xcode."
+      },
+      {
+        "id": "technology:android-studio",
+        "caption": "Android Studio is the counterpart on Android."
+      },
+      {
+        "id": "technology:kotlin",
+        "caption": "Android tests are written in Kotlin too."
+      }
+    ]
+  },
+  {
+    "title": "Fine-tune an open model",
+    "steps": [
+      {
+        "id": "concept:open-weight-models",
+        "caption": "Open-weight models can be downloaded and changed."
+      },
+      {
+        "id": "concept:fine-tuning",
+        "caption": "Fine-tuning adapts a model to your task."
+      },
+      {
+        "id": "concept:low-rank-adaptation",
+        "caption": "LoRA trains a small add-on instead of every weight."
+      },
+      {
+        "id": "technology:unsloth",
+        "caption": "Unsloth makes LoRA fine-tuning fit on one GPU."
+      }
+    ]
+  },
+  {
+    "title": "Watch an LLM app in production",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "LLM output varies from run to run."
+      },
+      {
+        "id": "concept:llm-evaluation",
+        "caption": "Evaluations score answers against expectations."
+      },
+      {
+        "id": "concept:llm-observability",
+        "caption": "Observability records every prompt, answer and cost."
+      },
+      {
+        "id": "concept:observability",
+        "caption": "It is the same idea as observability for any service."
+      }
+    ]
+  },
+  {
+    "title": "Prompting well",
+    "steps": [
+      {
+        "id": "concept:large-language-models",
+        "caption": "How you ask an LLM changes what you get."
+      },
+      {
+        "id": "concept:prompt-engineering",
+        "caption": "Prompt engineering is writing instructions that work."
+      },
+      {
+        "id": "concept:in-context-learning",
+        "caption": "Models pick up a task from the prompt alone."
+      },
+      {
+        "id": "concept:few-shot-learning",
+        "caption": "A few worked examples show the format you want."
+      }
+    ]
+  },
+  {
+    "title": "Store passwords safely",
+    "steps": [
+      {
+        "id": "concept:hashing",
+        "caption": "Never store a password, store its hash."
+      },
+      {
+        "id": "concept:password-hashing",
+        "caption": "Password hashes like Argon2 and bcrypt are deliberately slow."
+      },
+      {
+        "id": "concept:salt-crypto",
+        "caption": "A random salt per user defeats precomputed tables."
+      }
+    ]
+  },
+  {
+    "title": "End-to-end encryption",
+    "steps": [
+      {
+        "id": "concept:public-key-cryptography",
+        "caption": "Public keys let strangers agree on a secret."
+      },
+      {
+        "id": "technology:gpg",
+        "caption": "GPG brought that to email in the 1990s."
+      },
+      {
+        "id": "concept:encryption",
+        "caption": "Encryption hides data from anyone without the key."
+      },
+      {
+        "id": "concept:end-to-end-encryption",
+        "caption": "End-to-end encryption keeps even the server from reading messages."
+      },
+      {
+        "id": "concept:signal-protocol",
+        "caption": "The Signal Protocol does it for WhatsApp and Signal."
+      }
+    ]
+  },
+  {
+    "title": "Write and test a smart contract",
+    "steps": [
+      {
+        "id": "technology:ethereum",
+        "caption": "Ethereum runs programs on a blockchain."
+      },
+      {
+        "id": "concept:smart-contracts",
+        "caption": "Those programs are smart contracts."
+      },
+      {
+        "id": "concept:evm",
+        "caption": "The EVM executes them."
+      },
+      {
+        "id": "technology:solidity",
+        "caption": "Most contracts are written in Solidity."
+      },
+      {
+        "id": "technology:hardhat",
+        "caption": "Hardhat compiles, tests and deploys them with JavaScript."
+      },
+      {
+        "id": "technology:foundry",
+        "caption": "Foundry does the same, with tests written in Solidity."
+      }
+    ]
+  },
+  {
+    "title": "Zero-knowledge proofs",
+    "steps": [
+      {
+        "id": "concept:zero-knowledge-proof",
+        "caption": "Prove something is true without revealing why."
+      },
+      {
+        "id": "concept:zk-rollups",
+        "caption": "ZK rollups prove a batch of transactions was valid."
+      },
+      {
+        "id": "technology:cairo-lang",
+        "caption": "Cairo is a language for writing provable programs."
+      }
+    ]
+  },
+  {
+    "title": "JavaScript build tools",
+    "steps": [
+      {
+        "id": "technology:webpack",
+        "caption": "webpack bundled the web for a decade."
+      },
+      {
+        "id": "technology:vite",
+        "caption": "Vite serves native modules in dev and bundles for production."
+      },
+      {
+        "id": "technology:esbuild",
+        "caption": "esbuild, in Go, made bundling 100 times faster."
+      },
+      {
+        "id": "technology:go",
+        "caption": "Speed came from leaving JavaScript."
+      }
+    ]
+  },
+  {
+    "title": "Styling the web",
+    "steps": [
+      {
+        "id": "technology:html",
+        "caption": "HTML gives a page its structure."
+      },
+      {
+        "id": "technology:css",
+        "caption": "CSS styles it."
+      },
+      {
+        "id": "technology:tailwind-css",
+        "caption": "Tailwind composes styles from utility classes."
+      },
+      {
+        "id": "technology:shadcn-ui",
+        "caption": "shadcn/ui gives copy-in components built on it."
+      }
+    ]
+  },
+  {
+    "title": "Make a site fast",
+    "steps": [
+      {
+        "id": "concept:core-web-vitals",
+        "caption": "Core Web Vitals measure loading, response and stability."
+      },
+      {
+        "id": "technology:lighthouse",
+        "caption": "Lighthouse audits a page against them."
+      },
+      {
+        "id": "concept:seo",
+        "caption": "Search engines rank faster pages higher."
+      },
+      {
+        "id": "concept:server-side-rendering",
+        "caption": "Server rendering sends a usable page before any JavaScript runs."
+      }
+    ]
+  },
+  {
+    "title": "Charts and visuals in React",
+    "steps": [
+      {
+        "id": "technology:react",
+        "caption": "React renders UI from data."
+      },
+      {
+        "id": "technology:visx",
+        "caption": "visx, from Airbnb, gives low-level chart pieces."
+      },
+      {
+        "id": "technology:d3",
+        "caption": "It wraps D3's maths."
+      },
+      {
+        "id": "technology:recharts",
+        "caption": "Recharts offers ready-made chart components."
+      }
+    ]
   }
 ]

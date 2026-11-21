@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { GraphResponse } from "../api/types";
-import { APPS, APPS_BY_ID, filterApps, resolveApp } from "../graph/apps";
+import { appById, apps, filterApps, resolveApp } from "../graph/apps";
 import { safeHttpUrl } from "../util/safeUrl";
 
 interface Props {
@@ -19,9 +19,9 @@ interface Props {
 export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [copied, setCopied] = useState(false);
-  const app = appId ? APPS_BY_ID.get(appId) ?? null : null;
+  const app = appId ? appById(appId) : null;
   const resolved = useMemo(() => app ? resolveApp(app, graph) : null, [app, graph]);
-  const shown = useMemo(() => filterApps(APPS, query), [query]);
+  const shown = useMemo(() => filterApps(apps(), query), [query]);
 
   useEffect(() => {
     if (!resolved) { onHighlight([], []); return; }
@@ -54,7 +54,7 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
       {app && resolved && <>
         <label className="role-switch"><span className="sr-only">App</span>
           <select value={app.id} onChange={(e) => onAppChange(e.target.value)}>
-            {APPS.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
+            {apps().map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
           </select>
         </label>
         <p className="stack-note">{app.summary}</p>

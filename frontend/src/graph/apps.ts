@@ -2,7 +2,7 @@
 // each app maps to technology slugs in the atlas with a short note, cites an engineering
 // blog, and names any notable piece the atlas does not have yet (`not_in_atlas`) instead
 // of inventing nodes. apps.test.ts and backend/tests/test_famous_apps.py check every slug.
-import data from "../../../data/seed/apps.json";
+import { content, contentLoaded } from "../content/content";
 
 export type AppLayer = "web" | "mobile" | "backend" | "data" | "ml" | "infra";
 export interface AppStackItem { tech: string; layer: AppLayer; note: string }
@@ -12,8 +12,12 @@ export interface FamousApp {
   stack: AppStackItem[]; not_in_atlas: string[]; sources: AppSource[];
 }
 
-export const APPS: FamousApp[] = data as FamousApp[];
-export const APPS_BY_ID = new Map(APPS.map((a) => [a.id, a]));
+export function apps(): FamousApp[] {
+  return content().apps;
+}
+export function appById(id: string): FamousApp | null {
+  return apps().find((a) => a.id === id) ?? null;
+}
 
 export const LAYERS: { id: AppLayer; label: string }[] = [
   { id: "web", label: "Web and desktop" },
@@ -53,7 +57,7 @@ export function resolveApp(app: FamousApp, graph: MinimalGraph): ResolvedApp {
 
 /** Apps whose stack includes this technology slug, with the note on how they use it. */
 export function appsUsing(slug: string): { app: FamousApp; note: string }[] {
-  return APPS.flatMap((app) => {
+  return apps().flatMap((app) => {
     const item = app.stack.find((s) => s.tech === slug);
     return item ? [{ app, note: item.note }] : [];
   });
@@ -70,7 +74,7 @@ export function filterApps(apps: FamousApp[], query: string): FamousApp[] {
 const APP = /^[a-z0-9-]+$/;
 export function readApp(search: string): string | null {
   const v = new URLSearchParams(search).get("app");
-  return v && APP.test(v) && APPS_BY_ID.has(v) ? v : null;
+  return v && APP.test(v) && (!contentLoaded() || appById(v)) ? v : null;
 }
 /** Any ?app param opens the panel; an empty or unknown value shows the list. */
 export function readAppsOpen(search: string): boolean {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { JOURNEYS } from "./graph/journeys";
+import { JOURNEYS } from "./content/data";
 import { pathSlug } from "./graph/shareView";
 import { clickEvent, createClient, parseConfig, readUrl, trackingAllowed, urlEvents } from "./analytics";
 

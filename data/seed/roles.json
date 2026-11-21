@@ -119,5 +119,236 @@
       {"title": "Real-time systems", "caption": "Deadlines that must never be missed.", "nodes": ["rtos", "freertos", "zephyr", "real-time-scheduling", "watchdog-timer"]},
       {"title": "Going further", "caption": "Connected devices and Linux on the edge.", "nodes": ["esp32", "embedded-linux", "internet-of-things", "mqtt", "rust", "tinyml"]}
     ]
+  },
+  {
+    "id": "data-scientist",
+    "title": "Data scientist",
+    "summary": "Turns data into decisions: asks the right question, tests it with statistics and builds models when they help.",
+    "stages": [
+      {"title": "Foundations", "caption": "The maths and the language most analysis is done in.", "nodes": ["python", "statistics", "probability-theory", "linear-algebra", "sql", "descriptive-statistics"]},
+      {"title": "Analysis", "caption": "Clean the data, explore it and test what you see.", "nodes": ["pandas", "numpy", "jupyter", "data-cleaning", "exploratory-data-analysis", "hypothesis-testing", "ab-testing", "regression-analysis"]},
+      {"title": "Modelling", "caption": "Classical models first, and an honest way to evaluate them.", "nodes": ["scikit-learn", "supervised-learning", "cross-validation", "overfitting", "random-forest", "gradient-boosting", "xgboost"]},
+      {"title": "Communicating and going further", "caption": "Results only matter once people understand them.", "nodes": ["data-visualization", "seaborn", "data-storytelling", "causal-inference", "time-series-forecasting", "algorithmic-bias"]}
+    ]
+  },
+  {
+    "id": "data-analyst",
+    "title": "Data analyst",
+    "summary": "Answers business questions with data: queries, spreadsheets and dashboards that people actually use.",
+    "stages": [
+      {"title": "Foundations", "caption": "Spreadsheets, SQL and the statistics behind a fair comparison.", "nodes": ["spreadsheets", "microsoft-excel", "sql", "relational-databases", "descriptive-statistics"]},
+      {"title": "Analysis", "caption": "Pull the right data and look at it from every side.", "nodes": ["postgresql", "data-cleaning", "exploratory-data-analysis", "cohort-analysis", "hypothesis-testing", "ab-testing"]},
+      {"title": "Dashboards", "caption": "Put the answers in front of the people who need them.", "nodes": ["business-intelligence", "tableau", "power-bi", "looker", "dashboard-design", "kpi"]},
+      {"title": "Going further", "caption": "Model the data once, and tell the story behind it.", "nodes": ["data-warehouse", "semantic-layer", "duckdb-dbt", "python", "pandas", "data-storytelling", "product-analytics"]}
+    ]
+  },
+  {
+    "id": "site-reliability-engineer",
+    "title": "Site reliability engineer",
+    "summary": "Keeps production fast and up: sets reliability targets, builds the monitoring and leads the response when things break.",
+    "stages": [
+      {"title": "Foundations", "caption": "The systems everything runs on.", "nodes": ["linux", "networks", "tcp-ip", "dns", "http", "bash", "python"]},
+      {"title": "Running services", "caption": "Containers, orchestration and the infrastructure as code that builds them.", "nodes": ["docker", "kubernetes", "terraform", "load-balancing", "auto-scaling", "high-availability"]},
+      {"title": "Observability", "caption": "See what the system is doing before users tell you.", "nodes": ["observability", "metrics-monitoring", "prometheus", "grafana", "centralized-logging", "distributed-tracing", "opentelemetry", "alerting"]},
+      {"title": "Reliability practice", "caption": "Targets, budgets and learning from failure.", "nodes": ["site-reliability-engineering", "service-level-objectives", "error-budget", "on-call", "incident-management", "blameless-postmortem", "chaos-engineering", "capacity-planning"]}
+    ]
+  },
+  {
+    "id": "cloud-architect",
+    "title": "Cloud architect",
+    "summary": "Designs how a company's systems run in the cloud: secure, resilient and not more expensive than they need to be.",
+    "stages": [
+      {"title": "Foundations", "caption": "What the cloud is and the networks it is made of.", "nodes": ["cloud-computing", "virtualization", "networks", "dns", "load-balancing"]},
+      {"title": "Core services", "caption": "Compute, storage and data on the big clouds.", "nodes": ["aws", "azure", "gcp", "kubernetes", "serverless", "aws-lambda", "amazon-s3", "dynamodb"]},
+      {"title": "Architecture", "caption": "Patterns for systems that scale and survive failures.", "nodes": ["software-architecture", "microservices", "event-driven-architecture", "high-availability", "disaster-recovery", "multi-cloud"]},
+      {"title": "Governance", "caption": "Security, code-defined infrastructure and the bill.", "nodes": ["infrastructure-as-code", "terraform", "cloud-security", "zero-trust", "identity-and-access-management", "finops"]}
+    ]
+  },
+  {
+    "id": "mlops-engineer",
+    "title": "MLOps engineer",
+    "summary": "Takes models from a notebook to production and keeps them working: pipelines, serving, monitoring and retraining.",
+    "stages": [
+      {"title": "Foundations", "caption": "Enough ML and software engineering to talk to both sides.", "nodes": ["python", "machine-learning", "supervised-learning", "git", "docker"]},
+      {"title": "Training pipelines", "caption": "Reproducible data, experiments and features.", "nodes": ["mlops", "mlflow", "dvc", "feature-store", "feast", "airflow", "data-pipeline"]},
+      {"title": "Serving", "caption": "Put models behind an API that scales.", "nodes": ["model-inference", "kubernetes", "kubeflow", "ray", "bentoml", "vllm", "model-quantization"]},
+      {"title": "Keeping models healthy", "caption": "Watch what models do once real data arrives.", "nodes": ["model-drift", "observability", "prometheus", "llm-evaluation", "llm-observability", "ci-cd"]}
+    ]
+  },
+  {
+    "id": "qa-engineer",
+    "title": "QA and test automation engineer",
+    "summary": "Makes sure software works before users find out it doesn't: test strategy, automation and quality gates in CI.",
+    "stages": [
+      {"title": "Foundations", "caption": "What to test, at which level, and why.", "nodes": ["unit-testing", "integration-testing", "end-to-end-testing", "test-driven-development"]},
+      {"title": "Automating tests", "caption": "Frameworks for every layer of the app.", "nodes": ["pytest", "jest", "playwright", "cypress", "selenium", "contract-testing"]},
+      {"title": "Beyond functional tests", "caption": "Speed, security and the edge cases people miss.", "nodes": ["load-testing", "k6", "property-based-testing", "fuzzing", "accessibility", "mutation-testing"]},
+      {"title": "Quality in delivery", "caption": "Tests that run on every change and stay trustworthy.", "nodes": ["ci-cd", "github-actions", "code-coverage", "mocking", "visual-regression-testing"]}
+    ]
+  },
+  {
+    "id": "blockchain-developer",
+    "title": "Blockchain developer",
+    "summary": "Builds smart contracts and the apps around them, where bugs are public and money is on the line.",
+    "stages": [
+      {"title": "Foundations", "caption": "The cryptography and data structures a blockchain is built from.", "nodes": ["cryptography", "hashing", "public-key-cryptography", "digital-signature", "merkle-tree"]},
+      {"title": "Blockchains", "caption": "How chains agree and what they can run.", "nodes": ["blockchain", "bitcoin", "ethereum", "consensus", "proof-of-work", "proof-of-stake", "smart-contracts"]},
+      {"title": "Building contracts", "caption": "Write, test and deploy contracts on the EVM.", "nodes": ["solidity", "evm", "hardhat", "foundry", "vyper", "ethers-js"]},
+      {"title": "Going further", "caption": "Scaling, proofs and keeping contracts safe.", "nodes": ["layer-2-scaling", "zk-rollups", "zero-knowledge-proof", "decentralized-finance"]}
+    ]
+  },
+  {
+    "id": "mainframe-developer",
+    "title": "Mainframe developer",
+    "summary": "Maintains and modernizes the COBOL systems that still move most of the world's money.",
+    "stages": [
+      {"title": "Foundations", "caption": "What a mainframe is and why it is still here.", "nodes": ["mainframe", "ibm-z", "z-os", "tso-ispf", "ebcdic"]},
+      {"title": "Core skills", "caption": "The language, the batch jobs and the online transactions.", "nodes": ["cobol", "jcl", "batch-processing", "cics", "transaction-processing", "vsam"]},
+      {"title": "Data", "caption": "The databases mainframe programs read and write.", "nodes": ["ibm-db2", "ims", "sql", "ibm-mq"]},
+      {"title": "Modernization", "caption": "Bringing old systems into the present without stopping them.", "nodes": ["legacy-modernization", "strangler-fig-pattern", "rest-api", "java", "technical-debt", "core-banking"]}
+    ]
+  },
+  {
+    "id": "enterprise-app-developer",
+    "title": "Enterprise applications developer",
+    "summary": "Customizes and connects the platforms companies run on: CRM, ERP, workflow and integration.",
+    "stages": [
+      {"title": "Foundations", "caption": "What business systems do and the data behind them.", "nodes": ["erp", "crm", "relational-databases", "sql", "rest-api"]},
+      {"title": "Platforms", "caption": "The big suites and their own languages.", "nodes": ["salesforce", "apex-lang", "sap-erp", "abap", "microsoft-dynamics-365", "servicenow"]},
+      {"title": "Integration and automation", "caption": "Make the systems talk and remove manual steps.", "nodes": ["enterprise-integration", "mulesoft", "apache-camel", "workflow-automation", "business-process-management", "camunda"]},
+      {"title": "Going further", "caption": "Low-code tools and the architecture that ties it together.", "nodes": ["low-code", "microsoft-power-platform", "retool", "enterprise-architecture", "master-data-management"]}
+    ]
+  },
+  {
+    "id": "audio-software-engineer",
+    "title": "Audio software engineer",
+    "summary": "Writes the code behind plugins, music apps and game sound, where a late sample is an audible glitch.",
+    "stages": [
+      {"title": "Foundations", "caption": "How sound becomes numbers and back.", "nodes": ["digital-audio", "sampling-theorem", "digital-signal-processing", "fourier-transform", "cpp"]},
+      {"title": "Signal processing", "caption": "Filters, synthesis and compression.", "nodes": ["digital-filter", "fast-fourier-transform", "sound-synthesis", "audio-codecs", "psychoacoustics"]},
+      {"title": "Tools and frameworks", "caption": "The DAWs and frameworks audio products are built with.", "nodes": ["juce", "audio-plugins", "digital-audio-workstation", "midi", "ffmpeg", "web-audio-api"]},
+      {"title": "Going further", "caption": "Real-time constraints, games and space.", "nodes": ["audio-latency", "real-time-scheduling", "game-audio", "wwise", "spatial-audio", "music-information-retrieval"]}
+    ]
+  },
+  {
+    "id": "automotive-aerospace-engineer",
+    "title": "Automotive and aerospace software engineer",
+    "summary": "Writes software for cars, aircraft and spacecraft, where it has to be proven safe before it runs.",
+    "stages": [
+      {"title": "Foundations", "caption": "Embedded C on real-time hardware.", "nodes": ["c", "microcontroller", "rtos", "real-time-scheduling", "control-theory"]},
+      {"title": "Vehicles", "caption": "How the software in a car is organized.", "nodes": ["electronic-control-unit", "can-bus", "autosar", "software-defined-vehicle", "over-the-air-updates"]},
+      {"title": "Safety", "caption": "Standards and the evidence they demand.", "nodes": ["functional-safety", "iso-26262", "do-178c", "misra-c", "static-analysis", "formal-verification"]},
+      {"title": "Going further", "caption": "Flight software, models and autonomy.", "nodes": ["avionics", "flight-software", "model-based-design", "hardware-in-the-loop", "adas", "sensor-fusion"]}
+    ]
+  },
+  {
+    "id": "gis-developer",
+    "title": "GIS and mapping developer",
+    "summary": "Builds maps and location features: storing places, analysing them and drawing them fast on any screen.",
+    "stages": [
+      {"title": "Foundations", "caption": "Coordinates, projections and the shape of geographic data.", "nodes": ["geographic-information-systems", "coordinate-reference-systems", "map-projections", "raster-vector-data", "gnss"]},
+      {"title": "Data and analysis", "caption": "Store and analyse places at scale.", "nodes": ["postgis", "postgresql", "gdal", "geojson", "spatial-analysis", "geopandas"]},
+      {"title": "Web maps", "caption": "Draw maps in the browser.", "nodes": ["web-mapping", "vector-tiles", "maplibre", "leaflet", "openlayers", "deck-gl"]},
+      {"title": "Going further", "caption": "Routing, indexing and imagery.", "nodes": ["routing-navigation", "openstreetmap", "uber-h3", "geocoding", "remote-sensing", "qgis"]}
+    ]
+  },
+  {
+    "id": "ecommerce-developer",
+    "title": "E-commerce and CMS developer",
+    "summary": "Builds the stores and content sites businesses run on, from themes to headless storefronts and payments.",
+    "stages": [
+      {"title": "Foundations", "caption": "The web basics every store is built on.", "nodes": ["html", "css", "javascript", "php", "http"]},
+      {"title": "Content management", "caption": "Publishing tools, classic and headless.", "nodes": ["content-management-system", "wordpress", "headless-cms", "strapi", "contentful"]},
+      {"title": "Commerce", "caption": "Catalogues, carts and the platforms that run them.", "nodes": ["e-commerce", "shopify", "liquid-template", "woocommerce", "shopping-cart", "payment-systems", "stripe"]},
+      {"title": "Going further", "caption": "Fast, findable storefronts.", "nodes": ["hydrogen", "nextjs", "jamstack", "seo", "core-web-vitals", "web-analytics"]}
+    ]
+  },
+  {
+    "id": "compiler-engineer",
+    "title": "Compiler and language engineer",
+    "summary": "Builds the compilers, runtimes and tools that turn code into fast, correct programs.",
+    "stages": [
+      {"title": "Foundations", "caption": "The theory of languages and the machine underneath.", "nodes": ["formal-languages", "automata-theory", "context-free-grammar", "type-system", "computer-architecture"]},
+      {"title": "Front end", "caption": "From text to a checked syntax tree.", "nodes": ["lexical-analysis", "parsing", "parser-generator", "abstract-syntax-tree", "type-inference"]},
+      {"title": "Back end", "caption": "From the tree to optimized machine code.", "nodes": ["compiler-theory", "intermediate-representation", "static-single-assignment", "compiler-optimization", "register-allocation", "llvm"]},
+      {"title": "Runtimes", "caption": "Running code fast once it's compiled.", "nodes": ["bytecode", "just-in-time-compilation", "garbage-collection", "v8", "jvm", "webassembly"]}
+    ]
+  },
+  {
+    "id": "penetration-tester",
+    "title": "Penetration tester",
+    "summary": "Breaks into systems with permission, then explains how to stop the real attackers doing the same.",
+    "stages": [
+      {"title": "Foundations", "caption": "Networks, operating systems and the web, from an attacker's view.", "nodes": ["linux", "tcp-ip", "http", "networks", "bash", "python"]},
+      {"title": "Reconnaissance", "caption": "Learn the target before touching it.", "nodes": ["osint", "reconnaissance", "network-scanning", "nmap", "vulnerability-assessment"]},
+      {"title": "Exploitation", "caption": "Turn a weakness into access.", "nodes": ["web-application-security", "burp-suite", "sql-injection", "xss", "metasploit", "password-cracking", "privilege-escalation"]},
+      {"title": "Going further", "caption": "Deeper exploits, red teams and responsible reporting.", "nodes": ["binary-exploitation", "reverse-engineering", "red-teaming", "mitre-attack", "capture-the-flag", "responsible-disclosure"]}
+    ]
+  },
+  {
+    "id": "robotics-engineer",
+    "title": "Robotics engineer",
+    "summary": "Makes machines sense, decide and move: from motor control to perception and planning.",
+    "stages": [
+      {"title": "Foundations", "caption": "The maths and code a robot runs on.", "nodes": ["linear-algebra", "cpp", "python", "control-theory", "state-estimation"]},
+      {"title": "Moving", "caption": "Kinematics, dynamics and control loops.", "nodes": ["robot-kinematics", "inverse-kinematics", "robot-dynamics", "feedback-control", "pid-control"]},
+      {"title": "Sensing and planning", "caption": "Know where you are and where to go.", "nodes": ["sensor-fusion", "robot-localization", "slam", "lidar", "motion-planning", "computer-vision"]},
+      {"title": "Software and going further", "caption": "The robotics software stack and learning-based control.", "nodes": ["ros2", "gazebo", "physics-simulation", "sim-to-real-transfer", "reinforcement-learning", "robot-foundation-models"]}
+    ]
+  },
+  {
+    "id": "quantum-software-engineer",
+    "title": "Quantum software engineer",
+    "summary": "Writes programs for quantum computers and figures out which problems they can actually help with.",
+    "stages": [
+      {"title": "Foundations", "caption": "The linear algebra and physics behind a qubit.", "nodes": ["linear-algebra", "probability-theory", "python", "qubit", "quantum-entanglement"]},
+      {"title": "Circuits", "caption": "Gates, circuits and the toolkits that build them.", "nodes": ["quantum-gate", "quantum-circuit", "qiskit", "cirq", "quantum-computing"]},
+      {"title": "Algorithms", "caption": "Where quantum computers could beat classical ones.", "nodes": ["quantum-algorithms", "shors-algorithm", "grovers-algorithm", "variational-quantum-eigensolver", "quantum-simulation"]},
+      {"title": "Going further", "caption": "Noise, error correction and the hardware.", "nodes": ["quantum-error-correction", "logical-qubits", "ibm-quantum-platform", "amazon-braket", "post-quantum-cryptography"]}
+    ]
+  },
+  {
+    "id": "product-designer",
+    "title": "Product designer",
+    "summary": "Designs how a product works and feels, grounded in research with the people who use it.",
+    "stages": [
+      {"title": "Foundations", "caption": "How people perceive, think and act.", "nodes": ["human-computer-interaction", "user-experience", "cognitive-load", "mental-model", "accessibility"]},
+      {"title": "Research", "caption": "Find out what people need before designing.", "nodes": ["user-research", "personas", "usability-testing", "user-centered-design"]},
+      {"title": "Design", "caption": "From flows to a polished, consistent interface.", "nodes": ["interaction-design", "figma", "ui-prototyping", "design-systems", "responsive-design"]},
+      {"title": "Going further", "caption": "Measure the result and design responsibly.", "nodes": ["ab-testing", "product-analytics", "dark-patterns", "ux-writing", "voice-user-interface"]}
+    ]
+  },
+  {
+    "id": "bioinformatician",
+    "title": "Bioinformatician",
+    "summary": "Uses code and statistics to read genomes, compare sequences and model the molecules of life.",
+    "stages": [
+      {"title": "Foundations", "caption": "Programming, statistics and the algorithms biology leans on.", "nodes": ["python", "r-lang", "statistics", "dynamic-programming", "graph-algorithms"]},
+      {"title": "Sequences", "caption": "Read DNA and compare it.", "nodes": ["next-generation-sequencing", "genome-assembly", "sequence-alignment", "blast", "genomics"]},
+      {"title": "Analysis", "caption": "Turn reads into biology.", "nodes": ["gene-expression-analysis", "single-cell-analysis", "bioconductor", "jupyter", "high-performance-computing"]},
+      {"title": "Going further", "caption": "Structure, simulation and medicine.", "nodes": ["protein-structure-prediction", "alphafold", "molecular-dynamics", "precision-medicine"]}
+    ]
+  },
+  {
+    "id": "quant-developer",
+    "title": "Quantitative developer",
+    "summary": "Builds the pricing models and trading systems where mathematics meets microseconds.",
+    "stages": [
+      {"title": "Foundations", "caption": "The maths of chance and the languages of finance.", "nodes": ["probability-theory", "statistics", "linear-algebra", "python", "cpp"]},
+      {"title": "Modelling", "caption": "Price instruments and measure risk.", "nodes": ["quantitative-finance", "monte-carlo-methods", "risk-modeling", "time-series-analysis", "quantlib"]},
+      {"title": "Trading systems", "caption": "Fast, correct systems that trade.", "nodes": ["algorithmic-trading", "high-frequency-trading", "order-matching-engine", "network-latency", "kdb-plus"]},
+      {"title": "Going further", "caption": "Data and the payment rails underneath.", "nodes": ["pandas", "numpy", "kafka", "payment-systems", "fraud-detection"]}
+    ]
+  },
+  {
+    "id": "hardware-design-engineer",
+    "title": "Hardware design engineer",
+    "summary": "Designs digital chips, from logic gates to a verified design ready for silicon or an FPGA.",
+    "stages": [
+      {"title": "Foundations", "caption": "Logic, numbers and how transistors switch.", "nodes": ["boolean-algebra", "digital-logic", "combinational-logic", "sequential-logic", "transistor"]},
+      {"title": "Describing hardware", "caption": "Write hardware as code.", "nodes": ["verilog", "vhdl", "register-transfer-level", "fpga", "finite-state-machine"]},
+      {"title": "Verification and synthesis", "caption": "Prove it works, then turn it into gates.", "nodes": ["hardware-verification", "logic-synthesis", "static-timing-analysis", "electronic-design-automation"]},
+      {"title": "Going further", "caption": "Processors, open silicon and chips for AI.", "nodes": ["risc-v", "computer-architecture", "system-on-chip", "asic", "chisel", "hardware-accelerator"]}
+    ]
   }
 ]

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { GraphResponse } from "../api/types";
 import { useLearningMap, type LearningStatus } from "../graph/learning";
-import { ROLES, ROLES_BY_ID, cycleStatus, nextUp, resolveRole, roleProgress } from "../graph/roles";
+import { roleById, roles, cycleStatus, nextUp, resolveRole, roleProgress } from "../graph/roles";
 
 const STATUS_LABEL: Record<LearningStatus, string> = { known: "Known", learning: "Learning", goal: "Goal" };
 
@@ -21,7 +21,7 @@ interface Props {
 export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, onClose }: Props) {
   const [map, setStatus] = useLearningMap();
   const [copied, setCopied] = useState(false);
-  const role = roleId ? ROLES_BY_ID.get(roleId) ?? null : null;
+  const role = roleId ? roleById(roleId) : null;
   const resolved = useMemo(() => role ? resolveRole(role, graph) : null, [role, graph]);
   const labels = useMemo(() => new Map(graph.nodes.map((n) => [n.id, n.label])), [graph]);
 
@@ -44,7 +44,7 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
       <h2>{role ? "Role path" : "What does a role need?"}</h2>
       {!role && <>
         <p className="stack-note">Pick a role to see what it needs, lit up on the atlas and ordered into a path. Mark what you know as you go; progress is saved only in this browser.</p>
-        <ul className="role-list">{ROLES.map((r) => {
+        <ul className="role-list">{roles().map((r) => {
           const ids = resolveRole(r, graph).nodeIds;
           const p = roleProgress(ids, map);
           return <li key={r.id}><button type="button" onClick={() => onRoleChange(r.id)}>
@@ -57,7 +57,7 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
       {role && resolved && progress && <>
         <label className="role-switch"><span className="sr-only">Role</span>
           <select value={role.id} onChange={(e) => onRoleChange(e.target.value)}>
-            {ROLES.map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
+            {roles().map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
           </select>
         </label>
         <p className="stack-note">{role.summary}</p>

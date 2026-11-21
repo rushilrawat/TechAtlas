@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ROLES, cycleStatus, nextUp, readRole, resolveRole, roleProgress, writeRole } from "./roles";
+import { ROLES } from "../content/data";
+import { cycleStatus, nextUp, readRole, resolveRole, roleProgress, writeRole } from "./roles";
 import { realGraph } from "../test/realGraph";
 
 const graph = realGraph();

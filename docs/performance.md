@@ -29,7 +29,8 @@ The overview thresholds in `e2e/overview-visual-proof.spec.ts` were re-baselined
 
 | Asset | Raw | Gzip | Budget (gzip) |
 |---|---:|---:|---:|
-| Entry JS (`index-*.js`, mostly Sigma + graphology) | 565 KB | 167 KB | 168 KB |
+| Entry JS (`index-*.js`, mostly Sigma + graphology) | 500 KB | 144 KB | 168 KB |
+| Content chunk (`data-*.js`: guided paths, roles, famous apps; loads alongside the graph) | 176 KB | 49 KB | 55 KB |
 | CSS | 62 KB | 12 KB | 15 KB |
 | Inter Latin subset (woff2) | 31 KB | n/a | 59 KB |
 | Graph snapshot (`api/v1/graph.json`) | 2.6 MB | 252 KB | 273 KB |
