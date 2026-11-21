@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DomainSummary, GraphNode } from "../api/types";
 import type { Journey } from "./journeys";
-import { JOURNEYS } from "./journeys";
+import { JOURNEYS } from "../content/data";
 import {
   EMPTY_PATH_FILTER, FEATURED_PATH_TITLES, buildPathEntries, featuredPaths, filterPaths, pathFields,
   pathStatus, suggestNextPath,

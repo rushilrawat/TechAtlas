@@ -9,19 +9,23 @@ import { gzipSync } from "node:zlib";
 // snapshot is checked when it has been rendered, otherwise the compiled dataset (which
 // is about the same size gzipped). ~113 KB at dataset 0.7.0 / 1,194 nodes; ~258 KB (snapshot)
 // and ~271 KB (data/graph.json) at 0.9.0 / 3,122 nodes. Past this, load a light index first.
-// js: the entry chunk embeds data/seed/apps.json, which grew with the 0.8.0 app stacks.
-const BUDGETS = { js: 172_000, css: 15_000, woff2: 60_000, graph: 280_000 };
+// js: the entry chunk. Guided paths, roles and famous apps moved out of it into their own
+// lazily loaded chunk (src/content/data.ts), which loads alongside the graph.
+// content: that chunk. ~24 KB with 145 paths / 11 roles / 22 apps, ~49 KB after the
+// 3,000-node content pass (257 paths / 32 roles / 40 apps).
+const BUDGETS = { js: 172_000, css: 15_000, woff2: 60_000, graph: 280_000, content: 56_000 };
 const dir = join(process.cwd(), "dist", "assets");
 let failed = false;
-const totals = { js: 0, css: 0, woff2: 0 };
+const totals = { js: 0, css: 0, woff2: 0, content: 0 };
 for (const file of readdirSync(dir)) {
   const ext = file.split(".").pop();
   if (!(ext in totals)) continue;
   const buf = readFileSync(join(dir, file));
-  // Only the entry chunk counts for JS; lazy chunks load on demand.
-  if (ext === "js" && !file.startsWith("index-")) continue;
+  // The entry chunk counts as js and the content chunk on its own; other lazy chunks load on demand.
+  const key = ext === "js" && file.startsWith("data-") ? "content" : ext;
+  if (key === "js" && !file.startsWith("index-")) continue;
   const size = ext === "woff2" ? statSync(join(dir, file)).size : gzipSync(buf).length;
-  totals[ext] += size;
+  totals[key] += size;
 }
 const graphFile = [join(process.cwd(), "public", "api", "v1", "graph.json"), join(process.cwd(), "..", "data", "graph.json")]
   .find((f) => existsSync(f));

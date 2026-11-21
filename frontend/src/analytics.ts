@@ -16,7 +16,7 @@
 //   - delegated clicks and form submits on a few well-known controls,
 //   - the search box (results vs. no results, after the search settles).
 // Call track() directly for anything that has no URL or DOM signal.
-import { JOURNEYS } from "./graph/journeys";
+import { journeys } from "./graph/journeys";
 import { pathSlug } from "./graph/shareView";
 
 export type Props = Record<string, string | number | boolean>;
@@ -124,7 +124,12 @@ export function readUrl(pathname: string, search: string): UrlState {
   };
 }
 
-const PATH_LENGTH = new Map(JOURNEYS.map((j) => [pathSlug(j.title), j.steps.length]));
+// Built on first use: the guided paths load after analytics is installed.
+let pathLengths: Map<string, number> | null = null;
+function pathLength(slug: string): number {
+  if (!pathLengths || pathLengths.size === 0) pathLengths = new Map(journeys().map((j) => [pathSlug(j.title), j.steps.length]));
+  return pathLengths.get(slug) ?? 0;
+}
 
 /** Events implied by moving from one URL state to the next. */
 export function urlEvents(prev: UrlState | null, next: UrlState): [string, Props?][] {
@@ -134,7 +139,7 @@ export function urlEvents(prev: UrlState | null, next: UrlState): [string, Props
   }
   if (next.about && !prev?.about) out.push(["about_viewed"]);
   if (next.path && next.path !== prev?.path) out.push(["path_started", { path: next.path }]);
-  const last = next.path ? (PATH_LENGTH.get(next.path) ?? 0) - 1 : -1;
+  const last = next.path ? pathLength(next.path) - 1 : -1;
   if (next.path && last > 0 && next.step === last && !(prev?.path === next.path && prev.step === last)) {
     out.push(["path_finished", { path: next.path }]);
   }

@@ -50,7 +50,7 @@ you move from a broad field to an individual tool without losing the surrounding
 | Concepts | **1,580** |
 | Typed relationships | **9,834** |
 | Relationship types | **14** |
-| Curated guided paths | **145** |
+| Curated guided paths | **257** |
 | Isolated nodes | **0** |
 
 The largest relationship groups are **related to (3,241)**, **belongs to domain (3,082)**, **implements (778)**, **used for (640)**. Counts come from the checked-in

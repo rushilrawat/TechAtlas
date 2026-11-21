@@ -19,7 +19,13 @@
       {"tech": "aws", "layer": "infra", "note": "Runs almost entirely on AWS"},
       {"tech": "memcached", "layer": "data", "note": "EVCache, the distributed cache, is built on memcached"},
       {"tech": "netflix-zuul", "layer": "backend", "note": "Edge gateway (Netflix OSS)"},
-      {"tech": "netflix-eureka", "layer": "backend", "note": "Service discovery (Netflix OSS)"}
+      {"tech": "netflix-eureka", "layer": "backend", "note": "Service discovery (Netflix OSS)"},
+      {"tech": "evcache", "layer": "data", "note": "EVCache, Netflix's memcached-based cache across AWS regions"},
+      {"tech": "hystrix", "layer": "backend", "note": "Circuit-breaker library (Netflix OSS, now in maintenance)"},
+      {"tech": "spinnaker", "layer": "infra", "note": "Continuous delivery platform, built at Netflix"},
+      {"tech": "chaos-monkey", "layer": "infra", "note": "Kills production instances to prove resilience"},
+      {"tech": "netflix-conductor", "layer": "backend", "note": "Workflow orchestration (Netflix OSS)"},
+      {"tech": "metaflow", "layer": "ml", "note": "ML workflow framework, built at Netflix"}
     ],
     "not_in_atlas": ["Titus", "GraphQL DGS"],
     "sources": [{"title": "Netflix TechBlog", "url": "https://netflixtechblog.com"}]
@@ -43,7 +49,9 @@
       {"tech": "backstage", "layer": "infra", "note": "Developer portal, built at Spotify and open-sourced"},
       {"tech": "google-pubsub", "layer": "data", "note": "Event delivery"},
       {"tech": "apache-beam", "layer": "data", "note": "Batch and streaming pipelines, run on Dataflow"},
-      {"tech": "luigi", "layer": "data", "note": "Batch job pipelines (built at Spotify)"}
+      {"tech": "luigi", "layer": "data", "note": "Batch job pipelines (built at Spotify)"},
+      {"tech": "annoy", "layer": "ml", "note": "Approximate nearest neighbours for recommendations, built at Spotify"},
+      {"tech": "scio", "layer": "data", "note": "Scala API for Beam pipelines, built at Spotify"}
     ],
     "not_in_atlas": [],
     "sources": [{"title": "Spotify Engineering", "url": "https://engineering.atspotify.com"}]
@@ -67,7 +75,8 @@
       {"tech": "kubernetes", "layer": "infra", "note": "Service platform"},
       {"tech": "aws", "layer": "infra", "note": "Cloud provider"},
       {"tech": "apache-hive", "layer": "data", "note": "Data warehouse on Hadoop"},
-      {"tech": "apache-superset", "layer": "data", "note": "Dashboards (created at Airbnb)"}
+      {"tech": "apache-superset", "layer": "data", "note": "Dashboards (created at Airbnb)"},
+      {"tech": "visx", "layer": "web", "note": "React visualization components, built at Airbnb"}
     ],
     "not_in_atlas": [],
     "sources": [{"title": "The Airbnb Tech Blog", "url": "https://medium.com/airbnb-engineering"}]
@@ -95,7 +104,12 @@
       {"tech": "cadence-workflow", "layer": "backend", "note": "Workflow orchestration (built at Uber)"},
       {"tech": "hadoop", "layer": "data", "note": "Data lake storage"},
       {"tech": "presto", "layer": "data", "note": "Interactive SQL analytics"},
-      {"tech": "apache-pinot", "layer": "data", "note": "Real-time analytics"}
+      {"tech": "apache-pinot", "layer": "data", "note": "Real-time analytics"},
+      {"tech": "uber-h3", "layer": "data", "note": "Hexagonal geospatial index, built at Uber"},
+      {"tech": "m3-metrics", "layer": "infra", "note": "Metrics platform, built at Uber"},
+      {"tech": "apache-hudi", "layer": "data", "note": "Incremental data lake tables, created at Uber"},
+      {"tech": "horovod", "layer": "ml", "note": "Distributed deep-learning training, built at Uber"},
+      {"tech": "deck-gl", "layer": "web", "note": "WebGL map visualization, built at Uber"}
     ],
     "not_in_atlas": ["Ringpop"],
     "sources": [{"title": "Uber Engineering Blog", "url": "https://www.uber.com/blog/engineering/"}]
@@ -175,7 +189,10 @@
       {"tech": "redis", "layer": "data", "note": "Caching and queues"},
       {"tech": "kubernetes", "layer": "infra", "note": "Runs github.com since 2017"},
       {"tech": "vitess", "layer": "data", "note": "MySQL sharding"},
-      {"tech": "memcached", "layer": "data", "note": "Caching"}
+      {"tech": "memcached", "layer": "data", "note": "Caching"},
+      {"tech": "github-actions", "layer": "infra", "note": "CI/CD, also used to build GitHub itself"},
+      {"tech": "codeql", "layer": "infra", "note": "Semantic code analysis behind code scanning"},
+      {"tech": "dependabot", "layer": "infra", "note": "Automated dependency updates"}
     ],
     "not_in_atlas": [],
     "sources": [{"title": "The GitHub Blog: Engineering", "url": "https://github.blog/engineering/"}]
@@ -198,7 +215,11 @@
       {"tech": "kafka", "layer": "data", "note": "Event streaming"},
       {"tech": "gcp", "layer": "infra", "note": "Cloud provider"},
       {"tech": "kubernetes", "layer": "infra", "note": "Container platform"},
-      {"tech": "memcached", "layer": "data", "note": "Caching"}
+      {"tech": "memcached", "layer": "data", "note": "Caching"},
+      {"tech": "yjit", "layer": "backend", "note": "Ruby JIT compiler, built at Shopify and merged into Ruby"},
+      {"tech": "liquid-template", "layer": "web", "note": "Theme template language, created at Shopify"},
+      {"tech": "hydrogen", "layer": "web", "note": "React framework for custom storefronts"},
+      {"tech": "toxiproxy", "layer": "infra", "note": "Simulates network failures in tests, built at Shopify"}
     ],
     "not_in_atlas": [],
     "sources": [{"title": "Shopify Engineering", "url": "https://shopify.engineering"}]
@@ -280,7 +301,11 @@
       {"tech": "ember-js", "layer": "web", "note": "Web front end"},
       {"tech": "apache-samza", "layer": "data", "note": "Stream processing (built at LinkedIn)"},
       {"tech": "apache-pinot", "layer": "data", "note": "Real-time analytics (built at LinkedIn)"},
-      {"tech": "hadoop", "layer": "data", "note": "Offline data processing"}
+      {"tech": "hadoop", "layer": "data", "note": "Offline data processing"},
+      {"tech": "datahub", "layer": "data", "note": "Metadata catalog, built at LinkedIn"},
+      {"tech": "gobblin", "layer": "data", "note": "Data ingestion framework, built at LinkedIn"},
+      {"tech": "rest-li", "layer": "backend", "note": "REST framework for its Java services"},
+      {"tech": "cruise-control", "layer": "infra", "note": "Automates Kafka cluster balancing"}
     ],
     "not_in_atlas": ["Espresso"],
     "sources": [{"title": "LinkedIn Engineering Blog", "url": "https://www.linkedin.com/blog/engineering"}]
@@ -365,7 +390,8 @@
       {"tech": "linux", "layer": "infra", "note": "Edge servers"},
       {"tech": "pingora", "layer": "backend", "note": "Rust proxy framework that replaced NGINX"},
       {"tech": "openresty", "layer": "backend", "note": "NGINX + Lua edge logic"},
-      {"tech": "v8", "layer": "infra", "note": "JavaScript engine whose isolates run Workers"}
+      {"tech": "v8", "layer": "infra", "note": "JavaScript engine whose isolates run Workers"},
+      {"tech": "quiche", "layer": "infra", "note": "QUIC and HTTP/3 implementation in Rust"}
     ],
     "not_in_atlas": [],
     "sources": [{"title": "The Cloudflare Blog", "url": "https://blog.cloudflare.com"}]
@@ -464,5 +490,345 @@
     ],
     "not_in_atlas": [],
     "sources": [{"title": "OpenAI Engineering", "url": "https://openai.com/news/engineering/"}]
+  },
+  {
+    "id": "facebook",
+    "name": "Facebook",
+    "category": "Social",
+    "url": "https://www.facebook.com",
+    "summary": "Hack on HHVM over MySQL with RocksDB and a huge memcached tier; React and React Native on the client, PyTorch for ML.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Created at Facebook in 2013"},
+      {"tech": "relay-graphql", "layer": "web", "note": "Connects GraphQL data to React components"},
+      {"tech": "react-native", "layer": "mobile", "note": "Created at Facebook; used in the Facebook app"},
+      {"tech": "hermes-engine", "layer": "mobile", "note": "JavaScript engine built for React Native"},
+      {"tech": "hack", "layer": "backend", "note": "Most web-tier code; gradually typed PHP dialect"},
+      {"tech": "hhvm", "layer": "backend", "note": "Runs the Hack codebase with a JIT"},
+      {"tech": "cpp", "layer": "backend", "note": "Most infrastructure services"},
+      {"tech": "folly", "layer": "backend", "note": "Core C++ library used across services"},
+      {"tech": "apache-thrift", "layer": "backend", "note": "Service RPC, created at Facebook"},
+      {"tech": "mysql", "layer": "data", "note": "Social graph storage (MyRocks engine)"},
+      {"tech": "rocksdb", "layer": "data", "note": "Embedded store under MyRocks and many services"},
+      {"tech": "memcached", "layer": "data", "note": "Huge cache tier in front of MySQL"},
+      {"tech": "mcrouter", "layer": "data", "note": "Routes requests across memcached pools"},
+      {"tech": "presto", "layer": "data", "note": "Interactive SQL on the warehouse, created at Facebook"},
+      {"tech": "pytorch", "layer": "ml", "note": "Main ML framework, created at Meta AI"},
+      {"tech": "katran", "layer": "infra", "note": "eBPF layer-4 load balancer"},
+      {"tech": "zstd", "layer": "infra", "note": "Compression, created at Facebook"},
+      {"tech": "buck2", "layer": "infra", "note": "Build system for the monorepo"},
+      {"tech": "sapling-scm", "layer": "infra", "note": "Source control for the monorepo"}
+    ],
+    "not_in_atlas": ["TAO", "Scuba", "Tupperware"],
+    "sources": [{"title": "Engineering at Meta", "url": "https://engineering.fb.com"}]
+  },
+  {
+    "id": "whatsapp",
+    "name": "WhatsApp",
+    "category": "Communication",
+    "url": "https://www.whatsapp.com",
+    "summary": "Erlang on FreeBSD let a tiny team hold millions of connections per server; messages are end-to-end encrypted.",
+    "stack": [
+      {"tech": "erlang", "layer": "backend", "note": "Chat servers (\"1 million is so 2011\")"},
+      {"tech": "beam-vm", "layer": "backend", "note": "Runs millions of lightweight processes per machine"},
+      {"tech": "freebsd", "layer": "infra", "note": "Server operating system, tuned for connections"}
+    ],
+    "not_in_atlas": ["ejabberd", "Mnesia"],
+    "sources": [{"title": "1 million is so 2011", "url": "https://blog.whatsapp.com/1-million-is-so-2011"}, {"title": "Engineering at Meta", "url": "https://engineering.fb.com"}]
+  },
+  {
+    "id": "x-twitter",
+    "name": "X (Twitter)",
+    "category": "Social",
+    "url": "https://x.com",
+    "summary": "Moved from Rails to Scala and Java services on Finagle, with Kafka, Hadoop, Redis and memcached behind the timeline.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web client (Twitter Lite PWA onwards)"},
+      {"tech": "scala", "layer": "backend", "note": "Most services after leaving Ruby on Rails"},
+      {"tech": "java", "layer": "backend", "note": "Search and many JVM services"},
+      {"tech": "finagle", "layer": "backend", "note": "RPC library for every service, built at Twitter"},
+      {"tech": "apache-thrift", "layer": "backend", "note": "Service interfaces"},
+      {"tech": "mysql", "layer": "data", "note": "Tweets and users before Manhattan"},
+      {"tech": "redis", "layer": "data", "note": "Timeline caches"},
+      {"tech": "memcached", "layer": "data", "note": "General caching"},
+      {"tech": "twemproxy", "layer": "data", "note": "Proxy for its Redis and memcached pools, built at Twitter"},
+      {"tech": "kafka", "layer": "data", "note": "Event streams"},
+      {"tech": "hadoop", "layer": "data", "note": "Batch analytics"},
+      {"tech": "apache-storm", "layer": "data", "note": "Real-time processing until Heron replaced it"},
+      {"tech": "zipkin", "layer": "infra", "note": "Distributed tracing, built at Twitter"}
+    ],
+    "not_in_atlas": ["Manhattan", "Heron"],
+    "sources": [{"title": "X Engineering: infrastructure", "url": "https://blog.x.com/engineering/en_us/topics/infrastructure"}]
+  },
+  {
+    "id": "youtube",
+    "name": "YouTube",
+    "category": "Streaming",
+    "url": "https://www.youtube.com",
+    "summary": "Python and C++ services on Google's infrastructure; Vitess was built to shard YouTube's MySQL.",
+    "stack": [
+      {"tech": "python", "layer": "backend", "note": "Much of the original web application"},
+      {"tech": "cpp", "layer": "backend", "note": "Video processing and performance-critical services"},
+      {"tech": "java", "layer": "backend", "note": "Many backend services"},
+      {"tech": "go", "layer": "backend", "note": "Vitess and newer services"},
+      {"tech": "mysql", "layer": "data", "note": "Video metadata"},
+      {"tech": "vitess", "layer": "data", "note": "Created at YouTube to shard MySQL"},
+      {"tech": "gcp", "layer": "infra", "note": "Runs on Google's infrastructure"},
+      {"tech": "tensorflow", "layer": "ml", "note": "Recommendation models"}
+    ],
+    "not_in_atlas": ["Bigtable"],
+    "sources": [{"title": "Vitess history", "url": "https://vitess.io/docs/overview/history/"}]
+  },
+  {
+    "id": "google-search",
+    "name": "Google Search",
+    "category": "Search",
+    "url": "https://www.google.com",
+    "summary": "C++, Java and Go services talking Protocol Buffers over Stubby/gRPC, built with Bazel, on Google's own storage.",
+    "stack": [
+      {"tech": "cpp", "layer": "backend", "note": "Serving and indexing systems"},
+      {"tech": "java", "layer": "backend", "note": "Many backend services"},
+      {"tech": "go", "layer": "backend", "note": "Created at Google for its servers"},
+      {"tech": "python", "layer": "backend", "note": "Tooling and automation"},
+      {"tech": "protobuf", "layer": "backend", "note": "Every RPC and stored record"},
+      {"tech": "grpc", "layer": "backend", "note": "Open-source successor of Google's internal Stubby RPC"},
+      {"tech": "google-spanner", "layer": "data", "note": "Globally consistent database"},
+      {"tech": "borg", "layer": "infra", "note": "Cluster manager that runs every service; inspired Kubernetes"},
+      {"tech": "bazel", "layer": "infra", "note": "Open-source version of Blaze, the monorepo build tool"},
+      {"tech": "tensorflow", "layer": "ml", "note": "Ranking and language models"}
+    ],
+    "not_in_atlas": ["Bigtable", "Colossus"],
+    "sources": [{"title": "Site Reliability Engineering: the production environment", "url": "https://sre.google/sre-book/production-environment/"}]
+  },
+  {
+    "id": "stack-overflow",
+    "name": "Stack Overflow",
+    "category": "Developer tools",
+    "url": "https://stackoverflow.com",
+    "summary": "A famously small fleet: one .NET application on SQL Server, Redis and Elasticsearch behind HAProxy.",
+    "stack": [
+      {"tech": "csharp", "layer": "backend", "note": "The whole application"},
+      {"tech": "aspnet-core", "layer": "backend", "note": "Web framework (moved from ASP.NET MVC to .NET Core)"},
+      {"tech": "dotnet", "layer": "backend", "note": "Runtime"},
+      {"tech": "jquery", "layer": "web", "note": "Front-end scripting"},
+      {"tech": "sql-server", "layer": "data", "note": "Primary database on a few large servers"},
+      {"tech": "redis", "layer": "data", "note": "Caching and pub/sub"},
+      {"tech": "elasticsearch", "layer": "data", "note": "Search"},
+      {"tech": "haproxy", "layer": "infra", "note": "Load balancing"}
+    ],
+    "not_in_atlas": ["Dapper", "IIS"],
+    "sources": [{"title": "Stack Overflow: The Architecture, 2016 Edition", "url": "https://nickcraver.com/blog/2016/02/17/stack-overflow-the-architecture-2016-edition/"}]
+  },
+  {
+    "id": "etsy",
+    "name": "Etsy",
+    "category": "E-commerce",
+    "url": "https://www.etsy.com",
+    "summary": "A long-lived PHP monolith on sharded MySQL, moved to Google Cloud; StatsD started here.",
+    "stack": [
+      {"tech": "php", "layer": "backend", "note": "The main web application"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end code, migrated from JavaScript"},
+      {"tech": "mysql", "layer": "data", "note": "Sharded primary database"},
+      {"tech": "vitess", "layer": "data", "note": "Sharding layer for MySQL"},
+      {"tech": "gcp", "layer": "infra", "note": "Moved from its own data centers to Google Cloud"},
+      {"tech": "statsd", "layer": "infra", "note": "Metrics daemon, created at Etsy"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "Code as Craft", "url": "https://www.etsy.com/codeascraft"}]
+  },
+  {
+    "id": "monzo",
+    "name": "Monzo",
+    "category": "Fintech",
+    "url": "https://monzo.com",
+    "summary": "A bank built from the start on Go microservices, Cassandra and Kubernetes on AWS.",
+    "stack": [
+      {"tech": "go", "layer": "backend", "note": "Nearly every one of its thousands of microservices"},
+      {"tech": "swift", "layer": "mobile", "note": "iOS app"},
+      {"tech": "kotlin", "layer": "mobile", "note": "Android app"},
+      {"tech": "cassandra", "layer": "data", "note": "Primary database"},
+      {"tech": "etcd", "layer": "data", "note": "Distributed locking"},
+      {"tech": "kafka", "layer": "data", "note": "Asynchronous messaging between services"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Runs every service"},
+      {"tech": "linkerd", "layer": "infra", "note": "Service mesh in its early platform"},
+      {"tech": "prometheus", "layer": "infra", "note": "Metrics"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "Building a modern bank backend", "url": "https://monzo.com/blog/2016/09/19/building-a-modern-bank-backend"}]
+  },
+  {
+    "id": "roblox",
+    "name": "Roblox",
+    "category": "Gaming",
+    "url": "https://www.roblox.com",
+    "summary": "A C++ engine scripted in Luau, run on its own data centers with HashiCorp Consul, Nomad and Vault.",
+    "stack": [
+      {"tech": "cpp", "layer": "backend", "note": "Game engine and servers"},
+      {"tech": "lua", "layer": "backend", "note": "Games are scripted in Luau, a Lua derivative"},
+      {"tech": "consul", "layer": "infra", "note": "Service discovery (central to its 2021 outage)"},
+      {"tech": "hashicorp-nomad", "layer": "infra", "note": "Schedules services in its data centers"},
+      {"tech": "vault", "layer": "infra", "note": "Secrets management"}
+    ],
+    "not_in_atlas": ["Luau", "BoltDB"],
+    "sources": [{"title": "Roblox return to service 10/28-10/31, 2021", "url": "https://blog.roblox.com/2022/01/roblox-return-to-service-10-28-10-31-2021/"}]
+  },
+  {
+    "id": "taobao",
+    "name": "Taobao (Alibaba)",
+    "category": "E-commerce",
+    "url": "https://www.taobao.com",
+    "summary": "Java services on Alibaba's own open-source middleware: Dubbo for RPC, RocketMQ for messages, Nacos for discovery.",
+    "stack": [
+      {"tech": "java", "layer": "backend", "note": "Most services"},
+      {"tech": "apache-dubbo", "layer": "backend", "note": "RPC framework, created at Alibaba"},
+      {"tech": "nacos", "layer": "backend", "note": "Service discovery and configuration, created at Alibaba"},
+      {"tech": "rocketmq", "layer": "data", "note": "Messaging built for Singles' Day peaks, created at Alibaba"},
+      {"tech": "mysql", "layer": "data", "note": "Transactional data (AliSQL fork)"},
+      {"tech": "flink", "layer": "data", "note": "Real-time processing; Alibaba is a major contributor"},
+      {"tech": "alibaba-cloud", "layer": "infra", "note": "Runs on Alibaba Cloud"},
+      {"tech": "qwen", "layer": "ml", "note": "Alibaba's own language models"}
+    ],
+    "not_in_atlas": ["OceanBase", "AliSQL"],
+    "sources": [{"title": "Alibaba Cloud Community blog", "url": "https://www.alibabacloud.com/blog"}]
+  },
+  {
+    "id": "zalando",
+    "name": "Zalando",
+    "category": "E-commerce",
+    "url": "https://www.zalando.com",
+    "summary": "JVM microservices on Kubernetes in AWS, with PostgreSQL run by its own operator.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web front end"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end language"},
+      {"tech": "java", "layer": "backend", "note": "Most backend services"},
+      {"tech": "kotlin", "layer": "backend", "note": "Newer JVM services"},
+      {"tech": "scala", "layer": "backend", "note": "Some services and data tooling"},
+      {"tech": "postgresql", "layer": "data", "note": "Main database, run with its Postgres Operator"},
+      {"tech": "kafka", "layer": "data", "note": "Event bus behind its Nakadi API"},
+      {"tech": "kubernetes", "layer": "infra", "note": "Runs services across hundreds of clusters"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Patroni", "Skipper", "Nakadi"],
+    "sources": [{"title": "Zalando Engineering", "url": "https://engineering.zalando.com"}]
+  },
+  {
+    "id": "mastodon",
+    "name": "Mastodon",
+    "category": "Social",
+    "url": "https://joinmastodon.org",
+    "summary": "Open-source federated social network: a Rails app with Sidekiq workers, PostgreSQL and Redis, and a Node.js streaming server.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web interface"},
+      {"tech": "ruby", "layer": "backend", "note": "Main application language"},
+      {"tech": "rails", "layer": "backend", "note": "Web app and ActivityPub federation"},
+      {"tech": "sidekiq", "layer": "backend", "note": "Background jobs, including federation delivery"},
+      {"tech": "nodejs", "layer": "backend", "note": "Streaming API server"},
+      {"tech": "postgresql", "layer": "data", "note": "Main database"},
+      {"tech": "redis", "layer": "data", "note": "Job queue, caches and timelines"},
+      {"tech": "elasticsearch", "layer": "data", "note": "Optional full-text search"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "Mastodon documentation", "url": "https://docs.joinmastodon.org"}]
+  },
+  {
+    "id": "basecamp",
+    "name": "Basecamp and HEY",
+    "category": "Productivity",
+    "url": "https://basecamp.com",
+    "summary": "37signals' Rails monoliths, where Rails itself came from, now on its own servers instead of the cloud.",
+    "stack": [
+      {"tech": "ruby", "layer": "backend", "note": "Everything server-side"},
+      {"tech": "rails", "layer": "backend", "note": "Extracted from Basecamp in 2004"},
+      {"tech": "mysql", "layer": "data", "note": "Primary database"},
+      {"tech": "redis", "layer": "data", "note": "Caching and jobs"},
+      {"tech": "docker", "layer": "infra", "note": "Deploys with its Kamal tool after leaving the cloud"}
+    ],
+    "not_in_atlas": ["Hotwire", "Kamal"],
+    "sources": [{"title": "37signals Dev", "url": "https://dev.37signals.com"}]
+  },
+  {
+    "id": "coinbase",
+    "name": "Coinbase",
+    "category": "Fintech",
+    "url": "https://www.coinbase.com",
+    "summary": "A Rails monolith grown into Go services on AWS, with a React Native mobile app.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Web app"},
+      {"tech": "react-native", "layer": "mobile", "note": "Rebuilt its mobile app in React Native"},
+      {"tech": "ruby", "layer": "backend", "note": "Original monolith"},
+      {"tech": "rails", "layer": "backend", "note": "Original monolith framework"},
+      {"tech": "go", "layer": "backend", "note": "Most newer services"},
+      {"tech": "mongodb", "layer": "data", "note": "Primary database for the monolith"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "Coinbase Blog: engineering", "url": "https://www.coinbase.com/blog"}]
+  },
+  {
+    "id": "canva",
+    "name": "Canva",
+    "category": "Design tools",
+    "url": "https://www.canva.com",
+    "summary": "A TypeScript and React editor over Java services on AWS; media metadata moved from MySQL to DynamoDB.",
+    "stack": [
+      {"tech": "react", "layer": "web", "note": "Editor UI"},
+      {"tech": "typescript", "layer": "web", "note": "Front-end language"},
+      {"tech": "java", "layer": "backend", "note": "Most backend services"},
+      {"tech": "mysql", "layer": "data", "note": "Original media metadata store"},
+      {"tech": "dynamodb", "layer": "data", "note": "Media metadata after a live migration from MySQL"},
+      {"tech": "aws", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": [],
+    "sources": [{"title": "From zero to 50 million uploads per day: scaling media at Canva", "url": "https://www.canva.dev/blog/engineering/from-zero-to-50-million-uploads-per-day-scaling-media-at-canva/"}]
+  },
+  {
+    "id": "bluesky",
+    "name": "Bluesky",
+    "category": "Social",
+    "url": "https://bsky.app",
+    "summary": "TypeScript and Go services on the AT Protocol: one SQLite database per user, ScyllaDB behind the app view, and a React Native app.",
+    "stack": [
+      {"tech": "react-native", "layer": "mobile", "note": "One codebase for iOS, Android and web"},
+      {"tech": "expo", "layer": "mobile", "note": "Builds and ships the app"},
+      {"tech": "typescript", "layer": "backend", "note": "Reference AT Protocol services"},
+      {"tech": "go", "layer": "backend", "note": "Relay and performance-critical services"},
+      {"tech": "sqlite", "layer": "data", "note": "One database per user on each data server"},
+      {"tech": "postgresql", "layer": "data", "note": "Earlier app-view database"},
+      {"tech": "scylladb", "layer": "data", "note": "App-view storage at scale"}
+    ],
+    "not_in_atlas": ["AT Protocol"],
+    "sources": [{"title": "ATProto for distributed systems engineers", "url": "https://atproto.com/articles/atproto-for-distsys-engineers"}, {"title": "Building Bluesky (The Pragmatic Engineer)", "url": "https://newsletter.pragmaticengineer.com/p/bluesky"}]
+  },
+  {
+    "id": "pokemon-go",
+    "name": "Pokémon GO",
+    "category": "Gaming",
+    "url": "https://pokemongolive.com",
+    "summary": "A Unity client and Java backend on Google Kubernetes Engine and Cloud Datastore, scaled 50x past plan at launch.",
+    "stack": [
+      {"tech": "unity", "layer": "mobile", "note": "Game client"},
+      {"tech": "csharp", "layer": "mobile", "note": "Client game code"},
+      {"tech": "java", "layer": "backend", "note": "Game servers"},
+      {"tech": "google-kubernetes-engine", "layer": "infra", "note": "Ran the launch on GKE"},
+      {"tech": "gcp", "layer": "infra", "note": "Cloud provider"}
+    ],
+    "not_in_atlas": ["Cloud Datastore"],
+    "sources": [{"title": "Bringing Pokémon GO to life on Google Cloud", "url": "https://cloud.google.com/blog/products/containers-kubernetes/bringing-pokemon-go-to-life-on-google-cloud"}]
+  },
+  {
+    "id": "fortnite",
+    "name": "Fortnite",
+    "category": "Gaming",
+    "url": "https://www.fortnite.com",
+    "summary": "Unreal Engine game servers on AWS, with MongoDB and memcached behind accounts and matchmaking.",
+    "stack": [
+      {"tech": "unreal-engine", "layer": "backend", "note": "Game client and dedicated servers, Epic's own engine"},
+      {"tech": "cpp", "layer": "backend", "note": "Engine and server code"},
+      {"tech": "mongodb", "layer": "data", "note": "Account and profile data"},
+      {"tech": "memcached", "layer": "data", "note": "Caching in front of MongoDB"},
+      {"tech": "aws", "layer": "infra", "note": "Hosts game and backend services"}
+    ],
+    "not_in_atlas": ["XMPP"],
+    "sources": [{"title": "Postmortem of service outage at 3.4M CCU", "url": "https://www.fortnite.com/news/postmortem-of-service-outage-at-3-4m-ccu"}]
   }
 ]

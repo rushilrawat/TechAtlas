@@ -82,4 +82,22 @@ describe("recommendStack", () => {
     expect(a.edgeIds.length).toBeGreaterThan(0);
     expect(recommendationMarkdown(a)).toMatch(/Suggested stack · Web app/);
   });
+
+  it("recognises the project types added for the larger atlas", () => {
+    const cases: [string, string, string, string][] = [
+      ["A Shopify storefront selling handmade products with a custom checkout", "store", "commerce", "shopify"],
+      ["A company blog with a headless CMS and Next.js", "content-site", "meta", "nextjs"],
+      ["Statistical analysis of survey results with KPI reports in Python", "analytics", "language", "python"],
+      ["An NFT marketplace with smart contracts on Ethereum", "dapp", "chain", "ethereum"],
+      ["A web map of bike routes with GPS tracks and PostGIS", "maps", "geo-db", "postgis"],
+      ["A synthesizer VST plugin", "audio", "audio-framework", "juce"],
+      ["An internal tool admin panel for approving refunds", "internal-tool", "low-code", "retool"],
+      ["Automate our onboarding workflow across Slack and HubSpot", "automation", "automation", "n8n"],
+    ];
+    for (const [description, archetype, slot, slug] of cases) {
+      const rec = recommendStack(index, { description });
+      expect(rec.archetype.id, description).toBe(archetype);
+      expect(slots(rec)[slot], description).toBe(slug);
+    }
+  });
 });

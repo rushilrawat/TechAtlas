@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { APPS, LAYERS, appsUsing, filterApps, readApp, readAppsOpen, resolveApp, writeApp } from "./apps";
+import { APPS } from "../content/data";
+import { LAYERS, appsUsing, filterApps, readApp, readAppsOpen, resolveApp, writeApp } from "./apps";
 import { realGraph } from "../test/realGraph";
 
 const graph = realGraph();
@@ -39,7 +40,7 @@ describe("app helpers", () => {
   it("resolves an app into layers with ids and connecting edges", () => {
     const res = resolveApp(APPS.find((a) => a.id === "netflix")!, graph);
     expect(res.nodeIds.length).toBe(APPS.find((a) => a.id === "netflix")!.stack.length);
-    expect(res.layers.map((l) => l.id)).toEqual(["web", "backend", "data", "infra"]);
+    expect(res.layers.map((l) => l.id)).toEqual(["web", "backend", "data", "ml", "infra"]);
     expect(res.edgeIds.length).toBeGreaterThan(0);
   });
   it("finds the apps that use a technology", () => {

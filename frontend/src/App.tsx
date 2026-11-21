@@ -17,7 +17,8 @@ import type { StackNodeInput } from "./graph/stackLayout";
 import { SCANNER_ENABLED, warmScanner } from "./api/scanner";
 import { readExampleParam, writeExampleParam } from "./api/exampleScans";
 import { Icon } from "./components/Icon";
-import { JOURNEYS } from "./graph/journeys";
+import { journeys } from "./graph/journeys";
+import { content, loadContent } from "./content/content";
 import { readFilter, writeFilter, readCamera, writeCamera, readView, writeView } from "./graph/shareView";
 import { OutlineView, supportsWebGL } from "./components/OutlineView";
 import { ShortcutsHelp } from "./components/ShortcutsHelp";
@@ -36,8 +37,6 @@ import {
   buildPathEntries, featuredPaths, readDonePaths, readPathProgress, suggestNextPath,
   writeDonePaths, writePathProgress,
 } from "./graph/pathsLibrary";
-
-const PATH_TITLES = JOURNEYS.map((j) => j.title);
 
 // Repo X-Ray is a secondary mode, so keep it out of the main bundle.
 const RepoXrayPanel = lazy(() => import("./components/RepoXrayPanel").then((m) => ({ default: m.RepoXrayPanel })));
@@ -315,13 +314,15 @@ export default function App() {
   // Initial data load.
   useEffect(() => {
     const controller = new AbortController();
-    Promise.all([api.graph(controller.signal), api.domains(controller.signal)])
-      .then(([graph, domains]) => {
+    Promise.all([api.graph(controller.signal), api.domains(controller.signal),
+      // A missing content chunk should not stop the atlas from drawing; paths, roles and apps stay empty.
+      loadContent().catch(() => content())])
+      .then(([graph, domains, { journeys: paths }]) => {
         setState({ status: "ready", graph, domains });
-        const shared = readView(window.location.search, PATH_TITLES);
+        const shared = readView(window.location.search, paths.map((j) => j.title));
         const ids = new Set(graph.nodes.map((n) => n.id));
         if (shared.path !== null) {
-          const steps = JOURNEYS[shared.path].steps;
+          const steps = paths[shared.path].steps;
           const step = Math.min(shared.step, steps.length - 1);
           setJourneyIndex(shared.path);
           setJourneyStep(step);
@@ -414,7 +415,7 @@ export default function App() {
       path: journeyIndex,
       step: journeyStep,
       compare: compareMode && compareFirst ? [compareFirst, compareSecond] : null,
-    }, PATH_TITLES);
+    }, journeys().map((j) => j.title));
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   }, [state.status, journeyIndex, journeyStep, compareMode, compareFirst, compareSecond]);
 
@@ -553,7 +554,7 @@ export default function App() {
   }, [resetScan, openStack]);
 
   const focusStack = useCallback(() => setFitNonce((n) => n + 1), []);
-  const journey = journeyIndex === null ? null : JOURNEYS[journeyIndex];
+  const journey = journeyIndex === null ? null : journeys()[journeyIndex];
   const journeyNodeIds = useMemo(() => journey?.steps.map((step) => step.id) ?? [], [journey]);
   const journeyEdgeIds = useMemo(() => {
     if (!journey || !graphData) return [];
@@ -562,11 +563,11 @@ export default function App() {
       (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
   }, [journey, graphData]);
   // Every guided path with its field, step labels and search text, for the library.
-  const pathEntries = useMemo(() => buildPathEntries(JOURNEYS, nodesById, domainsById), [nodesById, domainsById]);
+  const pathEntries = useMemo(() => buildPathEntries(journeys(), nodesById, domainsById), [nodesById, domainsById]);
   // Remember how far each guided path got, and finished paths (reaching the last step counts).
   useEffect(() => {
     if (journeyIndex === null) return;
-    const j = JOURNEYS[journeyIndex];
+    const j = journeys()[journeyIndex];
     const slug = pathEntries[journeyIndex]?.slug;
     if (slug && journeyStep > (pathProgress[slug] ?? 0)) {
       const next = { ...pathProgress, [slug]: journeyStep };
@@ -586,10 +587,10 @@ export default function App() {
     setPathsOpen(false);
     setJourneyIndex(index);
     setJourneyStep(step);
-    navigate(JOURNEYS[index].steps[step].id);
+    navigate(journeys()[index].steps[step].id);
   }, [navigate, openStack]);
-  const nextPath = useMemo(() => journeyIndex === null || journeyStep !== JOURNEYS[journeyIndex].steps.length - 1
-    ? null : suggestNextPath(pathEntries, JOURNEYS, journeyIndex, donePaths), [pathEntries, journeyIndex, journeyStep, donePaths]);
+  const nextPath = useMemo(() => journeyIndex === null || journeyStep !== journeys()[journeyIndex].steps.length - 1
+    ? null : suggestNextPath(pathEntries, journeys(), journeyIndex, donePaths), [pathEntries, journeyIndex, journeyStep, donePaths]);
   // A returning visitor with an unfinished path is offered to pick it up from the hero.
   const resumePath = useMemo(() => {
     const started = pathEntries.filter((e) => !donePaths.has(e.title) && (pathProgress[e.slug] ?? 0) > 0);

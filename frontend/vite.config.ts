@@ -26,7 +26,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: [],
+    setupFiles: ["./src/test/setupContent.ts"],
     // Playwright specs under e2e/ are run by Playwright, not vitest.
     // Playwright specs (e2e/ and the local .uia-shots/ screenshot harness) are run by
     // Playwright, not vitest.

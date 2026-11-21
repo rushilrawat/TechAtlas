@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import graph from "../../../data/graph.json";
-import { JOURNEYS } from "./journeys";
+import { JOURNEYS } from "../content/data";
 
 describe("guided paths", () => {
   it("uses canonical nodes and real edges for every step", () => {
