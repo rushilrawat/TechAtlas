@@ -1595,3 +1595,93 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 /* Clean circular atlas: faint orbits under every ecosystem. */
 .atlas-orbit { fill: none; stroke-width: 0.75; stroke-opacity: 0.16; }
 :root[data-theme="light"] .atlas-orbit { stroke-opacity: 0.28; }
+
+/* ---- UI polish pass: logos, role emojis, arrow controls ---- */
+/* Brand tiles (Simple Icons) and monograms for famous apps */
+.app-logo { flex: none; display: inline-grid; place-items: center; color: #fff; font-weight: 700; line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.app-logo.is-loading { background: var(--panel-border); }
+.app-logo svg { display: block; }
+.apps-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.apps-grid button { flex-direction: row; align-items: center; gap: 9px; min-width: 0; }
+.apps-card-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.apps-card-text strong, .apps-card-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.apps-card-n { flex: none; min-width: 20px; padding: 1px 6px; border-radius: 999px; background: rgba(122,162,247,.14); color: var(--accent);
+  font-size: 10.5px; font-weight: 600; text-align: center; }
+.apps-head, .role-head { display: flex; align-items: center; gap: 12px; margin: 0 26px 10px 0; }
+.apps-head h2, .role-head h2 { margin: 0; }
+.apps-head-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 3px 0 0; font-size: 11.5px; }
+.apps-head-meta a { color: var(--text-dim); }
+.apps-head-meta a:hover { color: var(--accent); }
+.apps-cat { padding: 1px 7px; border: 1px solid var(--panel-border); border-radius: 999px; color: var(--text-dim); }
+.apps-layer .role-label { white-space: normal; text-align: left; }
+.apps-hint { margin: 10px 0 0; font-size: 11px; }
+.used-by-chip { display: inline-flex; align-items: center; gap: 6px; padding-left: 4px; }
+.role-emoji { flex: none; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(122,162,247,.1); font-size: 17px; line-height: 1; }
+.role-emoji.is-big { width: 42px; height: 42px; border-radius: 11px; font-size: 24px; }
+.role-kicker { margin: 0 0 1px; color: var(--text-dim); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; }
+.role-list button { flex-direction: row; align-items: flex-start; gap: 10px; }
+.role-list-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+/* Chips, and rows that scroll sideways behind ← / → buttons */
+.scroll-row { position: relative; display: flex; align-items: center; min-width: 0; }
+.scroll-row-track { min-width: 0; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
+.scroll-row-track::-webkit-scrollbar { display: none; }
+.scroll-row.can-start .scroll-row-track { mask-image: linear-gradient(to right, transparent 0, #000 28px); }
+.scroll-row.can-end .scroll-row-track { mask-image: linear-gradient(to left, transparent 0, #000 28px); }
+.scroll-row.can-start.can-end .scroll-row-track { mask-image: linear-gradient(to right, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%); }
+.scroll-arrow { position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 24px; height: 24px;
+  padding: 0; border: 1px solid var(--panel-border); border-radius: 50%; background: var(--panel); color: var(--text); font: inherit; font-size: 13px;
+  line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.scroll-arrow.is-start { left: -4px; }
+.scroll-arrow.is-end { right: -4px; }
+.scroll-arrow:hover { border-color: var(--accent); color: var(--accent); }
+.apps-cats { margin: 10px 0 0; }
+.chip-row { display: flex; gap: 6px; width: max-content; padding: 2px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border: 1px solid var(--panel-border); border-radius: 999px;
+  background: transparent; color: var(--text-dim); font: inherit; font-size: 11.5px; white-space: nowrap; cursor: pointer; }
+.chip span { color: var(--text-dim); opacity: .75; font-size: 10.5px; }
+.chip:hover { color: var(--text); border-color: var(--accent); }
+.chip[aria-pressed="true"] { color: var(--text); background: rgba(122,162,247,.18); border-color: var(--accent); }
+.chip:focus-visible, .step-btn:focus-visible, .apps-grid button:focus-visible, .role-list button:focus-visible,
+.journey-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* ← Previous · position · Next → */
+.step-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; margin: 0 0 8px; }
+.step-btn { display: inline-flex; align-items: center; gap: 6px; min-width: 0; height: 30px; padding: 0 10px; border: 1px solid var(--panel-border);
+  border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-size: 12px; cursor: pointer; }
+.step-btn.is-next { justify-content: flex-end; }
+.step-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.step-btn:disabled { opacity: .35; cursor: default; }
+.step-arrow { flex: none; font-size: 14px; line-height: 1; }
+.step-name { display: inline-flex; align-items: center; gap: 5px; min-width: 0; overflow: hidden; }
+.step-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.step-name > :first-child { flex: none; }
+.step-pos { color: var(--text-dim); font-size: 11px; font-variant-numeric: tabular-nums; }
+.xray-results > .step-nav { margin-bottom: 12px; }
+
+/* X-Ray legend: line samples */
+.xray-legend-sep { width: 1px; height: 14px; background: var(--panel-border); }
+.xray-line { display: inline-block; width: 18px; height: 0; border-top: 2px solid rgba(190,205,255,.85); border-radius: 2px; }
+.xray-line.is-faint { border-top-color: rgba(150,165,205,.35); border-top-width: 1px; }
+
+/* X-Ray legend stays clear of the X-Ray panel on the right and wraps instead */
+@media (min-width: 641px) { .xray-legend { max-width: calc(100% - 430px); } }
+
+/* Desktop: keep side panels clear of the Connections legend in the bottom-left corner */
+@media (min-width: 821px) { .stack-panel { max-height: calc(100% - 76px); } }
+
+/* Phones: the mode toolbar scrolls sideways behind ← / → instead of running off-screen */
+.topbar-tools-row { min-width: 0; flex-shrink: 0; }
+.topbar-tools-row .scroll-row-track { padding: 2px; margin: -2px; }
+@media (max-width: 640px) {
+  .topbar { grid-template-columns: auto auto minmax(0, 1fr); }
+  .topbar-tools-row { justify-self: stretch; flex-shrink: 1; }
+  .topbar-tools { width: max-content; }
+}
+
+:root[data-theme="light"] .app-logo { box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+:root[data-theme="light"] .scroll-arrow { box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+:root[data-theme="light"] .xray-line { border-top-color: rgba(60,80,130,.8); }
+:root[data-theme="light"] .xray-line.is-faint { border-top-color: rgba(60,80,130,.3); }

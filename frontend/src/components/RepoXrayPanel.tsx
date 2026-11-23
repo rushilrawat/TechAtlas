@@ -4,6 +4,8 @@
 // panel drives the scan lifecycle and lets the user jump to detected nodes.
 
 import { useCallback, useMemo, useState } from "react";
+import { arrowNavGrid } from "../util/arrowNav";
+import { StepNav, neighbours, useStepKeys } from "./StepNav";
 import type {
   DetectionStatus,
   DomainSummary,
@@ -189,6 +191,8 @@ export function RepoXrayPanel({
           onExit={onExit}
           view={view}
           onViewChange={onViewChange}
+          examples={examples}
+          onLoadExample={onLoadExample}
         />
       )}
     </section>
@@ -284,7 +288,7 @@ function ExampleGallery({ examples, onPick, heading }: {
   return (
     <section className="xray-examples" aria-label="Example scans">
       <h3 className="xray-section-title">{heading}</h3>
-      <ul>
+      <ul data-arrow-nav onKeyDown={arrowNavGrid}>
         {examples.map((e) => (
           <li key={e.slug}>
             <button type="button" className="xray-example"
@@ -305,8 +309,10 @@ function ExampleGallery({ examples, onPick, heading }: {
 
 function Results({
   scan, example, liveEnabled, nodesById, domainsById, learnNext, onFocusStack, onFocusNode,
-  onAnalyzeAnother, onExit, view, onViewChange,
+  onAnalyzeAnother, onExit, view, onViewChange, examples = [], onLoadExample,
 }: {
+  examples?: ExampleScanMeta[];
+  onLoadExample?: (slug: string) => void;
   scan: RepoScan;
   /** Slug of the pre-computed example this result came from, if any. */
   example?: string;
@@ -335,11 +341,22 @@ function Results({
   const { tools, concepts } = groupSplit(scan.detections, nodesById);
   const repoUrl = safeHttpUrl(repo.url);
   const partial = scan.status === "partial";
+  // ← / → (and [ / ]) step through the example scans when this result is one of them.
+  const exIndex = example ? examples.findIndex((e) => e.slug === example) : -1;
+  const around = onLoadExample ? neighbours(exIndex, examples.length) : null;
+  const prevEx = around ? examples[around[0]] : null;
+  const nextEx = around ? examples[around[1]] : null;
+  const goPrev = useMemo(() => prevEx && onLoadExample ? () => onLoadExample(prevEx.slug) : null, [prevEx, onLoadExample]);
+  const goNext = useMemo(() => nextEx && onLoadExample ? () => onLoadExample(nextEx.slug) : null, [nextEx, onLoadExample]);
+  useStepKeys(!!around, goPrev, goNext);
 
   return (
     <div className="xray-results">
       {cardOpen && <ReportCard repo={`${repo.owner}/${repo.name}`} nodeIds={nodeIds} nodesById={nodesById} domainsById={domainsById}
         example={example} scannedOn={exampleMeta?.scanned_on} onPick={onFocusNode} onClose={closeCard} />}
+      {around && <StepNav label="Step through example scans" position={`${exIndex + 1} / ${examples.length}`}
+        prev={prevEx && goPrev ? { label: prevEx.repo, onGo: goPrev } : null}
+        next={nextEx && goNext ? { label: nextEx.repo, onGo: goNext } : null} />}
       {/* Section B: repository identity */}
       <div className="xray-repo">
         <div className="xray-repo-title">

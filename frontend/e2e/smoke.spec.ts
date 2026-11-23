@@ -181,3 +181,44 @@ test("An ?app= link opens straight onto that app's stack", async ({ page }) => {
   await page.goto("/?app=netflix");
   await expect(page.getByRole("region", { name: "Famous apps" }).getByRole("heading", { name: "Netflix" })).toBeVisible({ timeout: 20_000 });
 });
+
+test("Apps show logos, arrow keys move through the grid, and ← / → step between apps", async ({ page }) => {
+  await page.goto("/?app=");
+  const panel = page.getByRole("region", { name: "Famous apps" });
+  await expect(panel.locator(".apps-grid svg").first()).toBeVisible({ timeout: 20_000 });
+  const first = panel.locator(".apps-grid button").first();
+  await first.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(panel.locator(".apps-grid button").nth(1)).toBeFocused();
+  await page.keyboard.press("End");
+  await expect(panel.locator(".apps-grid button").last()).toBeFocused();
+  await panel.locator(".apps-grid button").first().click();
+  await expect(panel.getByRole("heading", { name: "Netflix" })).toBeVisible();
+  await panel.getByRole("button", { name: /^Next: / }).click();
+  await expect(panel.getByRole("heading", { name: "Spotify" })).toBeVisible();
+  await page.keyboard.press("[");
+  await expect(panel.getByRole("heading", { name: "Netflix" })).toBeVisible();
+});
+
+test("Roles have emojis, ?role= opens the list, and ] steps to the next role", async ({ page }) => {
+  await page.goto("/?role=");
+  const panel = page.getByRole("region", { name: "Role paths" });
+  await expect(panel.locator(".role-list .role-emoji").first()).toHaveText("🎨", { timeout: 20_000 });
+  await panel.getByRole("button", { name: /Frontend engineer/ }).click();
+  await expect(panel.getByRole("heading", { name: "Frontend engineer" })).toBeVisible();
+  await page.keyboard.press("]");
+  await expect(panel.getByRole("heading", { name: "Backend engineer" })).toBeVisible();
+  await expect(page).toHaveURL(/[?&]role=backend-engineer/);
+});
+
+test("On a phone the toolbar scrolls behind a → button instead of running off-screen", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeAttached({ timeout: 20_000 });
+  const more = page.getByRole("button", { name: "Scroll atlas modes right" });
+  await expect(more).toBeVisible();
+  await more.click();
+  await expect(page.getByRole("button", { name: /Switch to (light|dark) theme/ })).toBeInViewport();
+  const width = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(width).toBeLessThanOrEqual(390);
+});

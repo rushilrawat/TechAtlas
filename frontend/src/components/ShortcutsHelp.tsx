@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 const SHORTCUTS: [string, string][] = [
   ["/", "Search"],
   ["← → ↑ ↓", "Move between connected nodes"],
+  ["← → ↑ ↓", "In a toolbar, list or grid: move between its buttons (Home / End: first / last)"],
+  ["[ ]", "Previous / next app, role, guided-path step or example scan"],
   ["Esc", "Close the open panel"],
   ["F", "Fullscreen"],
   ["O", "Atlas outline (list view)"],
@@ -27,7 +29,7 @@ export function ShortcutsHelp({ onClose }: { onClose: () => void }) {
         <h2>Keyboard shortcuts</h2>
         <dl>
           {SHORTCUTS.map(([keys, what]) => (
-            <div key={keys}><dt><kbd>{keys}</kbd></dt><dd>{what}</dd></div>
+            <div key={what}><dt><kbd>{keys}</kbd></dt><dd>{what}</dd></div>
           ))}
         </dl>
         <p className="muted">Tip: Compare two technologies side by side, or follow a guided path from the toolbar.</p>

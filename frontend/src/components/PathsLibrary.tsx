@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { arrowNav, arrowNavGrid } from "../util/arrowNav";
 import {
   EMPTY_PATH_FILTER, QUICK_MAX_STEPS, featuredPaths, filterPaths, pathFields, pathStatus,
   type PathEntry, type PathFilter,
@@ -67,7 +68,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
           {!filtering && featured.length > 0 && (
             <section aria-labelledby="paths-featured">
               <h3 id="paths-featured" className="paths-section">Start here</h3>
-              <ul className="paths-grid paths-featured">
+              <ul className="paths-grid paths-featured" data-arrow-nav onKeyDown={arrowNavGrid}>
                 {featured.map((e) => <PathCard key={e.slug} entry={e} featured done={done} progress={progress}
                   active={activeIndex === e.index} onStart={onStart} />)}
               </ul>
@@ -81,7 +82,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
             {results.length === 0 ? (
               <p className="paths-empty">No paths match. Try another word or clear the filters.</p>
             ) : (
-              <ul className="paths-grid">
+              <ul className="paths-grid" data-arrow-nav onKeyDown={arrowNavGrid}>
                 {results.map((e) => <PathCard key={e.slug} entry={e} done={done} progress={progress}
                   active={activeIndex === e.index} onStart={onStart} />)}
               </ul>
@@ -97,7 +98,7 @@ function Segmented<T extends string>({ label, value, options, onChange }: {
   label: string; value: T; options: [T, string][]; onChange: (v: T) => void;
 }) {
   return (
-    <div className="paths-seg" role="group" aria-label={label}>
+    <div className="paths-seg" role="group" aria-label={label} data-arrow-nav onKeyDown={arrowNav}>
       {options.map(([v, text]) => (
         <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)}>{text}</button>
       ))}
