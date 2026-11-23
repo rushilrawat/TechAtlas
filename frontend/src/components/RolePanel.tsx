@@ -52,6 +52,8 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
   return (
     <section className="stack-panel role-panel" aria-label="Role paths">
       <button type="button" className="outline-close" onClick={onClose} aria-label="Close role paths">×</button>
+      {/* One way back to the list, at the top where people look for it (not below 30 rows). */}
+      {role && <button type="button" className="panel-crumb" onClick={() => onRoleChange(null)}><span aria-hidden>← </span>All roles</button>}
       {role ? (
         <header className="role-head">
           <span className="role-emoji is-big" aria-hidden>{roleEmoji(role.id)}</span>
@@ -78,11 +80,6 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
           position={`${all.findIndex((r) => r.id === role.id) + 1} / ${all.length}`}
           prev={prevRole && goPrev ? { label: prevRole.title, onGo: goPrev, icon: <span aria-hidden>{roleEmoji(prevRole.id)} </span> } : null}
           next={nextRole && goNext ? { label: nextRole.title, onGo: goNext, icon: <span aria-hidden>{roleEmoji(nextRole.id)} </span> } : null} />
-        <label className="role-switch"><span className="sr-only">Jump to role</span>
-          <select value={role.id} onChange={(e) => onRoleChange(e.target.value)}>
-            {roles().map((r) => <option key={r.id} value={r.id}>{roleEmoji(r.id)} {r.title}</option>)}
-          </select>
-        </label>
         <p className="stack-note">{role.summary}</p>
         <div className="role-progress" aria-label={`${progress.known} of ${progress.total} known, ${progress.learning} learning`}>
           <div className="role-bar"><span className="is-known" style={{ width: `${(progress.known / progress.total) * 100}%` }} />
@@ -120,7 +117,6 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
           <button type="button" onClick={copy}>{copied ? "Link copied" : "Copy link"}</button>
           {unmarked.length > 0 && <button type="button" title="Add every unmarked node to your learning map as a goal"
             onClick={() => unmarked.forEach((id) => setStatus(id, "goal"))}>Add {unmarked.length} as goals</button>}
-          <button type="button" onClick={() => onRoleChange(null)}><span aria-hidden>← </span>All roles</button>
         </div>
       </>}
     </section>

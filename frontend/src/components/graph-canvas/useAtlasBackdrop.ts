@@ -168,7 +168,13 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
     // "updated" can be emitted mid-animation and leave headings on stale positions.
     project();
     renderer.on("afterRender", project);
-    return () => { renderer.removeListener("afterRender", project); };
+    // A side panel opening or closing changes where headings may go without a re-render,
+    // so re-place them whenever the stage's panels change.
+    const stage = renderer.getContainer().closest("main");
+    let raf = 0;
+    const observer = stage ? new MutationObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(project); }) : null;
+    if (stage) observer!.observe(stage, { childList: true });
+    return () => { renderer.removeListener("afterRender", project); observer?.disconnect(); cancelAnimationFrame(raf); };
   }, [domains, data, exploreNonce, stackPositions, scanStatusByNode, visibleNodes]);
   return backdrop;
 }

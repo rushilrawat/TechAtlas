@@ -33,14 +33,21 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
 
   const fields = useMemo(() => pathFields(entries), [entries]);
   const featured = useMemo(() => featuredPaths(entries), [entries]);
-  const results = useMemo(() => filterPaths(entries, filter, done, progress), [entries, filter, done, progress]);
   const filtering = JSON.stringify(filter) !== JSON.stringify(EMPTY_PATH_FILTER);
+  // "Start here" cards are not repeated in "All paths" below them; a search covers every path.
+  const results = useMemo(() => {
+    const all = filterPaths(entries, filter, done, progress);
+    if (filtering) return all;
+    const shown = new Set(featured.map((e) => e.slug));
+    return all.filter((e) => !shown.has(e.slug));
+  }, [entries, filter, done, progress, featured, filtering]);
   const doneCount = entries.filter((e) => done.has(e.title)).length;
   const set = (patch: Partial<PathFilter>) => setFilter((f) => ({ ...f, ...patch }));
 
   return (
-    <div className="paths-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <section className="paths-library" role="dialog" aria-modal="true" aria-labelledby="paths-title">
+    // A left side panel like Stack, Roles and Apps (not a modal): the atlas stays visible
+    // and usable beside it, and a started path is framed in the space the panel leaves.
+    <section className="paths-library" aria-labelledby="paths-title">
         <header className="paths-head">
           <div>
             <h2 id="paths-title">Guided paths</h2>
@@ -76,7 +83,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
           )}
           <section aria-labelledby="paths-all">
             <h3 id="paths-all" className="paths-section" aria-live="polite">
-              {filtering ? `${results.length} matching ${results.length === 1 ? "path" : "paths"}` : "All paths"}
+              {filtering ? `${results.length} matching ${results.length === 1 ? "path" : "paths"}` : "More paths"}
               {filtering && <button type="button" className="paths-clear" onClick={() => setFilter(EMPTY_PATH_FILTER)}>Clear filters</button>}
             </h3>
             {results.length === 0 ? (
@@ -89,8 +96,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
             )}
           </section>
         </div>
-      </section>
-    </div>
+    </section>
   );
 }
 

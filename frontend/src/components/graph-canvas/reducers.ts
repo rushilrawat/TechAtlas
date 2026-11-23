@@ -203,8 +203,13 @@ export function createEdgeReducer(graph: Graph, refs: CanvasRefs, scanClearEdges
     }
     const set = neighborSetRef.current;
     const domainFocus = graph.getNodeAttribute(active, "nodeType") === "domain";
+    // A field's spokes (field node to each member, ~175 for Backend) carry no information at
+    // that density: its members are already lit in the field's colour, so they are skipped.
+    // The ~400 links among its members are the same hairball one level down, so a selected
+    // field shows only its backbone bridges to other fields.
+    if (domainFocus && (source === active || target === active || !cross)) return { ...dataIn, hidden: true };
     const related = domainFocus
-      // A clicked or hovered field shows its whole internal network, every edge among its members.
+      // A clicked field shows the links among its members, not a hairball from its centre.
       ? !!set && ((set.has(source) && set.has(target))
         // A tapped field also reveals its backbone links out to other fields.
         || (cross && backbone && (set.has(source) || set.has(target))))

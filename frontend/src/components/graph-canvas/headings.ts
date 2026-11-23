@@ -82,7 +82,8 @@ export function placeHeadings(headings: Heading[], container: HTMLElement,
   const gap = phone ? 2 : 6;
   const crect = container.getBoundingClientRect();
   const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details", ".hero",
-    ".atlas-rail", ".journey-panel", ".compare-panel"]
+    ".atlas-rail", ".journey-panel", ".compare-panel", ".paths-library", ".stack-panel", ".outline-view",
+    ".learning-panel", ".xray-panel", ".xray-legend"]
     .map((sel) => document.querySelector(sel)?.getBoundingClientRect())
     .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
     .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));

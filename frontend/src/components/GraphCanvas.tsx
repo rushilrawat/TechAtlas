@@ -167,9 +167,11 @@ export function GraphCanvas({
       {hoverPreview && (() => {
         const node = data.nodes.find((n) => n.id === hoverPreview.id);
         if (!node) return null;
-        const connections = new Set(data.edges.filter((edge) => edge.source === node.id || edge.target === node.id).map((edge) => edge.source === node.id ? edge.target : edge.source)).size;
+        // A field counts members, the same noun and number as its panel; a node counts links.
+        const field = node.node_type === "domain" ? domains?.find((d) => d.id === node.id) : undefined;
+        const connections = field ? field.node_count : new Set(data.edges.filter((edge) => edge.source === node.id || edge.target === node.id).map((edge) => edge.source === node.id ? edge.target : edge.source)).size;
         return <aside className="node-preview" style={{ left: hoverPreview.x, top: hoverPreview.y }} aria-hidden="true">
-          <strong>{node.label}</strong><span>{node.node_subtype || node.node_type} · {connections} connections</span>
+          <strong>{node.label}</strong><span>{field ? "field" : node.node_subtype || node.node_type} · {connections.toLocaleString("en-US")} {field ? "members" : "connections"}</span>
           {hoverPreview.description && <p>{hoverPreview.description}</p>}
         </aside>;
       })()}

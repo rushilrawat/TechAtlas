@@ -7,7 +7,6 @@ import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
 import { EdgeDetailsPanel } from "./components/EdgeDetailsPanel";
 import { RelationshipLegend } from "./components/RelationshipLegend";
 import { DomainLegend } from "./components/DomainLegend";
-import { FilterPanel } from "./components/FilterPanel";
 import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
 import { XrayLegend } from "./components/XrayLegend";
 import { useRepoScan } from "./graph/useRepoScan";
@@ -108,7 +107,6 @@ export default function App() {
   const [legendCollapsed, setLegendCollapsed] = useState(false);
   // UI-E req 1: on mobile the filter sheet is closed by default (graph-first);
   // an accessible Filters control opens/closes it. Ignored on desktop (CSS).
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => window.localStorage.getItem("techatlas-theme") === "light" ? "light" : "dark");
   useEffect(() => { document.documentElement.dataset.theme = theme; window.localStorage.setItem("techatlas-theme", theme); }, [theme]);
   const [aboutOpen, setAboutOpen] = useState(isAboutPath);
@@ -774,8 +772,7 @@ export default function App() {
             aria-label="Exit fullscreen" title="Exit fullscreen (F or Esc)"><Icon name="collapse" /><span>Exit</span></button>
         )}
         {!xrayOpen && <nav className="atlas-rail" aria-label="Atlas tools">
-          <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
-          <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}><Icon name="filters" /></button>
+          <button type="button" aria-label="Fields" title="Fields and filters" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
         </nav>}
         {!webgl && <OutlineView nodes={state.graph.nodes} domains={state.domains} onPick={navigate} fallback />}
         {webgl && <GraphCanvas
@@ -827,7 +824,9 @@ export default function App() {
           onPick={navigate} onHighlight={onRoleHighlight} onClose={() => setRoleOpen(false)} />}
         {appsOpen && !roleOpen && !stackParams.open && !xrayOpen && <AppsPanel graph={state.graph} appId={appId} onAppChange={setAppId}
           onPick={navigate} onHighlight={onAppHighlight} onClose={() => setAppsOpen(false)} />}
-        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && !roleOpen && !appsOpen && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
+        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && !roleOpen && !appsOpen && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)}
+          onPickRole={() => { setLearningOpen(false); setCompareMode(false); setJourneyIndex(null); openStack(false); setAppsOpen(false); setRoleOpen(true); }}
+          onOpenPaths={() => { setLearningOpen(false); openPaths(); }} />}
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {sharedCard && <ReportCard repo={sharedCard.repo} nodesById={nodesById} domainsById={domainsById}
           nodeIds={sharedCard.slugs.map((slug) => state.graph.nodes.find((n) => n.slug === slug)?.id).filter((id): id is string => !!id)}
@@ -928,21 +927,7 @@ export default function App() {
           </Suspense>
         ) : (
           <>
-            <button
-              type="button"
-              className="filters-toggle"
-              aria-expanded={filtersOpen}
-              aria-controls="graph-filters"
-              onClick={() => setFiltersOpen((v) => !v)}
-            >
-              {filtersOpen ? "Close filters" : "Filters"}
-            </button>
-            <FilterPanel
-              domains={state.domains}
-              filter={filter}
-              onChange={setFilter}
-              mobileOpen={filtersOpen}
-            />
+            {/* Filters now live in the Fields panel below. */}
           </>
         )}
         {heroRendered && (
@@ -987,6 +972,8 @@ export default function App() {
             navigate(id);
           }}
           collapsed={compact ? legendCollapsed : desktopRail !== "domains" || legendCollapsed}
+          filter={filter}
+          onFilterChange={setFilter}
           onToggle={() => { setLegendCollapsed((v) => !v); setDesktopRail(null); }}
         />
         {selected && !compareMode && (

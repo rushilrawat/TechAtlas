@@ -175,7 +175,7 @@ export interface UsableRect { left: number; top: number; right: number; bottom: 
 // Panels that float over the canvas. Left tools, right details/X-Ray, the path card and
 // phone bottom sheets all count; anything at least 85% of the width is treated as a sheet.
 const OVERLAY_SELECTORS = [".details", ".xray-panel", ".stack-panel", ".outline-view:not(.is-fallback)",
-  ".learning-panel", ".journey-panel", ".compare-panel"];
+  ".learning-panel", ".journey-panel", ".compare-panel", ".paths-library"];
 
 export function usableRect(container: HTMLElement): UsableRect {
   const cr = container.getBoundingClientRect();
