@@ -83,6 +83,8 @@ function measureRightPanelWidth(): number {
 /** Counts in the UI always get thousands separators: 3,122 not 3122. */
 const fmt = (n: number) => n.toLocaleString("en-US");
 
+import { usePanelFocus } from "./util/usePanelFocus";
+
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [initialCamera] = useState(() => readCamera(window.location.search));
@@ -183,6 +185,23 @@ export default function App() {
     setPathsOpen(true);
   }, [openStack]);
   const [pathCopied, setPathCopied] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [moreAt, setMoreAt] = useState<{ top: number; right: number }>({ top: 56, right: 8 });
+  useEffect(() => {
+    if (!moreOpen) return;
+    // Esc or a click anywhere else closes the More menu.
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMoreOpen(false); };
+    const onDown = (e: MouseEvent) => { if (!(e.target as Element).closest(".tools-more, .tools-more-toggle")) setMoreOpen(false); };
+    window.addEventListener("keydown", onKey); window.addEventListener("mousedown", onDown);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("mousedown", onDown); };
+  }, [moreOpen]);
+  // Opening a tool's panel moves focus into it; closing it returns focus to the tool.
+  usePanelFocus(roleOpen, ".role-panel");
+  usePanelFocus(appsOpen, ".apps-panel");
+  usePanelFocus(stackParams.open, ".stack-panel:not(.role-panel):not(.apps-panel)");
+  usePanelFocus(pathsOpen, ".paths-library");
+  usePanelFocus(learningOpen, ".learning-panel");
+  usePanelFocus(compareMode, ".compare-panel:not(.learning-panel)");
   const [announcement, setAnnouncement] = useState("");
   // Tablet/phone breakpoint, tracked so resizing across it re-renders the legend state.
   const [compact, setCompact] = useState(
@@ -375,10 +394,29 @@ export default function App() {
       setPreviewEdge(null);
       setSelected(node.id);
       setFocus(node.id);
-      window.history.replaceState(null, "", pathForNode(node.node_type, node.slug));
+      // Each newly opened node is its own history entry, so the browser's Back button
+      // returns to the previous node (selection history); re-opening the same one doesn't.
+      const target = pathForNode(node.node_type, node.slug);
+      if (`${window.location.pathname}${window.location.search}` === target) window.history.replaceState(null, "", target);
+      else window.history.pushState(null, "", target);
     },
     [state, compareMode, compareFirst, compareSecond],
   );
+
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    const onPop = () => {
+      if (isAboutPath()) return;
+      const slug = slugFromPath();
+      const node = slug ? state.graph.nodes.find((n) => n.slug === slug) : null;
+      setSelectedEdge(null);
+      setPreviewEdge(null);
+      setSelected(node ? node.id : null);
+      setFocus(node ? node.id : null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [state]);
 
   const handleSelect = useCallback(
     (id: string | null) => {
@@ -387,7 +425,9 @@ export default function App() {
       if (id === null) {
         setSelected(null);
         setFocus(null);
-        window.history.replaceState(null, "", `${BASE_PATH || ""}/${window.location.search}`);
+        // Closing a node is a step too: Back reopens it.
+        const home = `${BASE_PATH || ""}/${window.location.search}`;
+        if (slugFromPath()) window.history.pushState(null, "", home); else window.history.replaceState(null, "", home);
         return;
       }
       navigate(id);
@@ -640,7 +680,7 @@ export default function App() {
   if (state.status === "loading") {
     return (
       <div className="app-loading" role="status">
-        Loading the technology universe…
+        Loading the atlas…
       </div>
     );
   }
@@ -722,20 +762,27 @@ export default function App() {
           <button type="button" className="tool" aria-label="Guided paths" aria-haspopup="dialog"
             aria-pressed={pathsOpen || journeyIndex !== null} title="Browse guided paths (P)"
             onClick={openPaths}><Icon name="paths" /><span>Guided paths</span></button>
-          <button type="button" className="tool" aria-label="About the data" aria-pressed={aboutOpen}
-            title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
-            <Icon name="info" /><span>About</span></button>
-          <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
-            title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
-          <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
-            title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
-          <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
-            onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
-          <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
-            onClick={toggleFullscreen}><Icon name="expand" /></button>
-          <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
+          {/* Tablets and small laptops: the five main tools keep their labels and the
+              utilities move under one "More" button, instead of eleven unlabeled icons. */}
+          <button type="button" className="tool tools-more-toggle" aria-label="More tools" aria-expanded={moreOpen}
+            onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); setMoreAt({ top: r.bottom + 6, right: Math.max(8, window.innerWidth - r.right) }); setMoreOpen((v) => !v); }}>
+            <span aria-hidden>⋯</span><span>More</span></button>
+          <div className={`tools-more${moreOpen ? " is-open" : ""}`} style={moreOpen ? moreAt : undefined} onClick={() => setMoreOpen(false)}>
+            <button type="button" className="tool" aria-label="About the data" aria-pressed={aboutOpen}
+              title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
+              <Icon name="info" /><span>About</span></button>
+            <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
+              title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
+            <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
+              title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
+            <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
+              onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
+            <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
+              onClick={toggleFullscreen}><Icon name="expand" /></button>
+            <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
+          </div>
         </nav>
         </ScrollRow>
         <div className="topbar-meta">
@@ -767,6 +814,40 @@ export default function App() {
         </article>
       </main>}
       <main aria-hidden={aboutOpen} style={aboutOpen ? { visibility: "hidden" } : undefined} className={`stage${desktopRail ? ` rail-${desktopRail}` : ""}`}>
+        {/* The hero comes first in the DOM so Tab reaches "Explore the atlas" before the
+            rail, the canvas and the 23 field names (it is absolutely positioned, so this
+            does not move it on screen). */}
+        {!heroRendered && <h1 className="visually-hidden">TechAtlas: every technology, and how it connects</h1>}
+        {heroRendered && (
+          <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
+            aria-hidden={!heroVisible}>
+            <h1 className="hero-title">
+              Every technology, and how it connects. <span>{fmt(state.graph.nodes.length)} of them.</span>
+            </h1>
+            <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
+              <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
+                Explore the atlas
+              </button>
+              <button type="button" className="hero-secondary" onClick={openPaths}>
+                Follow a path
+              </button>
+              <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
+                X-ray a repo
+              </button>
+            </div>
+            <p className="hero-paths" data-arrow-nav onKeyDown={arrowNav}>
+              {resumePath ? <>
+                <span>Welcome back.</span>{" "}
+                <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>
+                  Continue &ldquo;{resumePath.title}&rdquo;
+                </button>
+              </> : <>
+                <span>Start here:</span>
+                {heroPaths.map((p) => <button key={p.slug} type="button" onClick={() => startPath(p.index)}>{p.title}</button>)}
+              </>}
+            </p>
+          </section>
+        )}
         {immersive && (
           <button type="button" className="fullscreen-exit" onClick={toggleFullscreen}
             aria-label="Exit fullscreen" title="Exit fullscreen (F or Esc)"><Icon name="collapse" /><span>Exit</span></button>
@@ -929,36 +1010,6 @@ export default function App() {
           <>
             {/* Filters now live in the Fields panel below. */}
           </>
-        )}
-        {heroRendered && (
-          <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
-            aria-hidden={!heroVisible}>
-            <h1 className="hero-title">
-              Every technology, and how it connects. <span>{fmt(state.graph.nodes.length)} of them.</span>
-            </h1>
-            <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
-              <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
-                Explore the atlas
-              </button>
-              <button type="button" className="hero-secondary" onClick={openPaths}>
-                Follow a path
-              </button>
-              <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
-                X-ray a repo
-              </button>
-            </div>
-            <p className="hero-paths" data-arrow-nav onKeyDown={arrowNav}>
-              {resumePath ? <>
-                <span>Welcome back.</span>{" "}
-                <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>
-                  Continue &ldquo;{resumePath.title}&rdquo;
-                </button>
-              </> : <>
-                <span>Start here:</span>
-                {heroPaths.map((p) => <button key={p.slug} type="button" onClick={() => startPath(p.index)}>{p.title}</button>)}
-              </>}
-            </p>
-          </section>
         )}
         {overlay && <XrayLegend />}
         {!xrayOpen && <RelationshipLegend />}

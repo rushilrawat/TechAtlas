@@ -162,7 +162,7 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
         orbits.push({ id, color: colorOf.get(id) ?? "#8a93ab", cx: c.x, cy: c.y, rs: o.rs.map((r) => r * k) });
       }
       setBackdrop({ sectors, orbits, headings: placeHeadings(headings, renderer.getContainer(), topLevel,
-        selectedRef.current, obstacles, ringLike) });
+        selectedRef.current, obstacles, ringLike, labelBoxes()) });
     };
     // Re-project after every render: Sigma renders with the camera's final state, while
     // "updated" can be emitted mid-animation and leave headings on stale positions.

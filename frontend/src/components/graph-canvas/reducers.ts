@@ -107,7 +107,10 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
     // Nested sub-field names (GenAI, Observability, Graphics…) show from the default atlas
     // zoom on, so every cluster on the map has a name; only the far-out universe band hides them.
     if (!labelVisible(dataIn.nodeType as string, dataIn.size as number) || (isDomain && ring === 0)
-      || (isDomain && bandOf(ratioRef.current) === 0)) {
+      || (isDomain && bandOf(ratioRef.current) === 0)
+      // Tablets and phones: at the first zoom step the field headings already fill the
+      // space, so sub-field names wait for the next step (or a hover) instead of colliding.
+      || (isDomain && bandOf(ratioRef.current) === 1 && typeof window !== "undefined" && window.innerWidth < 1024)) {
       res.label = "";
     } else if (isDomain && !active) {
       res.forceLabel = true;

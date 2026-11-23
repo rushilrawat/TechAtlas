@@ -1283,7 +1283,20 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 @media (max-width: 1279px) { .topbar-meta, .brand-sub { display: none; } }
 /* With six atlas modes the toolbar needs the room: drop the tagline first so search stays usable. */
 @media (min-width: 1024px) and (max-width: 1599px) { .brand-sub { display: none; } .search { min-width: 180px; } }
-@media (max-width: 1100px) { .topbar-tools .tool span { display: none; } .topbar-tools .tool { padding: 0 8px; } }
+.tools-more { display: contents; }
+.tools-more-toggle { display: none !important; }
+/* Tablets and small laptops: main tools keep short labels; utilities go under "More". */
+@media (max-width: 1100px) {
+  .topbar-tools .tool { padding: 0 8px; }
+  .tools-more-toggle { display: inline-flex !important; }
+  .tools-more { display: none; position: fixed; z-index: 80; flex-direction: column; align-items: stretch; min-width: 200px; padding: 4px;
+    border: 1px solid var(--panel-border); border-radius: 10px; background: var(--panel); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+  .tools-more.is-open { display: flex; }
+  .tools-more .tool { justify-content: flex-start; height: 34px; }
+  .tools-more .tool span { display: inline !important; }
+  .tools-more .tool-icon::after { content: attr(aria-label); }
+}
+@media (max-width: 700px) { .topbar-tools > .tool span:not([aria-hidden]) { display: none; } }
 @media (max-width: 640px) {
   .topbar { display: grid; grid-template-columns: 1fr auto auto; row-gap: 8px; column-gap: 8px; padding: 10px 12px; }
   .topbar .search { grid-column: 1 / -1; max-width: none; }
@@ -1782,3 +1795,23 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 .field-members h4 { text-transform: none; }
 @media (min-width: 821px) { .legend, .paths-library { max-height: calc(100% - 76px); } }
 .legend-types-label { color: var(--text-dim); font-size: 12px; width: 100%; }
+h2[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+/* Phones: the X-Ray key is one small "Key ?" chip until opened, so it never wraps over
+   the Fields chip or the map. */
+@media (max-width: 640px) {
+  .xray-legend:not(.is-open) .xray-legend-item, .xray-legend:not(.is-open) .xray-legend-sep { display: none; }
+  .xray-legend:not(.is-open) { padding: 4px 6px 4px 10px; right: auto; width: auto; }
+  .xray-legend-help { width: 24px; height: 24px; }
+}
+
+/* Phones: tool panels are bottom sheets (map above, list below) instead of covering the
+   whole map; the camera frames the highlighted set in the space above the sheet. */
+@media (max-width: 640px) {
+  .stack-panel, .paths-library, .compare-panel.learning-panel {
+    top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 58%;
+    border-radius: 16px 16px 0 0; border-bottom: 0; box-shadow: 0 -12px 32px rgba(0,0,0,.35);
+  }
+  .stack-panel::before, .paths-library::before, .compare-panel.learning-panel::before {
+    content: ""; display: block; width: 36px; height: 4px; margin: -6px auto 8px; border-radius: 2px; background: var(--panel-border);
+  }
+}

@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { arrowNav } from "../util/arrowNav";
 import type { DetectionStatus, GraphResponse } from "../api/types";
 import type { SharedCamera } from "../graph/shareView";
 import { useCanvasRefs } from "./graph-canvas/refs";
@@ -114,6 +115,7 @@ export function GraphCanvas({
   useStackProjection(refs, stackPositions, stackHeadings);
   useCameraControl(refs, fitSignal, exploreNonce, focusId, frameSet);
   const headingScreens = useStackHeadings(refs, stackHeadings, stackPositions, fitSignal?.nonce);
+  const [headingStop, setHeadingStop] = useState<string | null>(null);
   const backdrop = useAtlasBackdrop(refs, data, domains, exploreNonce, stackPositions, scanStatusByNode, visibleNodes);
   useKeyboardNav(refs);
 
@@ -152,10 +154,15 @@ export function GraphCanvas({
         tabIndex={0}
         aria-label="Technology graph. Arrow keys move to the connected node in that direction, Shift plus arrows pans, plus and minus zoom, 0 resets the view, Escape clears the selection. Search and the domain list reach every node."
       />
-      {backdrop.headings.map((h) => (
+      {/* Field names are one tab stop: Tab lands on one, arrow keys move between them in
+          reading order (top to bottom, left to right), then Tab leaves the map. */}
+      <div className="atlas-headings" role="group" aria-label="Fields on the map" data-arrow-nav onKeyDown={arrowNav}>
+      {[...backdrop.headings].sort((a, b) => Math.round(a.top / 40) - Math.round(b.top / 40) || a.left - b.left).map((h, i, list) => (
         <button
           key={h.id}
           type="button"
+          tabIndex={(list.some((x) => x.id === headingStop) ? headingStop === h.id : i === 0) ? 0 : -1}
+          onFocus={() => setHeadingStop(h.id)}
           className={`atlas-heading atlas-heading-${h.align}${selectedId === h.id ? " is-active" : ""}`}
           aria-label={domains?.find((d) => d.id === h.id)?.name ?? h.label}
           style={{ left: h.left, top: h.top, ["--domain" as string]: h.color }}
@@ -164,6 +171,7 @@ export function GraphCanvas({
           {h.label}
         </button>
       ))}
+      </div>
       {hoverPreview && (() => {
         const node = data.nodes.find((n) => n.id === hoverPreview.id);
         if (!node) return null;
