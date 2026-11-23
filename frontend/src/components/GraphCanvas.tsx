@@ -47,6 +47,9 @@ interface Props {
   // Explore "Home" reframe: bump this nonce to smoothly re-fit the default atlas camera
   // (used when returning from Repo X-Ray so the homepage camera is fully restored).
   exploreNonce?: number;
+  // A highlighted set to frame inside the area the open panels leave visible. A new key
+  // re-frames (e.g. a different role, app, stack pick or path step).
+  frameSet?: { ids: string[]; key: string } | null;
   // Top-level domain metadata (id/name/color) for the Explore sector backplates + legend
   // sync. Only used to DRAW the atmospheric overlay — never alters graph data.
   domains?: { id: string; name: string; color: string; node_count: number }[] | null;
@@ -91,6 +94,7 @@ export function GraphCanvas({
   stackPositions = null,
   stackHeadings = null,
   exploreNonce = 0,
+  frameSet = null,
   domains = null,
 }: Props) {
   const refs = useCanvasRefs({
@@ -108,7 +112,7 @@ export function GraphCanvas({
   useSelectionSync(refs, selectedId, selectedEdgeId, previewEdgeId, visibleNodes, visibleEdges,
     scanStatusByNode, scanHighlightEdges, scanContextEdges);
   useStackProjection(refs, stackPositions, stackHeadings);
-  useCameraControl(refs, fitSignal, exploreNonce, focusId);
+  useCameraControl(refs, fitSignal, exploreNonce, focusId, frameSet);
   const headingScreens = useStackHeadings(refs, stackHeadings, stackPositions, fitSignal?.nonce);
   const backdrop = useAtlasBackdrop(refs, data, domains, exploreNonce, stackPositions, scanStatusByNode, visibleNodes);
   useKeyboardNav(refs);

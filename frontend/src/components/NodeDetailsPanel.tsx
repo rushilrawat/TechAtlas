@@ -37,6 +37,8 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const [wikiSummary, setWikiSummary] = useState<NodeSummary | null>(null);
   const [copied, setCopied] = useState(false);
   const [learning, setLearning] = useLearningMap();
+  const [savedNote, setSavedNote] = useState("");
+  useEffect(() => { setSavedNote(""); }, [slugOrId]);
   const panelRef = useRef<HTMLElement | null>(null);
 
   // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
@@ -130,11 +132,19 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
 
           <div className="details-tools">
             {detail.node_type !== "domain" && (
-              <div className="learning-toggle" role="group" aria-label="Add to my learning map">
-                {LEARNING_OPTIONS.map(([value, label]) => (
-                  <button key={value} type="button" aria-pressed={status === value}
-                    onClick={() => setLearning(detail.id, status === value ? null : value)}>{label}</button>
-                ))}
+              <div className="learning-track">
+                <span className="learning-label" id="learning-label">Track in my learning map</span>
+                <div className="learning-toggle" role="group" aria-labelledby="learning-label">
+                  {LEARNING_OPTIONS.map(([value, label]) => (
+                    <button key={value} type="button" aria-pressed={status === value}
+                      onClick={() => {
+                        const next = status === value ? null : value;
+                        setLearning(detail.id, next);
+                        setSavedNote(next ? `Saved to your learning map (press M to open it).` : "Removed from your learning map.");
+                      }}>{status === value ? "✓ " : ""}{label}</button>
+                  ))}
+                </div>
+                <span className="learning-note" role="status">{savedNote}</span>
               </div>
             )}
             <button type="button" className="copy-link" onClick={copyLink} aria-live="polite">
@@ -243,22 +253,21 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
             <h3>Relationships ({detail.neighbors.length})</h3>
             {grouped.map(([phrase, items]) => (
               <div key={phrase} className="rel-group">
-                <h4>{phrase}</h4>
+                <h4>{phrase.charAt(0).toUpperCase() + phrase.slice(1).toLowerCase()}</h4>
                 <ul>
                   {items.map((n) => (
                     <li key={`${phrase}-${n.node.id}`}>
+                      {/* The whole row opens the node; hovering or focusing it previews the
+                          connection on the map. (One row, one action: no repeated "Open" buttons.) */}
                       <button
+                        type="button"
                         className="rel-link"
                         onMouseEnter={() => onPreviewRelationship?.(n)}
                         onMouseLeave={() => onPreviewRelationship?.(lockedNeighbor)}
                         onFocus={() => onPreviewRelationship?.(n)}
                         onBlur={() => onPreviewRelationship?.(lockedNeighbor)}
-                        onClick={() => {
-                          const next = lockedNeighbor === n ? null : n;
-                          setLockedNeighbor(next);
-                          onPreviewRelationship?.(next);
-                        }}
-                        aria-label={`Show connection with ${n.node.label}`}
+                        onClick={() => { setLockedNeighbor(null); onNavigate(n.node.slug); }}
+                        aria-label={`Open ${n.node.label} (${n.node.node_type})`}
                       >
                         <span
                           className="rel-dot"
@@ -270,9 +279,8 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                           {" "}
                           · {n.node.node_type}
                         </span>
+                        <span className="rel-chevron" aria-hidden>→</span>
                       </button>
-                      <button className="rel-open" onClick={() => onNavigate(n.node.slug)}
-                        aria-label={`Open ${n.node.label}`}>Open ↗</button>
                     </li>
                   ))}
                 </ul>

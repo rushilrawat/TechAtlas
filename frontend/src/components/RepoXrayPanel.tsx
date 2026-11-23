@@ -14,7 +14,7 @@ import type {
 } from "../api/types";
 import type { ScanPhase } from "../graph/useRepoScan";
 import { safeHttpUrl } from "../util/safeUrl";
-import { CONFIDENCE_ORDER, computeScanStats, pct, scanSummaryMarkdown } from "../graph/scanStats";
+import { CONFIDENCE_ORDER, computeScanStats, scanSummaryMarkdown } from "../graph/scanStats";
 import { EXAMPLE_SCANS, findExample, type ExampleScanMeta } from "../api/exampleScans";
 import { ReportCard } from "./ReportCard";
 
@@ -41,10 +41,10 @@ interface Props {
 }
 
 const STATUS_LABEL: Record<DetectionStatus, string> = {
-  confirmed: "Confirmed in source",
-  declared: "Declared dependency",
-  inferred: "Inferred",
-  related: "Related",
+  confirmed: "Found in code",
+  declared: "Listed as a dependency",
+  inferred: "Guessed from related files",
+  related: "Related to the stack",
 };
 
 // Client-side URL check mirrors the server allowlist (server still re-validates).
@@ -94,11 +94,9 @@ export function RepoXrayPanel({
             ? phase.kind === "done" ? "▴ View scan results" : "▴ Expand"
             : "▾ Minimize"}
         </button>
-        {phase.kind !== "idle" && phase.kind !== "done" && (
-          <button type="button" className="xray-exit" onClick={onExit}>
-            Back to Universe
-          </button>
-        )}
+        <button type="button" className="xray-exit" onClick={onExit} aria-label="Close Repo X-Ray and go back to the atlas">
+          ← Back to atlas
+        </button>
       </div>
       {phase.kind !== "done" && (
       <>
@@ -258,7 +256,7 @@ function DetectionGroups({
                     title={`${STATUS_LABEL[d.detection_status]} — open details`}
                   >
                     <span className={`xray-dot status-${d.detection_status}`} aria-hidden />
-                    <span className="xray-tech-name">{node?.label ?? d.node_id}</span>
+                    <span className="xray-tech-name">{node?.label ?? labelFromId(d.node_id)}</span>
                     {cls ? <span className={`xray-class class-${cls}`}>{cls}</span> : null}
                     <span className="xray-tech-status">
                       {STATUS_LABEL[d.detection_status]}
@@ -277,7 +275,62 @@ function DetectionGroups({
 const UNMAPPED_CAP = 50;
 
 function plural(n: number, one: string, many: string): string {
-  return `${n} ${n === 1 ? one : many}`;
+  return `${n.toLocaleString("en-US")} ${n === 1 ? one : many}`;
+}
+
+/** A readable name for an id the atlas doesn't know (e.g. a renamed node): "technology:foo-bar" -> "Foo bar". */
+export function labelFromId(id: string): string {
+  const slug = id.includes(":") ? id.slice(id.indexOf(":") + 1) : id;
+  const words = slug.replace(/[-_]+/g, " ").trim();
+  return words ? words[0].toUpperCase() + words.slice(1) : id;
+}
+
+/** Thousands separators inside scanner notes ("22021 additional source files" -> "22,021 …"). */
+export function formatCounts(text: string): string {
+  return text.replace(/\b\d{4,}\b/g, (n) => Number(n).toLocaleString("en-US"));
+}
+
+/**
+ * The scan's counts, computed once from the detections so the summary line, the report
+ * card and the by-field bars can never disagree.
+ */
+export function scanCounts(scan: RepoScan, nodesById: Map<string, GraphNode>) {
+  let technologies = 0, concepts = 0;
+  const fields = new Set<string>();
+  for (const d of scan.detections) {
+    if (d.node_type === "concept") concepts++; else technologies++;
+    const node = nodesById.get(d.node_id);
+    if (node && d.node_type !== "concept") fields.add(node.primary_domain ?? "domain:other");
+  }
+  return { technologies, concepts, fields: fields.size };
+}
+
+/** Copy a markdown summary or download the scan as JSON (in the "More" menu). */
+function CopyAndDownload({ scan, nodesById, domainsById }: {
+  scan: RepoScan; nodesById: Map<string, GraphNode>; domainsById: Map<string, DomainSummary>;
+}) {
+  const [copied, setCopied] = useState<"" | "summary" | "json">("");
+  const flash = (k: "summary" | "json") => { setCopied(k); window.setTimeout(() => setCopied(""), 1500); };
+  const copySummary = () => {
+    const stats = computeScanStats(scan, nodesById, domainsById);
+    const text = scanSummaryMarkdown(scan, stats, nodesById, domainsById, window.location.href);
+    void navigator.clipboard?.writeText(text).then(() => flash("summary"), () => undefined);
+  };
+  const downloadJson = () => {
+    const stats = computeScanStats(scan, nodesById, domainsById);
+    const blob = new Blob([JSON.stringify({ repository: scan.repository, scanner_version: scan.scanner_version,
+      summary: scan.summary, stats, detections: scan.detections, unmapped: scan.unmapped }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${scan.repository.owner}-${scan.repository.name}-xray.json`;
+    a.click();
+    window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    flash("json");
+  };
+  return <>
+    <button type="button" onClick={copySummary}>{copied === "summary" ? "Summary copied" : "Copy a text summary"}</button>
+    <button type="button" onClick={downloadJson}>{copied === "json" ? "Downloaded" : "Download as JSON"}</button>
+  </>;
 }
 
 function ExampleGallery({ examples, onPick, heading }: {
@@ -309,7 +362,7 @@ function ExampleGallery({ examples, onPick, heading }: {
 
 function Results({
   scan, example, liveEnabled, nodesById, domainsById, learnNext, onFocusStack, onFocusNode,
-  onAnalyzeAnother, onExit, view, onViewChange, examples = [], onLoadExample,
+  onAnalyzeAnother, view, onViewChange, examples = [], onLoadExample,
 }: {
   examples?: ExampleScanMeta[];
   onLoadExample?: (slug: string) => void;
@@ -339,6 +392,7 @@ function Results({
   const nodeIds = useMemo(() => scan.detections.map((d) => d.node_id), [scan]);
   const exampleMeta = findExample(example);
   const { tools, concepts } = groupSplit(scan.detections, nodesById);
+  const counts = useMemo(() => scanCounts(scan, nodesById), [scan, nodesById]);
   const repoUrl = safeHttpUrl(repo.url);
   const partial = scan.status === "partial";
   // ← / → (and [ / ]) step through the example scans when this result is one of them.
@@ -385,84 +439,50 @@ function Results({
         </p>
       )}
 
-      {/* Section G (surfaced high): always-visible partial-scan warning */}
+      {/* Partial scans: one line that opens for the details, never pinned over the results. */}
       {partial && (
-        <div className="xray-partial" role="status">
-          <strong>Partial scan.</strong> Some files were not inspected, so not every
-          technology in this repository was necessarily detected.
+        <details className="xray-partial">
+          <summary><strong>Partial scan:</strong> some files were skipped.</summary>
+          <p>Not every technology in this repository was necessarily detected.</p>
           {scan.coverage.notes.length > 0 && (
             <ul className="xray-partial-notes">
-              {scan.coverage.notes.map((n, i) => <li key={i}>{n}</li>)}
+              {scan.coverage.notes.map((n, i) => <li key={i}>{formatCounts(n)}</li>)}
             </ul>
           )}
-        </div>
+        </details>
       )}
 
-      {/* Section C: compact source-backed summary metrics */}
-      <div className="xray-metrics" aria-label="Scan summary">
-        <div className="xray-metric">
-          <span className="xray-metric-n">{scan.summary.matched_technology_count}</span>
-          <span className="xray-metric-l">technologies</span>
-        </div>
-        <div className="xray-metric">
-          <span className="xray-metric-n">{scan.summary.matched_concept_count}</span>
-          <span className="xray-metric-l">concepts</span>
-        </div>
-        <div className="xray-metric">
-          <span className="xray-metric-n">{scan.summary.unmapped_package_count}</span>
-          <span className="xray-metric-l">unmapped</span>
-        </div>
-      </div>
+      {/* The one summary line; its numbers are the ones the report card and fields use too. */}
+      <p className="xray-headline" aria-label="Scan summary">
+        {noMatches ? "No atlas technologies found." : <>
+          <strong>{plural(counts.technologies, "technology", "technologies")}</strong>
+          {" "}across {plural(counts.fields, "field", "fields")}
+          {counts.concepts > 0 ? <>, plus {plural(counts.concepts, "concept", "concepts")}</> : null}
+          {scan.summary.unmapped_package_count > 0
+            ? <span className="muted"> · {plural(scan.summary.unmapped_package_count, "package", "packages")} not in the atlas yet</span> : null}
+        </>}
+      </p>
 
-      <ScanStatsPanel scan={scan} nodesById={nodesById} domainsById={domainsById} />
-
-      {/* Section D: primary actions (Focus on Stack primary; others secondary) */}
+      {/* One primary action (the shareable card), the map view switch, and a small menu. */}
       <div className="xray-actions">
-        <button type="button" className="xray-focus primary" onClick={onFocusStack}>
-          Focus on Stack
-        </button>
-        <div className="xray-actions-secondary">
-          {!noMatches && <button type="button" className="xray-action-btn" onClick={() => setCardOpen(true)}>
-            Report card
-          </button>}
-          {repoUrl && (
-            <a className="xray-action-btn" href={repoUrl as string}
-               target="_blank" rel="noreferrer noopener">Open GitHub</a>
-          )}
-          <button type="button" className="xray-action-btn" onClick={onAnalyzeAnother}>
-            {liveEnabled ? "Analyze Another" : "More examples"}
-          </button>
-          <button type="button" className="xray-action-btn" onClick={onExit}>
-            Back to Universe
-          </button>
+        {!noMatches && <button type="button" className="xray-focus primary" onClick={() => setCardOpen(true)}>
+          Open report card
+        </button>}
+        <div className="xray-viewswitch" role="group" aria-label="How to show the stack on the map">
+          <button type="button" className={view === "universe" ? "active" : ""} aria-pressed={view === "universe"}
+            onClick={() => onViewChange("universe")}>On the atlas</button>
+          <button type="button" className={view === "stack" ? "active" : ""} aria-pressed={view === "stack"}
+            onClick={() => onViewChange("stack")}>Grouped by field</button>
         </div>
-      </div>
-
-      {learnNext.length > 0 && <section className="xray-learn-next" aria-label="What to learn next">
-        <h3>What to learn next</h3>
-        <p>Technologies connected to your detected stack.</p>
-        <ul>{learnNext.map((item) => <li key={item.id}><button type="button" onClick={() => onFocusNode(item.id)}>{item.label} <span>{item.connections} links</span></button></li>)}</ul>
-      </section>}
-
-      {/* Stack View / Universe View switch (X-Ray UX correction). Both views share the
-          same scan, evidence, and selection; switching never rescans. */}
-      <div className="xray-viewswitch" role="group" aria-label="Repo X-Ray view">
-        <button
-          type="button"
-          className={view === "stack" ? "active" : ""}
-          aria-pressed={view === "stack"}
-          onClick={() => onViewChange("stack")}
-        >
-          Stack View
-        </button>
-        <button
-          type="button"
-          className={view === "universe" ? "active" : ""}
-          aria-pressed={view === "universe"}
-          onClick={() => onViewChange("universe")}
-        >
-          Universe View
-        </button>
+        <details className="xray-more">
+          <summary aria-label="More actions">More <span aria-hidden>▾</span></summary>
+          <div className="xray-more-menu">
+            <button type="button" onClick={onFocusStack}>Re-centre the map on the stack</button>
+            {repoUrl && <a href={repoUrl as string} target="_blank" rel="noreferrer noopener">Open on GitHub ↗</a>}
+            <CopyAndDownload scan={scan} nodesById={nodesById} domainsById={domainsById} />
+            <button type="button" onClick={onAnalyzeAnother}>{liveEnabled ? "Scan another repository" : "More example scans"}</button>
+          </div>
+        </details>
       </div>
 
       {/* Section E/F: detected stack — tools (technologies) first, then concepts */}
@@ -491,6 +511,14 @@ function Results({
           )}
         </>
       )}
+
+      {learnNext.length > 0 && <section className="xray-learn-next" aria-label="What to learn next">
+        <h3>What to learn next</h3>
+        <p>Technologies connected to your detected stack.</p>
+        <ul>{learnNext.map((item) => <li key={item.id}><button type="button" onClick={() => onFocusNode(item.id)}>{item.label} <span>{item.connections} links</span></button></li>)}</ul>
+      </section>}
+
+      <ScanStatsPanel scan={scan} nodesById={nodesById} domainsById={domainsById} />
 
       {/* Section F: unmapped dependencies — collapsed, capped display, full list retained */}
       {scan.unmapped.length > 0 && (
@@ -538,36 +566,18 @@ function ScanStatsPanel({ scan, nodesById, domainsById }: {
   scan: RepoScan; nodesById: Map<string, GraphNode>; domainsById: Map<string, DomainSummary>;
 }) {
   const stats = useMemo(() => computeScanStats(scan, nodesById, domainsById), [scan, nodesById, domainsById]);
-  const [copied, setCopied] = useState<"" | "summary" | "json">("");
   if (stats.detected === 0) return null;
   const max = Math.max(...stats.fields.map((f) => f.count), 1);
-  const flash = (k: "summary" | "json") => { setCopied(k); window.setTimeout(() => setCopied(""), 1500); };
-  const copySummary = () => {
-    const text = scanSummaryMarkdown(scan, stats, nodesById, domainsById, window.location.href);
-    void navigator.clipboard?.writeText(text).then(() => flash("summary"), () => undefined);
-  };
-  const downloadJson = () => {
-    const blob = new Blob([JSON.stringify({ repository: scan.repository, scanner_version: scan.scanner_version,
-      summary: scan.summary, stats, detections: scan.detections, unmapped: scan.unmapped }, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `${scan.repository.owner}-${scan.repository.name}-xray.json`;
-    a.click();
-    window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    flash("json");
-  };
   return (
-    <section className="xray-stats" aria-label="Scan statistics">
-      <h3 className="xray-section-title">Stack statistics</h3>
+    <details className="xray-stats" aria-label="Scan statistics">
+      <summary className="xray-section-title">How this stack breaks down</summary>
       <div className="xray-stat-grid">
-        <div><strong>{stats.fieldsTouched}<small>/{stats.fieldsTotal}</small></strong><span>fields touched</span></div>
-        <div><strong>{pct(stats.atlasCoverage, 1)}</strong><span>of the atlas</span></div>
-        <div><strong>{stats.mappedShare === null ? "–" : pct(stats.mappedShare)}</strong><span>deps mapped</span></div>
-        <div><strong>{stats.evidenceCount}</strong><span>signals in {stats.evidenceFiles} files</span></div>
+        <div><strong>{stats.fieldsTouched}<small> of {stats.fieldsTotal}</small></strong><span>fields of the atlas</span></div>
+        <div><strong>{stats.evidenceFiles.toLocaleString("en-US")}</strong><span>files it was found in</span></div>
       </div>
 
-      <h4 className="xray-stat-h">Confidence</h4>
-      <div className="xray-conf-bar" role="img" aria-label={CONFIDENCE_ORDER.map((k) => `${stats.confidence[k]} ${k}`).join(", ")}>
+      <h4 className="xray-stat-h">How sure the scan is</h4>
+      <div className="xray-conf-bar" role="img" aria-label={CONFIDENCE_ORDER.map((k) => `${stats.confidence[k]} ${STATUS_LABEL[k].toLowerCase()}`).join(", ")}>
         {CONFIDENCE_ORDER.filter((k) => stats.confidence[k]).map((k) =>
           <span key={k} className={`status-${k}`} style={{ flexGrow: stats.confidence[k] }} />)}
       </div>
@@ -576,7 +586,7 @@ function ScanStatsPanel({ scan, nodesById, domainsById }: {
           <li key={k}><span className={`xray-dot status-${k}`} aria-hidden />{STATUS_LABEL[k]} <b>{stats.confidence[k]}</b></li>)}
       </ul>
 
-      <h4 className="xray-stat-h">By field</h4>
+      <h4 className="xray-stat-h">By field (technologies and concepts)</h4>
       <ul className="xray-field-bars">
         {stats.fields.map((f) => (
           <li key={f.id} title={`${f.technologies} technologies, ${f.concepts} concepts · ${f.count} of ${f.atlasTotal} in this field`}>
@@ -589,16 +599,11 @@ function ScanStatsPanel({ scan, nodesById, domainsById }: {
 
       {stats.ecosystems.length > 0 && <>
         <h4 className="xray-stat-h">Package ecosystems</h4>
-        <p className="xray-eco">{stats.ecosystems.map((e) => <span key={e.name}>{e.name} <b>{e.count}</b></span>)}</p>
+        <p className="xray-eco">{stats.ecosystems.map((e) => <span key={e.name}>{e.name} <b>{e.count.toLocaleString("en-US")}</b></span>)}</p>
       </>}
       {(stats.direct > 0 || stats.transitive > 0) && (
         <p className="muted xray-deps">{stats.direct} direct · {stats.transitive} transitive dependencies</p>
       )}
-
-      <div className="xray-share">
-        <button type="button" className="xray-action-btn" onClick={copySummary}>{copied === "summary" ? "Summary copied" : "Copy summary"}</button>
-        <button type="button" className="xray-action-btn" onClick={downloadJson}>{copied === "json" ? "Downloaded" : "Download JSON"}</button>
-      </div>
-    </section>
+    </details>
   );
 }

@@ -1,3 +1,4 @@
+import { drawNodeLabel, resetLabelSpace } from "./drawNodeLabel";
 import { useEffect, useState } from "react";
 import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
@@ -39,6 +40,7 @@ export function useSigmaRenderer(refs: CanvasRefs, data: GraphResponse, initialC
       enableEdgeEvents: true,
       labelColor: { color: "#c8d0e8" },
       defaultDrawNodeHover: drawNodeHover,
+      defaultDrawNodeLabel: drawNodeLabel,
       labelFont: "Inter, system-ui, sans-serif",
       labelSize: 12,
       // UI-C: reduce Universe label collisions. Larger grid cells + lower density mean
@@ -66,6 +68,7 @@ export function useSigmaRenderer(refs: CanvasRefs, data: GraphResponse, initialC
       },
     });
     sigmaRef.current = renderer;
+    renderer.on("beforeRender", resetLabelSpace);
 
     // Sidebar-aware INITIAL framing (Explore redesign §11): optically centre the atlas in
     // the USABLE canvas (viewport minus the left legend + right filter panels), not the raw

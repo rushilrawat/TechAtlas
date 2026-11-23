@@ -2,8 +2,8 @@ import type Graph from "graphology";
 import type { Attributes } from "graphology-types";
 import type { EdgeDisplayData, NodeDisplayData } from "sigma/types";
 import { bandOf, labelVisibleAtRatio } from "../../graph/semanticZoom";
-import { crossLinkColor, DIM_NODE, RING_ALPHA, SCAN_CONTEXT_EDGE, SCAN_DIM_EDGE, SCAN_DIM_NODE,
-  SCAN_HILITE_EDGE, STATUS_RING, fadeNode, withAlpha } from "./colors";
+import { crossLinkColor, dimNode, RING_ALPHA, scanContextEdge, SCAN_DIM_EDGE, scanDimNode,
+  scanHiliteEdge, statusRing, fadeNode, withAlpha } from "./colors";
 import type { CanvasRefs } from "./refs";
 
 /**
@@ -54,7 +54,7 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
       const status = scan.get(node);
       if (status) {
         res.type = "bordered";
-        res.borderColor = STATUS_RING[status];
+        res.borderColor = statusRing(status);
         res.borderSize = 3;
         res.zIndex = 2;
         // keep domain color (res.color unchanged) and size; show a PERSISTENT label for
@@ -79,7 +79,7 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
         res.hidden = true;
         return res;
       }
-      res.color = SCAN_DIM_NODE;
+      res.color = scanDimNode();
       res.label = "";
       res.zIndex = 0;
       return res;
@@ -93,7 +93,7 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
         res.highlighted = true;
         res.zIndex = 2;
       } else {
-        res.color = DIM_NODE;
+        res.color = dimNode();
         res.label = "";
         res.size = Math.min(dataIn.size as number, 2.2);
       }
@@ -104,10 +104,13 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
     // anchors never carry a competing WebGL label.
     const isDomain = dataIn.nodeType === "domain";
     const ring = (dataIn.ring as number | undefined) ?? 0;
-    // Nested subdomain names join the labels once the camera reaches detail zoom.
+    // Nested sub-field names (GenAI, Observability, Graphics…) show from the default atlas
+    // zoom on, so every cluster on the map has a name; only the far-out universe band hides them.
     if (!labelVisible(dataIn.nodeType as string, dataIn.size as number) || (isDomain && ring === 0)
-      || (isDomain && bandOf(ratioRef.current) <= 1)) {
+      || (isDomain && bandOf(ratioRef.current) === 0)) {
       res.label = "";
+    } else if (isDomain && !active) {
+      res.forceLabel = true;
     }
     // One size table in every state: emphasis is color and alpha, never a size jump.
     res.size = (dataIn.size as number) * sizeScaleRef.current;
@@ -169,14 +172,14 @@ export function createEdgeReducer(graph: Graph, refs: CanvasRefs, scanClearEdges
           const [source, target] = graph.extremities(edge);
           if (source === active || target === active) {
             const cross = graph.getNodeAttribute(source, "primaryDomain") !== graph.getNodeAttribute(target, "primaryDomain");
-            return { ...dataIn, color: cross ? "rgba(251,191,36,.9)" : SCAN_HILITE_EDGE, size: 1.6, zIndex: 3 };
+            return { ...dataIn, color: cross ? "rgba(251,191,36,.9)" : scanHiliteEdge(), size: 1.6, zIndex: 3 };
           }
         }
         return { ...dataIn, hidden: true };
       }
       if (activeRef.current || !scanClearEdges.has(edge)) return { ...dataIn, hidden: true };
-      if (scanEdges.has(edge)) return { ...dataIn, color: SCAN_HILITE_EDGE, size: 1.5, zIndex: 2 };
-      if (scanContextRef.current?.has(edge)) return { ...dataIn, color: SCAN_CONTEXT_EDGE, size: 0.7, zIndex: 1 };
+      if (scanEdges.has(edge)) return { ...dataIn, color: scanHiliteEdge(), size: 1.5, zIndex: 2 };
+      if (scanContextRef.current?.has(edge)) return { ...dataIn, color: scanContextEdge(), size: 0.7, zIndex: 1 };
       // Unrelated edges: hide outright. They are the majority and only add noise in a
       // scan read; hiding (not just alpha~0) also saves overdraw (perf R30).
       return { ...dataIn, hidden: true, color: SCAN_DIM_EDGE, zIndex: 0 };

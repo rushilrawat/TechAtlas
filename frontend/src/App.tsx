@@ -81,6 +81,9 @@ function measureRightPanelWidth(): number {
   return Math.round(rect.width + 14); // include the 14px gutter
 }
 
+/** Counts in the UI always get thousands separators: 3,122 not 3122. */
+const fmt = (n: number) => n.toLocaleString("en-US");
+
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [initialCamera] = useState(() => readCamera(window.location.search));
@@ -565,6 +568,16 @@ export default function App() {
       (edge.source === journey.steps[i].id && edge.target === step.id) ||
       (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
   }, [journey, graphData]);
+  // The highlighted set the camera frames inside the visible area: a followed path's stops,
+  // or the nodes a stack, role or app lights up. The key changes when the set does.
+  const frameSet = useMemo(() => {
+    const pick = (mode: string, ids: string[]) => ids.length ? { ids, key: `${mode}:${ids.length}:${ids[0]}:${ids[ids.length - 1]}` } : null;
+    if (journey && journeyIndex !== null) return { ids: journeyNodeIds, key: `path:${journeyIndex}:${journeyStep}` };
+    if (stackParams.open) return pick("stack", stackHighlight.nodes);
+    if (roleOpen) return pick(`role-${roleId}`, roleHighlight.nodes);
+    if (appsOpen) return pick(`app-${appId}`, appHighlight.nodes);
+    return null;
+  }, [journey, journeyIndex, journeyStep, journeyNodeIds, stackParams.open, stackHighlight, roleOpen, roleId, roleHighlight, appsOpen, appId, appHighlight]);
   // Every guided path with its field, step labels and search text, for the library.
   const pathEntries = useMemo(() => buildPathEntries(journeys(), nodesById, domainsById), [nodesById, domainsById]);
   // Remember how far each guided path got, and finished paths (reaching the last step counts).
@@ -654,8 +667,8 @@ export default function App() {
           type="button"
           className="brand"
           onClick={aboutOpen ? closeAbout : exitXray}
-          aria-label="TechAtlas home — return to the Explore universe"
-          title="Return to the Explore universe"
+          aria-label="TechAtlas: back to the atlas"
+          title="Back to the atlas"
         >
           <svg className="brand-mark" viewBox="0 0 64 64" width="22" height="22" aria-hidden>
             <rect width="64" height="64" rx="14" fill="#0b0e14" />
@@ -669,22 +682,16 @@ export default function App() {
           <span className="brand-sub">the technology knowledge graph</span>
         </button>
         <SearchCommand onPick={navigate} domainsById={domainsById} lookup={searchLookup} />
-        {xrayOpen && (
-          <button
-            type="button"
-            className="explore-back"
-            onClick={exitXray}
-          >
-            ← Back to Explore
-          </button>
-        )}
-        {!xrayOpen && (
+        {/* One fixed label in every state: the pressed style shows X-Ray is open, and the
+            panel's own "Back to atlas" closes it (no label swap that shifts the toolbar). */}
+        {(
           <button
             type="button"
             className="xray-entry"
             aria-label="Repo X-Ray"
-            title={SCANNER_ENABLED ? "Scan a GitHub repository" : "See the stack behind famous repositories"}
-            onClick={openXray}
+            aria-pressed={xrayOpen}
+            title={xrayOpen ? "Close Repo X-Ray" : SCANNER_ENABLED ? "Scan a GitHub repository" : "See the stack behind famous repositories"}
+            onClick={xrayOpen ? exitXray : openXray}
             onPointerEnter={() => { void warmScanner(); }}
             onFocus={() => { void warmScanner(); }}
           >
@@ -695,21 +702,21 @@ export default function App() {
             each keeps its full accessible name. */}
         <ScrollRow className="topbar-tools-row" label="atlas modes">
         <nav className="topbar-tools" aria-label="Atlas modes" data-arrow-nav onKeyDown={arrowNav}>
-          <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
+          <button type="button" className="tool" aria-label="Compare"
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
               setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setRoleOpen(false); setAppsOpen(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
-            }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
-          <button type="button" className="tool" aria-label={stackParams.open ? "Close stack recommender" : "Stack recommender"}
+            }}><Icon name="compare" /><span>Compare</span></button>
+          <button type="button" className="tool" aria-label="Stack recommender"
             aria-pressed={stackParams.open} title="Get a stack for your project, with reasons" onClick={() => {
               if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); setRoleOpen(false); setAppsOpen(false); }
               openStack(!stackParams.open);
             }}><Icon name="stack" /><span>Stack</span></button>
-          <button type="button" className="tool" aria-label={roleOpen ? "Close role paths" : "Role paths"}
+          <button type="button" className="tool" aria-label="Role paths"
             aria-pressed={roleOpen} title="What does a role need to know?" onClick={() => {
               if (!roleOpen) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); openStack(false); setAppsOpen(false); }
               setRoleOpen(!roleOpen);
             }}><Icon name="role" /><span>Roles</span></button>
-          <button type="button" className="tool" aria-label={appsOpen ? "Close famous apps" : "Famous apps"}
+          <button type="button" className="tool" aria-label="Famous apps"
             aria-pressed={appsOpen} title="What are famous apps built with?" onClick={() => {
               if (!appsOpen) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); openStack(false); setRoleOpen(false); }
               setAppsOpen(!appsOpen);
@@ -717,9 +724,9 @@ export default function App() {
           <button type="button" className="tool" aria-label="Guided paths" aria-haspopup="dialog"
             aria-pressed={pathsOpen || journeyIndex !== null} title="Browse guided paths (P)"
             onClick={openPaths}><Icon name="paths" /><span>Guided paths</span></button>
-          <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
+          <button type="button" className="tool" aria-label="About the data" aria-pressed={aboutOpen}
             title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
-            <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
+            <Icon name="info" /><span>About</span></button>
           <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
             title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
           <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
@@ -735,7 +742,7 @@ export default function App() {
         </ScrollRow>
         <div className="topbar-meta">
           <span>
-            {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
+            {fmt(state.graph.nodes.length)} nodes · {fmt(state.graph.edges.length)} edges
           </span>
         </div>
       </header>
@@ -744,7 +751,7 @@ export default function App() {
         <article className="about-panel" aria-label="About the data">
           <button type="button" className="about-back" onClick={closeAbout}>← Back to atlas</button>
           <h2>About the data</h2>
-          <p>TechAtlas maps {state.graph.nodes.length} domains, concepts, and technologies through {state.graph.edges.length} typed relationships. Dataset version {state.graph.version}.</p>
+          <p>TechAtlas maps {fmt(state.graph.nodes.length)} fields, concepts, and technologies through {fmt(state.graph.edges.length)} typed relationships. Dataset version {state.graph.version}.</p>
           <h3>Sources</h3>
           <p>Names, descriptions, and relationships come from the curated <a href="https://github.com/rushilrawat/TechAtlas/tree/main/data">TechAtlas dataset</a>. Wikipedia summaries are shown with attribution in technology details. Optional popularity scores use GitHub activity and npm, PyPI, or crates.io downloads.</p>
           <h3>Where each feature gets its data</h3>
@@ -796,6 +803,7 @@ export default function App() {
           stackPositions={stackPositions}
           stackHeadings={stackHeadings}
           exploreNonce={exploreNonce}
+          frameSet={xrayOpen ? null : frameSet}
           domains={state.domains}
           fitSignal={
             overlay && fitNonce > 0
@@ -941,7 +949,7 @@ export default function App() {
           <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
             aria-hidden={!heroVisible}>
             <h1 className="hero-title">
-              Every technology, and how it connects. <span>{state.graph.nodes.length} of them.</span>
+              Every technology, and how it connects. <span>{fmt(state.graph.nodes.length)} of them.</span>
             </h1>
             <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
               <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
