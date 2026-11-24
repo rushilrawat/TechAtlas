@@ -72,7 +72,7 @@ export function DomainLegend({ domains, onPick, selectedId, collapsed, onToggle,
       <div className="legend-head">
         <div className="legend-title">
           <h2 className="legend-h">Fields</h2>
-          <span className="legend-subtitle">{topLevel.length} fields · {subCount} sub-fields</span>
+          <span className="legend-subtitle">{topLevel.length} {topLevel.length === 1 ? "field" : "fields"} · {subCount} {subCount === 1 ? "sub-field" : "sub-fields"}</span>
         </div>
         {filtering && onFilterChange && (
           <button type="button" className="filter-clear" onClick={() => onFilterChange(emptyFilter())}>Clear filters</button>

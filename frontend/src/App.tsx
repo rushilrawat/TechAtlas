@@ -860,6 +860,7 @@ export default function App() {
           data={state.graph}
           theme={theme}
           journeyNodeIds={journey ? journeyNodeIds : stackParams.open ? stackHighlight.nodes : roleOpen ? roleHighlight.nodes : appsOpen ? appHighlight.nodes : journeyNodeIds}
+          numberedStops={!!journey}
           journeyEdgeIds={journey ? journeyEdgeIds : stackParams.open ? stackHighlight.edges : roleOpen ? roleHighlight.edges : appsOpen ? appHighlight.edges : journeyEdgeIds}
           initialCamera={initialCamera}
           onCameraChange={(camera) => {

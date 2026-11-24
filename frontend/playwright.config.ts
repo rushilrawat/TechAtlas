@@ -9,7 +9,7 @@ export default defineConfig({
   // Smoke-only: the scanner-enabled xray and the Stack View regression suites have
   // their own configs (and their own builds/servers). This default config proves the
   // public, scanner-disabled Pages build renders.
-  testMatch: /smoke\.spec\.ts/,
+  testMatch: /(smoke|visual-themes)\.spec\.ts/,
   timeout: 60_000,
   fullyParallel: false,
   reporter: [["list"]],

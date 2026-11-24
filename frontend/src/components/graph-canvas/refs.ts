@@ -40,6 +40,8 @@ export function useCanvasRefs(p: CanvasRefInputs) {
   const graphRef = useRef<Graph | null>(null);
 
   const journeyNodesRef = useRef(new Set(p.journeyNodeIds));
+  /** Stop number per node while a guided path is followed (labels read "1. DNS"). */
+  const journeyStopsRef = useRef<Map<string, number> | null>(null);
   const journeyEdgesRef = useRef(new Set(p.journeyEdgeIds));
   const hoveredRef = useRef<string | null>(null);
   // Members of a hovered domain, so hovering a field's main dot previews its whole network.
@@ -85,7 +87,7 @@ export function useCanvasRefs(p: CanvasRefInputs) {
 
   return {
     containerRef, onCameraChangeRef, onSelectRef, onSelectEdgeRef, sigmaRef, graphRef,
-    journeyNodesRef, journeyEdgesRef, hoveredRef, hoverDomainSetRef, descriptionsRef,
+    journeyNodesRef, journeyStopsRef, journeyEdgesRef, hoveredRef, hoverDomainSetRef, descriptionsRef,
     pendingDescriptionsRef, selectedRef, selectedEdgeRef, previewEdgeRef, activeRef,
     neighborSetRef, visibleNodesRef, visibleEdgesRef, scanStatusRef, scanEdgesRef,
     scanContextRef, persistentLabelsRef, savedCoordsRef, focusBBoxRef, stackAnimRef,

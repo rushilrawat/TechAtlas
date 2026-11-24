@@ -425,7 +425,7 @@ test.describe("Overview interaction regressions", () => {
 
   test("node detail previews one canonical connection and opens its neighbor", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
-    await page.getByRole("button", { name: "Domains", exact: true }).click();
+    await page.getByRole("button", { name: "Fields", exact: true }).click();
     await page.locator(".legend-item").filter({ hasText: "Backend Development" }).first().click();
     const details = page.getByRole("region", { name: "Node details" });
     await expect(details).toBeVisible();
@@ -474,7 +474,7 @@ test.describe("Overview interaction regressions", () => {
 
   test("mobile domain focus stays above the detail sheet", async ({ page }) => {
     await gotoOverview(page, { width: 390, height: 844 });
-    await page.getByRole("button", { name: "Show domain legend" }).click();
+    await page.getByRole("button", { name: "Show fields" }).click();
     await page.locator(".legend-item").filter({ hasText: "Robotics & Autonomous Systems" }).first().click();
     await page.waitForTimeout(650);
     const p = await page.evaluate(() => {
@@ -677,8 +677,8 @@ test.describe("High-end atlas controls", () => {
 
   test("theme, rail, and data explanation are accessible", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
-    await page.getByRole("button", { name: "Filters", exact: true }).click();
-    await expect(page.getByRole("region", { name: "Graph filters" })).toBeVisible();
+    await page.getByRole("button", { name: "Fields", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Fields" })).toBeVisible();
     await page.getByRole("button", { name: "Switch to light theme" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await page.screenshot({ path: "screenshots/light-theme-1440x900.png" });
@@ -719,8 +719,8 @@ test("hovering a node opens a short preview", async ({ page }) => {
 
 test("filters and camera survive a shared URL", async ({ page }) => {
   await gotoOverview(page, { width: 1440, height: 900 });
-  await page.getByRole("button", { name: "Filters", exact: true }).click();
-  await page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies").check();
+  await page.getByRole("button", { name: "Fields", exact: true }).click();
+  await page.getByRole("region", { name: "Fields" }).getByLabel("Technologies").check();
   await expect(page).toHaveURL(/type=technology/);
   await page.evaluate(() => {
     const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
@@ -728,8 +728,8 @@ test("filters and camera survive a shared URL", async ({ page }) => {
   });
   await expect.poll(() => new URL(page.url()).searchParams.get("zoom")).toBe("0.5500");
   await page.reload();
-  await page.getByRole("button", { name: "Filters", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies")).toBeChecked();
+  await page.getByRole("button", { name: "Fields", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Fields" }).getByLabel("Technologies")).toBeChecked();
 });
 
 test("fullscreen hides the chrome and the atlas fills the window", async ({ page }) => {

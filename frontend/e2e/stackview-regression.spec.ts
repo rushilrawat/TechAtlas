@@ -141,8 +141,10 @@ async function visibleEdges(page: Page) {
   });
 }
 
+// The switch reads "Grouped by field" (Stack View) and "On the atlas" (Universe View).
+const VIEW_LABEL = { "Stack View": "Grouped by field", "Universe View": "On the atlas" } as const;
 async function switchView(page: Page, view: "Stack View" | "Universe View") {
-  await page.locator(".xray-viewswitch, .xray-panel").getByRole("button", { name: view }).first().click();
+  await page.locator(".xray-viewswitch").getByRole("button", { name: VIEW_LABEL[view] }).first().click();
   await page.waitForTimeout(900);
 }
 
@@ -383,7 +385,8 @@ test.describe("Stack View rendering regressions", () => {
     // Run two different scans and exit each, then compare.
     await runScan(page, pick({ frontend: 4, databases: 2 }));
     // "Analyze Another" reopens the URL input without leaving the X-Ray panel.
-    await page.getByRole("button", { name: "Analyze Another" }).click();
+    await page.getByLabel("More actions").click();
+    await page.getByRole("button", { name: "Scan another repository" }).click();
     await rescan(page, pick({ aiml: 5, cloud: 3 }));
     await switchView(page, "Universe View");
     const after = await coordSnapshot(page);

@@ -15,6 +15,8 @@ interface Props {
   data: GraphResponse;
   theme?: "dark" | "light";
   journeyNodeIds?: string[];
+  /** Number the highlighted nodes in order (a guided path's stops). */
+  numberedStops?: boolean;
   journeyEdgeIds?: string[];
   initialCamera?: SharedCamera | null;
   onCameraChange?: (camera: SharedCamera) => void;
@@ -77,6 +79,7 @@ export function GraphCanvas({
   data,
   theme = "dark",
   journeyNodeIds = EMPTY_IDS,
+  numberedStops = false,
   journeyEdgeIds = EMPTY_IDS,
   initialCamera = null,
   onCameraChange,
@@ -102,10 +105,15 @@ export function GraphCanvas({
     journeyNodeIds, journeyEdgeIds, selectedId, selectedEdgeId, previewEdgeId, visibleNodes, visibleEdges,
     scanStatusByNode, scanHighlightEdges, scanContextEdges, onCameraChange, onSelect, onSelectEdge, domains,
   });
-  const { containerRef, sigmaRef, onCameraChangeRef, journeyNodesRef, journeyEdgesRef } = refs;
+  const { containerRef, sigmaRef, onCameraChangeRef, journeyNodesRef, journeyEdgesRef, journeyStopsRef } = refs;
   useEffect(() => { sigmaRef.current?.setSetting("labelColor", { color: theme === "light" ? "#26364d" : "#c8d0e8" }); sigmaRef.current?.refresh(); }, [theme]); // also re-runs node fades
   useEffect(() => { onCameraChangeRef.current = onCameraChange; }, [onCameraChange]);
-  useEffect(() => { journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds); sigmaRef.current?.refresh(); }, [journeyNodeIds, journeyEdgeIds]);
+  useEffect(() => {
+    journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds);
+    // A followed path numbers its stops on the map ("1. DNS", "2. HTTP"…).
+    journeyStopsRef.current = numberedStops ? new Map(journeyNodeIds.map((id, i) => [id, i + 1])) : null;
+    sigmaRef.current?.refresh();
+  }, [journeyNodeIds, journeyEdgeIds, numberedStops]);
 
   // Effect order matters (React runs them in call order): build the renderer first, then
   // sync props into it, then the camera and overlay effects that read its state.

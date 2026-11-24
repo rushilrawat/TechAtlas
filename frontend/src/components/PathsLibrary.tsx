@@ -81,7 +81,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
               </ul>
             </section>
           )}
-          <section aria-labelledby="paths-all">
+          {(filtering || results.length > 0) && <section aria-labelledby="paths-all">
             <h3 id="paths-all" className="paths-section" aria-live="polite">
               {filtering ? `${results.length} matching ${results.length === 1 ? "path" : "paths"}` : "More paths"}
               {filtering && <button type="button" className="paths-clear" onClick={() => setFilter(EMPTY_PATH_FILTER)}>Clear filters</button>}
@@ -94,7 +94,7 @@ export function PathsLibrary({ entries, done, progress, activeIndex, onStart, on
                   active={activeIndex === e.index} onStart={onStart} />)}
               </ul>
             )}
-          </section>
+          </section>}
         </div>
     </section>
   );

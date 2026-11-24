@@ -11,6 +11,7 @@ import type { CanvasRefs } from "./refs";
  * Stack View). Runs per node per frame, so it only reads precomputed refs.
  */
 export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string, dataIn: Attributes) => Partial<NodeDisplayData> {
+  const { journeyStopsRef } = refs;
   const { activeRef, focusFadeRef, hoveredRef, journeyNodesRef, neighborSetRef, persistentLabelsRef, ratioRef, scanStatusRef, selectedEdgeRef, sizeScaleRef, stackActiveRef, visibleNodesRef } = refs;
   // Which nodes may show labels at the current zoom (Task 8) — pure logic imported
   // from semanticZoom.ts and fed the live camera ratio. On NARROW (mobile) viewports the
@@ -37,7 +38,12 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
 
     if (journeyNodesRef.current.size && !scanStatusRef.current) {
       res.size = (dataIn.size as number) * sizeScaleRef.current;
-      if (journeyNodesRef.current.has(node)) { res.forceLabel = true; res.zIndex = 4; return res; }
+      if (journeyNodesRef.current.has(node)) {
+        res.forceLabel = true; res.zIndex = 4;
+        const stop = journeyStopsRef.current?.get(node);
+        if (stop) res.label = `${stop}. ${dataIn.label as string}`;
+        return res;
+      }
       res.color = fadeNode(dataIn.color, 0.28); res.label = ""; res.zIndex = 0; return res;
     }
 
