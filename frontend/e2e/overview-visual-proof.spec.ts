@@ -163,13 +163,11 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
           id: (el.textContent ?? "") });
       });
       const visibleDomainLabels = boxes.length;
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d")!;
-      ctx.font = "12px Inter, system-ui, sans-serif";
-      for (const v of visible) {
-        if (!v.label) continue;
-        boxes.push({ x: v.cx + v.r + 2, y: v.cy - 7, w: ctx.measureText(v.label).width, h: 14, id: v.id });
-      }
+      // Node labels are placed around their node (right, left, above…), so read the boxes
+      // the label drawer actually used in the last frame instead of assuming "right of".
+      const placed = ((window as unknown as { __ta_labels?: () => { x0: number; y0: number; x1: number; y1: number; id: string }[] })
+        .__ta_labels?.() ?? []);
+      for (const b of placed) boxes.push({ x: b.x0, y: b.y0, w: b.x1 - b.x0, h: b.y1 - b.y0, id: b.id });
       let priorityLabelCollisions = 0;
       for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
         if (overlap(boxes[i], boxes[j])) priorityLabelCollisions++;
@@ -429,12 +427,15 @@ test.describe("Overview interaction regressions", () => {
     await page.locator(".legend-item").filter({ hasText: "Backend Development" }).first().click();
     const details = page.getByRole("region", { name: "Node details" });
     await expect(details).toBeVisible();
-    const row = details.getByRole("button", { name: /Show connection with/ }).first();
+    // A field lists its members; hovering a row previews that one connection, clicking it
+    // opens the member.
+    const row = details.getByRole("region", { name: "Members" }).getByRole("button", { name: /^Open / }).first();
     await expect(row).toBeVisible();
-    await row.click();
+    await row.hover();
     await expect.poll(async () => (await countVisible(page)).edges).toBe(1);
-    await details.getByRole("button", { name: /^Open / }).first().click();
-    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+    const name = ((await row.getAttribute("aria-label")) ?? "").replace(/^Open /, "").replace(/ \(.*\)$/, "");
+    await row.click();
+    await expect(page.getByRole("region", { name: "Node details" }).getByRole("heading", { name })).toBeVisible();
   });
 
   test("mobile near-node tap selects a dense graph node", async ({ page }) => {
@@ -669,6 +670,7 @@ test.describe("High-end atlas controls", () => {
   test("guided path follows real nodes and shareable selection", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     await page.getByRole("button", { name: "Guided paths" }).click();
+    await page.getByRole("region", { name: "Guided paths" }).getByRole("button", { name: /^How a web request works/ }).first().click();
     await expect(page.getByRole("region", { name: "Guided path" })).toContainText("DNS");
     await expect(page).toHaveURL(/\/concept\/dns/);
     await page.getByRole("button", { name: "Next" }).click();

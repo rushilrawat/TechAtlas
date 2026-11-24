@@ -73,8 +73,8 @@ Counts always use thousands separators: `n.toLocaleString("en-US")` (3,122, not 
 - Field names are DOM buttons placed by `placeHeadings`; node names are drawn by
   `drawNodeLabel`, which never lets two labels overlap and skips a label that has no room
   (hover still shows it). Field names avoid node names that were drawn.
-- Sub-field names appear from the first zoom step on desktop, the second on tablets and
-  phones.
+- Sub-field names appear from the first zoom step in (camera ratio < 0.85); at the overview
+  fit, hovering a sub-field names it.
 
 ## Themes
 

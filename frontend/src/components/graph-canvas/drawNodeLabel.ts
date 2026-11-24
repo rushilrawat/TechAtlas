@@ -9,9 +9,12 @@ import type { NodeLabelDrawingFunction } from "sigma/rendering";
 interface Box { x0: number; y0: number; x1: number; y1: number }
 let taken: Box[] = [];
 let hidden = 0;
+/** Label boxes only (no node discs), with the node they name: read by the e2e overview proof. */
+let drawn: (Box & { id: string })[] = [];
 
 /** Call on Sigma's "beforeRender" so each frame starts with an empty page. */
-export function resetLabelSpace(): void { taken = []; hidden = 0; }
+export function resetLabelSpace(): void { taken = []; drawn = []; hidden = 0; }
+export function drawnLabels(): readonly (Box & { id: string })[] { return drawn; }
 /** How many labels the last frame could not place (for tests and debugging). */
 export function hiddenLabelCount(): number { return hidden; }
 /** Boxes the last frame's labels took, so DOM field headings can keep clear of them. */
@@ -48,6 +51,7 @@ export const drawNodeLabel: NodeLabelDrawingFunction = (context, data, settings)
   // The node's own disc is occupied too, so a neighbour's label never covers it.
   const spot = placeLabel(data.x, data.y, data.size, w, size + 2, taken);
   if (!spot) { hidden++; return; }
+  drawn.push({ x0: spot.x0, y0: spot.y0, x1: spot.x1, y1: spot.y1, id: (data as { key?: string }).key ?? data.label });
   taken.push(spot, { x0: data.x - data.size, y0: data.y - data.size, x1: data.x + data.size, y1: data.y + data.size });
   const light = document.documentElement.dataset.theme === "light";
   // A thin halo in the background colour keeps the text readable over dots and lines.

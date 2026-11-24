@@ -10,6 +10,9 @@ import type { CanvasRefs } from "./refs";
  * Node styling for every mode (Explore, guided path, edge focus, Repo X-Ray Universe and
  * Stack View). Runs per node per frame, so it only reads precomputed refs.
  */
+/** Camera ratio below which sub-field names are drawn (the overview fit is ratio 1). */
+const SUBFIELD_LABEL_RATIO = 0.85;
+
 export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string, dataIn: Attributes) => Partial<NodeDisplayData> {
   const { journeyStopsRef } = refs;
   const { activeRef, focusFadeRef, hoveredRef, journeyNodesRef, neighborSetRef, persistentLabelsRef, ratioRef, scanStatusRef, selectedEdgeRef, sizeScaleRef, stackActiveRef, visibleNodesRef } = refs;
@@ -113,10 +116,9 @@ export function createNodeReducer(graph: Graph, refs: CanvasRefs): (node: string
     // Nested sub-field names (GenAI, Observability, Graphics…) show from the default atlas
     // zoom on, so every cluster on the map has a name; only the far-out universe band hides them.
     if (!labelVisible(dataIn.nodeType as string, dataIn.size as number) || (isDomain && ring === 0)
-      || (isDomain && bandOf(ratioRef.current) === 0)
-      // Tablets and phones: at the first zoom step the field headings already fill the
-      // space, so sub-field names wait for the next step (or a hover) instead of colliding.
-      || (isDomain && bandOf(ratioRef.current) === 1 && typeof window !== "undefined" && window.innerWidth < 1024)) {
+      // Sub-field names appear from the first zoom step in; at the overview fit the field
+      // headings own the space and a sub-field is named on hover.
+      || (isDomain && ratioRef.current > SUBFIELD_LABEL_RATIO && hoveredRef.current !== node)) {
       res.label = "";
     } else if (isDomain && !active) {
       res.forceLabel = true;

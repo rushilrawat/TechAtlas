@@ -476,7 +476,8 @@ function Results({
         </div>
         <details className="xray-more">
           <summary aria-label="More actions">More <span aria-hidden>▾</span></summary>
-          <div className="xray-more-menu">
+          {/* Choosing an item closes the menu so it never covers the results below. */}
+          <div className="xray-more-menu" onClick={(e) => (e.currentTarget.closest("details") as HTMLDetailsElement | null)?.removeAttribute("open")}>
             <button type="button" onClick={onFocusStack}>Re-centre the map on the stack</button>
             {repoUrl && <a href={repoUrl as string} target="_blank" rel="noreferrer noopener">Open on GitHub ↗</a>}
             <CopyAndDownload scan={scan} nodesById={nodesById} domainsById={domainsById} />

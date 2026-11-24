@@ -1,4 +1,4 @@
-import { drawNodeLabel, resetLabelSpace } from "./drawNodeLabel";
+import { drawNodeLabel, drawnLabels, resetLabelSpace } from "./drawNodeLabel";
 import { useEffect, useState } from "react";
 import Sigma from "sigma";
 import { createNodeBorderProgram } from "@sigma/node-border";
@@ -87,6 +87,7 @@ export function useSigmaRenderer(refs: CanvasRefs, data: GraphResponse, initialC
     // so no internal renderer reference is ever exposed to shipped users.
     if (import.meta.env.VITE_TEST_HOOKS === "true" && typeof window !== "undefined") {
       (window as unknown as { __ta_sigma?: unknown }).__ta_sigma = renderer;
+      (window as unknown as { __ta_labels?: unknown }).__ta_labels = drawnLabels;
     }
 
     // Compute the highlight set once whenever the active node changes.

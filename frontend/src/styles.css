@@ -1753,7 +1753,7 @@ h1, h2, h3, .brand-name { letter-spacing: -.025em; }
 
 /* Phones: field headings get a 24px hit area (WCAG 2.5.8) without changing the type. */
 @media (max-width: 640px) {
-  .atlas-heading { min-height: 24px; min-width: 24px; padding-block: 5px; margin-block: -5px; }
+  .atlas-heading::before { content: ""; position: absolute; inset: -5px -2px; }
 }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :root[data-theme="light"] .xray-class.class-direct { color: #166534; border-color: #86c79b; }
