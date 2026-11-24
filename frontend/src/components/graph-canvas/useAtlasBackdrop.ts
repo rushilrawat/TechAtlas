@@ -44,6 +44,7 @@ function orbitRadii(graph: import("graphology").default): Map<string, { gx: numb
 
 export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains: unknown, exploreNonce: number,
   stackPositions: unknown, scanStatusByNode: unknown, visibleNodes: unknown) {
+  const { journeyNodesRef } = refs;
   const { domainGeomRef, domainsRef, graphRef, scanStatusRef, selectedRef, sigmaRef, stackActiveRef, visibleNodesRef } = refs;
   // Explore atlas overlay: soft domain-sector backplates, projected
   // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
@@ -106,6 +107,11 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
       const scan = scanStatusRef.current;
       const scanFields = scan ? new Set([...scan.keys()].filter((id) => graph.hasNode(id))
         .map((id) => graph.getNodeAttribute(id, "territory") as string)) : null;
+      // A highlighted role, app, stack or path names only the fields it touches, so the
+      // names of its nodes have room (all 23 field names plus 27 node names don't fit a phone).
+      const lit = journeyNodesRef.current;
+      const litFields = !scan && lit.size ? new Set([...lit].filter((id) => graph.hasNode(id))
+        .map((id) => graph.getNodeAttribute(id, "territory") as string)) : null;
       const geom = domainGeomRef.current!;
       let ax = 0, ay = 0;
       for (const g of geom.values()) { ax += g.gx / geom.size; ay += g.gy / geom.size; }
@@ -123,6 +129,7 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
         if (!scanFields) sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
         if (vis && !vis.has(d.id)) continue;
         if (scanFields && !scanFields.has(d.id)) continue;
+        if (litFields && !litFields.has(d.id)) continue;
         headings.push({ id: d.id, label: d.name, color: d.color, left: c.x, top: c.y, align: "box",
           disc: { x: c.x, y: c.y, r: r * (g.hr / (g.gr || 1)) } });
       }

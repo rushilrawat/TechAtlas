@@ -1815,3 +1815,6 @@ h2[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
     content: ""; display: block; width: 36px; height: 4px; margin: -6px auto 8px; border-radius: 2px; background: var(--panel-border);
   }
 }
+@media (max-width: 640px) {
+  main:has(.stack-panel) .legend-reopen, main:has(.paths-library) .legend-reopen, main:has(.learning-panel) .legend-reopen { display: none; }
+}

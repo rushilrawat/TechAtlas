@@ -23,7 +23,8 @@ export function labelBoxes(): readonly Box[] { return taken; }
 const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 
 /** Pure placement: the first candidate box around (x, y) that doesn't hit `used`, or null. */
-export function placeLabel(x: number, y: number, r: number, w: number, h: number, used: Box[]): Box & { tx: number; ty: number } | null {
+export function placeLabel(x: number, y: number, r: number, w: number, h: number, used: Box[],
+  bounds?: { w: number; h: number }): Box & { tx: number; ty: number } | null {
   const gap = 4;
   const candidates = [
     { tx: x + r + gap, ty: y },                    // right (the default)
@@ -35,6 +36,9 @@ export function placeLabel(x: number, y: number, r: number, w: number, h: number
   ];
   for (const c of candidates) {
     const box = { x0: c.tx - 2, y0: c.ty - h / 2 - 1, x1: c.tx + w + 2, y1: c.ty + h / 2 + 1 };
+    // Labels stay inside the canvas: a name cut off at the edge ("ional Databases") is worse
+    // than the next spot around the node.
+    if (bounds && (box.x0 < 0 || box.x1 > bounds.w || box.y0 < 0 || box.y1 > bounds.h)) continue;
     if (!used.some((b) => overlaps(b, box))) return { ...box, ...c };
   }
   return null;
@@ -49,7 +53,9 @@ export const drawNodeLabel: NodeLabelDrawingFunction = (context, data, settings)
   context.font = `${sub ? 600 : settings.labelWeight} ${size}px ${settings.labelFont}`;
   const w = context.measureText(data.label).width;
   // The node's own disc is occupied too, so a neighbour's label never covers it.
-  const spot = placeLabel(data.x, data.y, data.size, w, size + 2, taken);
+  const ratio = window.devicePixelRatio || 1;
+  const spot = placeLabel(data.x, data.y, data.size, w, size + 2, taken,
+    { w: context.canvas.width / ratio, h: context.canvas.height / ratio });
   if (!spot) { hidden++; return; }
   drawn.push({ x0: spot.x0, y0: spot.y0, x1: spot.x1, y1: spot.y1, id: (data as { key?: string }).key ?? data.label });
   taken.push(spot, { x0: data.x - data.size, y0: data.y - data.size, x1: data.x + data.size, y1: data.y + data.size });
