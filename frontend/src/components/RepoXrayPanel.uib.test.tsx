@@ -49,18 +49,19 @@ function base(overrides = {}) {
 describe("RepoXrayPanel UI-B hierarchy", () => {
   it("renders source-backed summary metrics (R16)", () => {
     render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan({ unmapped: 3 }) } })} />);
-    const metrics = screen.getByLabelText("Scan summary");
-    expect(within(metrics).getByText("2")).toBeTruthy();   // technologies
-    expect(within(metrics).getByText("1")).toBeTruthy();   // concepts
-    expect(within(metrics).getByText("3")).toBeTruthy();   // unmapped
+    // One headline sentence carries the numbers (the report card and fields use the same ones).
+    const text = screen.getByLabelText("Scan summary").textContent ?? "";
+    expect(text).toContain("2 technologies");
+    expect(text).toContain("1 concept");
+    expect(text).toContain("3 packages not in the atlas yet");
   });
 
-  it("shows Focus on Stack as the primary action (R17)", () => {
+  it("makes the report card the one primary action; the rest sit under More (R17)", () => {
     const onFocusStack = vi.fn();
     render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan() }, onFocusStack })} />);
-    const btn = screen.getByRole("button", { name: "Focus on Stack" });
-    expect(btn.className).toContain("primary");
-    fireEvent.click(btn);
+    expect(screen.getByRole("button", { name: "Open report card" }).className).toContain("primary");
+    expect(document.querySelectorAll(".xray-actions .primary").length).toBe(1);
+    fireEvent.click(screen.getByRole("button", { name: "Re-centre the map on the stack" }));
     expect(onFocusStack).toHaveBeenCalled();
   });
 

@@ -53,7 +53,9 @@ export function OutlineView({ nodes, domains, onPick, onClose, fallback = false 
         {onClose && <button type="button" className="outline-close" onClick={onClose} aria-label="Close outline">×</button>}
         <input ref={inputRef} type="search" className="outline-filter" placeholder="Filter by name"
           aria-label="Filter the outline by name" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <p className="outline-count" aria-live="polite">{total} {total === 1 ? "node" : "nodes"}</p>
+        <p className="outline-count" aria-live="polite">
+          {total.toLocaleString("en-US")} {total === 1 ? "technology or concept" : "technologies and concepts"} in {groups.length} {groups.length === 1 ? "field" : "fields"}
+        </p>
       </header>
       <div className="outline-body">
         {groups.map(({ domain, members }) => (

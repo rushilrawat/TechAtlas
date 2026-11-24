@@ -69,7 +69,7 @@ describe("RepoXrayPanel", () => {
     const onFocusNode = vi.fn();
     render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan() }, onFocusNode })} />);
     expect(screen.getByText("Frontend Development", { selector: "h4" })).toBeTruthy();
-    expect(screen.getByRole("region", { name: "Scan statistics" })).toBeTruthy();
+    expect(screen.getByLabelText("Scan statistics")).toBeTruthy();
     const tech = screen.getByRole("button", { name: /React/ });
     fireEvent.click(tech);
     expect(onFocusNode).toHaveBeenCalledWith("technology:react");
@@ -110,7 +110,7 @@ describe("RepoXrayPanel", () => {
     render(<RepoXrayPanel {...base({ phase: { kind: "done", scan: scan(), example: "django-django" },
       liveEnabled: false, onAnalyzeAnother })} />);
     expect(screen.getByRole("note").textContent).toMatch(/Example scan of commit abcdef1/);
-    fireEvent.click(screen.getByRole("button", { name: "More examples" }));
+    fireEvent.click(screen.getByRole("button", { name: "More example scans" }));
     expect(onAnalyzeAnother).toHaveBeenCalled();
   });
 });

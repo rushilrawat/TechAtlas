@@ -31,7 +31,8 @@ export function relationshipPhrase(type: string, direction: EdgeDirection): stri
 
 // Node-type labels shown as text so classification never relies on color alone.
 export function nodeTypeLabel(nodeType: string, subtype: string | null): string {
-  const base = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
+  // The UI calls domains "fields" everywhere (Fields panel, headings, hover card).
+  const base = nodeType === "domain" ? "Field" : nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
   if (!subtype) return base;
   const pretty = subtype.replace(/_/g, " ");
   return `${base} · ${pretty}`;

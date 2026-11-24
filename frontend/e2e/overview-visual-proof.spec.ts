@@ -163,13 +163,11 @@ async function measure(page: Page, vpName: string): Promise<Metrics> {
           id: (el.textContent ?? "") });
       });
       const visibleDomainLabels = boxes.length;
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d")!;
-      ctx.font = "12px Inter, system-ui, sans-serif";
-      for (const v of visible) {
-        if (!v.label) continue;
-        boxes.push({ x: v.cx + v.r + 2, y: v.cy - 7, w: ctx.measureText(v.label).width, h: 14, id: v.id });
-      }
+      // Node labels are placed around their node (right, left, above…), so read the boxes
+      // the label drawer actually used in the last frame instead of assuming "right of".
+      const placed = ((window as unknown as { __ta_labels?: () => { x0: number; y0: number; x1: number; y1: number; id: string }[] })
+        .__ta_labels?.() ?? []);
+      for (const b of placed) boxes.push({ x: b.x0, y: b.y0, w: b.x1 - b.x0, h: b.y1 - b.y0, id: b.id });
       let priorityLabelCollisions = 0;
       for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
         if (overlap(boxes[i], boxes[j])) priorityLabelCollisions++;
@@ -425,16 +423,19 @@ test.describe("Overview interaction regressions", () => {
 
   test("node detail previews one canonical connection and opens its neighbor", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
-    await page.getByRole("button", { name: "Domains", exact: true }).click();
+    await page.getByRole("button", { name: "Fields", exact: true }).click();
     await page.locator(".legend-item").filter({ hasText: "Backend Development" }).first().click();
     const details = page.getByRole("region", { name: "Node details" });
     await expect(details).toBeVisible();
-    const row = details.getByRole("button", { name: /Show connection with/ }).first();
+    // A field lists its members; hovering a row previews that one connection, clicking it
+    // opens the member.
+    const row = details.getByRole("region", { name: "Members" }).getByRole("button", { name: /^Open / }).first();
     await expect(row).toBeVisible();
-    await row.click();
+    await row.hover();
     await expect.poll(async () => (await countVisible(page)).edges).toBe(1);
-    await details.getByRole("button", { name: /^Open / }).first().click();
-    await expect(page.getByRole("region", { name: "Node details" })).toBeVisible();
+    const name = ((await row.getAttribute("aria-label")) ?? "").replace(/^Open /, "").replace(/ \(.*\)$/, "");
+    await row.click();
+    await expect(page.getByRole("region", { name: "Node details" }).getByRole("heading", { name })).toBeVisible();
   });
 
   test("mobile near-node tap selects a dense graph node", async ({ page }) => {
@@ -474,7 +475,7 @@ test.describe("Overview interaction regressions", () => {
 
   test("mobile domain focus stays above the detail sheet", async ({ page }) => {
     await gotoOverview(page, { width: 390, height: 844 });
-    await page.getByRole("button", { name: "Show domain legend" }).click();
+    await page.getByRole("button", { name: "Show fields" }).click();
     await page.locator(".legend-item").filter({ hasText: "Robotics & Autonomous Systems" }).first().click();
     await page.waitForTimeout(650);
     const p = await page.evaluate(() => {
@@ -669,6 +670,7 @@ test.describe("High-end atlas controls", () => {
   test("guided path follows real nodes and shareable selection", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
     await page.getByRole("button", { name: "Guided paths" }).click();
+    await page.getByRole("region", { name: "Guided paths" }).getByRole("button", { name: /^How a web request works/ }).first().click();
     await expect(page.getByRole("region", { name: "Guided path" })).toContainText("DNS");
     await expect(page).toHaveURL(/\/concept\/dns/);
     await page.getByRole("button", { name: "Next" }).click();
@@ -677,8 +679,8 @@ test.describe("High-end atlas controls", () => {
 
   test("theme, rail, and data explanation are accessible", async ({ page }) => {
     await gotoOverview(page, { width: 1440, height: 900 });
-    await page.getByRole("button", { name: "Filters", exact: true }).click();
-    await expect(page.getByRole("region", { name: "Graph filters" })).toBeVisible();
+    await page.getByRole("button", { name: "Fields", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Fields" })).toBeVisible();
     await page.getByRole("button", { name: "Switch to light theme" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await page.screenshot({ path: "screenshots/light-theme-1440x900.png" });
@@ -719,8 +721,8 @@ test("hovering a node opens a short preview", async ({ page }) => {
 
 test("filters and camera survive a shared URL", async ({ page }) => {
   await gotoOverview(page, { width: 1440, height: 900 });
-  await page.getByRole("button", { name: "Filters", exact: true }).click();
-  await page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies").check();
+  await page.getByRole("button", { name: "Fields", exact: true }).click();
+  await page.getByRole("region", { name: "Fields" }).getByLabel("Technologies").check();
   await expect(page).toHaveURL(/type=technology/);
   await page.evaluate(() => {
     const sigma = (window as unknown as { __ta_sigma?: any }).__ta_sigma;
@@ -728,8 +730,8 @@ test("filters and camera survive a shared URL", async ({ page }) => {
   });
   await expect.poll(() => new URL(page.url()).searchParams.get("zoom")).toBe("0.5500");
   await page.reload();
-  await page.getByRole("button", { name: "Filters", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Graph filters" }).getByLabel("Technologies")).toBeChecked();
+  await page.getByRole("button", { name: "Fields", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Fields" }).getByLabel("Technologies")).toBeChecked();
 });
 
 test("fullscreen hides the chrome and the atlas fills the window", async ({ page }) => {

@@ -4,7 +4,6 @@ import { appById, apps, filterApps, resolveApp } from "../graph/apps";
 import { safeHttpUrl } from "../util/safeUrl";
 import { arrowNav, arrowNavGrid } from "../util/arrowNav";
 import { AppLogo } from "./AppLogo";
-import { ScrollRow } from "./ScrollRow";
 import { StepNav, neighbours, useStepKeys } from "./StepNav";
 
 interface Props {
@@ -56,6 +55,7 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
   return (
     <section className="stack-panel apps-panel" aria-label="Famous apps">
       <button type="button" className="outline-close" onClick={onClose} aria-label="Close famous apps">×</button>
+      {app && <button type="button" className="panel-crumb" onClick={() => onAppChange(null)}><span aria-hidden>← </span>All apps</button>}
       {app ? (
         <header className="apps-head">
           <AppLogo id={app.id} name={app.name} size={40} />
@@ -74,15 +74,15 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
           <input type="search" value={query} placeholder="Filter by app, category or technology"
             onChange={(e) => setQuery(e.target.value)} />
         </label>
-        <ScrollRow className="apps-cats" label="categories">
-          <div className="chip-row" role="group" aria-label="Filter by category" data-arrow-nav onKeyDown={arrowNav}>
+        <div className="apps-cats">
+          <div className="chip-row is-wrapping" role="group" aria-label="Filter by category" data-arrow-nav onKeyDown={arrowNav}>
             <button type="button" className="chip" aria-pressed={category === null} onClick={() => setCategory(null)}>All <span>{apps().length}</span></button>
             {categories.map(([c, n]) => (
               <button key={c} type="button" className="chip" aria-pressed={category === c}
                 onClick={() => setCategory(category === c ? null : c)}>{c} <span>{n}</span></button>
             ))}
           </div>
-        </ScrollRow>
+        </div>
         <ul className="apps-grid" data-arrow-nav onKeyDown={arrowNavGrid}>{shown.map((a) => (
           <li key={a.id}><button type="button" onClick={() => onAppChange(a.id)} aria-label={`${a.name}, ${a.category}, ${a.stack.length} technologies`}>
             <AppLogo id={a.id} name={a.name} />
@@ -90,7 +90,7 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
               <strong>{a.name}</strong>
               <span>{a.category}</span>
             </span>
-            <span className="apps-card-n" title={`${a.stack.length} technologies on the atlas`}>{a.stack.length}</span>
+            <span className="apps-card-n" title={`${a.stack.length} technologies on the atlas`}>{a.stack.length} tech</span>
           </button></li>
         ))}</ul>
         {shown.length === 0 && <p className="stack-note">No app matches “{query}”{category ? ` in ${category}` : ""}.</p>}
@@ -101,11 +101,6 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
           position={`${all.findIndex((a) => a.id === app.id) + 1} / ${all.length}`}
           prev={prevApp && goPrev ? { label: prevApp.name, onGo: goPrev, icon: <AppLogo id={prevApp.id} name={prevApp.name} size={16} /> } : null}
           next={nextApp && goNext ? { label: nextApp.name, onGo: goNext, icon: <AppLogo id={nextApp.id} name={nextApp.name} size={16} /> } : null} />
-        <label className="role-switch"><span className="sr-only">Jump to app</span>
-          <select value={app.id} onChange={(e) => onAppChange(e.target.value)}>
-            {apps().map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
-          </select>
-        </label>
         <p className="stack-note">{app.summary}</p>
         {resolved.layers.map((layer) => (
           <div key={layer.id} className="apps-layer">
@@ -126,7 +121,6 @@ export function AppsPanel({ graph, appId, onAppChange, onPick, onHighlight, onCl
         })}. Stacks change; this is what the company has written about publicly.</p>
         <div className="compare-actions stack-actions">
           <button type="button" onClick={copy}>{copied ? "Link copied" : "Copy link"}</button>
-          <button type="button" onClick={() => onAppChange(null)}><span aria-hidden>← </span>All apps</button>
         </div>
       </>}
     </section>

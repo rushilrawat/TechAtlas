@@ -51,7 +51,7 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await mockScanner(page);
 
     await page.goto("/");
-    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
 
     // Entry point is present (scanner enabled in this build).
     const entry = page.getByRole("button", { name: "Repo X-Ray" });
@@ -71,7 +71,9 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await expect(page.getByText(/Unmapped dependencies/)).toBeVisible();
 
     // Focus on Stack works (no crash) while the summary is showing.
-    await page.getByRole("button", { name: "Focus on Stack" }).click();
+    // Re-centring lives under the panel's More menu (one primary action: the report card).
+    await page.getByLabel("More actions").click();
+    await page.getByRole("button", { name: "Re-centre the map on the stack" }).click();
 
     // Click a detected tech -> focuses its node & opens the detail panel with evidence.
     await page.getByRole("button", { name: /React/ }).click();
@@ -83,7 +85,7 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await details.getByRole("button", { name: "Close details" }).click();
 
     // Exit -> back to universe; legend gone, entry visible again.
-    await page.getByRole("button", { name: "Back to Universe" }).click();
+    await page.getByRole("button", { name: "Close Repo X-Ray and go back to the atlas" }).click();
     await expect(page.getByLabel("Detection status legend")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
 
@@ -93,7 +95,7 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
   test("switching repositories replaces the result", async ({ page }) => {
     await mockScanner(page);
     await page.goto("/");
-    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
     await page.getByRole("button", { name: "Repo X-Ray" }).click();
     const input = page.getByLabel("GitHub repository URL");
     await input.fill("https://github.com/acme/demo");
@@ -101,7 +103,8 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     await expect(page.getByText("acme/demo")).toBeVisible();
     // UI-B: after a scan the input is hidden; "Analyze Another" brings it back, then
     // analyzing a different repo (same mock) still shows a result with no stale crash.
-    await page.getByRole("button", { name: "Analyze Another" }).click();
+    await page.getByLabel("More actions").click();
+    await page.getByRole("button", { name: "Scan another repository" }).click();
     const input2 = page.getByLabel("GitHub repository URL");
     await input2.fill("https://github.com/other/project");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
@@ -111,18 +114,20 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
   // Repo X-Ray -> Explore Home navigation (required feature). Verifies the journey from
   // BOTH Stack View and X-Ray Universe View fully restores the default Explore homepage:
   // no scan overlay/panel, entry point back, no page reload. Checks actual UI state.
-  test("Back to Explore from Stack View restores the homepage", async ({ page }) => {
+  test("the pressed Repo X-Ray button restores the homepage", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(String(e)));
     await mockScanner(page);
     await page.goto("/");
-    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
     await page.getByRole("button", { name: "Repo X-Ray" }).click();
     await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible();
-    // The persistent top-bar "Back to Explore" action exits X-Ray entirely.
-    await page.getByRole("button", { name: /Back to Explore/ }).click();
+    // The toolbar's Repo X-Ray button keeps its label and, while pressed, exits X-Ray.
+    const toolbarXray = page.getByRole("button", { name: "Repo X-Ray", exact: true });
+    await expect(toolbarXray).toHaveAttribute("aria-pressed", "true");
+    await toolbarXray.click();
     // Homepage fully restored: X-Ray panel gone, entry point back, no detection legend.
     await expect(page.locator(".xray-panel")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
@@ -135,17 +140,17 @@ test.describe("Repo X-Ray (scanner enabled build)", () => {
     expect(errors, `page errors: ${errors.join("\n")}`).toEqual([]);
   });
 
-  test("TechAtlas logo returns home from X-Ray Universe View", async ({ page }) => {
+  test("TechAtlas logo returns home from X-Ray on the atlas", async ({ page }) => {
     await mockScanner(page);
     await page.goto("/");
-    await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
     await page.getByRole("button", { name: "Repo X-Ray" }).click();
     await page.getByLabel("GitHub repository URL").fill("https://github.com/acme/demo");
     await page.getByRole("button", { name: "Analyze Repository" }).click();
     await expect(page.getByText("acme/demo")).toBeVisible();
     // Switch to X-Ray Universe View, then use the clickable logo to return home.
-    await page.locator(".xray-viewswitch").getByRole("button", { name: "Universe View" }).click();
-    await page.getByRole("button", { name: /TechAtlas home/ }).click();
+    await page.locator(".xray-viewswitch").getByRole("button", { name: "On the atlas" }).click();
+    await page.getByRole("button", { name: /TechAtlas: back to the atlas/ }).click();
     await expect(page.locator(".xray-panel")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Repo X-Ray" })).toBeVisible();
   });

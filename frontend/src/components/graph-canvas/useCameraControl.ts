@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 import { computeFit } from "../../graph/cameraFit";
-import { fitExplore, fitStack } from "./framing";
+import { fitExplore, fitStack, frameNodes } from "./framing";
 import type { CanvasRefs } from "./refs";
 
 /** Camera moves driven by props: Focus Stack, the Explore home reframe, and node focus. */
 export function useCameraControl(refs: CanvasRefs, fitSignal: { ids: string[]; nonce: number; sidebarWidthPx?: number } | null,
-  exploreNonce: number, focusId: string | null) {
+  exploreNonce: number, focusId: string | null, frameSet: { ids: string[]; key: string } | null = null) {
   const { containerRef, focusBBoxRef, graphRef, sigmaRef, sizeScaleRef, stackActiveRef, stackHeadingsRef, stackPositionsRef } = refs;
+  const frameSetRef = useRef(frameSet);
+  frameSetRef.current = frameSet;
   // "Focus Stack" — frame the detected nodes' bounding region with padding, keeping
   // labels readable (never zoom so far the graph is unusable). Uses the precomputed
   // coordinates; never relayouts.
@@ -95,6 +97,8 @@ export function useCameraControl(refs: CanvasRefs, fitSignal: { ids: string[]; n
     ).matches;
     const display = renderer.getNodeDisplayData(focusId);
     if (!display) return;
+    // A framed set (role, app, stack, path) that already contains this node owns the camera.
+    if (frameSetRef.current?.ids.includes(focusId)) return;
     const camera = renderer.getCamera();
     const container = renderer.getContainer();
     const narrow = container.clientWidth < 641;
@@ -154,11 +158,30 @@ export function useCameraControl(refs: CanvasRefs, fitSignal: { ids: string[]; n
       }
       return;
     }
-    // starting a new animation implicitly supersedes the previous target; calling
-    // animate again is safe, but we null-out the callback timer by not chaining.
-    camera.animate(
-      { x: targetX, y: targetY, ratio },
-      { duration: prefersReducedMotion ? 0 : 520, easing: "cubicInOut" },
-    );
+    // Land the node in the middle of the area the open panels leave visible.
+    // Two frames later: the details panel has laid out (so its width is measured) and the
+    // first-load atlas fit, which also animates the camera, has already started.
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(() => {
+      renderer.refresh();
+      if (!frameNodes(renderer, [focusId], { prefersReduced: prefersReducedMotion, singleRatio: ratio, duration: 520 })) {
+        camera.animate({ x: targetX, y: targetY, ratio }, { duration: prefersReducedMotion ? 0 : 520, easing: "cubicInOut" });
+      }
+    }); });
+    return () => { cancelAnimationFrame(raf1); cancelAnimationFrame(raf2); };
   }, [focusId]);
+
+  // Frame a highlighted set (role, app, stack pick, followed path) inside the visible area.
+  // Runs after the panel that owns the set has rendered, so its width is measured, not assumed.
+  useEffect(() => {
+    const renderer = sigmaRef.current;
+    if (!renderer || !frameSet || frameSet.ids.length === 0 || stackActiveRef.current) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const raf = requestAnimationFrame(() => {
+      if (focusBBoxRef.current) { focusBBoxRef.current = false; renderer.setCustomBBox(null);
+        sizeScaleRef.current = fitExplore(renderer, true); }
+      frameNodes(renderer, frameSet.ids, { prefersReduced });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [frameSet?.key]);
 }
