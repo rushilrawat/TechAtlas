@@ -49,3 +49,15 @@ export const SCAN_CONTEXT_EDGE = "rgba(150,165,205,0.20)";    // 0.15-0.30 conte
 // Unrelated edges are the overwhelming majority (hundreds); even a tiny alpha accumulates
 // into a visible web where they overlap, so they are effectively hidden (UI-A R3.3).
 export const SCAN_DIM_EDGE = "rgba(120,130,150,0.0)";
+
+/** Theme-aware X-Ray / dim colours. The dark values above stay the reference; the light
+ *  theme gets inks that read on the pale page instead of near-white dots and lines. */
+const isLight = () => typeof document !== "undefined" && document.documentElement.dataset.theme === "light";
+export const dimNode = () => (isLight() ? "rgb(205,214,224)" : DIM_NODE);
+export const scanDimNode = () => (isLight() ? "rgb(214,222,231)" : SCAN_DIM_NODE);
+export const scanHiliteEdge = () => (isLight() ? "rgba(36,58,98,0.75)" : SCAN_HILITE_EDGE);
+export const scanContextEdge = () => (isLight() ? "rgba(60,80,130,0.28)" : SCAN_CONTEXT_EDGE);
+const STATUS_RING_LIGHT: Record<DetectionStatus, string> = {
+  confirmed: "#15803d", declared: "#1d4ed8", inferred: "#b45309", related: "#475569",
+};
+export const statusRing = (s: DetectionStatus) => (isLight() ? STATUS_RING_LIGHT[s] : STATUS_RING[s]);

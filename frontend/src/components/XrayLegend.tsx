@@ -8,22 +8,23 @@
 import { useState } from "react";
 
 const ITEMS: { status: string; short: string; label: string; cls: string }[] = [
-  { status: "confirmed", short: "Confirmed", label: "Confirmed in source", cls: "status-confirmed" },
-  { status: "declared", short: "Declared", label: "Declared dependency", cls: "status-declared" },
-  { status: "inferred", short: "Inferred", label: "Inferred concept", cls: "status-inferred" },
-  { status: "related", short: "Related", label: "Related (not detected)", cls: "status-related" },
+  // Same words as the results panel (one vocabulary for the four statuses).
+  { status: "confirmed", short: "In code", label: "Found in code", cls: "status-confirmed" },
+  { status: "declared", short: "Dependency", label: "Listed as a dependency", cls: "status-declared" },
+  { status: "inferred", short: "Guessed", label: "Guessed from related files", cls: "status-inferred" },
+  { status: "related", short: "Related", label: "Related to the stack (not detected)", cls: "status-related" },
 ];
 
 export function XrayLegend() {
   const [open, setOpen] = useState(false);
   return (
     <div
-      className="xray-legend"
+      className={`xray-legend${open ? " is-open" : ""}`}
       aria-label="Detection status legend"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <span className="xray-legend-title">Detection</span>
+      <span className="xray-legend-title">Key</span>
       {ITEMS.map((it) => (
         <span key={it.status} className="xray-legend-item" title={it.label}>
           <span className={`xray-ring ${it.cls}`} aria-hidden />

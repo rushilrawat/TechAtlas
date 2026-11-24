@@ -7,7 +7,6 @@ import { NodeDetailsPanel } from "./components/NodeDetailsPanel";
 import { EdgeDetailsPanel } from "./components/EdgeDetailsPanel";
 import { RelationshipLegend } from "./components/RelationshipLegend";
 import { DomainLegend } from "./components/DomainLegend";
-import { FilterPanel } from "./components/FilterPanel";
 import { applyFilters, emptyFilter, isEmptyFilter, type FilterState } from "./graph/filters";
 import { XrayLegend } from "./components/XrayLegend";
 import { useRepoScan } from "./graph/useRepoScan";
@@ -81,6 +80,11 @@ function measureRightPanelWidth(): number {
   return Math.round(rect.width + 14); // include the 14px gutter
 }
 
+/** Counts in the UI always get thousands separators: 3,122 not 3122. */
+const fmt = (n: number) => n.toLocaleString("en-US");
+
+import { usePanelFocus } from "./util/usePanelFocus";
+
 export default function App() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [initialCamera] = useState(() => readCamera(window.location.search));
@@ -105,7 +109,6 @@ export default function App() {
   const [legendCollapsed, setLegendCollapsed] = useState(false);
   // UI-E req 1: on mobile the filter sheet is closed by default (graph-first);
   // an accessible Filters control opens/closes it. Ignored on desktop (CSS).
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => window.localStorage.getItem("techatlas-theme") === "light" ? "light" : "dark");
   useEffect(() => { document.documentElement.dataset.theme = theme; window.localStorage.setItem("techatlas-theme", theme); }, [theme]);
   const [aboutOpen, setAboutOpen] = useState(isAboutPath);
@@ -182,6 +185,23 @@ export default function App() {
     setPathsOpen(true);
   }, [openStack]);
   const [pathCopied, setPathCopied] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [moreAt, setMoreAt] = useState<{ top: number; right: number }>({ top: 56, right: 8 });
+  useEffect(() => {
+    if (!moreOpen) return;
+    // Esc or a click anywhere else closes the More menu.
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMoreOpen(false); };
+    const onDown = (e: MouseEvent) => { if (!(e.target as Element).closest(".tools-more, .tools-more-toggle")) setMoreOpen(false); };
+    window.addEventListener("keydown", onKey); window.addEventListener("mousedown", onDown);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("mousedown", onDown); };
+  }, [moreOpen]);
+  // Opening a tool's panel moves focus into it; closing it returns focus to the tool.
+  usePanelFocus(roleOpen, ".role-panel");
+  usePanelFocus(appsOpen, ".apps-panel");
+  usePanelFocus(stackParams.open, ".stack-panel:not(.role-panel):not(.apps-panel)");
+  usePanelFocus(pathsOpen, ".paths-library");
+  usePanelFocus(learningOpen, ".learning-panel");
+  usePanelFocus(compareMode, ".compare-panel:not(.learning-panel)");
   const [announcement, setAnnouncement] = useState("");
   // Tablet/phone breakpoint, tracked so resizing across it re-renders the legend state.
   const [compact, setCompact] = useState(
@@ -374,10 +394,29 @@ export default function App() {
       setPreviewEdge(null);
       setSelected(node.id);
       setFocus(node.id);
-      window.history.replaceState(null, "", pathForNode(node.node_type, node.slug));
+      // Each newly opened node is its own history entry, so the browser's Back button
+      // returns to the previous node (selection history); re-opening the same one doesn't.
+      const target = pathForNode(node.node_type, node.slug);
+      if (`${window.location.pathname}${window.location.search}` === target) window.history.replaceState(null, "", target);
+      else window.history.pushState(null, "", target);
     },
     [state, compareMode, compareFirst, compareSecond],
   );
+
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    const onPop = () => {
+      if (isAboutPath()) return;
+      const slug = slugFromPath();
+      const node = slug ? state.graph.nodes.find((n) => n.slug === slug) : null;
+      setSelectedEdge(null);
+      setPreviewEdge(null);
+      setSelected(node ? node.id : null);
+      setFocus(node ? node.id : null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [state]);
 
   const handleSelect = useCallback(
     (id: string | null) => {
@@ -386,7 +425,9 @@ export default function App() {
       if (id === null) {
         setSelected(null);
         setFocus(null);
-        window.history.replaceState(null, "", `${BASE_PATH || ""}/${window.location.search}`);
+        // Closing a node is a step too: Back reopens it.
+        const home = `${BASE_PATH || ""}/${window.location.search}`;
+        if (slugFromPath()) window.history.pushState(null, "", home); else window.history.replaceState(null, "", home);
         return;
       }
       navigate(id);
@@ -565,6 +606,16 @@ export default function App() {
       (edge.source === journey.steps[i].id && edge.target === step.id) ||
       (edge.target === journey.steps[i].id && edge.source === step.id))?.id).filter((id): id is string => !!id);
   }, [journey, graphData]);
+  // The highlighted set the camera frames inside the visible area: a followed path's stops,
+  // or the nodes a stack, role or app lights up. The key changes when the set does.
+  const frameSet = useMemo(() => {
+    const pick = (mode: string, ids: string[]) => ids.length ? { ids, key: `${mode}:${ids.length}:${ids[0]}:${ids[ids.length - 1]}` } : null;
+    if (journey && journeyIndex !== null) return { ids: journeyNodeIds, key: `path:${journeyIndex}:${journeyStep}` };
+    if (stackParams.open) return pick("stack", stackHighlight.nodes);
+    if (roleOpen) return pick(`role-${roleId}`, roleHighlight.nodes);
+    if (appsOpen) return pick(`app-${appId}`, appHighlight.nodes);
+    return null;
+  }, [journey, journeyIndex, journeyStep, journeyNodeIds, stackParams.open, stackHighlight, roleOpen, roleId, roleHighlight, appsOpen, appId, appHighlight]);
   // Every guided path with its field, step labels and search text, for the library.
   const pathEntries = useMemo(() => buildPathEntries(journeys(), nodesById, domainsById), [nodesById, domainsById]);
   // Remember how far each guided path got, and finished paths (reaching the last step counts).
@@ -629,7 +680,7 @@ export default function App() {
   if (state.status === "loading") {
     return (
       <div className="app-loading" role="status">
-        Loading the technology universe…
+        Loading the atlas…
       </div>
     );
   }
@@ -654,8 +705,8 @@ export default function App() {
           type="button"
           className="brand"
           onClick={aboutOpen ? closeAbout : exitXray}
-          aria-label="TechAtlas home — return to the Explore universe"
-          title="Return to the Explore universe"
+          aria-label="TechAtlas: back to the atlas"
+          title="Back to the atlas"
         >
           <svg className="brand-mark" viewBox="0 0 64 64" width="22" height="22" aria-hidden>
             <rect width="64" height="64" rx="14" fill="#0b0e14" />
@@ -669,22 +720,16 @@ export default function App() {
           <span className="brand-sub">the technology knowledge graph</span>
         </button>
         <SearchCommand onPick={navigate} domainsById={domainsById} lookup={searchLookup} />
-        {xrayOpen && (
-          <button
-            type="button"
-            className="explore-back"
-            onClick={exitXray}
-          >
-            ← Back to Explore
-          </button>
-        )}
-        {!xrayOpen && (
+        {/* One fixed label in every state: the pressed style shows X-Ray is open, and the
+            panel's own "Back to atlas" closes it (no label swap that shifts the toolbar). */}
+        {(
           <button
             type="button"
             className="xray-entry"
             aria-label="Repo X-Ray"
-            title={SCANNER_ENABLED ? "Scan a GitHub repository" : "See the stack behind famous repositories"}
-            onClick={openXray}
+            aria-pressed={xrayOpen}
+            title={xrayOpen ? "Close Repo X-Ray" : SCANNER_ENABLED ? "Scan a GitHub repository" : "See the stack behind famous repositories"}
+            onClick={xrayOpen ? exitXray : openXray}
             onPointerEnter={() => { void warmScanner(); }}
             onFocus={() => { void warmScanner(); }}
           >
@@ -695,21 +740,21 @@ export default function App() {
             each keeps its full accessible name. */}
         <ScrollRow className="topbar-tools-row" label="atlas modes">
         <nav className="topbar-tools" aria-label="Atlas modes" data-arrow-nav onKeyDown={arrowNav}>
-          <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
+          <button type="button" className="tool" aria-label="Compare"
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
               setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setRoleOpen(false); setAppsOpen(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
-            }}><Icon name="compare" /><span>{compareMode ? "Exit compare" : "Compare"}</span></button>
-          <button type="button" className="tool" aria-label={stackParams.open ? "Close stack recommender" : "Stack recommender"}
+            }}><Icon name="compare" /><span>Compare</span></button>
+          <button type="button" className="tool" aria-label="Stack recommender"
             aria-pressed={stackParams.open} title="Get a stack for your project, with reasons" onClick={() => {
               if (!stackParams.open) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); setRoleOpen(false); setAppsOpen(false); }
               openStack(!stackParams.open);
             }}><Icon name="stack" /><span>Stack</span></button>
-          <button type="button" className="tool" aria-label={roleOpen ? "Close role paths" : "Role paths"}
+          <button type="button" className="tool" aria-label="Role paths"
             aria-pressed={roleOpen} title="What does a role need to know?" onClick={() => {
               if (!roleOpen) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); openStack(false); setAppsOpen(false); }
               setRoleOpen(!roleOpen);
             }}><Icon name="role" /><span>Roles</span></button>
-          <button type="button" className="tool" aria-label={appsOpen ? "Close famous apps" : "Famous apps"}
+          <button type="button" className="tool" aria-label="Famous apps"
             aria-pressed={appsOpen} title="What are famous apps built with?" onClick={() => {
               if (!appsOpen) { setCompareMode(false); setJourneyIndex(null); setLearningOpen(false); openStack(false); setRoleOpen(false); }
               setAppsOpen(!appsOpen);
@@ -717,25 +762,32 @@ export default function App() {
           <button type="button" className="tool" aria-label="Guided paths" aria-haspopup="dialog"
             aria-pressed={pathsOpen || journeyIndex !== null} title="Browse guided paths (P)"
             onClick={openPaths}><Icon name="paths" /><span>Guided paths</span></button>
-          <button type="button" className="tool" aria-label={aboutOpen ? "Back to atlas" : "About the data"}
-            title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
-            <Icon name="info" /><span>{aboutOpen ? "Back to atlas" : "About the data"}</span></button>
-          <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
-            title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
-          <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
-            title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
-          <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
-            onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
-          <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
-            onClick={toggleFullscreen}><Icon name="expand" /></button>
-          <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
+          {/* Tablets and small laptops: the five main tools keep their labels and the
+              utilities move under one "More" button, instead of eleven unlabeled icons. */}
+          <button type="button" className="tool tools-more-toggle" aria-label="More tools" aria-expanded={moreOpen}
+            onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); setMoreAt({ top: r.bottom + 6, right: Math.max(8, window.innerWidth - r.right) }); setMoreOpen((v) => !v); }}>
+            <span aria-hidden>⋯</span><span>More</span></button>
+          <div className={`tools-more${moreOpen ? " is-open" : ""}`} style={moreOpen ? moreAt : undefined} onClick={() => setMoreOpen(false)}>
+            <button type="button" className="tool" aria-label="About the data" aria-pressed={aboutOpen}
+              title="About the data" onClick={aboutOpen ? closeAbout : openAbout}>
+              <Icon name="info" /><span>About</span></button>
+            <button type="button" className="tool tool-icon" aria-label="Atlas outline" aria-pressed={outlineOpen}
+              title="Atlas outline: every node as a list (O)" onClick={() => setOutlineOpen((v) => !v)}><Icon name="outline" /></button>
+            <button type="button" className="tool tool-icon" aria-label="My learning map" aria-pressed={learningOpen}
+              title="My learning map (M)" onClick={() => setLearningOpen((v) => !v)}><Icon name="bookmark" /></button>
+            <button type="button" className="tool tool-icon tool-help" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"
+              onClick={() => setHelpOpen(true)}><Icon name="help" /></button>
+            <button type="button" className="tool tool-icon" aria-label="Enter fullscreen" title="Fullscreen (F)"
+              onClick={toggleFullscreen}><Icon name="expand" /></button>
+            <button type="button" className="tool tool-icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
+          </div>
         </nav>
         </ScrollRow>
         <div className="topbar-meta">
           <span>
-            {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
+            {fmt(state.graph.nodes.length)} nodes · {fmt(state.graph.edges.length)} edges
           </span>
         </div>
       </header>
@@ -744,7 +796,7 @@ export default function App() {
         <article className="about-panel" aria-label="About the data">
           <button type="button" className="about-back" onClick={closeAbout}>← Back to atlas</button>
           <h2>About the data</h2>
-          <p>TechAtlas maps {state.graph.nodes.length} domains, concepts, and technologies through {state.graph.edges.length} typed relationships. Dataset version {state.graph.version}.</p>
+          <p>TechAtlas maps {fmt(state.graph.nodes.length)} fields, concepts, and technologies through {fmt(state.graph.edges.length)} typed relationships. Dataset version {state.graph.version}.</p>
           <h3>Sources</h3>
           <p>Names, descriptions, and relationships come from the curated <a href="https://github.com/rushilrawat/TechAtlas/tree/main/data">TechAtlas dataset</a>. Wikipedia summaries are shown with attribution in technology details. Optional popularity scores use GitHub activity and npm, PyPI, or crates.io downloads.</p>
           <h3>Where each feature gets its data</h3>
@@ -762,19 +814,53 @@ export default function App() {
         </article>
       </main>}
       <main aria-hidden={aboutOpen} style={aboutOpen ? { visibility: "hidden" } : undefined} className={`stage${desktopRail ? ` rail-${desktopRail}` : ""}`}>
+        {/* The hero comes first in the DOM so Tab reaches "Explore the atlas" before the
+            rail, the canvas and the 23 field names (it is absolutely positioned, so this
+            does not move it on screen). */}
+        {!heroRendered && <h1 className="visually-hidden">TechAtlas: every technology, and how it connects</h1>}
+        {heroRendered && (
+          <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
+            aria-hidden={!heroVisible}>
+            <h1 className="hero-title">
+              Every technology, and how it connects. <span>{fmt(state.graph.nodes.length)} of them.</span>
+            </h1>
+            <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
+              <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
+                Explore the atlas
+              </button>
+              <button type="button" className="hero-secondary" onClick={openPaths}>
+                Follow a path
+              </button>
+              <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
+                X-ray a repo
+              </button>
+            </div>
+            <p className="hero-paths" data-arrow-nav onKeyDown={arrowNav}>
+              {resumePath ? <>
+                <span>Welcome back.</span>{" "}
+                <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>
+                  Continue &ldquo;{resumePath.title}&rdquo;
+                </button>
+              </> : <>
+                <span>Start here:</span>
+                {heroPaths.map((p) => <button key={p.slug} type="button" onClick={() => startPath(p.index)}>{p.title}</button>)}
+              </>}
+            </p>
+          </section>
+        )}
         {immersive && (
           <button type="button" className="fullscreen-exit" onClick={toggleFullscreen}
             aria-label="Exit fullscreen" title="Exit fullscreen (F or Esc)"><Icon name="collapse" /><span>Exit</span></button>
         )}
         {!xrayOpen && <nav className="atlas-rail" aria-label="Atlas tools">
-          <button type="button" aria-label="Domains" title="Domains" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
-          <button type="button" aria-label="Filters" title="Filters" aria-pressed={desktopRail === "filters"} onClick={() => setDesktopRail(desktopRail === "filters" ? null : "filters")}><Icon name="filters" /></button>
+          <button type="button" aria-label="Fields" title="Fields and filters" aria-pressed={desktopRail === "domains"} onClick={() => { setLegendCollapsed(false); setDesktopRail(desktopRail === "domains" ? null : "domains"); }}><Icon name="domains" /></button>
         </nav>}
         {!webgl && <OutlineView nodes={state.graph.nodes} domains={state.domains} onPick={navigate} fallback />}
         {webgl && <GraphCanvas
           data={state.graph}
           theme={theme}
           journeyNodeIds={journey ? journeyNodeIds : stackParams.open ? stackHighlight.nodes : roleOpen ? roleHighlight.nodes : appsOpen ? appHighlight.nodes : journeyNodeIds}
+          numberedStops={!!journey}
           journeyEdgeIds={journey ? journeyEdgeIds : stackParams.open ? stackHighlight.edges : roleOpen ? roleHighlight.edges : appsOpen ? appHighlight.edges : journeyEdgeIds}
           initialCamera={initialCamera}
           onCameraChange={(camera) => {
@@ -796,6 +882,7 @@ export default function App() {
           stackPositions={stackPositions}
           stackHeadings={stackHeadings}
           exploreNonce={exploreNonce}
+          frameSet={xrayOpen ? null : frameSet}
           domains={state.domains}
           fitSignal={
             overlay && fitNonce > 0
@@ -819,7 +906,9 @@ export default function App() {
           onPick={navigate} onHighlight={onRoleHighlight} onClose={() => setRoleOpen(false)} />}
         {appsOpen && !roleOpen && !stackParams.open && !xrayOpen && <AppsPanel graph={state.graph} appId={appId} onAppChange={setAppId}
           onPick={navigate} onHighlight={onAppHighlight} onClose={() => setAppsOpen(false)} />}
-        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && !roleOpen && !appsOpen && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)} />}
+        {learningOpen && !compareMode && journeyIndex === null && !stackParams.open && !roleOpen && !appsOpen && <LearningPanel graph={state.graph} onPick={navigate} onClose={() => setLearningOpen(false)}
+          onPickRole={() => { setLearningOpen(false); setCompareMode(false); setJourneyIndex(null); openStack(false); setAppsOpen(false); setRoleOpen(true); }}
+          onOpenPaths={() => { setLearningOpen(false); openPaths(); }} />}
         {helpOpen && <ShortcutsHelp onClose={() => setHelpOpen(false)} />}
         {sharedCard && <ReportCard repo={sharedCard.repo} nodesById={nodesById} domainsById={domainsById}
           nodeIds={sharedCard.slugs.map((slug) => state.graph.nodes.find((n) => n.slug === slug)?.id).filter((id): id is string => !!id)}
@@ -920,52 +1009,8 @@ export default function App() {
           </Suspense>
         ) : (
           <>
-            <button
-              type="button"
-              className="filters-toggle"
-              aria-expanded={filtersOpen}
-              aria-controls="graph-filters"
-              onClick={() => setFiltersOpen((v) => !v)}
-            >
-              {filtersOpen ? "Close filters" : "Filters"}
-            </button>
-            <FilterPanel
-              domains={state.domains}
-              filter={filter}
-              onChange={setFilter}
-              mobileOpen={filtersOpen}
-            />
+            {/* Filters now live in the Fields panel below. */}
           </>
-        )}
-        {heroRendered && (
-          <section className={`hero${heroVisible ? "" : " is-leaving"}`} aria-label="Welcome"
-            aria-hidden={!heroVisible}>
-            <h1 className="hero-title">
-              Every technology, and how it connects. <span>{state.graph.nodes.length} of them.</span>
-            </h1>
-            <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
-              <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
-                Explore the atlas
-              </button>
-              <button type="button" className="hero-secondary" onClick={openPaths}>
-                Follow a path
-              </button>
-              <button type="button" className="hero-secondary" onPointerEnter={() => { void warmScanner(); }} onClick={openXray}>
-                X-ray a repo
-              </button>
-            </div>
-            <p className="hero-paths" data-arrow-nav onKeyDown={arrowNav}>
-              {resumePath ? <>
-                <span>Welcome back.</span>{" "}
-                <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>
-                  Continue &ldquo;{resumePath.title}&rdquo;
-                </button>
-              </> : <>
-                <span>Start here:</span>
-                {heroPaths.map((p) => <button key={p.slug} type="button" onClick={() => startPath(p.index)}>{p.title}</button>)}
-              </>}
-            </p>
-          </section>
         )}
         {overlay && <XrayLegend />}
         {!xrayOpen && <RelationshipLegend />}
@@ -979,6 +1024,8 @@ export default function App() {
             navigate(id);
           }}
           collapsed={compact ? legendCollapsed : desktopRail !== "domains" || legendCollapsed}
+          filter={filter}
+          onFilterChange={setFilter}
           onToggle={() => { setLegendCollapsed((v) => !v); setDesktopRail(null); }}
         />
         {selected && !compareMode && (

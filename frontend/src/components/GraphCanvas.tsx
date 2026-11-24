@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { arrowNav } from "../util/arrowNav";
 import type { DetectionStatus, GraphResponse } from "../api/types";
 import type { SharedCamera } from "../graph/shareView";
 import { useCanvasRefs } from "./graph-canvas/refs";
@@ -14,6 +15,8 @@ interface Props {
   data: GraphResponse;
   theme?: "dark" | "light";
   journeyNodeIds?: string[];
+  /** Number the highlighted nodes in order (a guided path's stops). */
+  numberedStops?: boolean;
   journeyEdgeIds?: string[];
   initialCamera?: SharedCamera | null;
   onCameraChange?: (camera: SharedCamera) => void;
@@ -47,6 +50,9 @@ interface Props {
   // Explore "Home" reframe: bump this nonce to smoothly re-fit the default atlas camera
   // (used when returning from Repo X-Ray so the homepage camera is fully restored).
   exploreNonce?: number;
+  // A highlighted set to frame inside the area the open panels leave visible. A new key
+  // re-frames (e.g. a different role, app, stack pick or path step).
+  frameSet?: { ids: string[]; key: string } | null;
   // Top-level domain metadata (id/name/color) for the Explore sector backplates + legend
   // sync. Only used to DRAW the atmospheric overlay — never alters graph data.
   domains?: { id: string; name: string; color: string; node_count: number }[] | null;
@@ -73,6 +79,7 @@ export function GraphCanvas({
   data,
   theme = "dark",
   journeyNodeIds = EMPTY_IDS,
+  numberedStops = false,
   journeyEdgeIds = EMPTY_IDS,
   initialCamera = null,
   onCameraChange,
@@ -91,16 +98,22 @@ export function GraphCanvas({
   stackPositions = null,
   stackHeadings = null,
   exploreNonce = 0,
+  frameSet = null,
   domains = null,
 }: Props) {
   const refs = useCanvasRefs({
     journeyNodeIds, journeyEdgeIds, selectedId, selectedEdgeId, previewEdgeId, visibleNodes, visibleEdges,
     scanStatusByNode, scanHighlightEdges, scanContextEdges, onCameraChange, onSelect, onSelectEdge, domains,
   });
-  const { containerRef, sigmaRef, onCameraChangeRef, journeyNodesRef, journeyEdgesRef } = refs;
+  const { containerRef, sigmaRef, onCameraChangeRef, journeyNodesRef, journeyEdgesRef, journeyStopsRef } = refs;
   useEffect(() => { sigmaRef.current?.setSetting("labelColor", { color: theme === "light" ? "#26364d" : "#c8d0e8" }); sigmaRef.current?.refresh(); }, [theme]); // also re-runs node fades
   useEffect(() => { onCameraChangeRef.current = onCameraChange; }, [onCameraChange]);
-  useEffect(() => { journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds); sigmaRef.current?.refresh(); }, [journeyNodeIds, journeyEdgeIds]);
+  useEffect(() => {
+    journeyNodesRef.current = new Set(journeyNodeIds); journeyEdgesRef.current = new Set(journeyEdgeIds);
+    // A followed path numbers its stops on the map ("1. DNS", "2. HTTP"…).
+    journeyStopsRef.current = numberedStops ? new Map(journeyNodeIds.map((id, i) => [id, i + 1])) : null;
+    sigmaRef.current?.refresh();
+  }, [journeyNodeIds, journeyEdgeIds, numberedStops]);
 
   // Effect order matters (React runs them in call order): build the renderer first, then
   // sync props into it, then the camera and overlay effects that read its state.
@@ -108,8 +121,9 @@ export function GraphCanvas({
   useSelectionSync(refs, selectedId, selectedEdgeId, previewEdgeId, visibleNodes, visibleEdges,
     scanStatusByNode, scanHighlightEdges, scanContextEdges);
   useStackProjection(refs, stackPositions, stackHeadings);
-  useCameraControl(refs, fitSignal, exploreNonce, focusId);
+  useCameraControl(refs, fitSignal, exploreNonce, focusId, frameSet);
   const headingScreens = useStackHeadings(refs, stackHeadings, stackPositions, fitSignal?.nonce);
+  const [headingStop, setHeadingStop] = useState<string | null>(null);
   const backdrop = useAtlasBackdrop(refs, data, domains, exploreNonce, stackPositions, scanStatusByNode, visibleNodes);
   useKeyboardNav(refs);
 
@@ -148,10 +162,15 @@ export function GraphCanvas({
         tabIndex={0}
         aria-label="Technology graph. Arrow keys move to the connected node in that direction, Shift plus arrows pans, plus and minus zoom, 0 resets the view, Escape clears the selection. Search and the domain list reach every node."
       />
-      {backdrop.headings.map((h) => (
+      {/* Field names are one tab stop: Tab lands on one, arrow keys move between them in
+          reading order (top to bottom, left to right), then Tab leaves the map. */}
+      <div className="atlas-headings" role="group" aria-label="Fields on the map" data-arrow-nav onKeyDown={arrowNav}>
+      {[...backdrop.headings].sort((a, b) => Math.round(a.top / 40) - Math.round(b.top / 40) || a.left - b.left).map((h, i, list) => (
         <button
           key={h.id}
           type="button"
+          tabIndex={(list.some((x) => x.id === headingStop) ? headingStop === h.id : i === 0) ? 0 : -1}
+          onFocus={() => setHeadingStop(h.id)}
           className={`atlas-heading atlas-heading-${h.align}${selectedId === h.id ? " is-active" : ""}`}
           aria-label={domains?.find((d) => d.id === h.id)?.name ?? h.label}
           style={{ left: h.left, top: h.top, ["--domain" as string]: h.color }}
@@ -160,12 +179,15 @@ export function GraphCanvas({
           {h.label}
         </button>
       ))}
+      </div>
       {hoverPreview && (() => {
         const node = data.nodes.find((n) => n.id === hoverPreview.id);
         if (!node) return null;
-        const connections = new Set(data.edges.filter((edge) => edge.source === node.id || edge.target === node.id).map((edge) => edge.source === node.id ? edge.target : edge.source)).size;
+        // A field counts members, the same noun and number as its panel; a node counts links.
+        const field = node.node_type === "domain" ? domains?.find((d) => d.id === node.id) : undefined;
+        const connections = field ? field.node_count : new Set(data.edges.filter((edge) => edge.source === node.id || edge.target === node.id).map((edge) => edge.source === node.id ? edge.target : edge.source)).size;
         return <aside className="node-preview" style={{ left: hoverPreview.x, top: hoverPreview.y }} aria-hidden="true">
-          <strong>{node.label}</strong><span>{node.node_subtype || node.node_type} · {connections} connections</span>
+          <strong>{node.label}</strong><span>{field ? "field" : node.node_subtype || node.node_type} · {connections.toLocaleString("en-US")} {field ? "members" : "connections"}</span>
           {hoverPreview.description && <p>{hoverPreview.description}</p>}
         </aside>;
       })()}

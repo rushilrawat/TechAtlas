@@ -20,9 +20,9 @@ const nodes = [
 describe("OutlineView", () => {
   it("lists every node under its domain and filters by name", () => {
     render(<OutlineView nodes={nodes} domains={domains} onPick={() => {}} />);
-    expect(screen.getByText("3 nodes")).toBeTruthy();
+    expect(screen.getByText("3 technologies and concepts in 2 fields")).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Filter the outline by name"), { target: { value: "post" } });
-    expect(screen.getByText("1 node")).toBeTruthy();
+    expect(screen.getByText("1 technology or concept in 1 field")).toBeTruthy();
     expect(screen.queryByText("Frontend Development")).toBeNull();
   });
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GraphResponse } from "../../api/types";
 import { curvePoint } from "../../graph/buildGraph";
+import { labelBoxes } from "./drawNodeLabel";
 import { Obstacles, placeHeadings, type Heading } from "./headings";
 import type { CanvasRefs } from "./refs";
 
@@ -43,6 +44,7 @@ function orbitRadii(graph: import("graphology").default): Map<string, { gx: numb
 
 export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains: unknown, exploreNonce: number,
   stackPositions: unknown, scanStatusByNode: unknown, visibleNodes: unknown) {
+  const { journeyNodesRef } = refs;
   const { domainGeomRef, domainsRef, graphRef, scanStatusRef, selectedRef, sigmaRef, stackActiveRef, visibleNodesRef } = refs;
   // Explore atlas overlay: soft domain-sector backplates, projected
   // to screen coords and kept in sync with the camera. Purely decorative (pointer-events
@@ -98,8 +100,18 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
     const orbitGeom = orbitRadii(graph);
     const colorOf = new Map(doms.map((d) => [d.id, d.color]));
     const project = () => {
-      // Suppress the atlas backdrop entirely during Repo X-Ray (Stack View owns the canvas).
-      if (stackActiveRef.current || scanStatusRef.current) { setBackdrop(EMPTY); return; }
+      // Stack View owns the canvas. The X-Ray overlay on the full atlas drops the tints and
+      // orbits but keeps the names of the fields that have detections, so "Rust" sits in a
+      // place the reader can name.
+      if (stackActiveRef.current) { setBackdrop(EMPTY); return; }
+      const scan = scanStatusRef.current;
+      const scanFields = scan ? new Set([...scan.keys()].filter((id) => graph.hasNode(id))
+        .map((id) => graph.getNodeAttribute(id, "territory") as string)) : null;
+      // A highlighted role, app, stack or path names only the fields it touches, so the
+      // names of its nodes have room (all 23 field names plus 27 node names don't fit a phone).
+      const lit = journeyNodesRef.current;
+      const litFields = !scan && lit.size ? new Set([...lit].filter((id) => graph.hasNode(id))
+        .map((id) => graph.getNodeAttribute(id, "territory") as string)) : null;
       const geom = domainGeomRef.current!;
       let ax = 0, ay = 0;
       for (const g of geom.values()) { ax += g.gx / geom.size; ay += g.gy / geom.size; }
@@ -114,8 +126,10 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
         const c = renderer.graphToViewport({ x: g.gx, y: g.gy });
         const rim = renderer.graphToViewport({ x: g.gx + g.gr, y: g.gy });
         const r = Math.hypot(rim.x - c.x, rim.y - c.y);
-        sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
+        if (!scanFields) sectors.push({ id: d.id, color: d.color, cx: c.x, cy: c.y, r: r * 1.12 });
         if (vis && !vis.has(d.id)) continue;
+        if (scanFields && !scanFields.has(d.id)) continue;
+        if (litFields && !litFields.has(d.id)) continue;
         headings.push({ id: d.id, label: d.name, color: d.color, left: c.x, top: c.y, align: "box",
           disc: { x: c.x, y: c.y, r: r * (g.hr / (g.gr || 1)) } });
       }
@@ -127,6 +141,11 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
         const v = renderer.graphToViewport({ x: attrs.x as number, y: attrs.y as number });
         obstacles.add(v.x, v.y, renderer.scaleSize(dd.size), true, attrs.territory as string);
       });
+      // Node names drawn this frame: a field heading on top of "Software Versioning" reads
+      // as one garbled line, so every label box counts as a foreign node for every heading.
+      for (const b of labelBoxes()) {
+        for (let x = b.x0; x <= b.x1; x += 8) obstacles.add(x, (b.y0 + b.y1) / 2, (b.y1 - b.y0) / 2, true, "");
+      }
       graph.forEachEdge((id, attrs, source, target) => {
         const shown = renderer.getEdgeDisplayData(id);
         if (!shown || shown.hidden) return;
@@ -142,6 +161,7 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
       });
       const orbits: Backdrop["orbits"] = [];
       for (const [id, o] of orbitGeom) {
+        if (scanFields) break;
         if (vis && !vis.has(id)) continue;
         const c = renderer.graphToViewport({ x: o.gx, y: o.gy });
         const u = renderer.graphToViewport({ x: o.gx + 1, y: o.gy });
@@ -149,13 +169,19 @@ export function useAtlasBackdrop(refs: CanvasRefs, data: GraphResponse, domains:
         orbits.push({ id, color: colorOf.get(id) ?? "#8a93ab", cx: c.x, cy: c.y, rs: o.rs.map((r) => r * k) });
       }
       setBackdrop({ sectors, orbits, headings: placeHeadings(headings, renderer.getContainer(), topLevel,
-        selectedRef.current, obstacles, ringLike) });
+        selectedRef.current, obstacles, ringLike, labelBoxes()) });
     };
     // Re-project after every render: Sigma renders with the camera's final state, while
     // "updated" can be emitted mid-animation and leave headings on stale positions.
     project();
     renderer.on("afterRender", project);
-    return () => { renderer.removeListener("afterRender", project); };
+    // A side panel opening or closing changes where headings may go without a re-render,
+    // so re-place them whenever the stage's panels change.
+    const stage = renderer.getContainer().closest("main");
+    let raf = 0;
+    const observer = stage ? new MutationObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(project); }) : null;
+    if (stage) observer!.observe(stage, { childList: true });
+    return () => { renderer.removeListener("afterRender", project); observer?.disconnect(); cancelAnimationFrame(raf); };
   }, [domains, data, exploreNonce, stackPositions, scanStatusByNode, visibleNodes]);
   return backdrop;
 }
