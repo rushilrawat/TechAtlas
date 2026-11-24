@@ -13,7 +13,7 @@ export function useKeyboardNav(refs: CanvasRefs) {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (target?.closest("input, textarea, select, [contenteditable='true'], .xray-panel, .about-page")) return;
+      if (target?.closest("input, textarea, select, [contenteditable='true'], .xray-panel, .about-page, [data-arrow-nav]")) return;
       if (target?.tagName === "BUTTON" && event.key === "Enter") return;
       const renderer = sigmaRef.current, graph = graphRef.current;
       if (!renderer || !graph || stackActiveRef.current) return;

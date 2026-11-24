@@ -29,8 +29,11 @@ import { connectionPath } from "./graph/compare";
 import { StackPanel } from "./components/StackPanel";
 import { readStack, writeStack, type StackParams } from "./recommend/stackLink";
 import { RolePanel } from "./components/RolePanel";
-import { readRole, writeRole } from "./graph/roles";
+import { readRole, readRolesOpen, writeRole } from "./graph/roles";
 import { AppsPanel } from "./components/AppsPanel";
+import { ScrollRow } from "./components/ScrollRow";
+import { useStepKeys } from "./components/StepNav";
+import { arrowNav } from "./util/arrowNav";
 import { readApp, readAppsOpen, writeApp } from "./graph/apps";
 import { PathsLibrary } from "./components/PathsLibrary";
 import {
@@ -137,12 +140,12 @@ export default function App() {
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   }, [stackParams]);
   // Role / career lens: ?role=<id> reopens a role's path.
-  const [roleOpen, setRoleOpen] = useState(() => readRole(window.location.search) !== null);
+  const [roleOpen, setRoleOpen] = useState(() => readRolesOpen(window.location.search));
   const [roleId, setRoleId] = useState<string | null>(() => readRole(window.location.search));
   const [roleHighlight, setRoleHighlight] = useState<{ nodes: string[]; edges: string[] }>({ nodes: [], edges: [] });
   const onRoleHighlight = useCallback((nodes: string[], edges: string[]) => setRoleHighlight({ nodes, edges }), []);
   useEffect(() => {
-    const query = writeRole(window.location.search, roleOpen ? roleId : null);
+    const query = writeRole(window.location.search, roleOpen ? roleId : null, roleOpen);
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
   }, [roleOpen, roleId]);
   // Famous apps: ?app=<id> reopens an app's stack (?app= alone opens the list).
@@ -589,6 +592,14 @@ export default function App() {
     setJourneyStep(step);
     navigate(journeys()[index].steps[step].id);
   }, [navigate, openStack]);
+  // [ / ] and the ← Previous / Next → buttons step through the guided path being followed.
+  const journeyPrev = useMemo(() => journeyIndex === null || journeyStep === 0 ? null : () => {
+    setJourneyStep(journeyStep - 1); navigate(journeys()[journeyIndex].steps[journeyStep - 1].id);
+  }, [journeyIndex, journeyStep, navigate]);
+  const journeyNext = useMemo(() => journeyIndex === null || journeyStep >= journeys()[journeyIndex].steps.length - 1 ? null : () => {
+    setJourneyStep(journeyStep + 1); navigate(journeys()[journeyIndex].steps[journeyStep + 1].id);
+  }, [journeyIndex, journeyStep, navigate]);
+  useStepKeys(journeyIndex !== null && !xrayOpen && !pathsOpen && !roleOpen && !appsOpen, journeyPrev, journeyNext);
   const nextPath = useMemo(() => journeyIndex === null || journeyStep !== journeys()[journeyIndex].steps.length - 1
     ? null : suggestNextPath(pathEntries, journeys(), journeyIndex, donePaths), [pathEntries, journeyIndex, journeyStep, donePaths]);
   // A returning visitor with an unfinished path is offered to pick it up from the hero.
@@ -682,7 +693,8 @@ export default function App() {
         )}
         {/* Atlas tools: one quiet, uniform group. Labels collapse to icons on phones;
             each keeps its full accessible name. */}
-        <nav className="topbar-tools" aria-label="Atlas modes">
+        <ScrollRow className="topbar-tools-row" label="atlas modes">
+        <nav className="topbar-tools" aria-label="Atlas modes" data-arrow-nav onKeyDown={arrowNav}>
           <button type="button" className="tool" aria-label={compareMode ? "Exit compare" : "Compare"}
             aria-pressed={compareMode} title="Compare two technologies" onClick={() => {
               setCompareMode((open) => !open); setJourneyIndex(null); openStack(false); setRoleOpen(false); setAppsOpen(false); setCompareFirst(selected && nodesById.get(selected)?.node_type === "technology" ? selected : null); setCompareSecond(null);
@@ -720,6 +732,7 @@ export default function App() {
             title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}><Icon name={theme === "dark" ? "sun" : "moon"} /></button>
         </nav>
+        </ScrollRow>
         <div className="topbar-meta">
           <span>
             {state.graph.nodes.length} nodes · {state.graph.edges.length} edges
@@ -850,7 +863,7 @@ export default function App() {
               onClick={() => { setJourneyIndex(null); handleSelect(null); }}>×</button>
           </div>
           <h2 className="journey-title">{journey.title}</h2>
-          <ol className="journey-dots" aria-label={`Step ${journeyStep + 1} of ${journey.steps.length}`}>
+          <ol className="journey-dots" aria-label={`Step ${journeyStep + 1} of ${journey.steps.length}`} data-arrow-nav onKeyDown={arrowNav}>
             {journey.steps.map((step, i) => (
               <li key={step.id}>
                 <button type="button" aria-current={i === journeyStep ? "step" : undefined}
@@ -872,11 +885,11 @@ export default function App() {
             </div>
           )}
           <div className="journey-actions">
-            <button disabled={journeyStep === 0} onClick={() => { setJourneyStep(journeyStep - 1); navigate(journey.steps[journeyStep - 1].id); }}>Previous</button>
+            <button type="button" className="journey-prev" disabled={journeyStep === 0} title="Previous step ( [ )" onClick={journeyPrev ?? undefined}><span aria-hidden>←</span> Previous</button>
             <button type="button" className="journey-share" onClick={() => {
               void navigator.clipboard?.writeText(window.location.href).then(() => { setPathCopied(true); window.setTimeout(() => setPathCopied(false), 1500); }, () => undefined);
             }}>{pathCopied ? "Link copied" : "Copy link"}</button>
-            <button disabled={journeyStep === journey.steps.length - 1} onClick={() => { setJourneyStep(journeyStep + 1); navigate(journey.steps[journeyStep + 1].id); }}>Next</button>
+            <button type="button" className="journey-next" disabled={journeyStep === journey.steps.length - 1} title="Next step ( ] )" onClick={journeyNext ?? undefined}>Next <span aria-hidden>→</span></button>
           </div>
         </section>}
         {pathsOpen && <PathsLibrary entries={pathEntries} done={donePaths} progress={pathProgress}
@@ -930,7 +943,7 @@ export default function App() {
             <h1 className="hero-title">
               Every technology, and how it connects. <span>{state.graph.nodes.length} of them.</span>
             </h1>
-            <div className="hero-actions">
+            <div className="hero-actions" data-arrow-nav onKeyDown={arrowNav}>
               <button type="button" className="hero-primary" onClick={() => setHeroVisible(false)}>
                 Explore the atlas
               </button>
@@ -941,7 +954,7 @@ export default function App() {
                 X-ray a repo
               </button>
             </div>
-            <p className="hero-paths">
+            <p className="hero-paths" data-arrow-nav onKeyDown={arrowNav}>
               {resumePath ? <>
                 <span>Welcome back.</span>{" "}
                 <button type="button" onClick={() => startPath(resumePath.index, Math.min(pathProgress[resumePath.slug] ?? 0, resumePath.stepCount - 1))}>

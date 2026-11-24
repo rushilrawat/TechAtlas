@@ -49,3 +49,13 @@ describe("role helpers", () => {
     expect(writeRole("?role=ml-engineer&a=1", null)).toBe("a=1");
   });
 });
+
+describe("roles list deep link", () => {
+  it("?role= opens the list and round-trips", async () => {
+    const { readRolesOpen } = await import("./roles");
+    expect(readRolesOpen("?role=")).toBe(true);
+    expect(readRolesOpen("?app=x")).toBe(false);
+    expect(writeRole("", null, true)).toBe("role=");
+    expect(writeRole("role=x", null)).toBe("");
+  });
+});

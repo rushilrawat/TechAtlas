@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import type { GraphResponse } from "../api/types";
 import { useLearningMap, type LearningStatus } from "../graph/learning";
 import { roleById, roles, cycleStatus, nextUp, resolveRole, roleProgress } from "../graph/roles";
+import { roleEmoji } from "../graph/roleEmoji";
+import { arrowNav, arrowNavGrid } from "../util/arrowNav";
+import { StepNav, neighbours, useStepKeys } from "./StepNav";
 
 const STATUS_LABEL: Record<LearningStatus, string> = { known: "Known", learning: "Learning", goal: "Goal" };
 
@@ -34,6 +37,14 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
   const progress = resolved ? roleProgress(resolved.nodeIds, map) : null;
   const next = resolved ? nextUp(resolved, map) : null;
   const unmarked = resolved ? resolved.nodeIds.filter((id) => !map[id]) : [];
+  // ← / → (and [ / ]) step through the roles in list order.
+  const all = roles();
+  const around = role ? neighbours(all.findIndex((r) => r.id === role.id), all.length) : null;
+  const prevRole = around ? all[around[0]] : null;
+  const nextRole = around ? all[around[1]] : null;
+  const goPrev = useMemo(() => prevRole ? () => onRoleChange(prevRole.id) : null, [prevRole, onRoleChange]);
+  const goNext = useMemo(() => nextRole ? () => onRoleChange(nextRole.id) : null, [nextRole, onRoleChange]);
+  useStepKeys(!!role, goPrev, goNext);
   const copy = () => {
     void navigator.clipboard?.writeText(window.location.href).then(() => { setCopied(true); window.setTimeout(() => setCopied(false), 1500); }, () => undefined);
   };
@@ -41,23 +52,35 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
   return (
     <section className="stack-panel role-panel" aria-label="Role paths">
       <button type="button" className="outline-close" onClick={onClose} aria-label="Close role paths">×</button>
-      <h2>{role ? "Role path" : "What does a role need?"}</h2>
+      {role ? (
+        <header className="role-head">
+          <span className="role-emoji is-big" aria-hidden>{roleEmoji(role.id)}</span>
+          <div><p className="role-kicker">Role path</p><h2>{role.title}</h2></div>
+        </header>
+      ) : <h2>What does a role need?</h2>}
       {!role && <>
         <p className="stack-note">Pick a role to see what it needs, lit up on the atlas and ordered into a path. Mark what you know as you go; progress is saved only in this browser.</p>
-        <ul className="role-list">{roles().map((r) => {
+        <ul className="role-list" data-arrow-nav onKeyDown={arrowNav}>{roles().map((r) => {
           const ids = resolveRole(r, graph).nodeIds;
           const p = roleProgress(ids, map);
           return <li key={r.id}><button type="button" onClick={() => onRoleChange(r.id)}>
-            <strong>{r.title}</strong>
-            <span>{r.summary}</span>
-            {p.known + p.learning > 0 && <span className="role-mini">{p.known} of {p.total} known</span>}
+            <span className="role-emoji" aria-hidden>{roleEmoji(r.id)}</span>
+            <span className="role-list-text">
+              <strong>{r.title}</strong>
+              <span>{r.summary}</span>
+              {p.known + p.learning > 0 && <span className="role-mini">{p.known} of {p.total} known</span>}
+            </span>
           </button></li>;
         })}</ul>
       </>}
       {role && resolved && progress && <>
-        <label className="role-switch"><span className="sr-only">Role</span>
+        <StepNav label="Step through roles"
+          position={`${all.findIndex((r) => r.id === role.id) + 1} / ${all.length}`}
+          prev={prevRole && goPrev ? { label: prevRole.title, onGo: goPrev, icon: <span aria-hidden>{roleEmoji(prevRole.id)} </span> } : null}
+          next={nextRole && goNext ? { label: nextRole.title, onGo: goNext, icon: <span aria-hidden>{roleEmoji(nextRole.id)} </span> } : null} />
+        <label className="role-switch"><span className="sr-only">Jump to role</span>
           <select value={role.id} onChange={(e) => onRoleChange(e.target.value)}>
-            {roles().map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
+            {roles().map((r) => <option key={r.id} value={r.id}>{roleEmoji(r.id)} {r.title}</option>)}
           </select>
         </label>
         <p className="stack-note">{role.summary}</p>
@@ -76,7 +99,7 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
               <li key={stage.title} className="role-stage">
                 <h3><span>{si + 1}. {stage.title}</span><span className="role-count">{done}/{stage.ids.length}</span></h3>
                 <p className="muted">{stage.caption}</p>
-                <ul>{stage.ids.map((id) => {
+                <ul data-arrow-nav onKeyDown={arrowNavGrid}>{stage.ids.map((id) => {
                   const status = map[id];
                   const nextStatus = cycleStatus(status);
                   return (
@@ -97,7 +120,7 @@ export function RolePanel({ graph, roleId, onRoleChange, onPick, onHighlight, on
           <button type="button" onClick={copy}>{copied ? "Link copied" : "Copy link"}</button>
           {unmarked.length > 0 && <button type="button" title="Add every unmarked node to your learning map as a goal"
             onClick={() => unmarked.forEach((id) => setStatus(id, "goal"))}>Add {unmarked.length} as goals</button>}
-          <button type="button" onClick={() => onRoleChange(null)}>All roles</button>
+          <button type="button" onClick={() => onRoleChange(null)}><span aria-hidden>← </span>All roles</button>
         </div>
       </>}
     </section>

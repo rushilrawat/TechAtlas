@@ -60,9 +60,13 @@ export function readRole(search: string): string | null {
   // Before the content chunk arrives, keep any well-formed id; RolePanel shows the list for an unknown one.
   return v && ROLE.test(v) && (!contentLoaded() || roleById(v)) ? v : null;
 }
-export function writeRole(search: string, id: string | null): string {
+/** Any ?role param opens the panel; ?role= alone opens the list of roles (like ?app=). */
+export function readRolesOpen(search: string): boolean {
+  return new URLSearchParams(search).has("role");
+}
+export function writeRole(search: string, id: string | null, open = id !== null): string {
   const p = new URLSearchParams(search);
   p.delete("role");
-  if (id) p.set("role", id);
+  if (open) p.set("role", id ?? "");
   return p.toString();
 }

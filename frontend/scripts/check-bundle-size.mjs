@@ -13,16 +13,18 @@ import { gzipSync } from "node:zlib";
 // lazily loaded chunk (src/content/data.ts), which loads alongside the graph.
 // content: that chunk. ~24 KB with 145 paths / 11 roles / 22 apps, ~49 KB after the
 // 3,000-node content pass (257 paths / 32 roles / 40 apps).
-const BUDGETS = { js: 172_000, css: 15_000, woff2: 60_000, graph: 280_000, content: 56_000 };
+// logos: famous-app brand marks (src/content/appLogos.ts), fetched when the Apps panel or a
+// "Used by" chip first draws. ~14 KB for 35 marks.
+const BUDGETS = { js: 172_000, css: 15_000, woff2: 60_000, graph: 280_000, content: 56_000, logos: 18_000 };
 const dir = join(process.cwd(), "dist", "assets");
 let failed = false;
-const totals = { js: 0, css: 0, woff2: 0, content: 0 };
+const totals = { js: 0, css: 0, woff2: 0, content: 0, logos: 0 };
 for (const file of readdirSync(dir)) {
   const ext = file.split(".").pop();
   if (!(ext in totals)) continue;
   const buf = readFileSync(join(dir, file));
   // The entry chunk counts as js and the content chunk on its own; other lazy chunks load on demand.
-  const key = ext === "js" && file.startsWith("data-") ? "content" : ext;
+  const key = ext === "js" && file.startsWith("data-") ? "content" : ext === "js" && file.startsWith("appLogos-") ? "logos" : ext;
   if (key === "js" && !file.startsWith("index-")) continue;
   const size = ext === "woff2" ? statSync(join(dir, file)).size : gzipSync(buf).length;
   totals[key] += size;

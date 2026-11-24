@@ -1,6 +1,8 @@
 // Detection-status legend shown during Repo X-Ray mode (spec SS11). Compact by default
 // (short status words + rings); expands to full definitions via a help popover. Domain
-// colors still mean domains (a separate channel). Status is conveyed by TEXT, not color
+// colors still mean domains (a separate channel). Lines: a white curve is an existing atlas
+// relationship between two detections (never repo co-occurrence); faint ones lead to related,
+// undetected nodes (see graph/scanOverlay.ts). Status is conveyed by TEXT, not color
 // alone (a11y). This is informational, not a filter control.
 
 import { useState } from "react";
@@ -28,6 +30,15 @@ export function XrayLegend() {
           <span className="xray-legend-word">{open ? it.label : it.short}</span>
         </span>
       ))}
+      <span className="xray-legend-sep" aria-hidden />
+      <span className="xray-legend-item" title="A white line is an atlas relationship between two things the scan detected. It does not mean they call each other in the code.">
+        <span className="xray-line" aria-hidden />
+        <span className="xray-legend-word">{open ? "Atlas relationship between two detections" : "Link"}</span>
+      </span>
+      {open && <span className="xray-legend-item" title="A faint line leads from a detection to a related node the scan did not find.">
+        <span className="xray-line is-faint" aria-hidden />
+        <span className="xray-legend-word">Link to a related, undetected node</span>
+      </span>}
       <button
         type="button"
         className="xray-legend-help"

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { AppLogo } from "./AppLogo";
+import { arrowNav } from "../util/arrowNav";
 import { api, fetchWikipediaSummary } from "../api/client";
 import type { DetectionStatus, NeighborEdge, NodeDetail, NodeSummary, RepoScan } from "../api/types";
 import { nodeTypeLabel, relationshipPhrase } from "../graph/relationships";
@@ -163,12 +165,12 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
           {usedBy.length > 0 && (
             <section className="details-used-by" aria-label="Used by">
               <h3>Used by</h3>
-              <ul>
+              <ul data-arrow-nav onKeyDown={arrowNav}>
                 {usedBy.map(({ app, note }) => (
                   <li key={app.id}>
                     <button type="button" className="used-by-chip" title={note}
                       aria-label={`${app.name}: ${note}. Show ${app.name}'s stack`}
-                      onClick={() => onOpenApp?.(app.id)} disabled={!onOpenApp}>{app.name}</button>
+                      onClick={() => onOpenApp?.(app.id)} disabled={!onOpenApp}><AppLogo id={app.id} name={app.name} size={16} />{app.name}</button>
                   </li>
                 ))}
               </ul>
