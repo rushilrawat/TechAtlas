@@ -37,6 +37,8 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   const [wikiSummary, setWikiSummary] = useState<NodeSummary | null>(null);
   const [copied, setCopied] = useState(false);
   const [learning, setLearning] = useLearningMap();
+  const [savedNote, setSavedNote] = useState("");
+  useEffect(() => { setSavedNote(""); }, [slugOrId]);
   const panelRef = useRef<HTMLElement | null>(null);
 
   // Focus management (UI-C/UI-D req 1): capture the element that opened the panel (the
@@ -130,11 +132,19 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
 
           <div className="details-tools">
             {detail.node_type !== "domain" && (
-              <div className="learning-toggle" role="group" aria-label="Add to my learning map">
-                {LEARNING_OPTIONS.map(([value, label]) => (
-                  <button key={value} type="button" aria-pressed={status === value}
-                    onClick={() => setLearning(detail.id, status === value ? null : value)}>{label}</button>
-                ))}
+              <div className="learning-track">
+                <span className="learning-label" id="learning-label">Track in my learning map</span>
+                <div className="learning-toggle" role="group" aria-labelledby="learning-label">
+                  {LEARNING_OPTIONS.map(([value, label]) => (
+                    <button key={value} type="button" aria-pressed={status === value}
+                      onClick={() => {
+                        const next = status === value ? null : value;
+                        setLearning(detail.id, next);
+                        setSavedNote(next ? `Saved to your learning map (press M to open it).` : "Removed from your learning map.");
+                      }}>{status === value ? "✓ " : ""}{label}</button>
+                  ))}
+                </div>
+                <span className="learning-note" role="status">{savedNote}</span>
               </div>
             )}
             <button type="button" className="copy-link" onClick={copyLink} aria-live="polite">
@@ -239,26 +249,28 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
 
           <RepoEvidence detail={detail} nodeId={nodeId} scan={scan} />
 
-          <section aria-label="Relationships">
+          {detail.node_type === "domain" ? (
+            <FieldMembers neighbors={detail.neighbors} onNavigate={onNavigate}
+              onPreview={(n) => onPreviewRelationship?.(n)} />
+          ) : <section aria-label="Relationships">
             <h3>Relationships ({detail.neighbors.length})</h3>
             {grouped.map(([phrase, items]) => (
               <div key={phrase} className="rel-group">
-                <h4>{phrase}</h4>
+                <h4>{phrase.charAt(0).toUpperCase() + phrase.slice(1).toLowerCase()}</h4>
                 <ul>
                   {items.map((n) => (
                     <li key={`${phrase}-${n.node.id}`}>
+                      {/* The whole row opens the node; hovering or focusing it previews the
+                          connection on the map. (One row, one action: no repeated "Open" buttons.) */}
                       <button
+                        type="button"
                         className="rel-link"
                         onMouseEnter={() => onPreviewRelationship?.(n)}
                         onMouseLeave={() => onPreviewRelationship?.(lockedNeighbor)}
                         onFocus={() => onPreviewRelationship?.(n)}
                         onBlur={() => onPreviewRelationship?.(lockedNeighbor)}
-                        onClick={() => {
-                          const next = lockedNeighbor === n ? null : n;
-                          setLockedNeighbor(next);
-                          onPreviewRelationship?.(next);
-                        }}
-                        aria-label={`Show connection with ${n.node.label}`}
+                        onClick={() => { setLockedNeighbor(null); onNavigate(n.node.slug); }}
+                        aria-label={`Open ${n.node.label} (${n.node.node_type})`}
                       >
                         <span
                           className="rel-dot"
@@ -270,15 +282,14 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
                           {" "}
                           · {n.node.node_type}
                         </span>
+                        <span className="rel-chevron" aria-hidden>→</span>
                       </button>
-                      <button className="rel-open" onClick={() => onNavigate(n.node.slug)}
-                        aria-label={`Open ${n.node.label}`}>Open ↗</button>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
-          </section>
+          </section>}
 
           {detail.node_type === "technology" && (
             <p className="provenance">
@@ -296,6 +307,66 @@ export function NodeDetailsPanel({ slugOrId, onClose, onNavigate, nodeId = null,
   );
 }
 
+const MEMBER_PREVIEW = 12;
+
+/**
+ * A field's members, grouped by kind and sorted by importance (node size), with the top
+ * 12 of each group shown and a filter box: Backend has ~175, too many for a flat list.
+ */
+function FieldMembers({ neighbors, onNavigate, onPreview }: {
+  neighbors: NeighborEdge[]; onNavigate: (slugOrId: string) => void; onPreview: (n: NeighborEdge | null) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const q = query.trim().toLowerCase();
+  // Members are the nodes that belong to the field (the same set and count as the header
+  // and the hover card); sub-fields, the parent field and other links are listed apart.
+  const members = neighbors.filter((n) => n.relationship_type === "belongs_to_domain");
+  const match = (n: NeighborEdge) => !q || n.node.label.toLowerCase().includes(q);
+  const bySize = (a: NeighborEdge, b: NeighborEdge) => (b.node.size ?? 0) - (a.node.size ?? 0) || a.node.label.localeCompare(b.node.label);
+  const groups = [
+    { type: "sub", title: "Sub-fields", items: neighbors.filter((n) => n.relationship_type === "has_subdomain" && n.direction === "out") },
+    { type: "technology", title: "Technologies", items: members.filter((n) => n.node.node_type === "technology") },
+    { type: "concept", title: "Concepts", items: members.filter((n) => n.node.node_type === "concept") },
+    { type: "parent", title: "Part of", items: neighbors.filter((n) => n.relationship_type === "has_subdomain" && n.direction === "in") },
+    { type: "other", title: "Other links", items: neighbors.filter((n) => n.relationship_type !== "has_subdomain" && n.relationship_type !== "belongs_to_domain") },
+  ].map((g) => ({ ...g, items: g.items.filter(match).sort(bySize) })).filter((g) => g.items.length > 0);
+  const total = groups.reduce((sum, g) => sum + g.items.length, 0);
+  return (
+    <section aria-label="Members" className="field-members">
+      <h3>Members ({members.length.toLocaleString("en-US")})</h3>
+      <input type="search" className="field-members-filter" placeholder="Filter members" aria-label="Filter members"
+        value={query} onChange={(e) => setQuery(e.target.value)} />
+      {q && <p className="muted" aria-live="polite">{total} {total === 1 ? "match" : "matches"}</p>}
+      {groups.map((g) => {
+        const all = q || expanded.has(g.type);
+        const shown = all ? g.items : g.items.slice(0, MEMBER_PREVIEW);
+        return (
+          <div key={g.type} className="rel-group">
+            <h4>{g.title} ({g.items.length})</h4>
+            <ul>{shown.map((n) => (
+              <li key={n.node.id}>
+                <button type="button" className="rel-link" onMouseEnter={() => onPreview(n)} onMouseLeave={() => onPreview(null)}
+                  onFocus={() => onPreview(n)} onBlur={() => onPreview(null)} onClick={() => onNavigate(n.node.slug)}
+                  aria-label={`Open ${n.node.label} (${n.node.node_type})`}>
+                  <span className="rel-dot" style={{ background: n.node.color }} aria-hidden />
+                  {n.node.label}
+                  <span className="rel-chevron" aria-hidden>→</span>
+                </button>
+              </li>
+            ))}</ul>
+            {!all && g.items.length > MEMBER_PREVIEW && (
+              <button type="button" className="field-members-more" onClick={() => setExpanded((s) => new Set(s).add(g.type))}>
+                Show all {g.items.length} {g.title.toLowerCase()}
+              </button>
+            )}
+          </div>
+        );
+      })}
+    </section>
+  );
+}
+
 function groupNeighbors(neighbors: NeighborEdge[]): [string, NeighborEdge[]][] {
   const map = new Map<string, NeighborEdge[]>();
   for (const n of neighbors) {
@@ -309,10 +380,10 @@ function groupNeighbors(neighbors: NeighborEdge[]): [string, NeighborEdge[]][] {
 
 
 const STATUS_TEXT: Record<DetectionStatus, string> = {
-  confirmed: "Confirmed in source",
-  declared: "Declared dependency",
-  inferred: "Inferred from evidence",
-  related: "Related",
+  confirmed: "Found in code",
+  declared: "Listed as a dependency",
+  inferred: "Guessed from related files",
+  related: "Related to the stack",
 };
 
 /** "Found in this repository" — evidence for the open node when a scan is active. */

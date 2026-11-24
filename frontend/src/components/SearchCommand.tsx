@@ -140,7 +140,7 @@ export function SearchCommand({ onPick, domainsById, lookup }: Props) {
         ref={inputRef}
         type="text"
         className="search-input"
-        placeholder="Search technologies, concepts, domains…  ( / )"
+        placeholder="Search the atlas  ( / )"
         aria-label="Search the technology graph"
         role="combobox"
         aria-expanded={open}

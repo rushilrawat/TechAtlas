@@ -71,7 +71,7 @@ export class Obstacles {
  */
 export function placeHeadings(headings: Heading[], container: HTMLElement,
   domains: { id: string; node_count: number }[], selected: string | null,
-  obstacles: Obstacles, ringLike: boolean): Heading[] {
+  obstacles: Obstacles, ringLike: boolean, labels: readonly { x0: number; y0: number; x1: number; y1: number }[] = []): Heading[] {
   headingCtx ??= document.createElement("canvas").getContext("2d");
   if (!headingCtx) return headings;
   const vw = container.clientWidth, vh = container.clientHeight;
@@ -82,7 +82,8 @@ export function placeHeadings(headings: Heading[], container: HTMLElement,
   const gap = phone ? 2 : 6;
   const crect = container.getBoundingClientRect();
   const panels = [".legend", "#graph-filters", ".filter-panel", ".relationship-legend", ".details", ".hero",
-    ".atlas-rail", ".journey-panel", ".compare-panel"]
+    ".atlas-rail", ".journey-panel", ".compare-panel", ".paths-library", ".stack-panel", ".outline-view",
+    ".learning-panel", ".xray-panel", ".xray-legend"]
     .map((sel) => document.querySelector(sel)?.getBoundingClientRect())
     .filter((r): r is DOMRect => !!r && r.width > 0 && r.height > 0 && r.width < vw * 0.85)
     .map((r) => ({ x: r.left - crect.left, y: r.top - crect.top, w: r.width, h: r.height }));
@@ -129,6 +130,9 @@ export function placeHeadings(headings: Heading[], container: HTMLElement,
         const box = { x: px - w / 2 + (dx * w) / 2, y: py - bh / 2 + (dy * bh) / 2, w, h: bh };
         if (box.x < 4 || box.y < 2 || box.x + w > vw - 4 || box.y + bh > vh - 2) continue;
         if (panels.some((p) => hits(box, p)) || placed.some((p) => hits(box, p.box))) continue;
+        // A heading on top of a drawn node name reads as one garbled line: never place it
+        // there (with nowhere else to go, the field name is left out until the view changes).
+        if (labels.some((l) => box.x < l.x1 + 2 && box.x + w > l.x0 - 2 && box.y < l.y1 && box.y + bh > l.y0)) continue;
         if (strict && phone && headings.some((o) => o.id !== h.id && o.disc && discHits(box, o.disc, 0.7))) continue;
         const { nodes, curves, own, ownNodes } = obstacles.count(box, h.id);
         // Ring compositions read best with names on the outer rim; maps prefer above.

@@ -8,10 +8,13 @@ interface Props {
   graph: GraphResponse;
   onPick: (id: string) => void;
   onClose: () => void;
+  /** Next steps offered when the map is still empty. */
+  onPickRole?: () => void;
+  onOpenPaths?: () => void;
 }
 
 /** "My learning map": what the viewer marked, plus what to learn next. Stored locally. */
-export function LearningPanel({ graph, onPick, onClose }: Props) {
+export function LearningPanel({ graph, onPick, onClose, onPickRole, onOpenPaths }: Props) {
   const [map, setStatus] = useLearningMap();
   const labels = useMemo(() => new Map(graph.nodes.map((n) => [n.id, n.label])), [graph]);
   const suggestions = useMemo(() => suggestNext(map, graph), [map, graph]);
@@ -22,7 +25,12 @@ export function LearningPanel({ graph, onPick, onClose }: Props) {
       <button type="button" className="outline-close" onClick={onClose} aria-label="Close learning map">×</button>
       <h2>My learning map</h2>
       {marked === 0 ? (
-        <p>Open any technology or concept and mark it as <strong>Known</strong>, <strong>Learning</strong> or a <strong>Goal</strong>. Suggestions for what to learn next appear here. Saved only in this browser.</p>
+        <><p>Open any technology or concept and mark it as <strong>Known</strong>, <strong>Learning</strong> or a <strong>Goal</strong>. Suggestions for what to learn next appear here. Saved only in this browser.</p>
+          {(onPickRole || onOpenPaths) && <div className="compare-actions stack-actions learning-start">
+            {onPickRole && <button type="button" onClick={onPickRole}>Pick a role</button>}
+            {onOpenPaths && <button type="button" onClick={onOpenPaths}>Start a path</button>}
+          </div>}
+        </>
       ) : (
         <>
           {suggestions.length > 0 && <>

@@ -26,7 +26,7 @@ function setup(overrides = {}) {
 describe("PathsLibrary", () => {
   it("shows featured paths and every path, and starts one on click", () => {
     const { onStart } = setup();
-    const dialog = screen.getByRole("dialog", { name: "Guided paths" });
+    const dialog = screen.getByRole("region", { name: "Guided paths" });
     expect(within(dialog).getByText("Start here")).toBeTruthy();
     fireEvent.click(within(dialog).getAllByRole("button", { name: /Containers, step by step/ })[0]);
     expect(onStart).toHaveBeenCalledWith(1);
@@ -38,7 +38,7 @@ describe("PathsLibrary", () => {
     expect(screen.queryByText("Start here")).toBeNull();
     expect(screen.getByText("1 matching path")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
-    expect(screen.getByText("All paths")).toBeTruthy();
+    expect(screen.getByText("Start here")).toBeTruthy();
   });
 
   it("filters by progress and shows status badges", () => {

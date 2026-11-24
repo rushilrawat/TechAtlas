@@ -116,12 +116,15 @@ export function StackPanel({ graph, params, onParamsChange, currentLabel, onPick
                 <div className="stack-pick-head">
                   <span className="stack-slot">{p.slot.label}</span>
                   <button type="button" className="stack-tech" onClick={() => onPick(p.node.id)} title={`Open ${p.node.label} on the atlas`}>{p.node.label}</button>
-                  <span className="stack-source">{SOURCE_LABEL[p.source]}</span>
+                  {/* Only picks that came from the reader get a badge; "Suggested" on every row said nothing. */}
+                  {p.source !== "recommended" && <span className="stack-source">{SOURCE_LABEL[p.source]}</span>}
                 </div>
-                <button type="button" className="stack-why" aria-expanded={expanded} onClick={() => setOpen(expanded ? null : key)}
-                  title={expanded ? "Hide details" : "Why this, and what else fits"}>
-                  <span>{lead?.text ?? "Details"}</span>
-                  <span className="stack-chevron" aria-hidden>{expanded ? "▴" : p.alternatives.length ? `+${p.alternatives.length} ▾` : "▾"}</span>
+                {lead && <p className="stack-reason">{lead.text}</p>}
+                <button type="button" className="stack-why" aria-expanded={expanded} onClick={() => setOpen(expanded ? null : key)}>
+                  {expanded ? "Hide details" : p.alternatives.length
+                    ? `${p.alternatives.length} ${p.alternatives.length === 1 ? "alternative" : "alternatives"}`
+                    : "More about this pick"}
+                  <span className="stack-chevron" aria-hidden>{expanded ? " ▴" : " ▾"}</span>
                 </button>
                 {expanded && <div className="stack-detail">
                   <p className="muted">{p.slot.role}</p>

@@ -12,7 +12,7 @@ test("graph renders, a node can be selected, and the detail panel opens", async 
 
   // 1) The app left the loading state and the header shows a real node count
   //    (proves /graph loaded AND buildGraph did not throw).
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
 
   // 2) Sigma mounted a WebGL canvas inside the graph application region.
   const canvas = page.locator(".graph-canvas canvas").first();
@@ -41,7 +41,7 @@ test("the Tailwind node (slug tailwind-css) opens without a 404", async ({ page 
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
 
   const search = page.getByLabel("Search the technology graph");
   await search.click();
@@ -59,7 +59,7 @@ test("the Tailwind node (slug tailwind-css) opens without a 404", async ({ page 
 
 test("deep link under the base path loads the right node", async ({ page }) => {
   await page.goto("/technology/fastapi");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
   const panel = page.locator(".details");
   await expect(panel).toBeVisible();
   await expect(panel.getByRole("heading", { name: "FastAPI" })).toBeVisible();
@@ -69,7 +69,7 @@ test("selecting a second node (via search) updates the panel — no stale highli
   // Regression for the selection-highlight bug: a selection coming from search must
   // update the graph/panel, and switching to another node must swap cleanly.
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
 
   const search = page.getByLabel("Search the technology graph");
   const panel = page.locator(".details");
@@ -97,13 +97,13 @@ const SCANNER_CONFIGURED =
 
 test("Repo X-Ray is visible and an example scan loads without a backend", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: "Repo X-Ray" }).click();
   const panel = page.getByRole("region", { name: "Repo X-Ray" });
   await expect(panel.getByLabel("GitHub repository URL")).toHaveCount(SCANNER_CONFIGURED ? 1 : 0);
   await panel.getByRole("button", { name: /X-ray django\/django/ }).click();
   await expect(panel.getByRole("link", { name: "django/django" })).toBeVisible();
-  await expect(panel.getByText("Example scan")).toBeVisible();
+  await expect(panel.getByText("Example scan", { exact: true })).toBeVisible();
   // The example is in the URL, so the result can be shared.
   await expect(page).toHaveURL(/[?&]xray=django-django/);
 });
@@ -112,7 +112,7 @@ test("An ?xray= link opens straight onto that example scan", async ({ page }) =>
   await page.goto("./?xray=bevyengine-bevy");
   const panel = page.getByRole("region", { name: "Repo X-Ray" });
   await expect(panel.getByRole("link", { name: "bevyengine/bevy" })).toBeVisible({ timeout: 20_000 });
-  await panel.getByRole("button", { name: "Back to Universe" }).first().click();
+  await panel.getByRole("button", { name: "Close Repo X-Ray and go back to the atlas" }).click();
   await expect(page).not.toHaveURL(/xray=/);
 });
 
@@ -126,9 +126,9 @@ test("About page has a direct static route", async ({ page }) => {
 
 test("Guided paths library: search, start a path, step through, share", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: "Guided paths" }).click();
-  const library = page.getByRole("dialog", { name: "Guided paths" });
+  const library = page.getByRole("region", { name: "Guided paths" });
   await expect(library.getByText("Start here")).toBeVisible();
   await library.getByLabel("Search guided paths").fill("kubernetes");
   await expect(library.getByText(/matching path/)).toBeVisible();
@@ -147,14 +147,14 @@ test("Guided paths library: search, start a path, step through, share", async ({
 
 test("Guided paths closes an open Stack, Roles or Apps panel", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
   const guided = page.getByRole("button", { name: "Guided paths" });
   await expect(guided).toHaveCount(1);
   for (const [button, region] of [["Stack recommender", "Stack recommender"], ["Role paths", "Role paths"], ["Famous apps", "Famous apps"]]) {
     await page.getByRole("button", { name: button, exact: true }).click();
     await expect(page.getByRole("region", { name: region })).toBeVisible();
     await guided.click();
-    const library = page.getByRole("dialog", { name: "Guided paths" });
+    const library = page.getByRole("region", { name: "Guided paths" });
     await expect(library).toBeVisible();
     await expect(page.getByRole("region", { name: region })).toHaveCount(0);
     await page.keyboard.press("Escape");
@@ -164,7 +164,7 @@ test("Guided paths closes an open Stack, Roles or Apps panel", async ({ page }) 
 
 test("Famous apps: pick an app, its stack lists atlas nodes, and a technology links back", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: "Famous apps", exact: true }).click();
   const panel = page.getByRole("region", { name: "Famous apps" });
   await panel.getByLabel("Filter apps").fill("elixir");
@@ -211,12 +211,13 @@ test("Roles have emojis, ?role= opens the list, and ] steps to the next role", a
   await expect(page).toHaveURL(/[?&]role=backend-engineer/);
 });
 
-test("On a phone the toolbar scrolls behind a → button instead of running off-screen", async ({ page }) => {
+test("On a phone every tool is reachable without the page running off-screen", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await expect(page.getByText(/\d+ nodes · \d+ edges/)).toBeAttached({ timeout: 20_000 });
-  const more = page.getByRole("button", { name: "Scroll atlas modes right" });
-  await expect(more).toBeVisible();
+  await expect(page.getByText(/[\d,]+ nodes · [\d,]+ edges/)).toBeAttached({ timeout: 20_000 });
+  // The utilities live under "More"; the main tools stay in the toolbar.
+  const more = page.getByRole("button", { name: "More tools" });
+  await expect(more).toBeInViewport();
   await more.click();
   await expect(page.getByRole("button", { name: /Switch to (light|dark) theme/ })).toBeInViewport();
   const width = await page.evaluate(() => document.documentElement.scrollWidth);
